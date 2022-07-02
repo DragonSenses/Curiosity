@@ -1,3 +1,5 @@
+package Enums;
+
 
 /**
  * Enum Types, an elegant approach to representing choices from a finite set by 
