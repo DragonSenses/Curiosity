@@ -1,4 +1,4 @@
-package Enums;
+package Java.Enums;
 
 /**
  * Source: https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html

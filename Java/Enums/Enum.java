@@ -1,4 +1,4 @@
-package Enums;
+package Java.Enums;
 
 
 /**

@@ -1,3 +1,5 @@
+package Java;
+
 /**
  * ternaryOperator in java
  * 
