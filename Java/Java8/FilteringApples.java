@@ -122,11 +122,13 @@ public class FilteringApples {
     // Example of sequential processing:
     List<Apple> heavyApples3 = inventory.stream().filter((Apple a) -> a.getWeight() > 150)
         .collect(toList());
+    System.out.println(heavyApples3);
 
     //Example of parallel processing:
     List<Apple> heavyApples4 =
         inventory.parallelStream().filter((Apple a) -> a.getWeight() > 150)
         .collect(toList());
+    System.out.println(heavyApples4);
   } // end of Main
 
 }
