@@ -3,7 +3,9 @@ package Java.Java8;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import static java.util.stream.Collectors.toList;
 import java.util.function.Predicate;
+
 /**
  * Predicate: (in Math) something function-like that takes a value for an argument
  * and returns true or false; more standard and efficient as it avoids boxing a 
@@ -11,12 +13,14 @@ import java.util.function.Predicate;
  */
 
 /**
- * This class shows how we can pass around a method during runtime
+ * This class showcases how we can filter data based on a criterion,
+ * we can pass around a method during runtime
  */
 public class FilteringApples {
 
   /**
    * pre-Java 8 way of filtering out Green Apples
+   * 
    * @param inventory Holds a List of Apples
    * @return
    */
@@ -32,6 +36,7 @@ public class FilteringApples {
 
   /**
    * pre-Java 8 way of filtering Apples that exceed a weight threshold
+   * 
    * @param inventory
    * @return
    */
@@ -46,8 +51,9 @@ public class FilteringApples {
   }
 
   /**
-   * Java 8 way is to pass code of the condition as an argument, 
+   * Java 8 way is to pass code of the condition as an argument,
    * this one checks for Green Apples
+   * 
    * @param apple
    * @return
    */
@@ -61,9 +67,10 @@ public class FilteringApples {
 
   /**
    * Instead we write filter in a way that takes in a predicate so that it can
-   * adapt to the specifications needed. 
+   * adapt to the specifications needed.
+   * 
    * @param inventory
-   * @param p - A method is passed in as a Predicate parameter
+   * @param p         - A method is passed in as a Predicate parameter
    * @return
    */
   public static List<Apple> filterApples(List<Apple> inventory, Predicate<Apple> p) {
@@ -76,16 +83,15 @@ public class FilteringApples {
     return result;
   }
 
-
   public static void main(String... args) {
     List<Apple> inventory = Arrays.asList(
         new Apple(80, "green"),
         new Apple(155, "green"),
-        new Apple(120, "red")
-    );
+        new Apple(120, "red"));
 
     /**
-     * Here we use the new Java8 way to filterApples() by passing in a predicate (method reference)
+     * Here we use the new Java8 way to filterApples() by passing in a predicate
+     * (method reference)
      * 
      * filterApples(inventory, Apple::isGreenApple)
      * or
@@ -111,8 +117,16 @@ public class FilteringApples {
     // []
     List<Apple> weirdApples = filterApples(inventory, (Apple a) -> a.getWeight() < 80 || "brown".equals(a.getColor()));
     System.out.println(weirdApples);
-  } // end of Main
 
-  
+    /** Using Streams to process "parallelism almost for free" */
+    // Example of sequential processing:
+    List<Apple> heavyApples3 = inventory.stream().filter((Apple a) -> a.getWeight() > 150)
+        .collect(toList());
+
+    //Example of parallel processing:
+    List<Apple> heavyApples4 =
+        inventory.parallelStream().filter((Apple a) -> a.getWeight() > 150)
+        .collect(toList());
+  } // end of Main
 
 }
