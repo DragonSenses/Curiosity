@@ -4,9 +4,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+/**
+ * Predicate: (in Math) something function-like that takes a value for an argument
+ * and returns true or false; more standard and efficient as it avoids boxing a 
+ * boolean into a Boolean 
+ */
 
+/**
+ * This class shows how we can pass around a method during runtime
+ */
 public class FilteringApples {
 
+  /**
+   * pre-Java 8 way of filtering out Green Apples
+   * @param inventory Holds a List of Apples
+   * @return
+   */
   public static List<Apple> filterGreenApples(List<Apple> inventory) {
     List<Apple> result = new ArrayList<>();
     for (Apple apple : inventory) {
@@ -17,6 +30,11 @@ public class FilteringApples {
     return result;
   }
 
+  /**
+   * pre-Java 8 way of filtering Apples that exceed a weight threshold
+   * @param inventory
+   * @return
+   */
   public static List<Apple> filterHeavyApples(List<Apple> inventory) {
     List<Apple> result = new ArrayList<>();
     for (Apple apple : inventory) {
@@ -27,6 +45,12 @@ public class FilteringApples {
     return result;
   }
 
+  /**
+   * Java 8 way is to pass code of the condition as an argument, 
+   * this one checks for Green Apples
+   * @param apple
+   * @return
+   */
   public static boolean isGreenApple(Apple apple) {
     return "green".equals(apple.getColor());
   }
@@ -35,6 +59,13 @@ public class FilteringApples {
     return apple.getWeight() > 150;
   }
 
+  /**
+   * Instead we write filter in a way that takes in a predicate so that it can
+   * adapt to the specifications needed. 
+   * @param inventory
+   * @param p - A method is passed in as a Predicate parameter
+   * @return
+   */
   public static List<Apple> filterApples(List<Apple> inventory, Predicate<Apple> p) {
     List<Apple> result = new ArrayList<>();
     for (Apple apple : inventory) {
@@ -52,6 +83,14 @@ public class FilteringApples {
         new Apple(155, "green"),
         new Apple(120, "red")
     );
+
+    /**
+     * Here we use the new Java8 way to filterApples() by passing in a predicate (method reference)
+     * 
+     * filterApples(inventory, Apple::isGreenApple)
+     * or
+     * filterApples(inventory, Apple::isHeavyApple)
+     */
 
     // [Apple{color='green', weight=80}, Apple{color='green', weight=155}]
     List<Apple> greenApples = filterApples(inventory, FilteringApples::isGreenApple);
