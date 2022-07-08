@@ -98,6 +98,8 @@ public class FilteringApples {
      * filterApples(inventory, Apple::isHeavyApple)
      */
 
+    /** Method References **/
+
     // [Apple{color='green', weight=80}, Apple{color='green', weight=155}]
     List<Apple> greenApples = filterApples(inventory, FilteringApples::isGreenApple);
     System.out.println(greenApples);
@@ -105,6 +107,8 @@ public class FilteringApples {
     // [Apple{color='green', weight=155}]
     List<Apple> heavyApples = filterApples(inventory, FilteringApples::isHeavyApple);
     System.out.println(heavyApples);
+
+    /** Lambda Expressions **/
 
     // [Apple{color='green', weight=80}, Apple{color='green', weight=155}]
     List<Apple> greenApples2 = filterApples(inventory, (Apple a) -> "green".equals(a.getColor()));
@@ -118,7 +122,11 @@ public class FilteringApples {
     List<Apple> weirdApples = filterApples(inventory, (Apple a) -> a.getWeight() < 80 || "brown".equals(a.getColor()));
     System.out.println(weirdApples);
 
+    List<Apple> redApples = filterApples(inventory, (Apple apple) -> "red".equals(apple.getColor()));
+    System.out.println(redApples);
+
     /** Using Streams to process "parallelism almost for free" */
+
     // Example of sequential processing:
     List<Apple> heavyApples3 = inventory.stream().filter((Apple a) -> a.getWeight() > 150)
         .collect(toList());
