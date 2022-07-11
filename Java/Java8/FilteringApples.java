@@ -125,6 +125,26 @@ public class FilteringApples {
     }
   }
 
+  public interface AppleFormater {
+    public String print (Apple a);
+  }
+
+
+
+  /**
+   * Takes a List of Apples that can be parameterized with multiple ways
+   * to generate a String output from an apple. For instance, to print
+   * only the weight of each apple. In addition, can print each apple 
+   * individually and mention whether it's heavy or light.
+   * @param inventory
+   */
+  public static void prettyPrintApple(List<Apple> inventory, Predicate<Apple> p) {
+    for(Apple apple: inventory) {
+    String output = p.print(apple);
+    System.out.println(output);
+    }
+  }
+
   public static void main(String... args) {
     List<Apple> inventory = Arrays.asList(
         new Apple(80, "green"),
