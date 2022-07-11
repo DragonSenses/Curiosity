@@ -14,7 +14,9 @@ import java.util.function.Predicate;
 
 /**
  * This class showcases how we can filter data based on a criterion,
- * we can pass around a method during runtime
+ * we can pass around a method during runtime. This enables us to 
+ * separate the logic of iterating the collection to filter and the 
+ * behavior to apply on each element of that collection
  */
 public class FilteringApples {
 
@@ -69,9 +71,9 @@ public class FilteringApples {
    * Instead we write filter in a way that takes in a predicate so that it can
    * adapt to the specifications needed.
    * 
-   * @param inventory
-   * @param p         - A method is passed in as a Predicate parameter
-   * @return
+   * @param inventory - The list of apples to select from
+   * @param p - The predicate that models the selection criteria that returns a boolean
+   * @return A list of Apples that pass the criterion provided by predicate p
    */
   public static List<Apple> filterApples(List<Apple> inventory, Predicate<Apple> p) {
     List<Apple> result = new ArrayList<>();
@@ -81,6 +83,46 @@ public class FilteringApples {
       }
     }
     return result;
+  }
+
+
+  /**
+   * A Predicate (a function that returns a boolean) allows us to model the selection 
+   * criteria, returning a boolean based on some attributes of Apple. This allows a 
+   * better way to cope with changing specs and requirements.
+   * 
+   * Behavior parameterization where filterApples() method depends on the code you pass
+   * to it via tthe ApplePredicate object. Althoughh we wrap the code inside an 
+   * ApplePredicate object, still similar to passing code inline, because you're passing
+   * a boolean expression through an object that implements the test method. You can
+   * pass things directly by using lambdas.
+   */
+  public interface ApplePredicate {
+    public boolean test (Apple a);
+  }
+
+  static class AppleWeightPredicate implements ApplePredicate {
+
+    @Override
+    public boolean test(Apple apple) {
+      return apple.getWeight() > 150;
+    }
+  }
+
+  static class AppleGreenColorPredicate implements ApplePredicate {
+
+    @Override
+    public boolean test(Apple apple) {
+      return apple.getColor() == "green";
+    }
+  }
+
+  static class AppleRedAndHeavyPredicate implements ApplePredicate {
+
+    @Override
+    public boolean test(Apple apple) {
+      return apple.getColor() == "red" && apple.getWeight() > 150;
+    }
   }
 
   public static void main(String... args) {
