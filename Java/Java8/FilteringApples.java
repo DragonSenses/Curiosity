@@ -125,8 +125,26 @@ public class FilteringApples {
     }
   }
 
-  public interface AppleFormater {
-    public String print (Apple a);
+  /**
+   * First represent a behavior that takes an Apple and returns a 
+   * formatted String result
+   */
+  public interface AppleFormatter {
+    public String print(Apple a);
+  }
+
+  
+  public class AppleFancyFormatter implements AppleFormatter {
+    public String print(Apple apple) {
+    String characteristic = apple.getWeight() > 150 ? "heavy" : "light";
+      return "A " + characteristic + " " + apple.getColor() +" apple";
+     }
+  }
+
+  public class AppleSimpleFormatter implements AppleFormatter {
+    public String print(Apple apple) {
+     return "An apple of " + apple.getWeight() + "g";
+    }
   }
 
 
@@ -138,10 +156,11 @@ public class FilteringApples {
    * individually and mention whether it's heavy or light.
    * @param inventory
    */
-  public static void prettyPrintApple(List<Apple> inventory, Predicate<Apple> p) {
+  public static void prettyPrintApple(List<Apple> inventory, AppleFormatter formatter) {
+    String output;
     for(Apple apple: inventory) {
-    String output = p.print(apple);
-    System.out.println(output);
+      output = formatter.print(apple);
+      System.out.println(output);
     }
   }
 
