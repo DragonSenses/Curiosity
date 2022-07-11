@@ -133,7 +133,10 @@ public class FilteringApples {
     public String print(Apple a);
   }
 
-  
+  /**
+   * Now represent multiple formatting behaviors by implementing the
+   * AppleFormatter interface
+   */
   public class AppleFancyFormatter implements AppleFormatter {
     public String print(Apple apple) {
     String characteristic = apple.getWeight() > 150 ? "heavy" : "light";
@@ -147,14 +150,14 @@ public class FilteringApples {
     }
   }
 
-
-
   /**
    * Takes a List of Apples that can be parameterized with multiple ways
    * to generate a String output from an apple. For instance, to print
    * only the weight of each apple. In addition, can print each apple 
-   * individually and mention whether it's heavy or light.
-   * @param inventory
+   * individually and mention whether it's heavy or light. Takes 
+   * @param inventory - The List of Apples
+   * @param formatter - The AppleFormatter objects used internally to determine
+   *                    the print behavior of the apples
    */
   public static void prettyPrintApple(List<Apple> inventory, AppleFormatter formatter) {
     String output;
