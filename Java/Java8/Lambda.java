@@ -2,9 +2,10 @@ package Java.Java8;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
- * A lambda expression is a concise representation fo an anonymous function
+ * A lambda expression is a concise representation of an anonymous function
  * that can be passed around. Has no name, but has a list of paremeters, a
  * body, a return type, and possibly a list of exceptions to be throw
  * 
@@ -31,26 +32,33 @@ public class Lambda {
      */
     Comparator<Apple> byWeight =
         (Apple a1, Apple a2) -> ((Integer)a1.getWeight()).compareTo(a2.getWeight());
+        // Note had to typecast a1.getWeight() and wrap as Integer object to call method
 
-    /** Examples of Lambdas **/
-    // Boolean Expression
-    (List<String> list) -> list.isEmpty() 
+    public void main(String[] args){
+        
 
-    //Creating Objects
-    () -> new Apple(10)
+        /** Examples of Lambdas **/
+        // Boolean Expression
+        Predicate p =
+            (List<String> list) -> list.isEmpty();
 
-    //Consuming from an object
-    (Apple a) -> {
-        System.out.println(a.getWeight());
+        //Creating Objects
+        () -> new Apple(10)
+
+        //Consuming from an object
+        (Apple a) -> {
+            System.out.println(a.getWeight());
+        }
+
+        // Select/Extract from an object
+        String s -> s.length();
+
+        //Combine two values
+        (int a, int b) -> a * b
+
+        //Compare two objects
+        Comparator<Apple> byWeight =
+            (Apple a1, Apple a2) -> ((Integer)a1.getWeight()).compareTo(a2.getWeight());
     }
 
-    // Select/Extract from an object
-    String s -> s.length();
-
-    //Combine two values
-    (int a, int b) -> a * b
-
-    //Compare two objects
-    Comparator<Apple> byWeight =
-        (Apple a1, Apple a2) -> ((Integer)a1.getWeight()).compareTo(a2.getWeight());
 }
