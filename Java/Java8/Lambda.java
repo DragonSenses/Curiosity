@@ -1,6 +1,7 @@
 package Java.Java8;
 
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * A lambda expression is a concise representation fo an anonymous function
@@ -31,5 +32,25 @@ public class Lambda {
     Comparator<Apple> byWeight =
         (Apple a1, Apple a2) -> ((Integer)a1.getWeight()).compareTo(a2.getWeight());
 
-    
+    /** Examples of Lambdas **/
+    // Boolean Expression
+    (List<String> list) -> list.isEmpty() 
+
+    //Creating Objects
+    () -> new Apple(10)
+
+    //Consuming from an object
+    (Apple a) -> {
+        System.out.println(a.getWeight());
+    }
+
+    // Select/Extract from an object
+    String s -> s.length();
+
+    //Combine two values
+    (int a, int b) -> a * b
+
+    //Compare two objects
+    Comparator<Apple> byWeight =
+        (Apple a1, Apple a2) -> ((Integer)a1.getWeight()).compareTo(a2.getWeight());
 }
