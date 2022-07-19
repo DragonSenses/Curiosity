@@ -37,6 +37,8 @@ public class tryCatch {
         try{
             System.out.println("Executing Try Block");
             int x = 10/0;  // Error
+            // Remaining Code in Try-Block is not executed
+            System.out.println(x);
             return "Returning from Try Block";
         } catch(Exception e){
             System.out.println("Executing Catch Block");
