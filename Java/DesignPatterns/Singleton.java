@@ -91,5 +91,31 @@ public class Singleton {
         return singly;
     }
 
-    
+  
+
+    public static void main(String args[]){
+        // Instantiating Singleton class with variable first
+        Singleton first = Singleton.getInstance();
+
+        // Instantiating Singleton class with variable second
+        Singleton second = Singleton.getInstance();
+
+        // Instantiating Singleton class with variable thhird
+        Singleton third = Singleton.getInstance();
+
+        //Print their hash codes to show they all point to the same object
+        //in memory
+        System.out.println("Hashcode of first is [" + 
+            first.hashCode() + "]");
+        System.out.println("Hashcode of second is [" + 
+            second.hashCode() + "]"); 
+        System.out.println("Hashcode of third is [" + 
+            third.hashCode() + "]");
+            
+        String equal = "Points to the same memory location on the heap (they ARE the same object)";
+        String notEqual = "DOES NOT point to the same memory location on the heap (different objects)";
+        System.out.println((first == second && second == third) ? equal : notEqual);
+        
+        
+    }
 }
