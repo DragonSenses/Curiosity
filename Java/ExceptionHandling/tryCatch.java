@@ -31,7 +31,24 @@ public class tryCatch {
         }
     }
 
+    /** This time with error **/
+    public static String flowControl2(){
+
+        try{
+            System.out.println("Executing Try Block");
+            int x = 10/0;  // Error
+            return "Returning from Try Block";
+        } catch(Exception e){
+            System.out.println("Executing Catch Block");
+            return "Returning from Catch Block";
+        } finally {
+            System.out.println("Print from finally");
+        }
+    }
+
     public static void main(String[] args){
         System.out.println(flowControl());
+        System.out.println("================= ");
+        System.out.println(flowControl2());
     }
 }
