@@ -1,4 +1,4 @@
-package Java;
+package Java.Conditionals;
 
 /**
  * ternaryOperator in java
