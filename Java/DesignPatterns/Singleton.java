@@ -43,7 +43,9 @@ package Java.DesignPatterns;
  */
 public class Singleton {
     // Instance is stored as a private static variable
-    private static Singleton obj;
+    private static Singleton singly;
+
+    public String name; 
 
     /**
      * Private Constructor forces the usage of 
@@ -67,8 +69,11 @@ public class Singleton {
      * to make a utility class that only contains
      * static methods. 
      */
-    private Singleton() {}
-
+    // private Singleton() {}  // Easy Way
+    private Singleton() {
+        name = "Hello my name is singly, a string part of the Singleton class.";
+    }
+    
     /** 
      * A Static Factory methhod that returns a reference to
      * the sole instance of Singleton. This ensures that
@@ -80,12 +85,11 @@ public class Singleton {
      * @return A static Singleton reference
      */
     public static Singleton getInstance() {
-        if (obj == null) {
-            obj = new Singleton();
+        if (singly == null) {
+            singly = new Singleton();
         }
-        return obj;
+        return singly;
     }
 
-    /** Below are Further Implementations of getInstance() */
     
 }
