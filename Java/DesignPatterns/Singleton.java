@@ -45,6 +45,7 @@ public class Singleton {
     // Instance is stored as a private static variable
     private static Singleton singly;
 
+    // Declaring the name of Singleton with type String
     public String name; 
 
     /**
@@ -91,8 +92,6 @@ public class Singleton {
         return singly;
     }
 
-  
-
     public static void main(String args[]){
         // Instantiating Singleton class with variable first
         Singleton first = Singleton.getInstance();
@@ -103,6 +102,7 @@ public class Singleton {
         // Instantiating Singleton class with variable thhird
         Singleton third = Singleton.getInstance();
 
+        System.out.println("========= HashCode and Memory Location Test ===========");
         //Print their hash codes to show they all point to the same object
         //in memory
         System.out.println("Hashcode of first is [" + 
@@ -116,6 +116,42 @@ public class Singleton {
         String notEqual = "DOES NOT point to the same memory location on the heap (different objects)";
         System.out.println((first == second && second == third) ? equal : notEqual);
         
+        System.out.println("========= Changes to One Variable Changes All Test ===========");
+        // Here we can show how if we demonstrate to changes in the variable of 
+        // one instance, this is reflected when we acces the variables of second and third
+        // Here we uppercase the Singleton's name
+        first.name = (first.name).toUpperCase();
         
+        // Print and Display the changes when we access the names of each instance of Singleton
+        System.out.println("first name is \t{" + 
+            first.name + "}");
+        System.out.println("second name is \t{" + 
+            second.name + "}");
+        System.out.println("third name is \t{" + 
+            third.name + "}");
+        
+        System.out.println("========= Change Name a Second Time ===========");
+
+        // Modify the name again through a difference variable reference
+        third.name = (third.name).toLowerCase();
+
+        System.out.println("first name is \t{" + 
+            first.name + "}");
+        System.out.println("second name is \t{" + 
+            second.name + "}");
+        System.out.println("third name is \t{" + 
+            third.name + "}");
+
+        
+        System.out.println("========= Change Name a Third Time ===========");
+
+        // Modify once more
+        second.name = "Call me doubly now";
+        System.out.println("first name is \t{" + 
+            first.name + "}");
+        System.out.println("second name is \t{" + 
+            second.name + "}");
+        System.out.println("third name is \t{" + 
+            third.name + "}");
     }
 }
