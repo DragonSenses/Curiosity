@@ -83,7 +83,23 @@ public class OperationPrecedence {
         System.out.println(i);    // "8"
     }
 
+    public static void prePostDemo2(){
+        System.out.println("========== Post Increment Example ==========");
+        int i = 10;
+        System.out.println("int i = " + i );
+        int n = i++%5;      // Postfix increment treats i as 10 in the expression 
+        System.out.print("int n = i++%5 evaluates to: \n");
+        System.out.println("Value of i is: [" + i + "], Value of n is [" + n + "]");
+        System.out.println("========== Pre Increment Example ==========");
+        i = 10;
+        System.out.println("int i = " + i );
+        n = ++i%5;          // Here prefix increment treats i as 11 in the expression
+        System.out.print("int n = ++i%5 evaluates to: \n");
+        System.out.println("Value of i is: [" + i + "], Value of n is [" + n + "]");
+    }
+
     public static void main(String[] args){
         prePostDemo();
+        prePostDemo2();
     }
 }
