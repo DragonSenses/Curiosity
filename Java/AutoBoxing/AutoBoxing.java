@@ -2,6 +2,8 @@ package Java.AutoBoxing; // Primitive Specializations
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.function.Predicate;
+import java.util.function.IntPredicate;
 
 
 /**
@@ -27,15 +29,35 @@ import java.util.ArrayList;
  */
 public class AutoBoxing {
     
+    // The following is Functional Interface is provided by 
+    // java.util.function.IntPredicate
+
+    // @FunctionalInterface
+    // public interface IntPredicate {
+    //     boolean test(int t);
+    // }
+
     public static void main(String[] args){
-        
-        /** Autoboxing mechanism in Action, thhe following code is valid **/
+
+        /** Autoboxing mechanism in Action, an int gets boxed to an Integer **/
         // Create a list of objects that have the type Integer 
         List<Integer> list = new ArrayList<>(); 
         for(int i = 1510; i < 1610; i++){
             list.add(i); // Here int i gets boxed into Integer
         }
 
+        // Using a Predicate<Integer> would box the argument 1024 to an Integer object
+        Predicate<Integer> oddNumbers = (Integer i) -> (i & 1) == 1; // False (Boxing)
+        oddNumbers.test(1024);
+        IntPredicate evenNumbers = (int i) -> (i & 1) == 0; // True (No Boxing)
+        evenNumbers.test(1024);
 
+        System.out.println("Is 1024 Odd? -> " + oddNumbers.test(1024));
+        System.out.println("Is 1024 Even? -> " + evenNumbers.test(1024));
+
+        // To summarize, we can use the appropriate functional interfaces that have a 
+        // specialization for the input type parameter. For example, DoublePredicate,
+        // IntConsumer, IntFunction, LongBinaryOperator, and so on. This way we can
+        // avoid autoboxing and increase performance for our programs
     }
 }
