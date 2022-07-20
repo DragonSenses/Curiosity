@@ -1,8 +1,6 @@
 package Java.Java8;
 
 import java.util.Comparator;
-import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * A lambda expression is a concise representation of an anonymous function
@@ -39,26 +37,26 @@ public class Lambda {
 
         /** Examples of Lambdas **/
         // Boolean Expression
-        Predicate p =
-            (List<String> list) -> list.isEmpty();
+        // Predicate p =
+        //     (List<String> list) -> list.isEmpty();
 
         //Creating Objects
-        () -> new Apple(10)
+        // () -> new Apple(10)
 
         //Consuming from an object
-        (Apple a) -> {
-            System.out.println(a.getWeight());
-        }
+        // (Apple a) -> {
+        //     System.out.println(a.getWeight());
+        // }
 
         // Select/Extract from an object
-        String s -> s.length();
+        // String s -> s.length();
 
         //Combine two values
-        (int a, int b) -> a * b
+        // (int a, int b) -> a * b
 
         //Compare two objects
-        Comparator<Apple> byWeight =
-            (Apple a1, Apple a2) -> ((Integer)a1.getWeight()).compareTo(a2.getWeight());
+        // Comparator<Apple> byWeight =
+        //     (Apple a1, Apple a2) -> ((Integer)a1.getWeight()).compareTo(a2.getWeight());
     }
 
 }
