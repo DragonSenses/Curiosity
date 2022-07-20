@@ -43,9 +43,9 @@ package Java.Operators;
  * ----------------------------------------------------------------------
  * 7            &           Bitwise AND                     Left to right
  * ----------------------------------------------------------------------
- * 6            ^           Bitwise exclusive OR            Left to right
+ * 6            ^           Bitwise exclusive OR (XOR)      Left to right
  * ----------------------------------------------------------------------
- * 5            |           Bitwise inclusive OR            Left to right
+ * 5            |           Bitwise inclusive OR (OR)       Left to right
  * ----------------------------------------------------------------------
  * 4            &&          Logical AND                     Left to right
  * ----------------------------------------------------------------------
@@ -59,6 +59,8 @@ package Java.Operators;
  *              *=          Multiplication assignment
  *              /=          Division assignment
  *              %=          Modulus assignment
+ *         &=   ^=   |=     Assignment Operators
+ *          <<=    >>= 
  * ----------------------------------------------------------------------
  */
 public class OperationPrecedence {
