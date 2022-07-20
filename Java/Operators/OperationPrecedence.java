@@ -65,4 +65,25 @@ package Java.Operators;
  */
 public class OperationPrecedence {
     
+    /**
+     * This code demonstrates why the value "7" is printed twice in a row
+     * The code System.out.println(++i) evaluates to 7, because the prefix
+     * version evalues to the incremented value. The next line, 
+     * System.out.println(i++); evaluates to the current value of (7) then
+     * increments by one. So 8 does not get printed until the next line
+     */
+    public static void prePostDemo(){
+        int i = 4;
+        i++;
+        System.out.println(i);    // "5"
+        ++i;                     
+        System.out.println(i);    // "6"
+        System.out.println(++i);  // "7"
+        System.out.println(i++);  // "7"
+        System.out.println(i);    // "8"
+    }
+
+    public static void main(String[] args){
+        prePostDemo();
+    }
 }
