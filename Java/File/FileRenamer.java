@@ -1,5 +1,8 @@
 package Java.File;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
@@ -69,6 +72,19 @@ public class FileRenamer {
             getAllDirectoriesTree(folders,folders.get(key).getPath());
         }
         return folders; 
+    }
+
+    // Even better Java8 way to stream and process all files in a tree
+    // This provides a natural way to traverse files
+    public static void getFolders(String path) throws IOException {
+        Files.walk(Paths.get(path))
+                .filter(Files::isRegularFile)
+                .forEach(System.out::println);
+    }
+
+    //Another Java8 way is to use BiPredicate, and using Files.find()
+    public static void getAllFolders(String path) {
+        
     }
 
     public static void main(String[] args) {
