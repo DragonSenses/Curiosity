@@ -83,8 +83,11 @@ public class FileRenamer {
     }
 
     //Another Java8 way is to use BiPredicate, and using Files.find()
-    public static void getAllFolders(String path) {
-        
+    public static void getAllFolders(String path) throws IOException {
+        Files.find(Paths.get(path), 
+                    Integer.MAX_VALUE,
+                    (filePath, fileAttr) -> fileAttr.isRegularFile())
+                    .forEach(System.out::println);
     }
 
     public static void main(String[] args) {
