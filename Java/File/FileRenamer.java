@@ -31,6 +31,7 @@ public class FileRenamer {
         Deque<File> folders = new ArrayDeque<File>(); 
         File[] directory = getDirectories(pathname);
         List<File> list = Arrays.asList(directory);
+        // Arrays.stream(arr).collect(Collectors.toList())
         if(list.isEmpty()) { 
             
         }
