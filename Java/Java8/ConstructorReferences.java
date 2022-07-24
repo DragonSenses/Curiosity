@@ -1,5 +1,8 @@
 package Java.Java8;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -32,4 +35,15 @@ public class ConstructorReferences {
     BiFunction<Integer, String, Apple> c4 = Apple::new;
     Apple a4 = c4.apply(125, "blue");
 
+    // Passing a Constructor Reference to a Map Method
+    // This results in a List of Apples with various weights
+    public List<Apple> map(List<Integer> list, Function<Integer, Apple> f) {
+        List<Apple> result = new ArrayList<>();
+        for(Integer i: list) {
+            result.add(f.apply(i)); // Function's apply method
+        }
+        return result;
+    }
+    List<Integer> weights = Arrays.asList(7, 3, 4, 10); // Various Weights
+    List<Apple> apples = map(weights, Apple::new);  // Pass the Constructor to map method
 }
