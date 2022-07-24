@@ -5,6 +5,12 @@ public class Apple {
     private int weight = 0;
     private String color = "";
 
+    // Default Constructor of Apples, weight of 75 and Red
+    public Apple() {
+        this.weight = 75;
+        this.color = "red";
+    }
+
     public Apple(int weight, String color) {
         this.weight = weight;
         this.color = color;
