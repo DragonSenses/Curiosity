@@ -2,9 +2,9 @@ package Java.Java8;
 
 public class Apple {
 
-    //By default all Apples are weight 75 and red
-    private int weight = 75;
+    //By default all Apples are "red" with a weight of 75
     private String color = "red";
+    private int weight = 75;
 
     // Default Constructor of Apples
     public Apple() {
@@ -16,6 +16,11 @@ public class Apple {
 
     public Apple(String color) {
         this.color = color;
+    }
+    
+    public Apple(String color, int weight) {
+        this.color = color;
+        this.weight = weight;
     }
 
     public Apple(int weight, String color) {
