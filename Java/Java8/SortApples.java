@@ -29,5 +29,9 @@ public class SortApples {
 
         // Method Reference
         inventory.sort(comparing(Apple::getWeight));
+
+        // Composing Comparators
+        // Reverse the order to sort by decreasing weight
+        inventory.sort(comparing(Apple::getWeight).reversed());
     }
 }
