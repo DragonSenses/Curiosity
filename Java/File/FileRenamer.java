@@ -36,6 +36,14 @@ public class FileRenamer {
 
     }
 
+    public static void rename(String pathname, String toReplace){
+        
+        String s = "bear";
+        if(s.contains(toReplace)){
+            s.replace(toReplace, "");
+        }
+    }
+
     /**
      * Gets the directories at the incoming parameter pathname.
      * @param pathname  The name of the directory to look in
