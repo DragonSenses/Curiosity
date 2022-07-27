@@ -46,4 +46,12 @@ public class ConstructorReferences {
     }
     List<Integer> weights = Arrays.asList(7, 3, 4, 10); // Various Weights
     List<Apple> apples = map(weights, Apple::new);  // Pass the Constructor to map method
+
+
+    // Three-Argument Constructor needs a new functional interface to match signature
+    public interface TriFunction<T, U, V, R> {
+        R apply(T t, U u, V v);
+    }
+
+    TriFunction<Integer, Integer, Integer, Apple> appleFactory; // = Apple::new;
 }
