@@ -91,12 +91,20 @@ public class FileRenamer {
     }
 
     public static void main(String[] args) {
-        System.out.println("#####################################");
-        File[] directories = getDirectories(".");
+        // System.out.println("#####################################");
+        // File[] directories = getDirectories(".");
 
-        System.out.println("Here are the list of directories:");
-        for(File directory: directories){
-            System.out.println(directory.getPath());
+        // System.out.println("Here are the list of directories:");
+        // for(File directory: directories){
+        //     System.out.println(directory.getPath());
+        // }
+
+        try{
+        Files.walk(Paths.get("."))
+                .filter(Files::isRegularFile)
+                .forEach(System.out::println);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
