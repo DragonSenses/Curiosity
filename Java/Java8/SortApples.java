@@ -33,5 +33,12 @@ public class SortApples {
         // Composing Comparators
         // Reverse the order to sort by decreasing weight
         inventory.sort(comparing(Apple::getWeight).reversed());
+
+        // Chaining Comparators
+        inventory.sort(comparing(Apple::getWeight)
+                 .reversed()
+                 .thenComparing(Apple::getColor)); 
+        // If two objects are considered equal with initial Comparator, a second
+        // Comparator can further refine the comparison 
     }
 }
