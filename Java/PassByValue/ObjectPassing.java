@@ -1,4 +1,7 @@
 package Java.PassByValue;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Java Always follows Pass by Value
@@ -30,4 +33,22 @@ package Java.PassByValue;
  */
 public class ObjectPassing {
     
+    /**
+     * Creates a new list and adds a Banana to the basket
+     * @param fruitsReference a list of fruits
+     */
+    private static void process(List<String> fruitsReference) {
+        fruitsReference = new ArrayList<>(fruitsReference);
+        fruitsReference.add("Banana");
+    }
+
+    public static void main(String[] args) {
+        // Create a List of Fruits containing Apple, Orange, and Magno
+        List<String> fruits = new ArrayList<>(Arrays.asList("Apple", "Orange", "Mango"));
+        System.out.println("Data before calling process() method:\t"
+            + Arrays.toString(fruits.toArray()));
+        process(fruits);
+        System.out.println("Data after calling process() method: \t"
+            + Arrays.toString(fruits.toArray()));
+    }
 }
