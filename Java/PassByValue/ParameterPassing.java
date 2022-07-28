@@ -39,7 +39,15 @@ public class ParameterPassing {
         data *= 10; 
     }
 
+    /**
+     * Java follows Pass by Value, therefore it makes a copy of the parameter,
+     * data, and process() is done on the copy of data rather than data itself.
+     * Therefore no change in data is done after the call to the method.
+     */
     public static void main(String[] args) {
-        
+        int data = 10;
+        System.out.println("Data before calling method process():\t" + data);
+        process(data);
+        System.out.println("Data after calling method  process():\t" + data);
     }
 }
