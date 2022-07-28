@@ -36,9 +36,7 @@ public class FileRenamer {
 
     }
 
-    public static void rename(String pathname, String toReplace){
-        
-        String s = "bear";
+    public static void rename(String s, String toReplace){
         if(s.contains(toReplace)){
             s.replace(toReplace, "");
         }
