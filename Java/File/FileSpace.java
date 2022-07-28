@@ -1,6 +1,7 @@
 package Java.File;
 
 import java.io.File;
+import java.util.Scanner;
 
 /**
  * Computes the total size on disk within a file system
@@ -25,11 +26,30 @@ public class FileSpace {
             }
         }
 
-        System.out.println(space + "\t" + root);    // Output
-        return space;                               // Return total space used
+        System.out.println(space + "\tbytes\t" + root);    // Output [bytes \t Pathname]
+        return space;                                     // Return total space used
     }
 
+    /**
+     * Usage: java FileSpace D:\Library
+     *        java FileSpace "pathname"
+     * 
+     * Compute the disk space usage of a given path, as a command line argument
+     */
     public static void main(String[] args){
-        
+        String pathname;
+        Scanner sc = new Scanner(System.in);
+        if(args.length > 0) {
+            pathname = args[0];
+        } else {
+            System.out.print("Enter the pathname: ");
+            pathname = sc.next();
+        }
+
+        sc.close(); // Close Scanner to prevent resource leak
+
+        // Descriptive Output
+        System.out.println("\nTotal Amount of Space at given directory: \""
+         + pathname + "\"\n"+ computeSpace(new File(pathname)) + "\tbytes");
     }
 }
