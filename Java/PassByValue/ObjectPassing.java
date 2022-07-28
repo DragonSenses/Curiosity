@@ -38,10 +38,15 @@ public class ObjectPassing {
      * @param fruitsReference a list of fruits
      */
     private static void process(List<String> fruitsReference) {
-        fruitsReference = new ArrayList<>(fruitsReference);
+        // keyword new operator reassigns the fruitsReference to a new object 
+        fruitsReference = new ArrayList<>(fruitsReference); 
         fruitsReference.add("Banana");
+
+        System.out.println("Data during the call of process():\t"
+            + Arrays.toString(fruitsReference.toArray()));
     }
 
+    
     public static void main(String[] args) {
         // Create a List of Fruits containing Apple, Orange, and Magno
         List<String> fruits = new ArrayList<>(Arrays.asList("Apple", "Orange", "Mango"));
@@ -51,4 +56,47 @@ public class ObjectPassing {
         System.out.println("Data after calling process() method: \t"
             + Arrays.toString(fruits.toArray()));
     }
+
+    /** Right before calling process()
+     * We see that fruits and fruitsReference both point to the same underlying object 
+     * in the Heap.
+     * 
+     *      STACK       |          Heap
+     * =====================================
+     *                  |
+     * fruits -------------------> Apple 
+     * fruitsReference ----------> Orange
+     *                  |          Mango
+     * 
+     */
+
+    /** Using keyword new operator within process()
+     * new operator changes the reference of the fruitsReference variable, and reassigns
+     * to a new object in memory. Therefore, any change in the object will not make any
+     * impact to original list of fruits object 
+     * 
+     *      STACK       |          Heap
+     * =====================================
+     *                  |
+     * fruits -------------------> Apple 
+     *                  |          Orange
+     *                  |          Mango
+     *                  |
+     * fruitsReference -------------------------> Apple
+     *                  |                         Orange
+     *                  |                         Mango
+     *                  |                         Banana
+     *                  |
+     */
+
+    /** After  process()
+     * 
+     *      STACK       |          Heap
+     * =======================================
+     *                  |
+     * fruits -------------------> Apple 
+     *                  |          Orange
+     *                  |          Mango
+     *                  |
+     */
 }
