@@ -47,8 +47,8 @@ public class Swapping {
         System.out.println("==== Before swap function is called ====");
         System.out.println("Value of x is:\t" + x);
         System.out.println("Value of y is:\t" + y);
-        System.out.println("==== After swap function is called ====");
-
+        System.out.println("==== After swap function is called =====");
+        swap(x,y);
         System.out.println("Value of x is:\t" + x);
         System.out.println("Value of y is:\t" + y);
     }
