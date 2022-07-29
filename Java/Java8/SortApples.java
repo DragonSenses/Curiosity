@@ -44,7 +44,11 @@ public class SortApples {
 
 
         // Composing Predicates
-        Predicate<Apple> redApple = (Apple a) -> (a.color.equals("red"));
-        Predicate<Apple> notRedApple = redApple.negate();
+        Predicate<Apple> redApple = (Apple a) -> (a.getColor().equals("red"));
+        Predicate<Apple> notRedApple = redApple.negate(); // Negation of existing Predicate
+        // Chaining Two Predicates to produce another Predicate object
+        Predicate<Apple> notRedAndHeavyApple =
+            notRedApple.and(apple -> apple.getWeight() > 150);
+
     }
 }
