@@ -3,6 +3,7 @@ package Java.Java8;
 import java.util.Arrays;
 // import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static java.util.Comparator.comparing;
 
@@ -40,5 +41,10 @@ public class SortApples {
                  .thenComparing(Apple::getColor)); 
         // If two objects are considered equal with initial Comparator, a second
         // Comparator can further refine the comparison 
+
+
+        // Composing Predicates
+        Predicate<Apple> redApple = (Apple a) -> (a.color.equals("red"));
+        Predicate<Apple> notRedApple = redApple.negate();
     }
 }
