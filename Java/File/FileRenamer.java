@@ -36,10 +36,18 @@ public class FileRenamer {
 
     }
 
-    public static void rename(String s, String toReplace){
+    /**
+     * Returns a String where the substring is removed
+     * @param s the String to remove from
+     * @param toReplace the substring to remove
+     * @return a String with the substring removed, or just the string itself
+     * if the substring is not present
+     */
+    public String remove(String s, String toReplace){
         if(s.contains(toReplace)){
-            s.replace(toReplace, "");
+            return s.replace(toReplace, "");
         }
+        return s;
     }
 
     /**
