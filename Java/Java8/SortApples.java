@@ -1,7 +1,7 @@
 package Java.Java8;
 
 import java.util.Arrays;
-import java.util.Comparator;
+// import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
@@ -24,7 +24,7 @@ public class SortApples {
 
         // Comparator includes static helper method comparing() that takes a Function
         // extracting a Comparable key and produces a Comparator object
-        Comparator<Apple> c = Comparator.comparing((Apple a) -> a.getWeight());
+        // Comparator<Apple> c = Comparator.comparing((Apple a) -> a.getWeight());
         inventory.sort(comparing(apple -> apple.getWeight()));
 
         // Method Reference
