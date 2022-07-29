@@ -41,6 +41,15 @@ public class Swapping {
     }
 
     public static void main(String[] args) {
-        
+        int x = 7;
+        int y = 31;
+
+        System.out.println("==== Before swap function is called ====");
+        System.out.println("Value of x is:\t" + x);
+        System.out.println("Value of y is:\t" + y);
+        System.out.println("==== After swap function is called ====");
+
+        System.out.println("Value of x is:\t" + x);
+        System.out.println("Value of y is:\t" + y);
     }
 }
