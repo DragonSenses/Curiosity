@@ -7,8 +7,29 @@ import java.util.function.Predicate;
 
 import static java.util.Comparator.comparing;
 
+import java.util.ArrayList;
+
 public class SortApples {
     
+    
+    /**
+     * Instead we write filter in a way that takes in a predicate so that it can
+     * adapt to the specifications needed.
+     * 
+     * @param inventory - The list of apples to select from
+     * @param p - The predicate that models the selection criteria that returns a boolean
+     * @return A list of Apples that pass the criterion provided by predicate p
+     */
+    public static List<Apple> filterApples(List<Apple> inventory, Predicate<Apple> p) {
+        List<Apple> result = new ArrayList<>();
+        for (Apple apple : inventory) {
+        if (p.test(apple)) {
+            result.add(apple);
+        }
+        }
+        return result;
+    }
+
     // Java 8 API includes sort method on List
     // void sort (Comparator<? super E> c){
         
@@ -50,5 +71,10 @@ public class SortApples {
         Predicate<Apple> notRedAndHeavyApple =
             notRedApple.and(apple -> apple.getWeight() > 150);
 
+        List<Apple> basket =
+            filterApples(inventory, notRedAndHeavyApple);\
+        for(Apple a: basket){
+            System.out.println(a);
+        }
     }
 }
