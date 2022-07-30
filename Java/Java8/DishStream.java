@@ -6,8 +6,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+// Java 8 Imports
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
+/**
+ * Demonstrate a new way to Make and Process collections. 
+ * 
+ * Usually database-like operations such as grouping a list, finding a certain item.
+ * 
+ */
 public class DishStream {
-    // Java 7 way
+
     public static final List<Dish> menu = Arrays.asList(
         new Dish("pork", false, 800, Dish.Type.MEAT),
         new Dish("beef", false, 700, Dish.Type.MEAT),
@@ -21,6 +31,7 @@ public class DishStream {
     );
 
     public static void main(String[] args) {
+        // Java 7 way
         // 1. Filter the elements Using an Accumulator
         List<Dish> lowCaloricDishes = new ArrayList<>();
         for (Dish dish : menu) {
@@ -42,6 +53,13 @@ public class DishStream {
             lowCaloricDishesName.add(dish.getName());
         }
 
+        // Java 8 way
+        List<String> lowCaloricDishesName = 
+                        menu.stream()   
+                        .filter(d -> d.getCalories() < 400)     // Select dishes below 400 calories
+                        .sorted(comparing(Dish::getCalories))   // Sorts by calories
+                        .map(Dish::getName)     // Extracts the names of these dishes
+                        .collect(toList());     // Stores all the names in a List
         
     } // end of main
 } // end of class
