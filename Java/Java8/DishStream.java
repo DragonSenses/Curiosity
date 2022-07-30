@@ -2,6 +2,8 @@ package Java.Java8;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DishStream {
@@ -26,5 +28,20 @@ public class DishStream {
                 lowCaloricDishes.add(dish);
             }
         }
-    }
-}
+
+        // 2. Sort the dishes with an anonymous class
+        Collections.sort(lowCaloricDishes, new Comparator<Dish>() {
+            public int compare(Dish dish1, Dish dish2) {
+            return Integer.compare(dish1.getCalories(), dish2.getCalories());
+            }
+        }); 
+
+        // 3. Process the sorted list to select the names of dishes
+        List<String> lowCaloricDishesName = new ArrayList<>();
+        for(Dish dish: lowCaloricDishes) {
+            lowCaloricDishesName.add(dish.getName());
+        }
+
+        
+    } // end of main
+} // end of class
