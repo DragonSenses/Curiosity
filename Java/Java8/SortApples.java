@@ -72,7 +72,7 @@ public class SortApples {
             notRedApple.and(apple -> apple.getWeight() > 150);
 
         List<Apple> basket =
-            filterApples(inventory, notRedAndHeavyApple);\
+            filterApples(inventory, notRedAndHeavyApple);
         for(Apple a: basket){
             System.out.println(a);
         }
