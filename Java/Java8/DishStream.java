@@ -54,12 +54,20 @@ public class DishStream {
         }
 
         // Java 8 way
-        List<String> lowCaloricDishesName = 
+        lowCaloricDishesName = 
                         menu.stream()   
                         .filter(d -> d.getCalories() < 400)     // Select dishes below 400 calories
                         .sorted(comparing(Dish::getCalories))   // Sorts by calories
                         .map(Dish::getName)     // Extracts the names of these dishes
                         .collect(toList());     // Stores all the names in a List
-        
+
+        // Java 8, exploit multicore architecture and execute code in parallel
+        // change stream() to parallelStream()
+        lowCaloricDishesName = 
+                        menu.parallelStream()                   // Change to parallelStream()  
+                        .filter(d -> d.getCalories() < 400)     // Select dishes below 400 calories
+                        .sorted(comparing(Dish::getCalories))   // Sorts by calories
+                        .map(Dish::getName)     // Extracts the names of these dishes
+                        .collect(toList());     // Stores all the names in a List
     } // end of main
 } // end of class
