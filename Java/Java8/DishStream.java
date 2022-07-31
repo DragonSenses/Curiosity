@@ -69,5 +69,25 @@ public class DishStream {
                         .sorted(comparing(Dish::getCalories))   // Sorts by calories
                         .map(Dish::getName)     // Extracts the names of these dishes
                         .collect(toList());     // Stores all the names in a List
+        
+        System.out.println("Dishes Less than 400 Calories:");
+        System.out.println(lowCaloricDishesName);
+        System.out.println();
+
+        List<String> names =
+            menu.stream()
+                .filter(dish -> {
+                                    System.out.println("filtering:" + dish.getName());
+                                    return dish.getCalories() > 300;
+                                }) // Print Dishes as they are filtered
+                .map(dish -> {
+                                    System.out.println("mapping:" + dish.getName());
+                                    return dish.getName();
+                                }) // Print dishes as you extract their names
+                .limit(3) // Only first three are selected, technique: short-circuiting
+                .collect(toList());
+        // Notice how filter and map are two separate operations, but merged into the same pass
+        // This called loop fusion by compiler experts
+        System.out.println(names);
     } // end of main
 } // end of class
