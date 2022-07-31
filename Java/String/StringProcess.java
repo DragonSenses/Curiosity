@@ -1,7 +1,24 @@
 package Java.String;
 
+/**
+ * Collection of tips and tricks regarding String processing.
+ * 
+ * Useful Methods and Applications:
+ * 
+ * 1. toCharArray() - Reference to charArray is return with String contents as characters,
+ *    Application: String objects are immutable, in order to do String processing and avoid
+ *  heavy memory usage when dealing with string manipulation operations, is to convert it 
+ *  to charArray first, then perform manipulation operations and then convert it back to a
+ *  String object
+ * 
+ * 2. indexOf(int str, int fromIndex) - first occurrence of substring, 0 if empty string,
+ *  or -1 if no such occurence. 
+ *    Application: Iterate over all the lines of a page or text or code, invoke indexOf()
+ *  with target string, and multtiple occures of target string in same line, start from
+ *  where last found substring ends.
+ */
 public class StringProcess {
-    
+
     
     public static void rename(String s, String toReplace){
         if(s.contains(toReplace)){
