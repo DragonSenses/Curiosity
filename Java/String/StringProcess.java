@@ -11,11 +11,28 @@ package Java.String;
  *  to charArray first, then perform manipulation operations and then convert it back to a
  *  String object
  * 
- * 2. indexOf(int str, int fromIndex) - first occurrence of substring, 0 if empty string,
- *  or -1 if no such occurence. 
+ * 2. indexOf(int str, int fromIndex) - returns first occurrence of substring, 
+ *                                      0 if empty string, or -1 if no such occurence. 
  *    Application: Iterate over all the lines of a page or text or code, invoke indexOf()
  *  with target string, and multtiple occures of target string in same line, start from
  *  where last found substring ends.
+ * 
+ * 3. charAt(int index) - returns char value from String at index
+ *   Application: Can iterate through the string and count frequency of a character. Or 
+ *  use to extract the character values 
+ * 
+ * 4. replace()
+ * 5. concat() 
+ * 6. substring()
+ * 7. split()
+ * 8. compareTo()
+ * 9. strip()
+ * 10. valueOf()
+ * 11. equals()
+ * 12. toLowerCase()/toUpperCase()
+ * 13. startsWith()/ endsWith()
+ * 14. contains()
+ * 15. reapat, indent, join
  */
 public class StringProcess {
 
