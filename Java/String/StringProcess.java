@@ -1,5 +1,7 @@
 package Java.String;
 
+import java.util.function.Consumer;
+
 /**
  * Collection of tips and tricks regarding String processing.
  * 
@@ -75,5 +77,14 @@ public class StringProcess {
         String st = "       Overlord        ";
         System.out.println(st);
         System.out.println(st.trim());
+
+        System.out.println("\nConsuming\n");
+        Consumer<String> printThreeTimes = value -> {
+            System.out.println(value);
+            System.out.println(value);
+            System.out.println(value);
+        };
+
+        printThreeTimes.accept("Overlord");
     }
 }
