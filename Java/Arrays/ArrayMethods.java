@@ -2,7 +2,9 @@ package Java.Arrays;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A cluster of top methods used for Arrays.
@@ -36,5 +38,9 @@ public class ArrayMethods {
         for(String s: stringArray){
             System.out.println(s);
         }
+
+        /* 5. Convert Array to Set */
+        Set<String> set = new HashSet<>(Arrays.asList(stringArray));
+        System.out.println(set);
     }
 }
