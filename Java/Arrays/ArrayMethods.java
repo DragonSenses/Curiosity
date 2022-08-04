@@ -24,8 +24,17 @@ public class ArrayMethods {
         /* 2. Convert Array to list */
         String[] strArray = {"A","B","C","D"};
         List<String> arrayList = Arrays.asList(strArray);
+        System.out.println(arrayList);
 
         /* 3. Convert Array to ArrayList */
         arrayList = new ArrayList<String>(Arrays.asList(strArray));
+
+        /* 4. Convert ArrayList to Array */
+        String[] stringArray = new String[arrayList.size()];
+        arrayList.toArray(stringArray);
+
+        for(String s: stringArray){
+            System.out.println(s);
+        }
     }
 }
