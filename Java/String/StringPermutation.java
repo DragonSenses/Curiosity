@@ -34,13 +34,13 @@ public class StringPermutation {
         words[1] = word.toUpperCase();
         permutations += 2;
 
-        // 4. Then first char uppercase
+        // 4. Iterate through the number of possible combinations
         for(int i = 0; i < arr.length; i++){
             arr[i] = Character.toUpperCase(arr[i]);
-            for(int k = 1; k < arr.length; k++){
+            for(int k = arr.length - i; k < arr.length; k++){
                 arr[k] = Character.toLowerCase(arr[k]);
+                words[i] = String.valueOf(arr);
             }
-            words[i] = String.valueOf(arr);
         }
         System.out.println("Number of possible permutations:\t" + permutations);
         // Finally print out all permutations within String array words
