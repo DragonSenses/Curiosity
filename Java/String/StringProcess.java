@@ -13,6 +13,8 @@ import java.util.function.Consumer;
  *  to charArray first, then perform manipulation operations and then convert it back to a
  *  String object
  * 
+ * To convert char array back to String, can use String.valueOf(ch), new String(ch)
+ * 
  * 2. indexOf(int str, int fromIndex) - returns first occurrence of substring, 
  *                                      0 if empty string, or -1 if no such occurence. 
  *    Application: Iterate over all the lines of a page or text or code, invoke indexOf()
@@ -35,6 +37,7 @@ import java.util.function.Consumer;
  * 13. startsWith()/ endsWith()
  * 14. contains()
  * 15. reapat, indent, join
+ * 
  */
 public class StringProcess {
 
