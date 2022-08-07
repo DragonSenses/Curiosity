@@ -3,6 +3,12 @@ package Java.String;
 import java.util.Arrays;
 
 /**
+ * With permutations we care about the order of the elements, 
+ * whereas with combinations we don’t.
+ * 
+ * Permutations = n!/(n-k)! 
+ * Combinations = n!/k!(n-k)!
+ * 
  * Problem Statement: A string contain N characters can be have any
  * of the characters lowercase or uppercase. For a four letter word,
  * find every possible permutation (lower/uppercase) of that word. 
@@ -14,6 +20,20 @@ import java.util.Arrays;
  */
 public class StringPermutation {
     
+    // Recursive Function starting at index 0 we take input string
+    public static void combinations(String s, StringBuilder output) { combinations(s,0, output); }
+
+    /**
+     * Finds every possible combination of the passed in String s
+     * @param s - String to find combinations from
+     * @param k - Starting index to begin with
+     */
+    public static void combinations(String s, int k, StringBuilder output){
+        for (int i = k; i < s.length(); i++){
+            
+        }
+    }
+
     /**
      * Finds every possible case where each character can
      * be capitalized or lowercase, and prints out every 
@@ -37,8 +57,10 @@ public class StringPermutation {
         // 4. Iterate through the number of possible combinations
         for(int i = 0; i < arr.length; i++){
             arr[i] = Character.toUpperCase(arr[i]);
-            for(int k = arr.length - i; k < arr.length; k++){
-                arr[k] = Character.toLowerCase(arr[k]);
+            for(int k = 0; k < arr.length; k++){
+                if( k != i) {
+                    arr[k] = Character.toLowerCase(arr[k]);
+                }
                 words[i] = String.valueOf(arr);
             }
         }
