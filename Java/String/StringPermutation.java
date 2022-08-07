@@ -21,16 +21,23 @@ import java.util.Arrays;
 public class StringPermutation {
     
     // Recursive Function starting at index 0 we take input string
-    public static void combinations(String s, StringBuilder output) { combinations(s,0, output); }
+    public static void combinations(String input, StringBuilder output) { 
+        combinations(input,0, output); 
+    }
 
     /**
      * Finds every possible combination of the passed in String s
      * @param s - String to find combinations from
      * @param k - Starting index to begin with
      */
-    public static void combinations(String s, int k, StringBuilder output){
-        for (int i = k; i < s.length(); i++){
-            
+    public static void combinations(String input, int k, StringBuilder output){
+        for (int i = k; i < input.length(); i++){
+            output.append(input.charAt(i));
+            System.out.println(output);
+            if (i < input.length()) {
+                combinations(input, k+1, output); // recur
+                output.setLength(output.length()-1);
+            }
         }
     }
 
@@ -70,6 +77,7 @@ public class StringPermutation {
     }
 
     public static void main(String[] args){
-        printPermutations("ping");
+        StringBuilder sb = new StringBuilder();
+        combinations("ping",sb);
     }
 }
