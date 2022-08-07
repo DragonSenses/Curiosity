@@ -31,14 +31,16 @@ public class StringPermutation {
      * @param k - Starting index to begin with
      */
     public static void combinations(String input, int k, StringBuilder output){
+        // 1. Iterate through input string
         for (int i = k; i < input.length(); i++){
+            // 2. Append letter to output string
             output.append(input.charAt(i));
             System.out.println(output);
-            if (i < input.length()) {
+            if (i < input.length()) { // current letter isn't last letter
                 combinations(input, k+1, output); // recur
-                output.setLength(output.length()-1);
+                output.setLength(output.length()-1); // 
             }
-        }
+        } // Find remaining combinations starting with next position of iteration
     }
 
     /**
@@ -48,13 +50,13 @@ public class StringPermutation {
      * @param word The word to find all permutations of
      */
     public static void printPermutations(String word){
+        // Create a array of Strings that contain all the possibilities
+        int possibilities = word.length() * word.length(); // n^2 possible permutations
+        String[] words = new String[possibilities];
         int permutations = 0; // Keeps track of how many permutations
         // 1. Convert to char array
         char[] arr = word.toCharArray();
-        
-        // Create a array of Strings that contain all the possibilities
-        int possibilities = arr.length * arr.length; // n^2 possible permutations
-        String[] words = new String[possibilities];
+
         // 2. Start with all lower case
         words[0] = word.toLowerCase();
         // 3. Then all uppercase
