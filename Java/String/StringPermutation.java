@@ -15,8 +15,7 @@ import java.util.Arrays;
  * A permutation does not change the order the characters were in,
  * but rather whether each character is capitalized or not. 
  * 
- * Example: ping can be written as Ping or pinG. There are 16 
- * possible ways to permute the word.
+ * Example: sky can be written 9 different ways as sky, SKY, SKy, Sky ...
  */
 public class StringPermutation {
     
@@ -25,7 +24,7 @@ public class StringPermutation {
         combinations(input,0, output); 
     }
 
-    /**
+    /** Work-In-Progress - prints out too many combinations
      * Finds every possible combination of the passed in String s
      * @param s - String to find combinations from
      * @param k - Starting index to begin with
@@ -37,8 +36,8 @@ public class StringPermutation {
             output.append(input.charAt(i));
             System.out.println(output);
             if (i < input.length()) { // current letter isn't last letter
-                combinations(input, k+1, output); // recur
-                output.setLength(output.length()-1); // 
+                combinations(input, k+1, output);   // recur
+                output.setLength(output.length()-1); // limit the output length 
             }
         } // Find remaining combinations starting with next position of iteration
     }
@@ -58,28 +57,41 @@ public class StringPermutation {
         char[] arr = word.toCharArray();
 
         // 2. Start with all lower case
-        words[0] = word.toLowerCase();
+        // words[0] = word.toLowerCase();
         // 3. Then all uppercase
-        words[1] = word.toUpperCase();
+        // words[1] = word.toUpperCase();
         permutations += 2;
 
         // 4. Iterate through the number of possible combinations
-        for(int i = 0; i < arr.length; i++){
-            arr[i] = Character.toUpperCase(arr[i]);
-            for(int k = 0; k < arr.length; k++){
-                if( k != i) {
-                    arr[k] = Character.toLowerCase(arr[k]);
-                }
-                words[i] = String.valueOf(arr);
-            }
-        }
+        // for(int i = 0; i < arr.length; i++){
+        //     arr[i] = Character.toUpperCase(arr[i]);
+        //     for(int k = 0; k < arr.length; k++){
+        //         if( k != i) {
+        //             arr[k] = Character.toLowerCase(arr[k]);
+        //         }
+        //         words[i] = String.valueOf(arr);
+        //     }
+        // }
+        permute(arr,words,possibilities);
         System.out.println("Number of possible permutations:\t" + permutations);
         // Finally print out all permutations within String array words
         System.out.println(Arrays.toString(words));
     }
 
+    public static void permute(char[] word, String[] words, int n){
+        for(int i=0; i < n; i++){
+            word[i] = Character.toUpperCase(word[i]);
+            for(int k = 0; k < word.length; k++){
+                if( k != i) {
+                    word[k] = Character.toLowerCase(word[k]);
+                }
+                words[i] = String.valueOf(word);
+            }
+        }
+    }
+
     public static void main(String[] args){
-        StringBuilder sb = new StringBuilder();
-        combinations("ping",sb);
+        // StringBuilder sb = new StringBuilder();
+        printPermutations("ping");
     }
 }
