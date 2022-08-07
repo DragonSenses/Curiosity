@@ -1,5 +1,7 @@
 package Java.String;
 
+import java.util.Arrays;
+
 /**
  * Problem Statement: A string contain N characters can be have any
  * of the characters lowercase or uppercase. For a four letter word,
@@ -18,8 +20,8 @@ public class StringPermutation {
      * possible combination.
      * @param word The word to find all permutations of
      */
-    public void printPermutations(String word){
-        int permutations = 0;
+    public static void printPermutations(String word){
+        int permutations = 0; // Keeps track of how many permutations
         // 1. Convert to char array
         char[] arr = word.toCharArray();
         
@@ -29,13 +31,17 @@ public class StringPermutation {
         // 2. Start with all lower case
         words[0] = word.toLowerCase();
         // 3. Then all uppercase
-        words[1] = word.toLowerCase();
-        // 4. Then first char uppercase
-        
+        words[1] = word.toUpperCase();
+        permutations += 2;
 
+        // 4. Then first char uppercase
+
+        System.out.println("Number of possible permutations:\t" + permutations);
+        // Finally print out all permutations within String array words
+        System.out.println(Arrays.toString(words));
     }
 
     public static void main(String[] args){
-
+        printPermutations("ping");
     }
 }
