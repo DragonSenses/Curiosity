@@ -55,18 +55,21 @@ public class StringPermutation {
      * a specified length
      * 
      * Bitwise logic: Let num = 1, length = 4, the result of toBinaryString()
-     * is 1. 
+     * is just 1. To get the padded zeros to the left, we manipulate it by:
+     * 
      * 1) Shift the values to the left to the length wanted (length times)
      *      Result = 10000
      * 2) Bitwise OR it to get close to the value 
      *      Result = 10001
-     * 3) 
+     * 3) Substring the result as we only want the last 4 binary digits (length)
+     * So an operation of substring(1) would yield
+     *      Result = 0001
      * @param num The number to convert to binary and pad to the left
      * @param length the length of the binary string to pad to
      * @return The padded binary number to a specified length
      */
     public static String paddedBinaryString(int num, int length){
-        return Integer.toBinaryString ((1 << length) | num);
+        return Integer.toBinaryString ((1 << length) | num).substring(1);
     }
 
     /**
@@ -114,6 +117,6 @@ public class StringPermutation {
         // System.out.println(String.format("%" + n + "s", Integer.toBinaryString(1)));
         int length = 4;
         int n = 1;
-        System.out.println(Integer.toBinaryString( (1 << length)));
+        System.out.println(Integer.toBinaryString( (1 << length)|n));
     }
 }
