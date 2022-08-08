@@ -1,5 +1,7 @@
 package Java.Operators;
 
+import java.util.Arrays;
+
 /**
  * Bitwise operators are used to performing the manipulation of individual
  * bits of a number.
@@ -55,12 +57,25 @@ public class BitwiseOperations {
     }
 
     /**
+     * Finds the element in the array that does not repeat itself,
+     * and is the only instance and is unique within the array. 
      * 
-     * @param arr
-     * @return
+     * Explanation: There are 2 cases for what XOR yields a result
+     * - (a^0 = a), XOR of Zero and Some Bit returns that bit
+     * - (a^a = 0), XOR of the same two bits returns 0
+     * Using these properties, for any n numbers within an array
+     * say with integers [a, b, a] if we XOR each other we get the
+     * expression : a ^ b ^ a = (a ^ a) ^ b = 0 ^ b = b
+     * 
+     * @param arr Integer array to find the only single number
+     * @return the integer that does not repeat in thhe array
      */
     public static int findSingleNumber(int[] arr){
-
+        int xor = 0;
+        for (int i : arr){
+            xor ^= i;
+        }
+        return xor;
     }
 
     /**
@@ -153,5 +168,10 @@ public class BitwiseOperations {
         System.out.print("The Binary Representation of " + n + " is: ");
         System.out.println(Integer.toBinaryString(n));
         System.out.println("Number of Set Bits: " + countSetBits(n));
+
+        int[] intArray = {4, 1, 2, 7, 2, 1, 4};
+        System.out.print("Within the Array of numbers: " + Arrays.toString(intArray) 
+            + "\nThe Unique Number that is not repeated is: ");
+        System.out.println(findSingleNumber(intArray));
     }
 }
