@@ -57,6 +57,45 @@ public class StringProcess {
     }
 
     /**
+     * Private utility function that pads the passed in binary number, to
+     * a specified length. 
+     * 
+     * Special Cases: 1) Negative Numbers 2) When binaryString exceeds the length 
+     * 
+     * @param n The number to convert to binary and pad to the left
+     * @param length the length of the binary string to pad to
+     * @return The padded binary number to a specified length
+     */
+    public static String paddedBinaryString(int n, int length){
+        return Integer.toBinaryString ((1 << length) | n).substring(1);
+    }
+
+    /**
+     * Covers the special cases for the method above. For now if the incoming parameter
+     * length is too small it will return the BinaryString of the value, without padding
+     *  - Could also just return value or throw an exception (since it could be user error)
+     * 
+     * @param val the number to pad to the left as a binary string
+     * @param len the specified length to pad to
+     * @return the value as a binary number padded to the specified length
+     */
+    public static String padBinaryString(int val, int len) {
+        // For now specified behavior is to just return the value
+        int valLength = Integer.toBinaryString(val).length();
+        if(valLength > len) { return Integer.toBinaryString(val); } 
+
+        // Covers the case when binary digit is negative
+        return Integer.toBinaryString((1<<len) | 
+            ((val) & ((1<<len) -1)) ).substring(1);
+    }
+
+    // Another way to pad Binary String to the left with 0's
+    public static String padLeftBinaryString(int n, int len){
+        return String.format("%" + len + "s", Integer.toBinaryString(n))
+            .replace(' ', '0');
+    }
+
+    /**
      * Extracts and Prints out every word split by space within a
      * String s
      * @param s the String to extract from
