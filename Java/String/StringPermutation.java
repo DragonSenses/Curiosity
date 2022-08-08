@@ -58,8 +58,8 @@ public class StringPermutation {
      * @param word The word to find all permutations of
      */
     public static void printPermutations(String word){
-        int n = word.length();     // n is the length of the word
-        int possibilities = n * n; // n^2 possible permutations
+        int len = word.length();       // n is the length of the word
+        int possibilities = len * len; // n^2 possible permutations
         // A reference to the bit representation of the possible state of the String
         String possibility; 
         // Create a array of Strings that contain all the possibilities
@@ -73,29 +73,27 @@ public class StringPermutation {
             // 3. Convert the iteration count to its bit representation
             // Note: Left Pad the Binary String to the length of the String
             possibility = Integer.toBinaryString(i);
-            for(int k = 0; k < n; k++){ // 4. Iterate through the word
+            for(int k = 0; k < len; k++){ // 4. Iterate through the word
                 // 5. Use binary representation to create possible state of the character
                 arr[k] = (possibility.charAt(k) == 0) ? 
                     Character.toLowerCase(arr[k]) : Character.toUpperCase(arr[k]);
             }
             words[i] = String.valueOf(arr); // Add the current char array to the array of words
         }
-        permute(arr,words,possibilities);
         System.out.println("Number of possible permutations:\t" + possibilities);
         // Finally print out all permutations within String array words
         System.out.println(Arrays.toString(words));
     }
 
-    public static void permute(char[] word, String[] words, int n){
-        for(int i=0; i < n; i++){
-            word[i] = Character.toUpperCase(word[i]);
-            for(int k = 0; k < word.length; k++){
-                if( k != i) {
-                    word[k] = Character.toLowerCase(word[k]);
-                }
-                words[i] = String.valueOf(word);
-            }
-        }
+    /**
+     * Private utility function that pads the passed in binary number, to
+     * a specified length
+     * @param num The number to convert to binary and pad to the left
+     * @param length the length of the binary string to pad to
+     * @return The padded binary number to a specified length
+     */
+    public static String padBinaryNumber(int num, int length){
+        return Integer.toBinaryString ((1 << length) | num);
     }
 
     public static void main(String[] args){
