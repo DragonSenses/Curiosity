@@ -78,10 +78,10 @@ public class StringPermutation {
      * be capitalized or lowercase, and prints out every 
      * possible combination. Note: we denote lowercase as
      * 0 and uppercase as 1 in binary representatin
-     * @param word The word to find all permutations of
+     * @param target The target String to find all permutations of
      */
-    public static void printPermutations(String word){
-        int len = word.length();       // n is the length of the word
+    public static void printPermutations(String target){
+        int len = target.length();       // n is the length of the word
         int possibilities = len * len; // n^2 possible permutations
         // A reference to the bit representation of the possible state of the String
         String possibility; 
@@ -89,35 +89,27 @@ public class StringPermutation {
         String[] words = new String[possibilities];
 
         // 1. Convert to char array
-        char[] arr = word.toCharArray();
+        char[] word = target.toCharArray();
 
         // 2. Iterate how many possibilities of the String can happen to have 
         for(int i = 0; i < possibilities; i++){
             // 3. Convert the iteration count to its bit representation
             // Note: Left Pad the Binary String to the length of the String
-            possibility = Integer.toBinaryString(i);
+            possibility = paddedBinaryString(i, len);
             for(int k = 0; k < len; k++){ // 4. Iterate through the word
                 // 5. Use binary representation to create possible state of the character
-                arr[k] = (possibility.charAt(k) == 0) ? 
-                    Character.toLowerCase(arr[k]) : Character.toUpperCase(arr[k]);
+                // Remember to compare char '0' and not integer 0
+                word[k] = (possibility.charAt(k) == '0') ? 
+                    Character.toLowerCase(word[k]) : Character.toUpperCase(word[k]);
             }
-            words[i] = String.valueOf(arr); // Add the current char array to the array of words
+            words[i] = String.valueOf(word); // Add the current char array to the array of words
         }
         System.out.println("Number of possible permutations:\t" + possibilities);
         // Finally print out all permutations within String array words
         System.out.println(Arrays.toString(words));
     }
 
-
-
     public static void main(String[] args){
-        // printPermutations("ping");
-        // System.out.println(Integer.toBinaryString(0));
-        // System.out.println(String.format("%16s", Integer.toBinaryString(1)));
-        // int n = 16;
-        // System.out.println(String.format("%" + n + "s", Integer.toBinaryString(1)));
-        int length = 4;
-        int n = 1;
-        System.out.println(Integer.toBinaryString( (1 << length)|n).substring(1));
+        printPermutations("ping");
     }
 }
