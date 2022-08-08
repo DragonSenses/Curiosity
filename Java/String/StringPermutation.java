@@ -57,28 +57,22 @@ public class StringPermutation {
         // Create a array of Strings that contain all the possibilities
         int possibilities = word.length() * word.length(); // n^2 possible permutations
         String[] words = new String[possibilities];
-        int permutations = 0; // Keeps track of how many permutations
+
         // 1. Convert to char array
         char[] arr = word.toCharArray();
 
-        // 2. Start with all lower case
-        // words[0] = word.toLowerCase();
-        // 3. Then all uppercase
-        // words[1] = word.toUpperCase();
-        permutations += 2;
-
-        // 4. Iterate through the number of possible combinations
-        // for(int i = 0; i < arr.length; i++){
-        //     arr[i] = Character.toUpperCase(arr[i]);
-        //     for(int k = 0; k < arr.length; k++){
-        //         if( k != i) {
-        //             arr[k] = Character.toLowerCase(arr[k]);
-        //         }
-        //         words[i] = String.valueOf(arr);
-        //     }
-        // }
+        4. Iterate through the number of possible combinations
+        for(int i = 0; i < arr.length; i++){
+            arr[i] = Character.toUpperCase(arr[i]);
+            for(int k = 0; k < arr.length; k++){
+                if( k != i) {
+                    arr[k] = Character.toLowerCase(arr[k]);
+                }
+                words[i] = String.valueOf(arr);
+            }
+        }
         permute(arr,words,possibilities);
-        System.out.println("Number of possible permutations:\t" + permutations);
+        System.out.println("Number of possible permutations:\t" + possibilities);
         // Finally print out all permutations within String array words
         System.out.println(Arrays.toString(words));
     }
@@ -96,7 +90,6 @@ public class StringPermutation {
     }
 
     public static void main(String[] args){
-        // StringBuilder sb = new StringBuilder();
         printPermutations("ping");
     }
 }
