@@ -63,7 +63,13 @@ public class StringProcess {
      * @return the character in the opposite case
      */
     private static char toggleCase(char c) {
-        return c ^= 32; 
+        if((c >= 65) && (c <= 90)) {
+            return c ^= 32; 
+        } else if( (c >= 97) && (c <= 122)) {
+            return c ^= 32; 
+        } else {
+            return c;
+        }
     }// Need to limit the incoming character to be used only with the alphabet 
     // ASCII: 65-90, 97-122
 
