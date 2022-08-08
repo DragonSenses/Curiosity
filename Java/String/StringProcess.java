@@ -57,6 +57,33 @@ public class StringProcess {
     }
 
     /**
+     * Bitwise operation that toggles the target character from
+     * lowercase to uppercase, or uppercase to lowercase.
+     * @param c target character to toggle case
+     * @return the character in the opposite case
+     */
+    private static char toggleCase(char c) {
+        return c ^= 32; 
+    }// Need to limit the incoming character to be used only with the alphabet 
+    // ASCII: 65-90, 97-122
+
+    /**
+     * Make a string more irritating by capitalizing every 
+     * other character. Best used with cliches. 
+     * @param s target string to goad
+     * @return the target String with every other character capitalized
+     */
+    public static String exasperate(String s){
+        char[] word = s.toLowerCase().toCharArray();
+        for(int i = 0; i < word.length; i++){
+            if((i & 1) == 0) { 
+                word[i] = toggleCase(word[i]); // Character.toUpperCase() has the right behavior
+            }
+        }
+        return String.valueOf(word);
+    }
+
+    /**
      * Private utility function that pads the passed in binary number, to
      * a specified length. 
      * 
@@ -128,5 +155,7 @@ public class StringProcess {
         };
 
         printThreeTimes.accept("Overlord");
+
+        System.out.println("\n" + exasperate("To be honest"));
     }
 }
