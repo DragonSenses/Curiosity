@@ -51,6 +51,25 @@ import java.util.Arrays;
 public class StringPermutation {
 
     /**
+     * Private utility function that pads the passed in binary number, to
+     * a specified length
+     * 
+     * Bitwise logic: Let num = 1, length = 4, the result of toBinaryString()
+     * is 1. 
+     * 1) Shift the values to the left to the length wanted (length times)
+     *      Result = 10000
+     * 2) Bitwise OR it to get close to the value 
+     *      Result = 10001
+     * 3) 
+     * @param num The number to convert to binary and pad to the left
+     * @param length the length of the binary string to pad to
+     * @return The padded binary number to a specified length
+     */
+    public static String paddedBinaryString(int num, int length){
+        return Integer.toBinaryString ((1 << length) | num);
+    }
+
+    /**
      * Finds every possible case where each character can
      * be capitalized or lowercase, and prints out every 
      * possible combination. Note: we denote lowercase as
@@ -85,22 +104,16 @@ public class StringPermutation {
         System.out.println(Arrays.toString(words));
     }
 
-    /**
-     * Private utility function that pads the passed in binary number, to
-     * a specified length
-     * @param num The number to convert to binary and pad to the left
-     * @param length the length of the binary string to pad to
-     * @return The padded binary number to a specified length
-     */
-    public static String padBinaryNumber(int num, int length){
-        return Integer.toBinaryString ((1 << length) | num);
-    }
+
 
     public static void main(String[] args){
         // printPermutations("ping");
-        System.out.println(Integer.toBinaryString(0));
-        System.out.println(String.format("%16s", Integer.toBinaryString(1)));
-        int n = 16;
-        System.out.println(String.format("%" + n + "s", Integer.toBinaryString(1)));
+        // System.out.println(Integer.toBinaryString(0));
+        // System.out.println(String.format("%16s", Integer.toBinaryString(1)));
+        // int n = 16;
+        // System.out.println(String.format("%" + n + "s", Integer.toBinaryString(1)));
+        int length = 4;
+        int n = 1;
+        System.out.println(Integer.toBinaryString( (1 << length)));
     }
 }
