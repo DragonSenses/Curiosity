@@ -33,6 +33,25 @@ public class BitwiseOperations {
     }
 
     /**
+     * Bitwise operation that toggles the target character from
+     * lowercase to uppercase, or uppercase to lowercase. Only applies
+     * the operation to the ASCII {65-90} and {97-122}, the English
+     * alphabet. Otherwise, returns the character and applies no change.
+     * @param c target character to toggle case
+     * @return the character in the opposite case if it is in the English
+     * alphabet, otherwise returns the character
+     */
+    public static char toggleCase(char c) {
+        if((c >= 65) && (c <= 90)) {
+            return c ^= 32; 
+        } else if( (c >= 97) && (c <= 122)) {
+            return c ^= 32; 
+        } else {
+            return c;
+        }
+    }
+
+    /**
      * Private utility function that pads the passed in binary number, to
      * a specified length. 
      * 
