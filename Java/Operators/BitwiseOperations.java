@@ -33,6 +33,21 @@ public class BitwiseOperations {
     }
 
     /**
+     * Returns the number of bits set to 1 (set bits) of
+     * an integer. Ex. If we pass in 125 the first iteration
+     * yields n = 62, the next pass yields n = 31, and so on.
+     * @return returns the number of bits set to 1
+     */
+    public static int countSetBits(int n){
+        int setBits = 0;
+        while(n > 0) {  // Until n = 0
+            n &= (n-1); // Divide by 2 each time
+            setBits++;  // Increment setBits
+        }
+        return setBits;
+    }
+
+    /**
      * Bitwise operation that toggles the target character from
      * lowercase to uppercase, or uppercase to lowercase. Only applies
      * the operation to the ASCII {65-90} and {97-122}, the English
@@ -102,5 +117,10 @@ public class BitwiseOperations {
     public static void main(String[] args){
         System.out.println(Integer.toBinaryString(16));
         System.out.println(paddedBinaryString(1,4));
+
+        int n = 125;
+        System.out.print("The Binary Representation of " + n + " is: ");
+        System.out.println(Integer.toBinaryString(n));
+        System.out.println("Number of Set Bits: " + countSetBits(n));
     }
 }
