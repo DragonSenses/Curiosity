@@ -3,24 +3,6 @@ package Java.String;
 import java.util.Arrays;
 
 /**
- * Permutations: Order of the elements does matter    
- * Combinations: Order of the elements does not matter
- * 
- * Permutation/Combinations of the set of digits {1, 2, 3}
- * 
- * Permutations = {123, 132, 213, 231, 312, 321} // 3! = 3*2*1 = 6 possible permutations
- * Combinations = {123} // Order does not matter
- * 
- * Permutations = n!/(n-k)! 
- * Combinations = n!/k!(n-k)!
- * 
- * n - number of things to choose from
- * k - we choose k of them
- * 
- * 2 Types of Permutations: 
- *  1) Repetition is allowed (n x n x n) (where a number can be repeated)
- *  2) No Repetition (ex. 3 runners in a race, cannot be both first and second so 3 x 2 x 1) 
- * 
  * Problem Statement: A string contain N characters can be have any
  * of the characters lowercase or uppercase. For a four letter word,
  * find every possible permutation (lower/uppercase) of that word. 
@@ -44,6 +26,26 @@ import java.util.Arrays;
  * This algorithm can run in O(n) time as we go through a for loop with a defined
  * set of iterations, in constant time. The amount of iterations varies based on
  * the length of the string squared. 
+ * 
+ * 
+ * Notes: (Hastily named this file StringPermutation to best describe it, so needed a recap:)
+ * Permutations: Order of the elements does matter    
+ * Combinations: Order of the elements does not matter
+ * 
+ * Permutation/Combinations of the set of digits {1, 2, 3}
+ * 
+ * Permutations = {123, 132, 213, 231, 312, 321} // 3! = 3*2*1 = 6 possible permutations
+ * Combinations = {123} // Order does not matter
+ * 
+ * Permutations = n!/(n-k)! 
+ * Combinations = n!/k!(n-k)!
+ * 
+ * n - number of things to choose from
+ * k - we choose k of them
+ * 
+ * 2 Types of Permutations: 
+ *  1) Repetition is allowed (n x n x n) (where a number can be repeated)
+ *  2) No Repetition (ex. 3 runners in a race, cannot be both first and second so 3 x 2 x 1) 
  */
 public class StringPermutation {
 
@@ -61,16 +63,11 @@ public class StringPermutation {
         // 1. Convert to char array
         char[] arr = word.toCharArray();
 
-        4. Iterate through the number of possible combinations
-        for(int i = 0; i < arr.length; i++){
-            arr[i] = Character.toUpperCase(arr[i]);
-            for(int k = 0; k < arr.length; k++){
-                if( k != i) {
-                    arr[k] = Character.toLowerCase(arr[k]);
-                }
-                words[i] = String.valueOf(arr);
-            }
+        // 2. Iterate how many possibilities of the String can happen to have 
+        for(int i = 0; i < possibilities; i++){
+    
         }
+        words[i] = String.valueOf(arr);
         permute(arr,words,possibilities);
         System.out.println("Number of possible permutations:\t" + possibilities);
         // Finally print out all permutations within String array words
