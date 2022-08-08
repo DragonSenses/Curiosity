@@ -6,6 +6,32 @@ package Java.Operators;
  */
 public class BitwiseOperations {
     
+    // Performance-wise fastest way to find if a number is even
+    public static boolean isEvenBitAnd(int i) {
+        return (i & 1) == 0;
+    }   
+
+    public static boolean isEvenXOR(int i) {
+        return (i^1) == i+1;
+    }
+
+    public static boolean isEvenOR(int i) {
+        return (i | 1) > i;
+    }
+
+    public static boolean isEvenShift(int i){
+        return (i << 31) == 0;
+    }
+
+    public static boolean isEvenShift2(int i) {
+        return (i >> 1) << 1 == i;
+    }
+
+    // Has extra instructions to check for when i < 0
+    public static boolean isEvenMod(int i) {
+        return i % 2 == 0;
+    }
+
     /**
      * Private utility function that pads the passed in binary number, to
      * a specified length. 
@@ -35,30 +61,23 @@ public class BitwiseOperations {
         return Integer.toBinaryString ((1 << length) | n).substring(1);
     }
 
-    // Performance-wise fastest way to find if a number is even
-    public static boolean isEvenBitAnd(int i) {
-        return (i & 1) == 0;
-    }   
+    /**
+     * Covers the special cases for the method above. For now if the incoming parameter
+     * length is too small it will return the BinaryString of the value, without padding
+     *  - Could also just return value or throw an exception (since it could be user error)
+     * 
+     * @param val the number to pad to the left as a binary string
+     * @param len the specified length to pad to
+     * @return the value as a binary number padded to the specified length
+     */
+    public static String padBinaryString(int val, int len) {
+        // For now specified behavior is to just return the value
+        int valLength = Integer.toBinaryString(val).length();
+        if(valLength > len) { return Integer.toBinaryString(val); } 
 
-    public static boolean isEvenXOR(int i) {
-        return (i^1) == i+1;
-    }
-
-    public static boolean isEvenOR(int i) {
-        return (i | 1) > i;
-    }
-
-    public static boolean isEvenShift(int i){
-        return (i << 31) == 0;
-    }
-
-    public static boolean isEvenShift2(int i) {
-        return (i >> 1) << 1 == i;
-    }
-
-    // Has extra instructions to check for when i < 0
-    public static boolean isEvenMod(int i) {
-        return i % 2 == 0;
+        // Covers the case when binary digit is negative
+        return Integer.toBinaryString((1<<len) | 
+            ((val) & ((1<<len) -1)) ).substring(1);
     }
 
     public static void main(String[] args){
