@@ -71,6 +71,7 @@ public class StringPermutation {
         // 2. Iterate how many possibilities of the String can happen to have 
         for(int i = 0; i < possibilities; i++){
             // 3. Convert the iteration count to its bit representation
+            // Note: Left Pad the Binary String to the length of the String
             possibility = Integer.toBinaryString(i);
             for(int k = 0; k < n; k++){ // 4. Iterate through the word
                 // 5. Use binary representation to create possible state of the character
@@ -98,6 +99,10 @@ public class StringPermutation {
     }
 
     public static void main(String[] args){
-        printPermutations("ping");
+        // printPermutations("ping");
+        System.out.println(Integer.toBinaryString(0));
+        System.out.println(String.format("%16s", Integer.toBinaryString(1)));
+        int n = 16;
+        System.out.println(String.format("%" + n + "s", Integer.toBinaryString(1)));
     }
 }
