@@ -3,6 +3,28 @@ package Java.Operators;
 /**
  * Bitwise operators are used to performing the manipulation of individual
  * bits of a number.
+ * 
+ * One of my favorites is XOR, you can have one or the other but can't have both
+ * The truth table: 
+ * a b c
+ * 0 0 0
+ * 0 1 1
+ * 1 0 1
+ * 1 1 0 
+ * 
+ * An interesting relation is:
+ * a + b = a^b + 2*(a & b)
+ * a ^ b = a+b - 2*(a & b)
+ * when (a&b) = 0, you get a+b = a^b, in other words XOR of two numbers
+ * will lead to a summation. 
+ * But when (a&b) != 0, then you get a difference. 
+ * 
+ * Just keep in mind that XOR is not always SUM or Difference, look at
+ *  6 = 110
+ *  3 = 011
+ * XOR  101 = 5
+ * SUM = 9
+ * DIF = 3 
  */
 public class BitwiseOperations {
     
@@ -30,6 +52,15 @@ public class BitwiseOperations {
     // Has extra instructions to check for when i < 0
     public static boolean isEvenMod(int i) {
         return i % 2 == 0;
+    }
+
+    /**
+     * 
+     * @param arr
+     * @return
+     */
+    public static int findSingleNumber(int[] arr){
+
     }
 
     /**
