@@ -23,10 +23,11 @@ import java.util.Arrays;
  * the string. 
  * 
  * Run Time
- * This algorithm can run in O(n) time as we go through a for loop with a defined
- * set of iterations, in constant time. The amount of iterations varies based on
- * the length of the string squared. 
- * 
+ * Worst Case O(n^3) - Algorithm uses two for loops. The first iterates based on the 
+ * the length of the string squared, to account for every possibility that the passed
+ * in String can be in. The inner for loop iterates based on the length of the string.
+ * Therefore if the length of the string is n, then the outer for loop would run n^2 
+ * times while nested for loop would run n times, resulting in n^2 * n = n^3. 
  * 
  * Notes: (Hastily named this file StringPermutation to best describe it, so needed a recap:)
  * Permutations: Order of the elements does matter    
@@ -65,7 +66,11 @@ public class StringPermutation {
 
         // 2. Iterate how many possibilities of the String can happen to have 
         for(int i = 0; i < possibilities; i++){
-    
+            // 3. Convert the iteration count to its bit representation
+            String possibility = Integer.toBinaryString(i);
+            for(int k = 0; k < arr.length; k++){
+
+            }
         }
         words[i] = String.valueOf(arr);
         permute(arr,words,possibilities);
