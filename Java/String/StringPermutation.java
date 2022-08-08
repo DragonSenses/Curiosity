@@ -53,12 +53,16 @@ public class StringPermutation {
     /**
      * Finds every possible case where each character can
      * be capitalized or lowercase, and prints out every 
-     * possible combination.
+     * possible combination. Note: we denote lowercase as
+     * 0 and uppercase as 1 in binary representatin
      * @param word The word to find all permutations of
      */
     public static void printPermutations(String word){
+        int n = word.length();     // n is the length of the word
+        int possibilities = n * n; // n^2 possible permutations
+        // A reference to the bit representation of the possible state of the String
+        String possibility; 
         // Create a array of Strings that contain all the possibilities
-        int possibilities = word.length() * word.length(); // n^2 possible permutations
         String[] words = new String[possibilities];
 
         // 1. Convert to char array
@@ -67,12 +71,14 @@ public class StringPermutation {
         // 2. Iterate how many possibilities of the String can happen to have 
         for(int i = 0; i < possibilities; i++){
             // 3. Convert the iteration count to its bit representation
-            String possibility = Integer.toBinaryString(i);
-            for(int k = 0; k < arr.length; k++){
-
+            possibility = Integer.toBinaryString(i);
+            for(int k = 0; k < n; k++){ // 4. Iterate through the word
+                // 5. Use binary representation to create possible state of the character
+                arr[k] = (possibility.charAt(k) == 0) ? 
+                    Character.toLowerCase(arr[k]) : Character.toUpperCase(arr[k]);
             }
+            words[i] = String.valueOf(arr); // Add the current char array to the array of words
         }
-        words[i] = String.valueOf(arr);
         permute(arr,words,possibilities);
         System.out.println("Number of possible permutations:\t" + possibilities);
         // Finally print out all permutations within String array words
