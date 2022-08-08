@@ -1,5 +1,6 @@
 package Java.String;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
@@ -56,9 +57,24 @@ public class StringProcess {
         s.toUpperCase();
     }
 
+    // Prints the alphabet, both lower and uppercase 
+    public static void alphabet(){
+        char[] alphabet = new char[52]; //65 90 97 122
+        int idx = 0;
+        for(int i=65; i<=90; i++){
+            alphabet[idx++] = (char) i;
+        }
+
+        for(int i=97; i<=122; i++){
+            alphabet[idx++] = (char) i;
+        }
+
+        System.out.println(Arrays.toString(alphabet));
+    }
+
     /**
      * Bitwise operation that toggles the target character from
-     * lowercase to uppercase, or uppercase to lowercase.
+     * lowercase to uppercase, or uppercase to lowercase. If the 
      * @param c target character to toggle case
      * @return the character in the opposite case
      */
@@ -163,5 +179,7 @@ public class StringProcess {
         printThreeTimes.accept("Overlord");
 
         System.out.println("\n" + exasperate("To be honest"));
+
+        alphabet();
     }
 }
