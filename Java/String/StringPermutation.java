@@ -3,11 +3,23 @@ package Java.String;
 import java.util.Arrays;
 
 /**
- * With permutations we care about the order of the elements, 
- * whereas with combinations we don’t.
+ * Permutations: Order of the elements does matter    
+ * Combinations: Order of the elements does not matter
+ * 
+ * Permutation/Combinations of the set of digits {1, 2, 3}
+ * 
+ * Permutations = {123, 132, 213, 231, 312, 321} // 3! = 3*2*1 = 6 possible permutations
+ * Combinations = {123} // Order does not matter
  * 
  * Permutations = n!/(n-k)! 
  * Combinations = n!/k!(n-k)!
+ * 
+ * n - number of things to choose from
+ * k - we choose k of them
+ * 
+ * 2 Types of Permutations: 
+ *  1) Repetition is allowed (n x n x n) (where a number can be repeated)
+ *  2) No Repetition (ex. 3 runners in a race, cannot be both first and second so 3 x 2 x 1) 
  * 
  * Problem Statement: A string contain N characters can be have any
  * of the characters lowercase or uppercase. For a four letter word,
@@ -15,32 +27,25 @@ import java.util.Arrays;
  * A permutation does not change the order the characters were in,
  * but rather whether each character is capitalized or not. 
  * 
- * Example: sky can be written 9 different ways as sky, SKY, SKy, Sky ...
+ * Example: ping can be written 16 different ways as pinG, PinG, or PIng, etc.
+ * 
+ * - Diffuse Mode Thinking helped me arrived to the answer here
+ * 
+ * Solution: Abstractify the problem, where each place (each character at a 
+ * certain index) can either be lowercase or uppercase. This can be represented
+ * through bit manipulation. We can find all possible ways to represent the 
+ * passed in string (position of each character must stay in place only lowercase
+ * or uppercase should be the changing variable) as the length of the string 
+ * squared (since each position can have two possible states: upper/lowercase). 
+ * We can use each iteration integer in bit form to represent a possible state of
+ * the string. 
+ * 
+ * Run Time
+ * This algorithm can run in O(n) time as we go through a for loop with a defined
+ * set of iterations, in constant time. The amount of iterations varies based on
+ * the length of the string squared. 
  */
 public class StringPermutation {
-    
-    // Recursive Function starting at index 0 we take input string
-    public static void combinations(String input, StringBuilder output) { 
-        combinations(input,0, output); 
-    }
-
-    /** Work-In-Progress - prints out too many combinations
-     * Finds every possible combination of the passed in String s
-     * @param s - String to find combinations from
-     * @param k - Starting index to begin with
-     */
-    public static void combinations(String input, int k, StringBuilder output){
-        // 1. Iterate through input string
-        for (int i = k; i < input.length(); i++){
-            // 2. Append letter to output string
-            output.append(input.charAt(i));
-            System.out.println(output);
-            if (i < input.length()) { // current letter isn't last letter
-                combinations(input, k+1, output);   // recur
-                output.setLength(output.length()-1); // limit the output length 
-            }
-        } // Find remaining combinations starting with next position of iteration
-    }
 
     /**
      * Finds every possible case where each character can
