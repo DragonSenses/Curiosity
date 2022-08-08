@@ -59,7 +59,7 @@ public class StringProcess {
 
     // Prints the alphabet, both lower and uppercase 
     public static void alphabet(){
-        char[] alphabet = new char[52]; //65 90 97 122
+        char[] alphabet = new char[52]; // 65-90, 97-122
         int idx = 0;
         for(int i=65; i<=90; i++){
             alphabet[idx++] = (char) i;
@@ -74,9 +74,12 @@ public class StringProcess {
 
     /**
      * Bitwise operation that toggles the target character from
-     * lowercase to uppercase, or uppercase to lowercase. If the 
+     * lowercase to uppercase, or uppercase to lowercase. Only applies
+     * the operation to the ASCII {65-90} and {97-122}, the English
+     * alphabet. Otherwise, returns the character and applies no change.
      * @param c target character to toggle case
-     * @return the character in the opposite case
+     * @return the character in the opposite case if it is in the English
+     * alphabet, otherwise returns the character
      */
     private static char toggleCase(char c) {
         if((c >= 65) && (c <= 90)) {
@@ -86,8 +89,7 @@ public class StringProcess {
         } else {
             return c;
         }
-    }// Need to limit the incoming character to be used only with the alphabet 
-    // ASCII: 65-90, 97-122
+    }
 
     /**
      * Make a string more irritating by capitalizing every 
@@ -179,7 +181,6 @@ public class StringProcess {
         printThreeTimes.accept("Overlord");
 
         System.out.println("\n" + exasperate("To be honest"));
-
-        alphabet();
+        System.out.println(exasperate("Everything happens for a reason"));
     }
 }
