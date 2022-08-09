@@ -10,15 +10,30 @@ public class ShiftCount {
     // Using Bitwise Operations
 
     public static int countShifts(int x, int y, int z){
-        int shifts = 0;
+        int bitX, bitY, bitZ, shifts = 0;
         // Loop through the range of 0-31
         for(int i = 0; i < 32; i++){
             // & operator - if two bits are 1, output is 1, else all 0's
             // ex. 0101 & 0011 = 0001 , 5 & 3 = 1
             // | operator - if two bits are 0, output is 0, else all 1's
             // ex. 1100 | 1010 = 1110 , 12 | 10 = 14
+
+            // 1. Shift each number by right by the iteration count
+            // then use & operator to determine which bits are equal
+            
         }
 
         return shifts;
+    }
+
+    
+    public static void main(String[] args){
+
+        int x = 2;
+        int y = 4;
+        int z = 6;
+
+        System.out.println(countShifts(x,y,z));
+
     }
 }
