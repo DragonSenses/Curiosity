@@ -56,6 +56,25 @@ public class BitwiseOperations {
         return i % 2 == 0;
     }
 
+    // & operator - if two bits are 1, output is 1, else all 0's
+    // ex. 0101 & 0011 = 0001 , 5 & 3 = 1
+
+    // | operator - if two bits are 0, output is 0, else all 1's
+    // ex. 1100 | 1010 = 1110 , 12 | 10 = 14
+
+    // ~ operator - or bitwise complement operator, takes a single
+    // input and swaps each bit in its binary representation opposite
+    // value. All 0's becomes 1's and all 1's become 0's. Inverts the input
+    // ex. 1 is 00000000 00000000 00000000 00000001   (31 zeros, 1 one) but 
+    //    ~1 is 11111111 11111111 11111111 11111110   (1 zero, 31 ones) = -2
+    // Formula: x = 2^(32) - x, for 8-bit unsigned integers ~x = 255 - x
+
+    public static void bitwiseNot(int x) {
+        System.out.println("Bitwise NOT of " + x + " is : " + ~x);
+    }
+
+    // >> operator - Arithmetic (signed) right shift operator
+
     /**
      * Finds the element in the array that does not repeat itself,
      * and is the only instance and is unique within the array. 
@@ -173,5 +192,7 @@ public class BitwiseOperations {
         System.out.print("Within the Array of numbers: " + Arrays.toString(intArray) 
             + "\nThe Unique Number that is not repeated is: ");
         System.out.println(findSingleNumber(intArray));
+
+        bitwiseNot(1);
     }
 }
