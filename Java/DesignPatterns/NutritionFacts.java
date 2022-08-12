@@ -58,5 +58,44 @@ public class NutritionFacts {
         carbohydrate = builder.carbohydrate;
     }
 
+    public int getServingSize(){
+        return servingSize;
+    }
 
+    public int getServings(){
+        return servings;
+    }
+
+    public int getCalories(){
+        return calories;
+    }
+
+    public int getFat(){
+        return fat;
+    }
+
+    public int getCarbohydrate(){
+        return carbohydrate;
+    }
+
+    public int getProtein(){
+        return protein;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder("\nNutrition Facts\n");
+        sb.append("[Calories| " + calories + "]\n");
+        sb.append("[Fat     | " + fat + "]\n");
+        sb.append("[Carbs   | " + carbohydrate + "]\n");
+        sb.append("[Protein | " + protein + "]\n");
+        return sb.toString();
+    }
+
+    public static void main(String[] args){
+        NutritionFacts proteinPowder = new NutritionFacts.Builder(120,1)
+            .calories(120).carbohydrate(3).protein(24).build();
+
+        System.out.println("Protein Powder" + proteinPowder.toString());
+    }
 }
