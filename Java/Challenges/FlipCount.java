@@ -6,7 +6,7 @@ package Java.Challenges;
  * third number. This program will return the least amount of shifts
  * required to do so.
  */
-public class ShiftCount {
+public class FlipCount {
     private static boolean debug = true;
 
     // Using Bitwise Operations
@@ -37,7 +37,7 @@ public class ShiftCount {
             }
 
             // 2. Check if bitX | bitY = bitC
-
+            
             // 3. If true check bitC 
             // 4. If bitA and bitB are both 1 
         }

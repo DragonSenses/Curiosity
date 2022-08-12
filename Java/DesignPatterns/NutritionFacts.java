@@ -36,11 +36,11 @@ public class NutritionFacts {
         public Builder fat(int val){
             fat = val;    return this; 
         }
-        public Builder protein(int val){
-            protein = val;     return this; 
-        }
         public Builder carbohydrate(int val){
             carbohydrate = val; return this; 
+        }
+        public Builder protein(int val){
+            protein = val;     return this; 
         }
 
         public NutritionFacts build() {
