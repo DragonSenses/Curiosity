@@ -1,4 +1,4 @@
-package Java.Java8;
+package Java.Java8.Streams;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +14,7 @@ import static java.util.stream.Collectors.toList;
  * Demonstrate a new way to Make and Process collections. 
  * 
  * Usually database-like operations such as grouping a list, finding a certain item.
+ * 
  * 
  */
 public class DishStream {
