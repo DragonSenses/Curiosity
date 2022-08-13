@@ -86,6 +86,7 @@ public class DishStream {
         System.out.println(lowCaloricDishesName);
         System.out.println();
 
+        System.out.println("\n======== Operations merged into the same pass ========");
         List<String> names =
             menu.stream()
                 .filter(dish -> {
@@ -100,6 +101,15 @@ public class DishStream {
                 .collect(toList());
         // Notice how filter and map are two separate operations, but merged into the same pass
         // This called loop fusion by compiler experts
+        System.out.println("\nResult of filter(calories > 300), map(name), limit(3), collect(toList())");
         System.out.println(names);
+        
+        System.out.println("\n======== Method Reference for Vegetarian Dishes ========");
+        List<Dish> vegetarianMenu = menu.stream()
+                                        .filter(Dish::isVegetarian)
+                                        .collect(toList());
+        for(Dish d: vegetarianMenu) {
+            System.out.println(d);
+        }
     } // end of main
 } // end of class
