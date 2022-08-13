@@ -113,6 +113,10 @@ public class BitwiseOperations {
      * Finds the element in the array that does not repeat itself,
      * and is the only instance and is unique within the array. 
      * 
+     * NOTE: The array must only have one unique number, while all
+     * other numbers must only have one copy of itself within the
+     * array.
+     * 
      * Explanation: There are 2 cases for what XOR yields a result
      * - (a^0 = a), XOR of Zero and Some Bit returns that bit
      * - (a^a = 0), XOR of the same two bits returns 0
@@ -214,21 +218,37 @@ public class BitwiseOperations {
     }
 
     public static void main(String[] args){
+        System.out.println("\n======== Padding a Binary String ========");
         System.out.println(Integer.toBinaryString(16));
         System.out.println(paddedBinaryString(1,4));
 
+        System.out.println();
         int n = 125;
         System.out.print("The Binary Representation of " + n + " is: ");
         System.out.println(Integer.toBinaryString(n));
         System.out.println("Number of Set Bits: " + countSetBits(n));
 
+        System.out.println("\n======== Finding a Unique Number ========");
         int[] intArray = {4, 1, 2, 7, 2, 1, 4};
         System.out.print("Within the Array of numbers: " + Arrays.toString(intArray) 
             + "\nThe Unique Number that is not repeated is: ");
         System.out.println(findSingleNumber(intArray));
 
+        System.out.println("\n======== Bitwise Not ~ ========");
         bitwiseNot(1);
 
+        System.out.println("\n======== Swapping Numbers ========");
         swapXOR(5,9);
+
+        System.out.println("\n======== Inverting a  Binary Number ========");
+        n = 26;
+        System.out.print("The Binary Representation of " + n + " is: ");
+        System.out.println(Integer.toBinaryString(n));
+        System.out.print("The inverted value of " + n + " is: ");
+        System.out.println(flipBits(n,5));
+        System.out.println("With a Binary Representation of " + Integer
+            .toBinaryString(flipBits(n,5)));
+
+        System.out.println("\n======== End ========");
     }
 }
