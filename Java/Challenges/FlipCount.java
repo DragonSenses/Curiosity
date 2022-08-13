@@ -40,21 +40,22 @@ public class FlipCount {
                 System.out.println(bitZ);
             }
 
-            // 2. Check if either bit of x or y not equal to bit of Z
+            // 2. Check if either bit of x or y equal to bit of Z
             // bitX | bitY = bitZ
             if((bitX|bitY) == bitZ){
-                // 3. If either bitX or bitY is equal to bitZ check if bitZ is 0
-                switch(bitZ) {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                    default:
-                        break;
+                // 3. Further check if bitZ is 0
+                if(bitZ == 0){
+                    // 4. If bitX and bitY are both 1 
+                    if(bitX == 1 && bitY ==1){
+                        flips += 2;
+                    } else {
+                        flips += 1;
+                    }
+                } else{ // bitZ is 1
+                    flips += 1;
                 }
             }
             
-            // 4. If bitX and bitY are both 1 
         }
 
         return flips;
@@ -72,6 +73,7 @@ public class FlipCount {
         System.out.println(((y >> i) & 1));
         System.out.println(((z >> i) & 1));
         // System.out.println(countShifts(x,y,z));
-
+        System.out.println("Flips required to make "
+            + x + " and " + y + " equal to " + z + " is: " + countFlips(x,y,z));
     }
 }
