@@ -10,7 +10,7 @@ package Java.Challenges;
  * required to do so.
  */
 public class FlipCount {
-    private static boolean debug = true;
+    private static boolean debug = false;
 
     // Using Bitwise Operations
     // & operator - if two bits are 1, output is 1, else all 0's
@@ -25,7 +25,7 @@ public class FlipCount {
         int bitX, bitY, bitZ;
         int flips = 0;
 
-        // Loop through the range of 0-31
+        // Loop through the range of 0-31 an int
         for(int i = 0; i < 32; i++){
             // 1. Shift each number by right by the iteration count
             // then use bitwise & by 1 to only attain the least
@@ -42,7 +42,7 @@ public class FlipCount {
 
             // 2. Check if either bit of x or y equal to bit of Z
             // bitX | bitY = bitZ
-            if((bitX|bitY) == bitZ){
+            if((bitX|bitY) != bitZ){
                 // 3. Further check if bitZ is 0
                 if(bitZ == 0){
                     // 4. If bitX and bitY are both 1 
@@ -66,13 +66,14 @@ public class FlipCount {
         int y = 4; // 0100
         int z = 6; // 0110
 
-        int i = 1; // Iteration
+        // int i = 1; // Iteration
+        // System.out.println(((x >> i) & 1));
+        // System.out.println(((y >> i) & 1));
+        // System.out.println(((z >> i) & 1));
 
-        System.out.println(Integer.toBinaryString(6));
-        System.out.println(((x >> i) & 1));
-        System.out.println(((y >> i) & 1));
-        System.out.println(((z >> i) & 1));
-        // System.out.println(countShifts(x,y,z));
+        System.out.println(Integer.toBinaryString(x)+ " is Binary of " + x);
+        System.out.println(Integer.toBinaryString(y)+ " is Binary of " + y);
+        System.out.println(Integer.toBinaryString(z)+ " is Binary of " + z);
         System.out.println("Flips required to make "
             + x + " and " + y + " equal to " + z + " is: " + countFlips(x,y,z));
     }
