@@ -217,6 +217,7 @@ public class BitwiseOperations {
             ((val) & ((1<<len) -1)) ).substring(1);
     }
 
+    // Bitwise Operations Playground
     public static void main(String[] args){
         System.out.println("\n======== Padding a Binary String ========");
         System.out.println(Integer.toBinaryString(16));
@@ -240,6 +241,19 @@ public class BitwiseOperations {
         System.out.println("\n======== Swapping Numbers ========");
         swapXOR(5,9);
 
+        System.out.println("\n======== Finding the Right Mask ========");
+        int k = 4; // Number of bits wanted
+        // if k = 4, then 1 << k = 16; subtract by 1 gets 15, which is 1111 in binary
+        // Using the & operator will mask all the bits yielding a 1 for every set bit
+        System.out.println("Number of bits wanted: " + k);
+        System.out.println("Value of (1 << k): " + (1 << k) 
+            + "\n or in Binary " + Integer.toBinaryString((1 << k)));
+        System.out.println("Value of ((1 << k) -1): " + ((1 << k)-1)
+            + "\n or in Binary " + Integer.toBinaryString((1 << k)-1));
+        System.out.println("\nUse (n & " + Integer.toBinaryString((1 << k)-1)
+            + ") to only get k bits [" + k + "] of a number n" );
+        // Learned that n^2 -1 will yield a binary number of all 1's
+
         System.out.println("\n======== Inverting a  Binary Number ========");
         n = 26;
         System.out.print("The Binary Representation of " + n + " is: ");
@@ -248,6 +262,8 @@ public class BitwiseOperations {
         System.out.println(flipBits(n,5));
         System.out.println("With a Binary Representation of " + Integer
             .toBinaryString(flipBits(n,5)));
+
+        // More Bitwise fun can go here
 
         System.out.println("\n======== End ========");
     }
