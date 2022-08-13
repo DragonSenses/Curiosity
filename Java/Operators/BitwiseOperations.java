@@ -76,6 +76,27 @@ public class BitwiseOperations {
     // >> operator - Arithmetic (signed) right shift operator
 
     /**
+     * Uses bitwise XOR operator to swap two numbers, and prints out 
+     * the result. Only changes the values within the scope of this
+     * method, see Pass By Value.
+     * 
+     * Example x = 0101 = 5
+     *         y = 1001 = 9
+     *   x = x^y = 1100 
+     *   y = x^y = 0101
+     * @param x first number to swap
+     * @param y second number to swap
+     */
+    public static void swapXOR(int x, int y){
+        System.out.println("Before swapping:");
+        System.out.println("x = " + x + ", y = " + y);  
+        x = x^y;
+        y = y^x;
+        System.out.println("After swapping:");
+        System.out.println("x = " + x + ", y = " + y);  
+    }
+
+    /**
      * Finds the element in the array that does not repeat itself,
      * and is the only instance and is unique within the array. 
      * 
@@ -194,5 +215,7 @@ public class BitwiseOperations {
         System.out.println(findSingleNumber(intArray));
 
         bitwiseNot(1);
+
+        swapXOR(5,9);
     }
 }
