@@ -73,6 +73,17 @@ public class BitwiseOperations {
         System.out.println("Bitwise NOT of " + x + " is : " + ~x);
     }
 
+    /**
+     * Inverts all bits of a given number n, and return only k significant
+     * bits by converting it to the right mask. 
+     * @param n number to flip bits
+     * @param k the amount of least significant bits wanted, to right mask
+     */
+    public static int flipBits(int n, int k){
+        int mask = (1 << k) - 1;
+        return (~n & mask);
+    }
+
     // >> operator - Arithmetic (signed) right shift operator
 
     /**
@@ -82,8 +93,9 @@ public class BitwiseOperations {
      * 
      * Example x = 0101 = 5
      *         y = 1001 = 9
-     *   x = x^y = 1100 
-     *   y = x^y = 0101
+     *   x = x^y = 1100 = 12    
+     *   y = x^y = 0101 = 5
+     *   x = x^y = 1001 = 9     // Need to XOR x again to swap to y's value
      * @param x first number to swap
      * @param y second number to swap
      */
@@ -92,6 +104,7 @@ public class BitwiseOperations {
         System.out.println("x = " + x + ", y = " + y);  
         x = x^y;
         y = y^x;
+        x ^= y; // Complete the swap by setting x to y's original value
         System.out.println("After swapping:");
         System.out.println("x = " + x + ", y = " + y);  
     }
