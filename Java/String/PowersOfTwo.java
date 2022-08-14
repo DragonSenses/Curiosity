@@ -17,7 +17,11 @@ public class PowersOfTwo {
     // print the values, if it isn't a multiple of 4 tab, otherwise a newline
     public static void main(String[] args) {
         IntStream.rangeClosed(1,25) // Generate a range of 1 to 25
-                .map(i -> i << 1) // Multiply each value by 2
-                .forEachOrdered(i -> System.out.print(i + ((i % 4 != 0) ? "\t" : "\n")));
+                .map(i -> (i << 1)) // Multiply each value by 2
+                .forEachOrdered(i -> System.out.print(i + ((i % 5 != 0) ? "\t" : "\n")));
     }
+
+    // To Do 
+    // Want a Table such that every integer is a power of two 
+    // print tab with each until 5th value print new line
 }
