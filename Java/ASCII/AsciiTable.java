@@ -46,6 +46,43 @@ public class AsciiTable {
         return table;
     }
 
+    public static void checkWhiteSpaces(char c, StringBuilder table){
+        if (Character.isWhitespace(c)) {  
+            // using switch statement  
+            switch (c) { 
+                case '\t':  // Horizontal Tab, 09
+                    table.append("\\t");  
+                    break;  
+                case '\n':  // Newline, 10
+                    table.append("\\n");  
+                    break;
+                case '\f': // NP Form Feed, New Page, 12 
+                    table.append("\\f");  
+                    break;     
+                case '\r':  // Carriage Return, 13
+                    table.append("\\r");  
+                    break;  
+                case ' ':  // Space, 32
+                    table.append("space");  
+                    break;  
+                default:  
+                    table.append("whitespace");  
+                    break;  
+            } 
+        } // 11 is Vertical Tab or whitespace, 28-31 as well
+    }
+
+    // To Do: Change more meaningful String to represent the character
+    // First 32 non-printing characters, characters that are not letters, digits,
+    // and punctuation. Check if character is in range of: 
+    // '\u0000' through '\u001F' or in the range '\u007F' through '\u009F'
+    // 0-8, 14-27
+    public static void checkControlCharacters(char c, StringBuilder table){
+        if(Character.isISOControl(c)){
+            table.append("ISO Control"); // lazily append this
+        }
+    } 
+
     // De Morgan's Law 
     // !(A && B) equivalent to !A || !B
     // !(A || B) equivalent to !A && !B
@@ -72,7 +109,8 @@ public class AsciiTable {
         for (int i = 0; i < 128; i++){
             // Typecast i into char
             c = (char) i;
-
+            checkWhiteSpaces(c, table);
+            checkControlCharacters(c,table);
             checkCharacters(c,table);
         }
     }
