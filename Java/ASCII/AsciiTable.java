@@ -46,6 +46,24 @@ public class AsciiTable {
         return table;
     }
 
+    // De Morgan's Law 
+    // !(A && B) equivalent to !A || !B
+    // !(A || B) equivalent to !A && !B
+
+    //  A || B || C
+    // -> !! (A || B || C)
+    // -> ! (!A && !B && !C)  
+    // Double Negation yields logical equivalency
+    public static void checkCharacters(char c, StringBuilder table){
+        boolean A = Character.isWhitespace(c);
+        boolean B = Character.isISOControl(c);
+        // De Morgan's Law 
+        // !(A && B) equivalent to !A || !B
+        // !(A || B) equivalent to !A && !B
+        if(!(A && B)){ 
+            table.append(Character.toString(c)); 
+        }
+    }
 
 
     public static void buildTable(StringBuilder table){
@@ -55,6 +73,7 @@ public class AsciiTable {
             // Typecast i into char
             c = (char) i;
 
+            checkCharacters(c,table);
         }
     }
 
