@@ -7,6 +7,12 @@ import java.util.Arrays;
  * bits of a number.
  * 
  * One of my favorites is XOR, you can have one or the other but can't have both
+ * 
+ * When you XOR a number with itself odd number of times, the result is number itself
+ * When you XOR a number with itself even number of times , the result is 0
+ * When you XOR a number with 0, it is always the number itself
+ * Therefore, a quick way to zero out a value in a register is XOR number by itself.
+ * 
  * The truth table: 
  * a b c
  * 0 0 0
@@ -115,7 +121,10 @@ public class BitwiseOperations {
      * 
      * NOTE: The array must only have one unique number, while all
      * other numbers must only have one copy of itself within the
-     * array.
+     * array. Or in other words, every other element must have 
+     * duplicates of itself even number of times. While the unique 
+     * number should only have itself and no duplicates (or could 
+     * have duplicates an odd number of times)
      * 
      * Explanation: There are 2 cases for what XOR yields a result
      * - (a^0 = a), XOR of Zero and Some Bit returns that bit
@@ -215,6 +224,23 @@ public class BitwiseOperations {
         // Covers the case when binary digit is negative
         return Integer.toBinaryString((1<<len) | 
             ((val) & ((1<<len) -1)) ).substring(1);
+    }
+
+    /**
+     * Checkings if the incoming number n is a power of two, to do so
+     * it uses the binary representation of n bitwise and n-1 and check
+     * if this becomes 0. Example n = 8, n-1 = 7, so binary representation
+     *   1000 & 0111 = 0000. Takes advantage of the properties of a 
+     * Mersenne Number Mn = 2^(n) -1 which consist of all 1s in base-2,
+     * and are called binary repunits. A number that is a power of two will
+     * only have one bit set to "1". 
+     * Note: Two mersennes number will also result in a value of 0, take
+     * example 7 and 31 , 111 & 11111 = 0
+     * @param n the number to check if is a power of two
+     * @return true if n is power of two, false otherwise
+     */
+    public static boolean isPowerOfTwo(int n){
+        return (n & n-1) == 0;
     }
 
     // Bitwise Operations Playground
