@@ -77,7 +77,7 @@ public class StringPermutation {
      * Finds every possible case where each character can
      * be capitalized or lowercase, and prints out every 
      * possible combination. Note: we denote lowercase as
-     * 0 and uppercase as 1 in binary representatin
+     * 0 and uppercase as 1 in binary representation
      * @param target The target String to find all permutations of
      */
     public static void printPermutations(String target){
@@ -109,7 +109,59 @@ public class StringPermutation {
         System.out.println(Arrays.toString(words));
     }
 
+    /**
+     * Returns the binary representation of incoming parameter number
+     * in the form of a boolean array with a given length. 
+     * @param num to turn into Binary
+     * @param length the length of the binary array, or the number of 
+     * least significant bits that is needed
+     * @return a boolean array with a given length
+     */
+    private static boolean[] toBinary(int num, int length){
+        boolean[] bits = new boolean[length];
+        for(int i = length-1; i >= 0; i--){
+            bits[i] = (num & (1<< i)) != 0;
+        }
+        return bits;
+    }
+
+    /**
+     * Finds every possible case where each character can
+     * be capitalized or lowercase, and prints out every 
+     * possible combination. This method is more efficient in that
+     * it does no convert Integer to binary string but rather uses
+     * the iteration number itself in binary. Note: we denote lowercase as
+     * 0 and uppercase as 1 in binary representation
+     * @param target The target String to find all permutations of
+     */
+    public static void printPermutationsBitwise(String target){
+        int len = target.length();       // n is the length of the word
+        int possibilities = len * len; // n^2 possible permutations
+        boolean[] possibility; // Bit Representation of the possible state of target String
+        // Create a array of Strings that contain all the possibilities
+        String[] words = new String[possibilities];
+
+        // 1. Convert to char array
+        char[] word = target.toCharArray();
+
+        // 2. Iterate how many possibilities of the String can happen to have 
+        for(int i = 0; i < possibilities; i++){
+            // 3. Convert the iteration count to its bit representation
+            possibility = toBinary(i, len);
+            for(int k = 0; k < len; k++){ // 4. Iterate through the word
+                // 5. Use binary representation to create possible state of the character
+                word[k] = (possibility[k] == false) ? 
+                    Character.toLowerCase(word[k]) : Character.toUpperCase(word[k]);
+            }
+            words[i] = String.valueOf(word); // Add the current char array to the array of words
+        }
+        System.out.println("Number of possible permutations:\t" + possibilities);
+        // Finally print out all permutations within String array words
+        System.out.println(Arrays.toString(words));
+    }
+
     public static void main(String[] args){
         printPermutations("ping");
+        printPermutationsBitwise("ping");
     }
 }
