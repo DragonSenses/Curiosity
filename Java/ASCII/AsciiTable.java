@@ -76,7 +76,7 @@ public class AsciiTable {
     // First 32 non-printing characters, characters that are not letters, digits,
     // and punctuation. Check if character is in range of: 
     // '\u0000' through '\u001F' or in the range '\u007F' through '\u009F'
-    // 0-8, 14-27
+    // the u in '\u0000' is unicode; 0-8, 14-27
     public static void checkControlCharacters(char c, StringBuilder table){
         if(Character.isISOControl(c)){
             table.append("ISO Control"); // lazily append this
@@ -112,6 +112,8 @@ public class AsciiTable {
             checkWhiteSpaces(c, table);
             checkControlCharacters(c,table);
             checkCharacters(c,table);
+            table.append(String
+                .format("%1$-8s %2$-10s %3$s\n","Decimal", "ASCII", "Hex"));
         }
     }
 
