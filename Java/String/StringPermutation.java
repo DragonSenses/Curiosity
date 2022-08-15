@@ -110,17 +110,17 @@ public class StringPermutation {
     }
 
     /**
-     * Returns the binary representation of incoming parameter number
+     * Converts an integer to its binary representation 
      * in the form of a boolean array with a given length. 
-     * @param num to turn into Binary
+     * @param n to turn into Binary
      * @param length the length of the binary array, or the number of 
      * least significant bits that is needed
      * @return a boolean array with a given length
      */
-    private static boolean[] toBinary(int num, int length){
+    private static boolean[] toBinary(int n, int length){
         boolean[] bits = new boolean[length];
-        for(int i = length-1; i >= 0; i--){
-            bits[i] = (num & (1<< i)) != 0;
+        for(int i = 0; i < length; i++){
+            bits[length -1 -i] = (n & (1<< i)) != 0;
         }
         return bits;
     }
