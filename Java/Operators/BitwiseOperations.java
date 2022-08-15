@@ -243,6 +243,22 @@ public class BitwiseOperations {
         return (n & n-1) == 0;
     }
 
+    /**
+     * Converts an integer to its binary representation 
+     * in the form of a boolean array with a given length. 
+     * @param n to turn into Binary
+     * @param length the length of the binary array, or the number of 
+     * least significant bits that is needed
+     * @return a boolean array with a given length
+     */
+    public static boolean[] toBinary(int n, int length){
+        boolean[] bits = new boolean[length];
+        for(int i = 0; i < length; i++){
+            bits[length -1 -i] = (n & (1<< i)) != 0;
+        }
+        return bits;
+    }
+
     // Bitwise Operations Playground
     public static void main(String[] args){
         System.out.println("\n======== Padding a Binary String ========");
@@ -289,7 +305,15 @@ public class BitwiseOperations {
         System.out.println("With a Binary Representation of " + Integer
             .toBinaryString(flipBits(n,5)));
 
+
+        System.out.println("\n======== Binary Representation of Numbers ========");
+        for(n = 0; n < 9; n++){
+            System.out.println(n + " = " + Arrays.toString(toBinary(n,4))
+                + "\t=\t" + Integer.toBinaryString(n));
+        }
         // More Bitwise fun can go here
+
+
 
         System.out.println("\n======== End ========");
     }
