@@ -113,7 +113,7 @@ public class AsciiTable {
             checkControlCharacters(c,table);
             checkCharacters(c,table);
             table.append(String
-                .format("%1$-8s %2$-10s %3$s\n","Decimal", "ASCII", "Hex"));
+                .format("%1$-8d %2$-10s %3$s\n", i, c, Integer.toHexString(i)));
         }
     }
 
