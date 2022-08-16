@@ -45,6 +45,18 @@ package Java.Equality;
  * 
  * Note: java.util.Integer and java.util.Long actually cache values for specific
  * ranges (-128 to 127)
+ * 
+ * ============== Best Practices =======================
+ * 1. Comparing objects, use boolean equals(Obect other) method, do not use "=="
+ * 2. Comparing most primitives can use {<, >, <=, >=} operators, for boolean just == and !=
+ * 3. Comparing objects, using Comparable or int compareTo(T) where the result is
+ *  left.compareTo(right)
+ * Result   |   Meaning / Order
+ * =============================
+ *      0   |   left is the same as right
+ *      -1  |   left < right
+ *      1   |   left > right
+ * 4. Floating point data types are not exact
  */
 public class PrimitivesVsObjects {
     
