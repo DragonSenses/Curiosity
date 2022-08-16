@@ -46,6 +46,18 @@ public class AutoBoxing {
             list.add(i); // Here int i gets boxed into Integer
         }
 
+        // Unboxing
+        // Even though we use operators & and + which aren't available to object
+        // type Integer, code compiles because compiler unboxes the wrapper type
+        int sum = 0;
+        for (Integer n: list){
+            // is n even? Check its least significant bit if 0
+            if((n & 1) == 0 ) {     // n looks more like i.intValue() when unboxing
+                sum += n;   // add to the sum if n is even
+            }
+        }
+        System.out.println("Sum of even numbers within list is: " + sum);
+
         // Using a Predicate<Integer> would box the argument 1024 to an Integer object
         Predicate<Integer> oddNumbers = (Integer i) -> (i & 1) == 1; // False (Boxing)
         oddNumbers.test(1024);
