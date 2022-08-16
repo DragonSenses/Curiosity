@@ -14,6 +14,27 @@ package Java.Methods;
  * Consistent: x.equals(y)==x.equals(y)==x.equals(y)==...
  * Non-nullity: x.equals(null)->false
  * 
+ * =========== getClass() vs. instanceof ==================
+ *  getClass() only returns true if object is actually an instance of the specified class but
+ * instanceof operator returns true even if the object is a subclass of a specified class or
+ * interface in Java. getClass() is a more stable approach. 
+ *  Might be inclined to use instanceof to compare objects, but this may violate
+ * the general contract between equals and hashCode : Equal objects must have the
+ * same hashCode. 
+ *  instanceof allows implementation of equality between super and sub classes but does
+ * not satisfy symmetry: x.equals(y) is true then y.equals(x) is also true, but if you swap x
+ * with a subclass then x instanceof y is true but y instanceof x will be false, hence equals 
+ * is false. 
+ *  Can design objects such that subclasses are equal to their parents, but the
+ * definition of equality must be the same for both, the hash code calculation
+ * must occur in the base class. Example. java.util.Date and subclass java.sql.Date
+ * are defined in such a manner. The sql version does not have an equal or hashCode
+ * method, but the base class builds its hash code solely from the timestamp. 
+ *  Collection classes such as java.util.ArrayList & java.util.LinkedList are both
+ * subclasses of java.util.AbstractList and use its equal and hashCode methods. 
+ * Equality for collections is most of the times defined by the equality of their
+ * content, so using instanceof over a hard class check seems apt.
+ * 
  * ============ The Recipe ============
  * 1. Use the == operator to check if the argument is a reference to this object
  * (for performance)
