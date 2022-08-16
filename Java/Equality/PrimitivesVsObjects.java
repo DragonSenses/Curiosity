@@ -3,6 +3,10 @@ package Java.Equality;
 /**
  * Primitives vs. Objects
  * Java has 8 primitive types: boolean, byte, char, short, int, long, float, double
+ * - Primitives are literals, fixed values in memory and can be tested for equality
+ * with "==" with exceptions (float and double)
+ * - Objects compared with "==" are comping the object reference type, where two
+ * values are only equal if they point ot the same object in memory. 
  * - Primitives always have a default value, cannot be uninitialized or null
  * 
  * Primitive    |   Default Value
@@ -38,6 +42,8 @@ package Java.Equality;
  *  - Bigger Memory Footprint
  *  - Performance Impact
  *  - NullPointerException
+ * 
+ * 
  */
 public class PrimitivesVsObjects {
     
