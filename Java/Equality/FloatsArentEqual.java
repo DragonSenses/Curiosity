@@ -19,6 +19,7 @@ import java.math.BigDecimal;
  * - Immutable in that any operation won't result in the original object
  * being modified. For example, adding a one BigDecimal Object to another
  * consecutively won't change its value after the first operation
+ * - equals() is based on precision
  * 
  */
 public class FloatsArentEqual {
@@ -51,9 +52,26 @@ public class FloatsArentEqual {
         BigDecimal bd2 = new BigDecimal("0.2");
         BigDecimal bd3 = new BigDecimal("0.3");
 
-        System.out.println("val = " + val.add(bd1));
-        System.out.println("val = " + val.add(bd2));
-        System.out.println("val = " + val.add(bd3));
-        
+        System.out.println("val = " + val);
+        System.out.println("val.add(0.1) = " + val.add(bd1));
+        System.out.println("val.add(0.2) = " + val.add(bd2));
+        System.out.println("val.add(0.3) = " + val.add(bd3));
+
+        System.out.println("============ BigDecimal equals() is based on Precision ===========");
+        BigDecimal a = new BigDecimal("2.0");
+        BigDecimal b = new BigDecimal("2.0");
+        BigDecimal c = new BigDecimal("2.00");
+
+        boolean equal = a.equals(b);    // true
+        boolean notEqual = a.equals(c); // false
+        int comparison = a.compareTo(c); // 0
+
+        System.out.println("BigDecimal a = " + a);
+        System.out.println("BigDecimal b = " + b);
+        System.out.println("BigDecimal c = " + c);
+        System.out.println("a.equals(b) is " + equal);
+        System.out.println("a.equals(c) is " + notEqual);
+        System.out.println("a.compareTo(c) is " + comparison);
+        // A different way to compare BigDecimal is using compareTo 
     }
 }
