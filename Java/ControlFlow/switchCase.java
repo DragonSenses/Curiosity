@@ -54,5 +54,57 @@ public class switchCase {
         }
     }
 
-    
+    // Having no break statement causes control flow to pass to the subsequent
+    // case till the end.
+    public static void switchCaseNoBreak(int i){
+        switch(i){
+            case 1: 
+                System.out.println("Case 1");
+            case 2:
+                System.out.println("Case 2");
+            case 3:
+                System.out.println("Case 3");
+            case 4:
+                System.out.println("Case 4");
+            default:
+                System.out.println("Default");
+        }
+    }
+
+    public static void switchCaseWithBreak(int i){
+        switch(i){
+            case 1: 
+                System.out.println("Case 1");
+                break;
+            case 2:
+                System.out.println("Case 2");
+                break;
+            case 3:
+                System.out.println("Case 3");
+                break;
+            case 4:
+                System.out.println("Case 4");
+                break;
+            default:
+                System.out.println("Default");
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("======== Switch Case with enum ========");
+        for(Day d: Day.values()){
+            System.out.print("Today is " + d + "\t");
+            todayIs(d);
+        }
+
+        System.out.println("\n======== Switch Case without break statements ========");
+        int i = 2;
+        System.out.println("int i = " + i);
+        switchCaseNoBreak(i);   // Pass in 2, enters Case 2 but enters every case up to default
+
+        System.out.println("\n======== Switch Case with break statements ========");
+        i = 2;
+        System.out.println("int i = " + i);
+        switchCaseWithBreak(i);   // Pass in 2, enters Case 2 and rest of cases are ignored
+    }
 }
