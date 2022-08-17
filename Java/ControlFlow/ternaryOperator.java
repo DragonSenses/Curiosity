@@ -1,4 +1,4 @@
-package Java.Conditionals;
+package Java.ControlFlow;
 
 /**
  * ternaryOperator in java
