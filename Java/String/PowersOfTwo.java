@@ -16,9 +16,13 @@ public class PowersOfTwo {
     // statement.
     // print the values, if it isn't a multiple of 4 tab, otherwise a newline
     public static void main(String[] args) {
-        IntStream.rangeClosed(1,25) // Generate a range of 1 to 25
-                .map(i -> (i << 1)) // Multiply each value by 2
-                .forEachOrdered(i -> System.out.print(i + ((i % 5 != 0) ? "\t" : "\n")));
+        // IntStream.rangeClosed(1,25) // Generate a range of 1 to 25
+        //         .map(i -> (i << 1)) // Multiply each value by 2
+        //         .forEachOrdered(i -> System.out.print(i + ((i % 5 != 0) ? "\t" : "\n")));
+
+        IntStream.rangeClosed(1,70)
+                .map(i -> i)
+                .forEachOrdered(i -> System.out.print( ((i & i-1) == 0) ? i : " "));
     }
 
     // To Do 
