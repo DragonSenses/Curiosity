@@ -43,6 +43,7 @@ public class DishStream {
     );
 
     public static void main(String[] args) {
+        System.out.println("\n======== Extracting the names of certain elements ========");
         // Java 7 way
         // 1. Filter the elements Using an Accumulator
         List<Dish> lowCaloricDishes = new ArrayList<>();
@@ -64,6 +65,8 @@ public class DishStream {
         for(Dish dish: lowCaloricDishes) {
             lowCaloricDishesName.add(dish.getName());
         }
+        System.out.println("Dishes Less than 400 Calories:");
+        System.out.println("List:\t" + lowCaloricDishesName);
 
         // Java 8 way
         lowCaloricDishesName = 
@@ -82,9 +85,8 @@ public class DishStream {
                         .map(Dish::getName)     // Extracts the names of these dishes
                         .collect(toList());     // Stores all the names in a List
         
-        System.out.println("Dishes Less than 400 Calories:");
-        System.out.println(lowCaloricDishesName);
-        System.out.println();
+        
+        System.out.println("Stream:\t" + lowCaloricDishesName);
 
         System.out.println("\n======== Operations merged into the same pass ========");
         List<String> names =
@@ -111,5 +113,8 @@ public class DishStream {
         for(Dish d: vegetarianMenu) {
             System.out.println(d);
         }
+
+        System.out.println("\n======== Streams, printing out every Element ========");
+        menu.stream().forEach(System.out::println);
     } // end of main
 } // end of class
