@@ -1,5 +1,7 @@
 package Java.Equality;
 
+import java.math.BigDecimal;
+
 /**
  * Avoid float and double if exact answers are required. They perform binary
  * floating-point arithmetic which was carefully designed to furnish accurate
@@ -13,10 +15,16 @@ package Java.Equality;
  * this does not always work. 
  * 
  * Solutions:
- * 1) BigDecimal 
+ * 1) BigDecimal
+ * - if you want the system to keep track of the decimal point
+ * - Gives full control over rounding, lets you select from eight rounding modes
  * - Two disadvantages is that its a lot less convenient than using a 
  * primitive arithmetic type; and its slower. 
- * 2) Use int or long, and track decimal point yourself 
+ * 2) Use int or long
+ * - Performance is of the essence
+ * - Track decimal point yourself 
+ * - use int if quantities don't exceed nine decimal digits
+ * - use long if quantities don't exceed eighteen digits
  * 
  * Problem to demonstrate: Have $1 to spend, candies priced at $0.10, $0.20, $0.30,
  * and so forth up to a dollar. Buy one of each candy starting with the one with 
@@ -37,7 +45,7 @@ public class FloatsArentExact {
     // Broken - uses floating point for monetary calculation!
     static void poorAttempt(){
         System.out.println("Candies priced at $0.10, $0.20, $0.30,"
-            + " and so forth up to a dollar.\n\tHow many can we get starting from the 10 cent candy?");
+            + " and so forth up to a dollar.\n\n\tHow many can we get starting from the 10 cent candy?\n");
         double funds = 1.00;
         System.out.println("funds = " + funds); 
         int itemsBought = 0;
@@ -49,10 +57,39 @@ public class FloatsArentExact {
         System.out.println("Change: $" + funds);
     }
 
+    // Provides the correct answer
+    static void goodAttempt(){
+        System.out.println("\nLet's try that again, surely we can get more candy\n");
+        final BigDecimal TEN_CENTS = new BigDecimal(".10");
+        int itemsBought = 0;
+        BigDecimal funds = new BigDecimal("1.00");
+        for (BigDecimal price = TEN_CENTS;
+            funds.compareTo(price) >= 0;
+            price = price.add(TEN_CENTS)) {
+            funds = funds.subtract(price);
+            itemsBought++;
+        }
+        System.out.println(itemsBought + " items bought.");
+        System.out.println("Money left over: $" + funds);
+    }
+
+    // Correct answer using int
+    static void betterAttempt(){
+        System.out.println();
+        int funds = 100;
+        int itemsBought = 0;
+        for (int price = 10; funds >= price; price += 10) {
+            funds -= price;
+            itemsBought++;
+        }
+        System.out.println(itemsBought + " items bought.");
+        System.out.println("Cash left over: " + funds + " cents");
+    }
 
     public static void main(String[] args){
         issueOne();
-        
         poorAttempt();
+        goodAttempt();
+        betterAttempt();
     }
 }
