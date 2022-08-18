@@ -57,21 +57,56 @@ public class MakeRandomNumbers {
     static void displayBadRandom() {
         int n = 2*(Integer.MAX_VALUE/3); //715827882
         int lo = 0;
+
+        long startTime = System.nanoTime();
         for(int i = 0; i < 1000000; i++){ // Loop a Million Times
-            if(badRandom(n) < n/2) {
+            // Select only numbers that fall in lower half of the range
+            if(badRandom(n) < n/2) {    
                 lo++;
             }
         }
+        long endTime   = System.nanoTime();
+
         System.out.println(lo);
+
+        long totalTime = endTime - startTime;
+        System.out.println("Total running time: " + totalTime);
     }
 
-    static ThreadLocalRandom random = new ThreadLocalRandom();
+    // How to use the superior RNG 
+    int unboundedRandomValue = ThreadLocalRandom.current().nextInt();
+    // To produce a bounded Random Number between [0,100) where 0 is inclusive, 100 exclusive
+    int boundedRandomValue = ThreadLocalRandom.current().nextInt(0, 100); 
 
-    static int goodRandom(int n){
-        return Math.abs()
+    static int betterRandom(int n){
+        return Math.abs(ThreadLocalRandom.current().nextInt()) % n;
+    }
+
+    static void displayBetterRandom() {
+        int n = 2*(Integer.MAX_VALUE/3); //715827882
+        int lo = 0;
+
+        long startTime = System.nanoTime();
+        for(int i = 0; i < 1000000; i++){ // Loop a Million Times
+            if(betterRandom(n) < n/2) {
+                lo++;
+            }
+        }
+        long endTime   = System.nanoTime();
+        System.out.println(lo);
+
+        long totalTime = endTime - startTime;
+        System.out.println("Total running time: " + totalTime);
     }
 
     public static void main(String[] args){
+        System.out.println("======== Generating a Million Random Numbers ... ========");
+        System.out.println("How many numbers fall in the lower half of the range?");
+        System.out.print("Expected: 500,000\tActual: ");
         displayBadRandom();
+        System.out.println("\n======== Generating a Million Random Numbers ========");
+        System.out.println("How many numbers fall in the lower half of the range?");
+        System.out.print("Expected: 500,000\tActual: ");
+        displayBetterRandom();
     }
 }
