@@ -1,6 +1,6 @@
 package Java.Math;
 
-import java.util.Random;
+import java.util.Random;    // old way to generate random numbers
 
 /**
  * Task: Generate random integers between zero and some upper bound, n [0,n)
@@ -8,7 +8,7 @@ import java.util.Random;
  * Demonstrates a few flaws about java's pseudorandom number generator and 
  * a better library that produces finer random numbers with more speed.
  */
-public class FinerRandomNumbers {
+public class MakeRandomNumbers {
     
     // Standard, Common, but deeply flawed
     static Random rnd = new Random();
@@ -32,14 +32,25 @@ public class FinerRandomNumbers {
     }
 
     /**
-     * To demonstrate flaw #2, this method generates a million random numbers in a
+     * To demonstrate flaw #2, this method generates a million random numbers in
+     * a carefully chosen range and then prints out how many of the numbers fell
+     * in the lower half of the range. If worked properly, should print a number 
+     * close to half a million;
      * 
      */
     static void displayBadRandom() {
-
+        int n = 2*(Integer.MAX_VALUE/3); //715827882
+        int lo = 0;
+        for(int i = 0; i < 1000000; i++){ // Loop a Million Times
+            if(badRandom(n) < n/2) {
+                lo++;
+            }
+        }
+        System.out.println(lo);
     }
 
     public static void main(String[] args){
-
+        System.out.println(Integer.MAX_VALUE/3);
+        displayBadRandom();
     }
 }
