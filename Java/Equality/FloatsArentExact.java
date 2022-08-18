@@ -18,7 +18,10 @@ package Java.Equality;
  * primitive arithmetic type; and its slower. 
  * 2) Use int or long, and track decimal point yourself 
  * 
- * Problem to demonstrate:
+ * Problem to demonstrate: Have $1 to spend, candies priced at $0.10, $0.20, $0.30,
+ * and so forth up to a dollar. Buy one of each candy starting with the one with 
+ * 10 cents until you cant afford to buy the next. How many candies can be bought, 
+ * and how much change?
  */
 public class FloatsArentExact {
     
@@ -28,9 +31,28 @@ public class FloatsArentExact {
         System.out.println("\nWe have $1.00 and buy 9 nine candies"
             + " worth 10 cents each, what's left? ");
         System.out.println("1.00 - 9 * 0.10 = $" + (1.00 - 9 * 0.10));
+        System.out.println();
     }
+
+    // Broken - uses floating point for monetary calculation!
+    static void poorAttempt(){
+        System.out.println("Candies priced at $0.10, $0.20, $0.30,"
+            + " and so forth up to a dollar.\n\tHow many can we get starting from the 10 cent candy?");
+        double funds = 1.00;
+        System.out.println("funds = " + funds); 
+        int itemsBought = 0;
+        for (double price = 0.10; funds >= price; price += 0.10) {
+            funds -= price;
+            itemsBought++;
+        }
+        System.out.println(itemsBought + " items bought.");
+        System.out.println("Change: $" + funds);
+    }
+
 
     public static void main(String[] args){
         issueOne();
+        
+        poorAttempt();
     }
 }
