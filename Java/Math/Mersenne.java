@@ -2,9 +2,13 @@ package Java.Math;
 
 /**
  * A Mersenne number is of the form Mn = 2^n - 1, where n is an integer.
+ * - The first few Mersenne numbers are 1, 3, 7, 15, 31, 63, 127, 255
  * - Binary Repunits: consists of all 1's in base-2
  * - For Mersenne number to be a prime number, then n must be prime, so
  * should be denoted as Mp = 2^p - 1. 
+ * - The first few Mersenne primes are 3, 7, 31, 127, 8191, 131071,
+ *   524287, 2147483647
+ * - Every Mersenne prime corresponds to exactly one perfect number
  * - Mersennes primes is one of the most computationally intensive
  * - Number of digits D, in a Mersennes prime is 
  *  D = floor[log(2^n-1)+1]
@@ -35,10 +39,34 @@ public class Mersenne {
         return (n & n-1) == 0;
     }
 
+    /**
+     * Using the formula, a Mersenne number can be derived from incoming 
+     * parameter n when Mn = 2^n -1, then Mn + 1 = 2^n. 
+     * We add 1 to the prospective number and check if the sum is an
+     * exponent of 2.
+     * @param n
+     * @return
+     */
     public static boolean isMersenne(int n) {
-
+        return(isPowerOfTwo(n+1));
     }
-    
+
+    /** Work in Progress
+     * Note Mersenne number consists of all 1's in base-2, adding 1 will
+     * cause it to have only 1 bit as a set bit and a power of two
+     * @param n
+     * @return
+     */
+    static long isMersenneBetter(long x) {
+        x |= x >> 1;
+        x |= x >> 2;
+        x |= x >> 4;
+        x |= x >> 8;
+        x |= x >> 16;
+        x |= x >> 32;
+        return x;
+    }
+
     public static void main(String[] args){
 
     }
