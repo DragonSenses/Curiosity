@@ -22,4 +22,15 @@ package Java.Equality;
  */
 public class FloatsArentExact {
     
+    static void issueOne(){
+        System.out.println("We have $1.03 and spent $0.42, what's left?");
+        System.out.println("$1.03 - $0.42 = $" + (1.03 - 0.42));
+        System.out.println("\nWe have $1.00 and buy 9 nine candies"
+            + " worth 10 cents each, what's left? ");
+        System.out.println("1.00 - 9 * 0.10 = $" + (1.00 - 9 * 0.10));
+    }
+
+    public static void main(String[] args){
+        issueOne();
+    }
 }
