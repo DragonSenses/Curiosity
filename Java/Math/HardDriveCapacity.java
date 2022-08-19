@@ -30,13 +30,28 @@ package Java.Math;
  * the value by 1000, a certain number of times (based on the prefix)
  * 2) Divide the bytes by 1024 a certain number of times (based on the prefix)
  * 
- * Better Algorithm:
- * 1) Convert number from base 10 to base 2
+ * // To do: could make reduce a for loop wihin calculate()
  */
 public class HardDriveCapacity {
 
     static String convertBase(String n, int sourceBase, int destinationBase){
         return Integer.toString(Integer.parseInt(n, sourceBase), destinationBase);
+    }
+
+    /**
+     * Calculates the true Hard Drive Capacity. A general method that repeats
+     * the loop based on number of times parameter is passed in. 
+     * @param bytes number of bytes in claimed capacity
+     * @param times number of times to multiply by 10^3 and divide by 10^3
+     */
+    private static double calculate(double bytes, int times){
+        for(int i = 0; i < times; i++){
+            bytes *= 1000;
+        }
+        for(int i = 0; i < times; i++){
+            bytes /= 1024;
+        }
+        return bytes;
     }
 
     public static double convertGB(double bytes){
@@ -58,14 +73,27 @@ public class HardDriveCapacity {
      * and T for Tera (soon support Petabyte); not-case sensitive
      * @return
      */
-    public static double convert(double bytes, char prefix){
-        return 0;
+    public static double convert(double bytes, char prefix) throws IllegalArgumentException {
+        switch(prefix) {
+            case 'G' | 'g':
+                return calculate(bytes,3);
+            case 'M' | 'm':
+                return calculate(bytes,2);
+            case 'K' | 'k':
+                return calculate(bytes, 1);
+            case 'T' | 't':
+                return calculate(bytes, 4); 
+            default:
+                throw new IllegalArgumentException("Not a viable prefix to bytes");
+        }
     }
 
     public static void main(String[] args){
+        System.out.println("64 in binary is " 
+            + convertBase("64",10,2));
         // 64 GB should turn out to be 59.6 GB 
         System.out.println(convertGB(64) +" GB");
-        System.out.println(convertBase("64",10,2));
+        
         // Example 120 GB = 120,000MB, = 120,000,000KB = 120,000,000,000 bytes
         // 120,000,000,000 bytes / 1024 = 117,187,500 KB
         // 117,187,500 KB / 1024 = 114,440.91796875 MB
