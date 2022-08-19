@@ -73,19 +73,28 @@ public class HardDriveCapacity {
      * @param bytes the number of bytes
      * @param prefix character before bytes, K for kilo, M for Mega, G for Giga
      * and T for Tera (soon support Petabyte); not-case sensitive
-     * @return
+     * @return the true hard drive capacity converted form the claimed/advertised capacity
      */
     public static double convert(double bytes, char prefix) throws IllegalArgumentException {
         switch(prefix) {
-            case 'G' | 'g':
-                return calculate(bytes,3);
-            case 'M' | 'm':
-                return calculate(bytes,2);
-            case 'K' | 'k':
+            case 'K': case 'k': // Kilobyte, 1024 ^ 1
                 return calculate(bytes, 1);
-            case 'T' | 't':
+            case 'M': case 'm': // Megabyte, 1024 ^ 2
+                return calculate(bytes,2);
+            case 'G': case 'g': // Gigabyte, 1024 ^ 3
+                return calculate(bytes,3);
+            case 'T': case't': // Terabyte, 1024 ^ 4
                 return calculate(bytes, 4);
-             
+            case 'P': case 'p': // Petabyte, 1024 ^ 5
+                return calculate(bytes, 5);
+            case 'E': case 'e': // Exabyte, 1024 ^ 6
+                return calculate(bytes, 6);
+            case 'Z': case 'z': // Zettabyte, 1024 ^ 7
+                return calculate(bytes, 7);
+            case 'Y': case 'y': // Yottabyte, 1024 ^ 8
+                return calculate(bytes, 8); 
+            case 'B': case 'b': // Brontobyte, 1024 ^ 9, theoretical, non-standardized
+                return calculate(bytes, 9);
             default:
                 throw new IllegalArgumentException("Not a viable prefix to bytes");
         }
