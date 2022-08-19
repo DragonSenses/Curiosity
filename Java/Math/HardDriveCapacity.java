@@ -1,5 +1,5 @@
 package Java.Math;
-// Work In progress
+
 /**
  * Calculates the true hard drive capacity given its advertised space.
  * 
@@ -30,7 +30,9 @@ package Java.Math;
  * the value by 1000, a certain number of times (based on the prefix)
  * 2) Divide the bytes by 1024 a certain number of times (based on the prefix)
  * 
- * // To do: could make reduce a for loop wihin calculate()
+ * // To do: 
+ * - could reduce a for loop wihin calculate()
+ * - Rounding to two decimal places
  */
 public class HardDriveCapacity {
 
@@ -51,7 +53,7 @@ public class HardDriveCapacity {
         for(int i = 0; i < times; i++){
             bytes /= 1024;
         }
-        return bytes;
+        return Math.round(bytes*100.0)/100.0;   // Rounds to 2 decimal places
     }
 
     public static double convertGB(double bytes){
@@ -82,7 +84,8 @@ public class HardDriveCapacity {
             case 'K' | 'k':
                 return calculate(bytes, 1);
             case 'T' | 't':
-                return calculate(bytes, 4); 
+                return calculate(bytes, 4);
+             
             default:
                 throw new IllegalArgumentException("Not a viable prefix to bytes");
         }
@@ -92,13 +95,15 @@ public class HardDriveCapacity {
         System.out.println("64 in binary is " 
             + convertBase("64",10,2));
         // 64 GB should turn out to be 59.6 GB 
-        System.out.println(convertGB(64) +" GB");
-        
+        // System.out.println(convertGB(64) +" GB");
+        System.out.println("True Hard Drive capacity of 64GB is\n" + convert(64,'g') + " GB\n");
+
+
         // Example 120 GB = 120,000MB, = 120,000,000KB = 120,000,000,000 bytes
         // 120,000,000,000 bytes / 1024 = 117,187,500 KB
         // 117,187,500 KB / 1024 = 114,440.91796875 MB
         // 114,440.91796875 MB / 1024 = 111.7587089538574 GB
         // 111.8 GB
-
+        System.out.println("True Hard Drive capacity of 120GB is\n" +convert(120,'g') + " GB\n");
     }
 }
