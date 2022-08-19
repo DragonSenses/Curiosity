@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;  // Finer way to generate random 
  * by one thread is not affected by the other thread, whereas java.util.Random 
  * provides random numbers globally.
  */
-public class MakeRandomNumbers {
+public class RandomNumbers {
     
     // Standard, Common, but deeply flawed
     static Random rnd = new Random();
