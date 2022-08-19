@@ -55,7 +55,7 @@ public class MakeRandomNumbers {
      * half of its range!
      */
     static void displayBadRandom() {
-        int n = 2*(Integer.MAX_VALUE/3); //715827882
+        int n = 2*(Integer.MAX_VALUE/3); 
         int lo = 0;
 
         long startTime = System.nanoTime();
@@ -79,16 +79,16 @@ public class MakeRandomNumbers {
     int boundedRandomValue = ThreadLocalRandom.current().nextInt(0, 100); 
 
     static int betterRandom(int n){
-        return Math.abs(ThreadLocalRandom.current().nextInt()) % n;
+        return ThreadLocalRandom.current().nextInt(0,n+1);
     }
 
     static void displayBetterRandom() {
-        int n = 2*(Integer.MAX_VALUE/3); //715827882
+        int n = 2*(Integer.MAX_VALUE/3) + 1; 
         int lo = 0;
 
         long startTime = System.nanoTime();
         for(int i = 0; i < 1000000; i++){ // Loop a Million Times
-            if(betterRandom(n) < n/2) {
+            if(ThreadLocalRandom.current().nextInt(0,n) < n/2) {
                 lo++;
             }
         }
