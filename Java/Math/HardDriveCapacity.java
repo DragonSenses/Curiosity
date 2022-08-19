@@ -34,8 +34,12 @@ package Java.Math;
  * 1) Convert number from base 10 to base 2
  */
 public class HardDriveCapacity {
-    // try long then double
-    public static int convertGB(int bytes){
+
+    static String convertBase(String n, int sourceBase, int destinationBase){
+        return Integer.toString(Integer.parseInt(n, sourceBase), destinationBase);
+    }
+
+    public static double convertGB(double bytes){
         for(int i = 0; i < 3; i++){
             bytes *= 1000;
         }
@@ -54,14 +58,14 @@ public class HardDriveCapacity {
      * and T for Tera (soon support Petabyte); not-case sensitive
      * @return
      */
-    public static int convert(int bytes, char prefix){
+    public static double convert(double bytes, char prefix){
         return 0;
     }
 
     public static void main(String[] args){
         // 64 GB should turn out to be 59.6 GB 
-        System.out.println(convert(120,'G'));
-
+        System.out.println(convertGB(64) +" GB");
+        System.out.println(convertBase("64",10,2));
         // Example 120 GB = 120,000MB, = 120,000,000KB = 120,000,000,000 bytes
         // 120,000,000,000 bytes / 1024 = 117,187,500 KB
         // 117,187,500 KB / 1024 = 114,440.91796875 MB
