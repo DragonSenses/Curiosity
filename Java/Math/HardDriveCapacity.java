@@ -104,26 +104,32 @@ public class HardDriveCapacity {
         }
     }
 
+    /**
+     * Outputs to the terminal the true hard drive capacity and discrepancy
+     * @param bytes   In bytes, with prefix
+     * @param prefix  The prefix character before bytes that determines what power of 1024
+     */
     static void print(double bytes, char prefix){
-        System.out.println("True Hard Drive capacity of 10TB is " +convert(10,'T') + " TB\n");
+        prefix = Character.toUpperCase(prefix);
+        System.out.println("True Hard Drive capacity of [" 
+            + bytes + " " + prefix +"B] is [" + convert(bytes,prefix) 
+            + " "+ prefix + "B]");
+        
     }
 
     public static void main(String[] args){
-        // System.out.println("64 in binary is " 
-        //     + convertBase("64",10,2));
         // 64 GB should turn out to be 59.6 GB 
-        // System.out.println(convertGB(64) +" GB");
-        System.out.println("True Hard Drive capacity of 64GB is " + convert(64,'g') + " GB\n");
-
+        print(64,'g');
 
         // Example 120 GB = 120,000MB, = 120,000,000KB = 120,000,000,000 bytes
         // 120,000,000,000 bytes / 1024 = 117,187,500 KB
         // 117,187,500 KB / 1024 = 114,440.91796875 MB
         // 114,440.91796875 MB / 1024 = 111.7587089538574 GB
         // 111.8 GB
-        System.out.println("True Hard Drive capacity of 120GB is " +convert(120,'g') + " GB\n");
-        System.out.println("True Hard Drive capacity of 500GB is " +convert(500,'G') + " GB\n");
-        System.out.println("True Hard Drive capacity of 6TB is " +convert(6,'t') + " TB\n");
-        System.out.println("True Hard Drive capacity of 10TB is " +convert(10,'T') + " TB\n");
+
+        print(120,'g');
+        print(500,'G');
+        print(6,'t');
+        print(10,'T');
     }
 }
