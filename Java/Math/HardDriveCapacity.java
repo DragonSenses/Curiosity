@@ -126,7 +126,7 @@ public class HardDriveCapacity {
 
     /**
      * Find the deviation between claimed capacity and true hard drive capacity.
-     * Formula: 2^n / 10^n = % deviation
+     * Formula: 2^n / 10^n = % deviation. This scales with the prefix. 
      * @param bytes     number of bytes 
      * @param prefix    the prefix character before bytes, that determines what
      *                  power of 1024
@@ -154,6 +154,7 @@ public class HardDriveCapacity {
     }
 
     public static void main(String[] args){
+        print(8,'G');
         // 64 GB should turn out to be 59.6 GB 
         print(64,'g');
 
@@ -165,7 +166,11 @@ public class HardDriveCapacity {
 
         print(120,'g');
         print(500,'G');
+        print(1,'t');
+        print(2,'t');
         print(6,'t');
+        print(8,'t');
         print(10,'T');
+
     }
 }
