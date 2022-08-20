@@ -1,5 +1,7 @@
 package Java.Java8.Streams;
 
+import java.util.stream.Stream;
+
 /**
  * Pythagorean triples are numbers that satisfy the Pythagorean formula
  *  a^2 + b^2 = c^2
@@ -27,7 +29,20 @@ package Java.Java8.Streams;
  * V) (b,b,a) is a primitive Pythagorean triple, and from the lemma, a is never even.
  * However, this contradicts the equation III) 2b^2 = a^2 whhich implies that
  * a must be even. 
+ * 
+ * ==========   Algorithm to create a Stream of Pythagorean Triples ==========
+ * 1. Represent a Pythagorean Triple by a int[] with 3 elements, a tuple
+ * 2. Filter through a stream of integers 
+ * 3. Assume a & b are given within (a,b,c) and we apply a test to each integer 
+ * 4. Generate Tuples and transform each of these filtered elements into a int[]
+ * 5. Generate a stream of b values
+ * 6. Generate a stream of a values
+ * 7. Limit the output
  */
 public class PythagoreanTriples {
     
+    public static void main(String[] args){
+        // Build a Stream of int[] that represent Pythagorean Triples
+        Stream<int[]> pythagoreanTriples;
+    }
 }
