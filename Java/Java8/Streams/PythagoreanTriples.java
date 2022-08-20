@@ -51,12 +51,23 @@ public class PythagoreanTriples {
         // filter selects only values for b that can form a Pythagorean triple with a
 
         // map/transform these filtered elements into a int[] = {a,b,c}
-        // map(b -> new int[]{a,b, int(Math.sqrt(a*a + b*b))})
+        // .map(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))})
+
+        // map() from IntStream expects only another int to be returned for each
+        // element of the stream, so we need to modify it to return an object-valued
+        // stream
+        //.mapToObj(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))})
 
         // Generate values from an int stream
         IntStream.rangeClosed(1,100)
                  .filter(b -> Math.sqrt(a*a + b*b) % 1 == 0)
                  .boxed() // Generate a Stream<Integer> from IntStream
                  .map(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))});
+
+        // Generate a values
+        IntStream.rangeClosed(1,100).boxed()
+                 (a -> 
+                    
+                    );
     }
 }
