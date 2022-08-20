@@ -66,8 +66,10 @@ public class PythagoreanTriples {
 
         // Generate a values
         IntStream.rangeClosed(1,100).boxed()
-                 (a -> 
-                    
-                    );
-    }
-}
+                 .flatMap(a -> 
+                    IntStream.rangeClosed(a,100)    // Range of b to starts a, to avoid duplicates
+                        .filter(b -> Math.sqrt(a*a + b*b) % 1 == 0)
+                        .map(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))})
+                );
+    } // end of Main
+} // end of Class
