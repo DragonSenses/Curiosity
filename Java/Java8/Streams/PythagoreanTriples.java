@@ -1,5 +1,6 @@
 package Java.Java8.Streams;
 
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -53,7 +54,9 @@ public class PythagoreanTriples {
         // map(b -> new int[]{a,b, int(Math.sqrt(a*a + b*b))})
 
         // Generate values from an int stream
-        IntStream.rangeClose(1,100)
-           
+        IntStream.rangeClosed(1,100)
+                 .filter(b -> Math.sqrt(a*a + b*b) % 1 == 0)
+                 .boxed() // Generate a Stream<Integer> from IntStream
+                 .map(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))});
     }
 }
