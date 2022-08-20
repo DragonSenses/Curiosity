@@ -45,6 +45,26 @@ public class HardDriveCapacity {
     }
 
     /**
+     * Here we round the value to return a more readable result.
+     * Decided to round to two decimal places.
+     * @param val value to round
+     * @return  the value rounded to two decimal places
+     */
+    private static double round(double val){
+        return Math.round(val*100.0)/100.0;   // Rounds to 2 decimal places
+    }
+
+    // Round value to 4 decimal places
+    private static double round4(double val) {
+        return Math.round(val*10000.0)/10000.0;
+    }
+
+    // Moves the value up two decimal places to represent percentage
+    private static double percent(double val){
+        return val*100.0;
+    }
+
+    /**
      * Calculates the true Hard Drive Capacity. A general method that repeats
      * the loop based on number of times parameter is passed in. 
      * @param bytes number of bytes in claimed capacity
@@ -57,7 +77,7 @@ public class HardDriveCapacity {
         for(int i = 0; i < times; i++){
             bytes /= 1024;
         }
-        return Math.round(bytes*100.0)/100.0;   // Rounds to 2 decimal places
+        return bytes;   
     }
 
     public static double convertGB(double bytes){
@@ -105,7 +125,8 @@ public class HardDriveCapacity {
     }
 
     /**
-     * Find the deviation between claimed capacity and true hard drive capacity
+     * Find the deviation between claimed capacity and true hard drive capacity.
+     * Formula: 2^n / 10^n = % deviation
      * @param bytes     number of bytes 
      * @param prefix    the prefix character before bytes, that determines what
      *                  power of 1024
@@ -113,7 +134,7 @@ public class HardDriveCapacity {
      */
     static double deviation(double bytes, char prefix){
         double actualSpace = convert(bytes,prefix);
-
+        return bytes/actualSpace;
     }
 
     /**
@@ -124,9 +145,12 @@ public class HardDriveCapacity {
     static void print(double bytes, char prefix){
         prefix = Character.toUpperCase(prefix);
         System.out.println("True Hard Drive capacity of [" 
-            + bytes + " " + prefix +"B] is [" + convert(bytes,prefix) 
+            + bytes + " " + prefix +"B] is [" + round(convert(bytes,prefix)) 
             + " "+ prefix + "B]");
-        System.out.println("The deviation is " + deviation(bytes,prefix));
+
+        double d = deviation(bytes,prefix);
+        System.out.println("The deviation is " + d + " or " 
+            + round(percent(round4(d-1))) + "%\n" );
     }
 
     public static void main(String[] args){
