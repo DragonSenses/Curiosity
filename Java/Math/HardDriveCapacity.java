@@ -20,14 +20,14 @@ package Java.Math;
  * To a computer system, a KB is 1024 bytes.
  * To a hard disk manufacturer, a KB is 1000 bytes.
  * 
- * Kilobyte (KB) = 1,024 Bytes
- * MegaByte (MB) = 1,024 Kilobytes or 1,048,576 Bytes
- * Gigabyte (GB) = 1,024 Megabytes or 1,073,741,824 Bytes
- * Terabyte (TB) = 1,024 Gigabytes or 1,099,511,627,776 Bytes
- * Petabyte (PB)  =  1,024^5	=   1,125,899,906,842,624
- * Exabyte  (EB)  =  1,024^6	=   1,152,921,504,606,846,976
- * Zettabyte (ZB) =  1,024^7    =   1,180,591,620,717,411,303,424
- * Yottabyte (YB) =  1,024^8 	=   1,208,925,819,614,629,174,706,176
+ * Kilobyte (KB)  =  1024 Bytes
+ * MegaByte (MB)  =  1024^2     =   1,048,576               Bytes = 1,024 Kilobytes
+ * Gigabyte (GB)  =  1024^3     =   1,073,741,824           Bytes = 1,024 Megabytes
+ * Terabyte (TB)  =  1024^4     =   1,099,511,627,776       Bytes = 1,024 Gigabytes
+ * Petabyte (PB)  =  1024^5	    =   1,125,899,906,842,624
+ * Exabyte  (EB)  =  1024^6	    =   1,152,921,504,606,846,976
+ * Zettabyte (ZB) =  1024^7     =   1,180,591,620,717,411,303,424
+ * Yottabyte (YB) =  1024^8 	=   1,208,925,819,614,629,174,706,176
  * 
  * Algorithm:
  * 1) Convert the value into bytes using base 10 by multiplying
@@ -105,7 +105,19 @@ public class HardDriveCapacity {
     }
 
     /**
-     * Outputs to the terminal the true hard drive capacity and discrepancy
+     * Find the deviation between claimed capacity and true hard drive capacity
+     * @param bytes     number of bytes 
+     * @param prefix    the prefix character before bytes, that determines what
+     *                  power of 1024
+     * @return  the percent deviation between claimed capacity and true capacity
+     */
+    static double deviation(double bytes, char prefix){
+        double actualSpace = convert(bytes,prefix);
+
+    }
+
+    /**
+     * Outputs to the terminal the true hard drive capacity and deviation from  
      * @param bytes   In bytes, with prefix
      * @param prefix  The prefix character before bytes that determines what power of 1024
      */
@@ -114,7 +126,7 @@ public class HardDriveCapacity {
         System.out.println("True Hard Drive capacity of [" 
             + bytes + " " + prefix +"B] is [" + convert(bytes,prefix) 
             + " "+ prefix + "B]");
-        
+        System.out.println("The deviation is " + deviation(bytes,prefix));
     }
 
     public static void main(String[] args){
