@@ -24,6 +24,10 @@ package Java.Math;
  * MegaByte (MB) = 1,024 Kilobytes or 1,048,576 Bytes
  * Gigabyte (GB) = 1,024 Megabytes or 1,073,741,824 Bytes
  * Terabyte (TB) = 1,024 Gigabytes or 1,099,511,627,776 Bytes
+ * Petabyte (PB)  =  1,024^5	=   1,125,899,906,842,624
+ * Exabyte  (EB)  =  1,024^6	=   1,152,921,504,606,846,976
+ * Zettabyte (ZB) =  1,024^7    =   1,180,591,620,717,411,303,424
+ * Yottabyte (YB) =  1,024^8 	=   1,208,925,819,614,629,174,706,176
  * 
  * Algorithm:
  * 1) Convert the value into bytes using base 10 by multiplying
@@ -31,7 +35,7 @@ package Java.Math;
  * 2) Divide the bytes by 1024 a certain number of times (based on the prefix)
  * 
  * // To do: 
- * - could reduce a for loop wihin calculate()
+ * - could reduce a for loop within calculate()
  * - Rounding to two decimal places
  */
 public class HardDriveCapacity {
@@ -100,12 +104,16 @@ public class HardDriveCapacity {
         }
     }
 
+    static void print(double bytes, char prefix){
+        System.out.println("True Hard Drive capacity of 10TB is " +convert(10,'T') + " TB\n");
+    }
+
     public static void main(String[] args){
-        System.out.println("64 in binary is " 
-            + convertBase("64",10,2));
+        // System.out.println("64 in binary is " 
+        //     + convertBase("64",10,2));
         // 64 GB should turn out to be 59.6 GB 
         // System.out.println(convertGB(64) +" GB");
-        System.out.println("True Hard Drive capacity of 64GB is\n" + convert(64,'g') + " GB\n");
+        System.out.println("True Hard Drive capacity of 64GB is " + convert(64,'g') + " GB\n");
 
 
         // Example 120 GB = 120,000MB, = 120,000,000KB = 120,000,000,000 bytes
@@ -113,6 +121,9 @@ public class HardDriveCapacity {
         // 117,187,500 KB / 1024 = 114,440.91796875 MB
         // 114,440.91796875 MB / 1024 = 111.7587089538574 GB
         // 111.8 GB
-        System.out.println("True Hard Drive capacity of 120GB is\n" +convert(120,'g') + " GB\n");
+        System.out.println("True Hard Drive capacity of 120GB is " +convert(120,'g') + " GB\n");
+        System.out.println("True Hard Drive capacity of 500GB is " +convert(500,'G') + " GB\n");
+        System.out.println("True Hard Drive capacity of 6TB is " +convert(6,'t') + " TB\n");
+        System.out.println("True Hard Drive capacity of 10TB is " +convert(10,'T') + " TB\n");
     }
 }
