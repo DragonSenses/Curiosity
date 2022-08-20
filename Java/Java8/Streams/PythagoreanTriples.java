@@ -44,5 +44,16 @@ public class PythagoreanTriples {
     public static void main(String[] args){
         // Build a Stream of int[] that represent Pythagorean Triples
         Stream<int[]> pythagoreanTriples;
+
+        // The test: Square root of a^2 + b^2 = Whole Number
+        // filter(b -> Math.sqrt(a*a + b*b) % 1 == 0)
+        // filter selects only values for b that can form a Pythagorean triple with a
+
+        // map/transform these filtered elements into a int[] = {a,b,c}
+        // map(b -> new int[]{a,b, int(Math.sqrt(a*a + b*b))})
+
+        // Generate values from an int stream
+        IntStream.rangeClose(1,100)
+           
     }
 }
