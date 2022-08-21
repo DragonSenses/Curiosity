@@ -1,4 +1,4 @@
-package Java.Operators;
+package Java.BitwiseOperations;
 
 import java.util.Arrays;
 
