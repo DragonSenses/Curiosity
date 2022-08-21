@@ -21,8 +21,6 @@ public class FilteringStreams {
         new Dish("salmon", false, 450, Dish.Type.FISH)
     );
 
-
-
     public static void main(String[] args) {
         System.out.println("======== Filtering with a Predicate ========");
         List<Dish> vegetarianMenu = menu.stream()
@@ -86,5 +84,15 @@ public class FilteringStreams {
         dishesLimit3.forEach(System.out::println);
 
         System.out.println("\n======== Skipping Elements of a Stream ========");
+        // skip() returns a stream that discards the first n elements 
+        // if stream has fewer than n elements, an empty stream is returned
+        // complements limit()
+        List<Dish> dishesSkip2 = menu.stream()
+            .filter(d -> d.getCalories() > 300)
+            .skip(2)
+            .collect(toList());
+        System.out.println("Skipping elements:");   // Skips pork and beef
+        dishesSkip2.forEach(System.out::println);
+        
     } // end of main
 } // end of Class
