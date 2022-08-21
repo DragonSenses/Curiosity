@@ -56,10 +56,18 @@ public class FilteringStreams {
         // Downside to filter() is that it iterates through the whole stream and
         // have the predicate applied to each element 
         System.out.println("\n======== Slicing using takeWhile() ========");
-        
+        // Initial List is already sorted, so stop once you found an element that
+        // satisfies the predicate
+        // takeWhile() stops once it has found an element that fails to match
         List<Dish> slicedMenu1 = specialMenu.stream()
             .takeWhile(dish -> dish.getCalories() < 320)
             .collect(toList());
         slicedMenu1.forEach(System.out::println);
+
+        System.out.println("\n======== Slicing using dropWhile() ========");
+
+        System.out.println("\n======== Limit or Truncating a Stream ========");
+
+        System.out.println("\n======== Skipping Elements of a Stream ========");
     } // end of main
 } // end of Class
