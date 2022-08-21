@@ -21,6 +21,8 @@ public class FilteringStreams {
         new Dish("salmon", false, 450, Dish.Type.FISH)
     );
 
+
+
     public static void main(String[] args) {
         System.out.println("======== Filtering with a Predicate ========");
         List<Dish> vegetarianMenu = menu.stream()
@@ -39,10 +41,25 @@ public class FilteringStreams {
             .forEach(System.out::println);
 
         System.out.println("\n======== Slicing a Stream ========");
-
-
-
-
-        System.out.println("\n======== placeholder ========");
+        // Sorted in ascending order of number of calories!
+        List<Dish> specialMenu = Arrays.asList(
+            new Dish("season fruit", true, 120, Dish.Type.OTHER),
+            new Dish("prawns", false, 300, Dish.Type.FISH),
+            new Dish("rice", true, 350, Dish.Type.OTHER),
+            new Dish("chicken", false, 400, Dish.Type.MEAT),
+            new Dish("french fries", true, 530, Dish.Type.OTHER));
+        System.out.println("Filtered sorted menu:");
+        List<Dish> filteredMenu = specialMenu.stream()
+            .filter(dish -> dish.getCalories() < 320)   // Select elements until cal < 320
+            .collect(toList());
+        filteredMenu.forEach(System.out::println);
+        // Downside to filter() is that it iterates through the whole stream and
+        // have the predicate applied to each element 
+        System.out.println("\n======== Slicing using takeWhile() ========");
+        
+        List<Dish> slicedMenu1 = specialMenu.stream()
+            .takeWhile(dish -> dish.getCalories() < 320)
+            .collect(toList());
+        slicedMenu1.forEach(System.out::println);
     } // end of main
 } // end of Class
