@@ -1,5 +1,6 @@
 package Java.Java8.Streams;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -79,9 +80,22 @@ public class PythagoreanTriples {
                                   .mapToObj(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))})
         );
        
-
-        // Now Consumer the Stream and Limit the output
+        System.out.println("\n======== Pythagorean Triples ========");
+        // Now Consume the Stream and Limit the output
         pythagoreanTriples.limit(20).forEach(t -> System.out.println(t[0] + ", " + t[1] + ", " + t[2]));
+
+        
+        System.out.println("\n======== Pythagorean Triples filtering third element as whole number ========");
+        // Improvement: Not optimal in that square root is calculated twice in
+        // filter and map. First generate triples of form (a*a, b*b, a*a+b*b) and
+        // filter ones where the third element is a whole number
+        Stream<int[]> pythagoreanTriples2 = 
+            IntStream.rangeClosed(1, 100).boxed()
+                .flatMap(a -> IntStream.rangeClosed(a, 100)
+                .mapToObj(b -> new double[]{a, b, Math.sqrt(a * a + b * b)})
+                .filter(t -> t[2] % 1 == 0))
+                .map(array -> Arrays.stream(array).mapToInt(a -> (int) a).toArray());
+    pythagoreanTriples2.forEach(t -> System.out.println(t[0] + ", " + t[1] + ", " + t[2]));
 
     } // end of Main
 } // end of Class
