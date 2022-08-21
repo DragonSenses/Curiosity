@@ -73,6 +73,17 @@ public class FilteringStreams {
             .collect(toList());
         slicedMenu2.forEach(System.out::println);
         System.out.println("\n======== Limit or Truncating a Stream ========");
+        // limit() returns another stream that's no longer than a given size
+        // Requested size is passed in as argument to limit
+        // If stream is ordered, first elements returned up to maximum of n
+        // If unordered (for instance, if source is a Set) then should not 
+        // assue any order on the result produced by limit
+        List<Dish> dishesLimit3 = menu.stream()
+            .filter(d -> d.getCalories() > 300)
+            .limit(3)
+            .collect(toList());
+        System.out.println("Truncating a stream:");
+        dishesLimit3.forEach(System.out::println);
 
         System.out.println("\n======== Skipping Elements of a Stream ========");
     } // end of main
