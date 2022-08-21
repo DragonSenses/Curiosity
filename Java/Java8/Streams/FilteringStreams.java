@@ -65,7 +65,13 @@ public class FilteringStreams {
         slicedMenu1.forEach(System.out::println);
 
         System.out.println("\n======== Slicing using dropWhile() ========");
-
+        // Complement of takeWhile(), throws away elements at the start where
+        // predicate is false. Once predicate evaluates to true it stops and
+        // returns all the remaining elements
+        List<Dish> slicedMenu2 = specialMenu.stream()
+            .dropWhile(dish -> dish.getCalories() < 320)    // keep dropping until this cal < 320
+            .collect(toList());
+        slicedMenu2.forEach(System.out::println);
         System.out.println("\n======== Limit or Truncating a Stream ========");
 
         System.out.println("\n======== Skipping Elements of a Stream ========");
