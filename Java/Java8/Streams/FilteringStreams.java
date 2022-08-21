@@ -24,14 +24,25 @@ public class FilteringStreams {
     public static void main(String[] args) {
         System.out.println("======== Filtering with a Predicate ========");
         List<Dish> vegetarianMenu = menu.stream()
-            .filter(Dish::isVegetarian)
+            .filter(Dish::isVegetarian)     // Predicate
             .collect(toList());
             
         vegetarianMenu.forEach(System.out::println);
 
+        System.out.println("\n======== Filtering Unique Elements ========");
+        List<Integer> numbers = Arrays.asList(1, 2, 1, 3, 3, 2, 4);
+        System.out.println("List of Numbers: " + numbers );
+
+        numbers.stream()
+            .filter(i -> i % 2 == 0)
+            .distinct()             // Using distinct()
+            .forEach(System.out::println);
+
+        System.out.println("\n======== Slicing a Stream ========");
 
 
 
-        System.out.println("\n======== Filtering with a Predicate ========");
+
+        System.out.println("\n======== placeholder ========");
     } // end of main
 } // end of Class
