@@ -53,23 +53,35 @@ public class PythagoreanTriples {
         // map/transform these filtered elements into a int[] = {a,b,c}
         // .map(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))})
 
+        // Generate values from an int stream
+        // IntStream.rangeClosed(1,100)
+        //          .filter(b -> Math.sqrt(a*a + b*b) % 1 == 0)
+        //          .boxed() // Generate a Stream<Integer> from IntStream
+        //          .map(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))});
+
+       // Generate a values
+    //    IntStream.rangeClosed(1,100).boxed()
+    //             .flatMap(a -> 
+    //                IntStream.rangeClosed(a,100)    // Range of b to starts a, to avoid duplicates
+    //                    .filter(b -> Math.sqrt(a*a + b*b) % 1 == 0)
+    //                    .map(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))})
+    //            );
+
         // map() from IntStream expects only another int to be returned for each
         // element of the stream, so we need to modify it to return an object-valued
         // stream
         //.mapToObj(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))})
+        pythagoreanTriples =
+            IntStream.rangeClosed(1,100).boxed()
+                     .flatMap(a -> // Range of b starts  with a, to avoid duplicates
+                         IntStream.rangeClosed(a,100)    
+                                  .filter(b -> Math.sqrt(a*a + b*b) % 1 == 0)
+                                  .mapToObj(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))})
+        );
+       
 
-        // Generate values from an int stream
-        IntStream.rangeClosed(1,100)
-                 .filter(b -> Math.sqrt(a*a + b*b) % 1 == 0)
-                 .boxed() // Generate a Stream<Integer> from IntStream
-                 .map(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))});
+        // Now Consumer the Stream and Limit the output
+        pythagoreanTriples.limit(20).forEach(t -> System.out.println(t[0] + ", " + t[1] + ", " + t[2]));
 
-        // Generate a values
-        IntStream.rangeClosed(1,100).boxed()
-                 .flatMap(a -> 
-                    IntStream.rangeClosed(a,100)    // Range of b to starts a, to avoid duplicates
-                        .filter(b -> Math.sqrt(a*a + b*b) % 1 == 0)
-                        .map(b -> new int[]{a,b, (int)(Math.sqrt(a*a + b*b))})
-                );
     } // end of Main
 } // end of Class
