@@ -45,14 +45,21 @@ public class MappingStreams {
         System.out.println("======== Problem: Return a list of unique characters for a list of words ========");
         List<String> words = Arrays.asList("Hello", "World");   // List of words
         List<String> uniqueCharacters; // the result we want
-        // Attempt 1: Type Mismatch cannot convert from List<String[]> to List<String>
+        // Attempt 1:
+        // Problem: Type Mismatch cannot convert from List<String[]> to List<String>
         // uniqueCharacters = words.stream()
-        //     .map(word -> word.split(""))
-        //     .distinct()
-        //     .collect(toList());
+        //                         .map(word -> word.split(""))
+        //                         .distinct()
+        //                         .collect(toList());
+
+        // Attempt 2: Using Map and Arrays.Stream()
+        // Problem: Type Mismatch cannot convert from List<Stream<String>> to List<String>
+        // uniqueCharacters = words.stream() 
+        //                         .map(word -> word.split("")) // convert each word into array of its individual letters
+        //                         .map(Arrays::stream) // Makes each array in a separate stream
+        //                         .distinct()
+        //                         .collect(toList());
 
         
-
-
     } // end of Main
 } // end of Class
