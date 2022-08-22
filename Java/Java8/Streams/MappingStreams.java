@@ -10,6 +10,8 @@ import java.util.List;
  * Mapping is selecting information from certain objects.
  * Mapping is similar to "transforming" with the nuance of creating a new
  * version of rather than modifying.  
+ * 
+ * Methods: map(), flatMap()
  */
 public class MappingStreams {
     public static final List<Dish> menu = Arrays.asList(
@@ -39,5 +41,18 @@ public class MappingStreams {
             .map(String::length)    // return type Stream<Integer>
             .collect(toList());     // Turn Stream elements into List<Integer>
         System.out.println(dishNamesLengths);
+
+        System.out.println("======== Problem: Return a list of unique characters for a list of words ========");
+        List<String> words = Arrays.asList("Hello", "World");   // List of words
+        List<String> uniqueCharacters; // the result we want
+        // Attempt 1: Type Mismatch cannot convert from List<String[]> to List<String>
+        // uniqueCharacters = words.stream()
+        //     .map(word -> word.split(""))
+        //     .distinct()
+        //     .collect(toList());
+
+        
+
+
     } // end of Main
 } // end of Class
