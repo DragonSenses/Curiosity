@@ -94,6 +94,7 @@ public class MappingStreams {
                     .collect(toList());
         System.out.println("Given: " + numbers1 + " & " + numbers2);
         System.out.println("The pairs of numbers that can be formed are:");
+        System.out.print("{");
         int sz = 0;
         for(int[] a: pairs){
             System.out.print(Arrays.toString(a));
@@ -104,7 +105,7 @@ public class MappingStreams {
         }
         System.out.println("}");
 
-        System.out.println("======== Return a all pairs of numbers whose sum is divisible by 3 ========");
+        System.out.println("======== Return all pairs of numbers whose sum is divisible by 3 ========");
         // In this case, we filter out the streams before mapping into int[]
         pairs = 
             numbers1.stream()
@@ -115,17 +116,33 @@ public class MappingStreams {
                     .collect(toList());
         System.out.println("Given: " + numbers1 + " & " + numbers2);
         System.out.println("The pairs of numbers that can be formed are:");
-
+        System.out.print("{");
         // Output the List of pairs 
         sz = 0;
         for(int[] a: pairs){
             System.out.print(Arrays.toString(a));
             if(sz < pairs.size()-1) {
                 System.out.print(" ");
-            } else {
-                System.out.println();
             }
             sz++;
         }
+        System.out.println("}");
+
+        System.out.println("======== Return all pairs of numbers whose sum is divisible by 3 ========");
+        List<Integer> numbers3 = Arrays.asList(1,2,3,4,5);
+        List<Integer> numbers4 = Arrays.asList(6,7,8);
+        System.out.println("Given: " + numbers3 + " & " + numbers4);
+        pairs = numbers3.stream()
+            .flatMap((Integer i) -> numbers4.stream()
+                .map((Integer j) -> new int[]{i, j})
+            )
+            .filter(pair -> (pair[0] + pair[1]) % 3 == 0)
+            .collect(toList());
+
+        // print pairs
+        System.out.print("{");
+        pairs.forEach(pair -> System.out.printf("(%d, %d)", pair[0], pair[1]));
+        System.out.println("}");
+        
     } // end of Main
 } // end of Class
