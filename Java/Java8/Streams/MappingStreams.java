@@ -26,11 +26,18 @@ public class MappingStreams {
     
     public static void main(String[] args){
         System.out.println("======== Mapping by Name ========");
+        // Note map() has return type of Stream<string>
         List<String> dishNames = menu.stream()
             .map(Dish::getName)
             .collect(toList());
         System.out.println(dishNames);
 
-
+        System.out.println("======== Chaining Map methods ========");
+        System.out.println("Length of each dishes names are: ");
+        List<Integer> dishNamesLengths = menu.stream()
+            .map(Dish::getName)     // return type Stream<String>
+            .map(String::length)    // return type Stream<Integer>
+            .collect(toList());     // Turn Stream elements into List<Integer>
+        System.out.println(dishNamesLengths);
     } // end of Main
 } // end of Class
