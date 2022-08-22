@@ -1,5 +1,7 @@
 package Java.Java8.Streams;
 
+import static java.util.stream.Collectors.toList;   // for collect(toList())
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,7 +26,11 @@ public class MappingStreams {
     
     public static void main(String[] args){
         System.out.println("======== Mapping by Name ========");
-        
-    }
-   
-}
+        List<String> dishNames = menu.stream()
+            .map(Dish::getName)
+            .collect(toList());
+        System.out.println(dishNames);
+
+
+    } // end of Main
+} // end of Class
