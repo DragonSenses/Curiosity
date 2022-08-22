@@ -87,9 +87,22 @@ public class MappingStreams {
 
         List<int[]> pairs = 
             numbers1.stream()
-                    .map(x -> numbers2.stream())
-                    .map(y -> new int[]{x,y})
+                    .flatMap(x -> numbers2.stream()
+                                          .map(y -> new int[]{x,y})
+                            )
                     .collect(toList());
+        System.out.println("Given: " + numbers1 + " & " + numbers2);
+        System.out.println("The pairs of numbers that can be formed are:");
+        int sz = 0;
+        for(int[] a: pairs){
+            System.out.print(Arrays.toString(a));
+            if(sz < pairs.size()-1) {
+                System.out.print(" ");
+            } else {
+                System.out.println();
+            }
+            sz++;
+        }
 
     } // end of Main
 } // end of Class
