@@ -60,6 +60,16 @@ public class MappingStreams {
         //                         .distinct()
         //                         .collect(toList());
 
-        
+        // Using flatMap(), maps each array not with a stream but with the
+        // contents of that stream. Replace each value of a stream with
+        // another stream and then concatenates all the generated streams
+        // into a single stream 
+        uniqueCharacters = words.stream() 
+                                .map(word -> word.split("")) // each word into array of individual letters
+                                .flatMap(Arrays::stream) // Flattens each generated stream into a single stream
+                                .distinct() 
+                                .collect(toList());
+
+        System.out.println(uniqueCharacters);
     } // end of Main
 } // end of Class
