@@ -85,6 +85,7 @@ public class MappingStreams {
         List<Integer> numbers1 = Arrays.asList(1,2,3);
         List<Integer> numbers2 = Arrays.asList(3,4);
 
+        // flatMap() to return a Stream<Integer[]> instead of Stream<Stream<Integer[]>> 
         List<int[]> pairs = 
             numbers1.stream()
                     .flatMap(x -> numbers2.stream()
@@ -98,11 +99,33 @@ public class MappingStreams {
             System.out.print(Arrays.toString(a));
             if(sz < pairs.size()-1) {
                 System.out.print(" ");
+            }
+            sz++;
+        }
+        System.out.println("}");
+
+        System.out.println("======== Return a all pairs of numbers whose sum is divisible by 3 ========");
+        // In this case, we filter out the streams before mapping into int[]
+        pairs = 
+            numbers1.stream()
+                    .flatMap(x -> numbers2.stream()
+                                          .filter(y -> (x + y) % 3 == 0)   
+                                          .map(y -> new int[]{x,y})
+                            )
+                    .collect(toList());
+        System.out.println("Given: " + numbers1 + " & " + numbers2);
+        System.out.println("The pairs of numbers that can be formed are:");
+
+        // Output the List of pairs 
+        sz = 0;
+        for(int[] a: pairs){
+            System.out.print(Arrays.toString(a));
+            if(sz < pairs.size()-1) {
+                System.out.print(" ");
             } else {
                 System.out.println();
             }
             sz++;
         }
-
     } // end of Main
 } // end of Class
