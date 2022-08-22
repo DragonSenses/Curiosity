@@ -71,5 +71,25 @@ public class MappingStreams {
                                 .collect(toList());
 
         System.out.println(uniqueCharacters);
+
+        System.out.println("======== Return a list of the square of each number ========");
+        List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7);
+        List<Integer> squares = numbers.stream()    
+                                       .map(n -> n*n)
+                                       .collect(toList());
+        System.out.println(numbers);
+        System.out.println(squares);
+
+        System.out.println("======== Return a all pairs of numbers ========");
+        // Given a list of [1,2,3] and list [3,4] return [(1,3) (1,4), (2,3), (2,4) ,(3,3), (3,4)]
+        List<Integer> numbers1 = Arrays.asList(1,2,3);
+        List<Integer> numbers2 = Arrays.asList(3,4);
+
+        List<int[]> pairs = 
+            numbers1.stream()
+                    .map(x -> numbers2.stream())
+                    .map(y -> new int[]{x,y})
+                    .collect(toList());
+
     } // end of Main
 } // end of Class
