@@ -11,7 +11,12 @@ import java.util.List;
  * Mapping is similar to "transforming" with the nuance of creating a new
  * version of rather than modifying.  
  * 
- * Methods: map(), flatMap()
+ * ================================= Methods =================================
+ * -map() - a function is applied to each element, mapping it into a new element
+ * 
+ * -flatMap() - replace each value of a stream with another stream and then 
+ * concatenates all the generate streams into a single stream; has the effect 
+ * of mapping each array not with a stream but with the contents of that stream
  */
 public class MappingStreams {
     public static final List<Dish> menu = Arrays.asList(
@@ -34,7 +39,7 @@ public class MappingStreams {
             .collect(toList());
         System.out.println(dishNames);
 
-        System.out.println("======== Chaining Map methods ========");
+        System.out.println("\n======== Chaining Map methods ========");
         System.out.println("Length of each dishes names are: ");
         List<Integer> dishNamesLengths = menu.stream()
             .map(Dish::getName)     // return type Stream<String>
@@ -42,7 +47,7 @@ public class MappingStreams {
             .collect(toList());     // Turn Stream elements into List<Integer>
         System.out.println(dishNamesLengths);
 
-        System.out.println("======== Problem: Return a list of unique characters for a list of words ========");
+        System.out.println("\n======== Problem: Return a list of unique characters for a list of words ========");
         List<String> words = Arrays.asList("Hello", "World");   // List of words
         List<String> uniqueCharacters; // the result we want
         // Attempt 1:
@@ -72,7 +77,7 @@ public class MappingStreams {
 
         System.out.println(uniqueCharacters);
 
-        System.out.println("======== Return a list of the square of each number ========");
+        System.out.println("\n======== Return a list of the square of each number ========");
         List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7);
         List<Integer> squares = numbers.stream()    
                                        .map(n -> n*n)
@@ -80,7 +85,7 @@ public class MappingStreams {
         System.out.println(numbers);
         System.out.println(squares);
 
-        System.out.println("======== Return a all pairs of numbers ========");
+        System.out.println("\n======== Return a all pairs of numbers ========");
         // Given a list of [1,2,3] and list [3,4] return [(1,3) (1,4), (2,3), (2,4) ,(3,3), (3,4)]
         List<Integer> numbers1 = Arrays.asList(1,2,3);
         List<Integer> numbers2 = Arrays.asList(3,4);
@@ -105,7 +110,7 @@ public class MappingStreams {
         }
         System.out.println("}");
 
-        System.out.println("======== Return all pairs of numbers whose sum is divisible by 3 ========");
+        System.out.println("\n======== Return all pairs of numbers whose sum is divisible by 3 ========");
         // In this case, we filter out the streams before mapping into int[]
         pairs = 
             numbers1.stream()
@@ -128,7 +133,7 @@ public class MappingStreams {
         }
         System.out.println("}");
 
-        System.out.println("======== Return all pairs of numbers whose sum is divisible by 3 ========");
+        System.out.println("\n======== Return all pairs of numbers whose sum is divisible by 3 ========");
         List<Integer> numbers3 = Arrays.asList(1,2,3,4,5);
         List<Integer> numbers4 = Arrays.asList(6,7,8);
         System.out.println("Given: " + numbers3 + " & " + numbers4);
