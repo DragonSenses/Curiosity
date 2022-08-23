@@ -7,6 +7,26 @@ import java.util.List;
 
 /**
  * Demonstrate ways to Filter a Stream
+ * 
+ * ================================= Methods =================================
+ * - filter() - takes a predicate (function returning boolean) as an argument
+ * and returns a stream including all elements that match the predicate
+ * 
+ * - distinct() - returns a stream with unique elements; unique according to
+ * the implementation of hashcode() and equals()
+ * 
+ * When inital source is already sorted:
+ * - takeWhile() - stops once it has found an element that fails to match 
+ * 
+ * - dropWhile() - once predicate evaluates to true it stops and returns all
+ * the remaining elements 
+ * 
+ * Truncating a Stream
+ * - limit(n) - returns another stream that's no longer than a given size; 
+ * Requested size n is passed in as argument to limit
+ * 
+ * -skip(n) - returns a stream that discards the first n elements; if stream
+ * has fewer than n elements, an empty stream is returned
  */
 public class FilteringStreams {
     public static final List<Dish> menu = Arrays.asList(
