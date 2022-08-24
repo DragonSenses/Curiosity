@@ -94,13 +94,17 @@ public class FindingStreams {
          * -T orElse(T other) returns the value if present; otherwise it returns
          * a default value
          */
-        System.out.println("Optional<Dish> dish is present?" + dish.isPresent());
-        System.out.println("dish name?" + dish.get().getName());
+        System.out.println("Optional<Dish> dish is present? " + dish.isPresent());
+        System.out.println("dish name? " + dish.get().getName());
+
         Optional<Dish> opt = menu.stream().filter(d -> d.getCalories() > 3000).findAny();
-        System.out.println("Is there any dish greater than 3000 calories? " + opt.isPresent());
+        System.out.println("\nIs there any dish greater than 3000 calories? " + opt.isPresent());
+        
+        Dish defaultDish = new Dish("Water",false,0,Dish.Type.OTHER);
+        System.out.println("What is inside optional? " + opt.orElse(defaultDish));
 
-        System.out.println("Is there any dish greater than 3000 calories? " + opt.isPresent());
-
+        System.out.println("The default dish is " + defaultDish.getName() +
+             " with " + defaultDish.getCalories() + " Calories");
 
         System.out.println("\n======== Find the first element that matches ========");
         // Use findAny() over findFirst() as it is more constraining in parallel
