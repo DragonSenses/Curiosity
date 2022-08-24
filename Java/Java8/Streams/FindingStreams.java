@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;   // for collect(toList())
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Finding whether some elements in a set of data match a given property.
@@ -68,7 +69,40 @@ public class FindingStreams {
         System.out.println("Is there any dish greater than 1000 calories? " + isHealthful);
 
         System.out.println("\n======== Finding any arbitrary element that matches ========");
-        
+        Optional<Dish> dish = menu.stream()
+            .filter(Dish::isVegetarian)
+            .findAny(); // Returns an Optional<Dish> 
+
+        dish.ifPresent(d -> System.out.println(d.getName()));
+
+        System.out.println("\n======== Optional<T> in a nutshell ========");
+        /**
+         * Optional is a container class to represent the existence or absence of a value.
+         * If finyAny() does not find any element, it returns Optional<T> rather
+         * than null (error-prone)
+         * 
+         * ============================== Methods =============================
+         * 
+         * -isPresent() - returns true if Optional contains a value, false otherwise
+         * 
+         * -isPresent(Consumer<T> block) - executes the given block if a value is 
+         * present. A Consumer functional interface lets you pass a lambda that takes
+         * an argument of type T and returns void
+         * 
+         * -T get() - returns the value if present; otherwise throws a NoSuchElementException.
+         * 
+         * -T orElse(T other) returns the value if present; otherwise it returns
+         * a default value
+         */
+        System.out.println("Optional<Dish> dish is present?" + dish.isPresent());
+        System.out.println("dish name?" + dish.get().getName());
+        Optional<Dish> opt = menu.stream().filter(d -> d.getCalories() > 3000).findAny();
+        System.out.println("Is there any dish greater than 3000 calories? " + opt.isPresent());
+
+        System.out.println("Is there any dish greater than 3000 calories? " + opt.isPresent());
+
+
         System.out.println("\n======== Find the first element that matches ========");
+        // Use findAny() over findFirst() as it is more constraining in parallel
     }
 }
