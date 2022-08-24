@@ -21,6 +21,18 @@ import java.util.Optional;
  * 
  * -findFirst() - finds the first element given a stream that has an encounter
  * order that specifies the order in which items logically appear in the stream
+ * 
+ * ========================= Optional<T> Methods ==============================
+ * -isPresent() - returns true if Optional contains a value, false otherwise
+ * 
+ * -isPresent(Consumer<T> block) - executes the given block if a value is 
+ * present. A Consumer functional interface lets you pass a lambda that takes
+ * an argument of type T and returns void
+ * 
+ * -T get() - returns the value if present; otherwise throws a NoSuchElementException.
+ * 
+ * -T orElse(T other) returns the value if present; otherwise it returns
+ * a default value
  */
 public class FindingStreams {
     public static final List<Dish> menu = Arrays.asList(
@@ -108,5 +120,17 @@ public class FindingStreams {
 
         System.out.println("\n======== Find the first element that matches ========");
         // Use findAny() over findFirst() as it is more constraining in parallel
+        // Remember that stream must have an encounter order that specifies the 
+        // order in whihc items logically appear in the stream
+        List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7);
+        Optional<Integer> firstSquareDivisibleByThree =
+            numbers.stream()
+                   .map(n -> n*n) // map each number to the square of itself
+                   .filter(n -> n % 3 == 0) // filter out each square divisible by 3
+                   .findFirst();  // 9
+
+        System.out.println(numbers);
+        System.out.println("First Square divisible by three in the numbers "
+            + "above is " + firstSquareDivisibleByThree.get());
     }
 }
