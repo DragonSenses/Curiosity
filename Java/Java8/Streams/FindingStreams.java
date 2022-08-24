@@ -34,12 +34,18 @@ public class FindingStreams {
         new Dish("salmon", false, 450, Dish.Type.FISH)
     );
 
+    // Prints the available menu and respective calories
     public static void showMenu(){
         List<String> dishNames = menu.stream()
             .map(Dish::getName)
             .collect(toList());
         System.out.print("menu: ");
         System.out.println(dishNames);
+        List<Integer> dishCalories = menu.stream()
+            .map(Dish::getCalories)
+            .collect(toList());
+        System.out.print("Cals: ");
+        System.out.println(dishCalories);    
     }
     
     public static void main(String[] args){
@@ -55,6 +61,10 @@ public class FindingStreams {
                                   .allMatch(dish -> dish.getCalories() < 1000);
         System.out.println("Is every dish less than 1000 calories? " + isHealthful);
 
-        
+        System.out.println("\n======== Ensure that no elements in the stream match"
+            + "a given predicate========");
+        isHealthful = menu.stream() 
+            .noneMatch(dish -> dish.getCalories() >= 1000);
+        System.out.println("Is there any dish greater than 1000 calories? " + isHealthful);
     }
 }
