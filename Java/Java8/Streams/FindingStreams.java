@@ -56,15 +56,19 @@ public class FindingStreams {
         }
 
         System.out.println("\n======== Check if all elements of a stream match"
-            + "a given predicate========");
+            + "a given predicate ========");
         boolean isHealthful = menu.stream() 
                                   .allMatch(dish -> dish.getCalories() < 1000);
         System.out.println("Is every dish less than 1000 calories? " + isHealthful);
 
         System.out.println("\n======== Ensure that no elements in the stream match"
-            + "a given predicate========");
+            + "a given predicate ========");
         isHealthful = menu.stream() 
             .noneMatch(dish -> dish.getCalories() >= 1000);
         System.out.println("Is there any dish greater than 1000 calories? " + isHealthful);
+
+        System.out.println("\n======== Finding any arbitrary element that matches ========");
+        
+        System.out.println("\n======== Find the first element that matches ========");
     }
 }
