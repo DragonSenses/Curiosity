@@ -51,6 +51,9 @@ public class FindingStreams {
 
         System.out.println("\n======== Check if all elements of a stream match"
             + "a given predicate========");
+        boolean isHealthful = menu.stream() 
+                                  .allMatch(dish -> dish.getCalories() < 1000);
+        System.out.println("Is every dish less than 1000 calories? " + isHealthful);
 
         
     }
