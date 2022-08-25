@@ -1,6 +1,7 @@
 package Java.Java8.Streams;
 
-import static Java.Java8.Streams.Dish.menu;
+import static Java.Java8.Streams.Dish.menu; // a way to reuse the menu in Dish class
+import static java.util.stream.Collectors.toList;   // for collect(toList())
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +20,20 @@ import java.util.Optional;
  */
 public class ReducingStreams {
     
+        // Prints the available menu and respective calories
+        public static void showMenu(){
+            List<String> dishNames = menu.stream()
+                .map(Dish::getName)
+                .collect(toList());
+            System.out.print("menu: ");
+            System.out.println(dishNames);
+            List<Integer> dishCalories = menu.stream()
+                .map(Dish::getCalories)
+                .collect(toList());
+            System.out.print("Cals: ");
+            System.out.println(dishCalories);    
+        }
+
     public static int forEachSum(List<Integer> numbers){
         // For-Each loop        Uses two parameters
         int sum = 0;            // 1) Initial sum variable = 0
@@ -47,18 +62,28 @@ public class ReducingStreams {
 
         System.out.println("\n===== Finding the Min/Max using Streams =====");
         System.out.println("List: " + numbers);
+        // Note that this method returns type int max
         int max = numbers.stream().reduce(0, (a, b) -> Integer.max(a, b));
         System.out.println("max:\t" + max);
-    
+        
+        // Note this returns type Optional<Integer>
         Optional<Integer> min = numbers.stream().reduce(Integer::min);
         System.out.print("min:\t");
         min.ifPresent(System.out::println);
 
         System.out.println("\n===== Count number of dishes in a stream =====");
+        showMenu();
         // Map-Reduce pattern, can be easily parallelized. 
         int count = menu.stream()
                         .map(d -> 1)
                         .reduce(0, (a,b) -> a + b);
-        System.out.println("The number of dishes in the menu is\n" + count);
+        System.out.println("\nThe number of dishes in the menu is: " + count);
+
+        max = menu.stream()
+                  .map(d -> d.getCalories())
+                  .reduce(0, (a,b) -> Integer.max(a,b));
+        System.out.println("The max calories is: " + max);
+        min = menu.stream().map(Dish::getCalories).reduce(Integer::min);
+        System.out.println("The min calories is: " + min.get());
     }
 }
