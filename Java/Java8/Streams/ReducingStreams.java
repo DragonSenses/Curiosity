@@ -73,9 +73,11 @@ public class ReducingStreams {
 
         System.out.println("\n===== Count number of dishes in a stream =====");
         showMenu();
-        // Map-Reduce pattern, can be easily parallelized. 
+        // Map-Reduce pattern, can be easily parallelized. Count the number of 
+        // elements in the stream by mapping each element into the number 1 
+        // then summing them using reduce
         int count = menu.stream()
-                        .map(d -> 1)
+                        .map(d -> 1)    
                         .reduce(0, (a,b) -> a + b);
         System.out.println("\nThe number of dishes in the menu is: " + count);
 
@@ -85,5 +87,8 @@ public class ReducingStreams {
         System.out.println("The max calories is: " + max);
         min = menu.stream().map(Dish::getCalories).reduce(Integer::min);
         System.out.println("The min calories is: " + min.get());
+
+        Optional<Integer> total = menu.stream().map(Dish::getCalories).reduce(Integer::sum);
+        System.out.println("The total calories of the menu is: " + total.get());
     }
 }
