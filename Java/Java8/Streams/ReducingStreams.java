@@ -2,6 +2,7 @@ package Java.Java8.Streams;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Demonstrate ways to Reduce a Stream. This combines elements of a stream to
@@ -38,5 +39,17 @@ public class ReducingStreams {
         // 2) A BinaryOperator<T> to combine two elements to produce a new value
         int sum = numbers.stream().reduce(0, (a,b) -> a +b);
         System.out.println("Sum after using reduce()\n" + sum);
+
+        int sum2 = numbers.stream().reduce(0, Integer::sum);
+        System.out.println("\nSum after using reduce() & Integer::sum\n" + sum2);
+
+        System.out.println("\n===== Finding the Min/Max using Streams =====");
+        System.out.println("List: " + numbers);
+        int max = numbers.stream().reduce(0, (a, b) -> Integer.max(a, b));
+        System.out.println("max:\t" + max);
+    
+        Optional<Integer> min = numbers.stream().reduce(Integer::min);
+        System.out.print("min:\t");
+        min.ifPresent(System.out::println);
     }
 }
