@@ -16,17 +16,27 @@ import java.util.List;
  */
 public class ReducingStreams {
     
-    public static void main(String[] args){
-        System.out.println("======== Summing the Elements ========");
-        List<Integer> numbers = Arrays.asList(3, 4, 5, 1, 2);
-        System.out.println("List: " + numbers);
+    public static int forEachSum(List<Integer> numbers){
         // For-Each loop        Uses two parameters
         int sum = 0;            // 1) Initial sum variable = 0
         for(int x: numbers) { 
             sum += x;           // 2) Operation to combine all the elements
         }
-        System.out.println(sum + " after using for each loop");
+        return sum;
+    }
 
-        System.out.println("\n======== Filtering Unique Elements ========");
+    public static void main(String[] args){
+        List<Integer> numbers = Arrays.asList(3, 4, 5, 1, 2);
+        System.out.println("List: " + numbers);
+
+        System.out.println("============= Summing the Elements =============");
+        System.out.println("Sum after using for each loop\n" + forEachSum(numbers));
+
+        System.out.println("\n===== Summing the Elements using Streams =====");
+        // reduce() takes two arguments 
+        // 1) initial value of 0
+        // 2) A BinaryOperator<T> to combine two elements to produce a new value
+        int sum = numbers.stream().reduce(0, (a,b) -> a +b);
+        System.out.println("Sum after using reduce()\n" + sum);
     }
 }
