@@ -1,5 +1,7 @@
 package Java.Java8.Streams;
 
+import static Java.Java8.Streams.Dish.menu;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -51,5 +53,12 @@ public class ReducingStreams {
         Optional<Integer> min = numbers.stream().reduce(Integer::min);
         System.out.print("min:\t");
         min.ifPresent(System.out::println);
+
+        System.out.println("\n===== Count number of dishes in a stream =====");
+        // Map-Reduce pattern, can be easily parallelized. 
+        int count = menu.stream()
+                        .map(d -> 1)
+                        .reduce(0, (a,b) -> a + b);
+        System.out.println("The number of dishes in the menu is\n" + count);
     }
 }
