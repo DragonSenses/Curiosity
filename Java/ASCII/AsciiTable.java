@@ -72,7 +72,6 @@ public class AsciiTable {
         } // 11 is Vertical Tab or whitespace, 28-31 as well
     }
 
-    // To Do: Change more meaningful String to represent the character
     // First 32 non-printing characters, characters that are not letters, digits,
     // and punctuation. Check if character is in range of: 
     // '\u0000' through '\u001F' or in the range '\u007F' through '\u009F'
@@ -101,7 +100,6 @@ public class AsciiTable {
             table.append(Character.toString(c)); 
         }
     }
-
 
     public static void buildTable(StringBuilder table){
         char c;
@@ -139,17 +137,12 @@ public class AsciiTable {
             } else{  // Character is letter, digit, or punctuation
                 s = Character.toString(c);
             }
-           
             table.append(String
                 .format("%1$-8d %2$-10s %3$s\n", i, s, Integer.toHexString(i)));
         }
     }
 
     public static void main(String[] args) {
-        // for (int c = 32; c < 128; c++) {
-        //     System.out.println(c + ": " + (char) c);
-        // }
-        
         AsciiTable a = new AsciiTable();
         StringBuilder table = a.getTable();
         buildTable(table);
