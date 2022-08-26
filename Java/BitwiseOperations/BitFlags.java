@@ -15,6 +15,9 @@ public class BitFlags {
     // A binary repunit will represent multiple/all options selected
     public static final int ALL_OPTIONS = 15;   // 1111
 
+    private static final String prefix = "The ";
+    private static final String suffix = "====";
+
     public static String format(String val, int flags){
         if((flags & UPPERCASE) == UPPERCASE) val = val.toUpperCase();
 
@@ -22,10 +25,33 @@ public class BitFlags {
             val = new StringBuffer(val).reverse().toString();
         }
 
+        if((flags & PREFIX) == PREFIX) { 
+            val = prefix.concat(val);
+        }
+
+        if((flags & SUFFIX) == SUFFIX) { 
+            val = val.concat(suffix);
+        }
+
         return val;
     }
 
+    // applies the following flags and returns an array of Strings
+    public static String[] apply(String val){
+        String[] arr = new String[6]; 
+        arr[0] = val;
+        arr[1] = format(val, UPPERCASE);
+        arr[2] = format(val, REVERSE);
+        arr[3] = format(val, PREFIX);
+        arr[4] = format(val, SUFFIX);
+        arr[5] = format(val, ALL_OPTIONS);
+        return arr;
+    }
+
     public static void main(String[] args){
+        String index = "Index Librorum Prohibitorum";
+        String codeName = "Dedicatus545";
+
 
     }
 }
