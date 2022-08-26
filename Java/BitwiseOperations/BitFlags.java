@@ -1,9 +1,15 @@
 package Java.BitwiseOperations;
 
+import java.util.Arrays;
+
 /**
  * Bit Flags, or bit fields, are efficient ways of storing boolean values in a
  * primitive type. A integer would be able to provide 31 flags (the most
  * significant bit is reserved for signed value +/- sign). 
+ * 
+ * 
+ * Another way to represent this is EnumSets which have the efficiency of bit 
+ * flags but without the loss of safety the type system provides. 
  */
 public class BitFlags {
     // Each bit flag represents a power of 2 in binary
@@ -16,7 +22,7 @@ public class BitFlags {
     public static final int ALL_OPTIONS = 15;   // 1111
 
     private static final String prefix = "The ";
-    private static final String suffix = "====";
+    private static final String suffix = " ====";
 
     public static String format(String val, int flags){
         if((flags & UPPERCASE) == UPPERCASE) val = val.toUpperCase();
@@ -52,6 +58,10 @@ public class BitFlags {
         String index = "Index Librorum Prohibitorum";
         String codeName = "Dedicatus545";
 
+        String[] indexes = apply(index);
+        String[] codeNames = apply(codeName);
 
+        System.out.println(Arrays.toString(indexes));
+        System.out.println(Arrays.toString(codeNames));
     }
 }
