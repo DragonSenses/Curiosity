@@ -39,6 +39,8 @@ package Java.ASCII;
  */
 public class AsciiTable {
 
+    private static String empty = "";
+
     StringBuilder table = new StringBuilder(
             String.format("%1$-8s %2$-10s %3$s\n", "Decimal", "ASCII", "Hex"));
 
@@ -46,30 +48,26 @@ public class AsciiTable {
         return table;
     }
 
-    public static void checkWhiteSpaces(char c, StringBuilder table){
+    public static String checkWhiteSpaces(char c, StringBuilder table){
         if (Character.isWhitespace(c)) {  
             // using switch statement  
             switch (c) { 
                 case '\t':  // Horizontal Tab, 09
-                    table.append("\\t");  
-                    break;  
+                    return ("\\t");  
                 case '\n':  // Newline, 10
-                    table.append("\\n");  
-                    break;
+                    return ("\\n");  
                 case '\f': // NP Form Feed, New Page, 12 
-                    table.append("\\f");  
-                    break;     
+                    return ("\\f");  
                 case '\r':  // Carriage Return, 13
-                    table.append("\\r");  
-                    break;  
+                    return ("\\r");  
                 case ' ':  // Space, 32
-                    table.append("space");  
-                    break;  
+                    return ("space");  
                 default:  
-                    table.append("whitespace");  
-                    break;  
+                    return empty; 
             } 
         } // 11 is Vertical Tab or whitespace, 28-31 as well
+        
+        return empty;
     }
 
     // To Do: Change more meaningful String to represent the character
@@ -79,7 +77,7 @@ public class AsciiTable {
     // the u in '\u0000' is unicode; 0-8, 14-27
     public static void checkControlCharacters(char c, StringBuilder table){
         if(Character.isISOControl(c)){
-            table.append("ISO Control"); // lazily append this
+            // table.append("control"); // lazily append this
         }
     } 
 
@@ -105,15 +103,16 @@ public class AsciiTable {
 
     public static void buildTable(StringBuilder table){
         char c;
+        String s;
         // Loop from 0 to 127
         for (int i = 0; i < 128; i++){
             // Typecast i into char
             c = (char) i;
-            checkWhiteSpaces(c, table);
+            s = checkWhiteSpaces(c, table);
             checkControlCharacters(c,table);
             checkCharacters(c,table);
             table.append(String
-                .format("%1$-8d %2$-10s %3$s\n", i, c, Integer.toHexString(i)));
+                .format("%1$-8d\t%2$-10s\t%3$s\n", i, s, Integer.toHexString(i)));
         }
     }
 
