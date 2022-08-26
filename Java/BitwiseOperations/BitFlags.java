@@ -42,7 +42,7 @@ public class BitFlags {
         return val;
     }
 
-    // applies the following flags and returns an array of Strings
+    // Applies each bit flag to the String value and returns an array of Strings
     public static String[] apply(String val){
         String[] arr = new String[6]; 
         arr[0] = val;
@@ -54,6 +54,12 @@ public class BitFlags {
         return arr;
     }
 
+    // Prints all values of a string array for more cleaner output
+    public static void print(String[] arr){
+        Arrays.stream(arr).forEach(System.out::println);
+        System.out.println();
+    }
+
     public static void main(String[] args){
         String index = "Index Librorum Prohibitorum";
         String codeName = "Dedicatus545";
@@ -61,7 +67,7 @@ public class BitFlags {
         String[] indexes = apply(index);
         String[] codeNames = apply(codeName);
 
-        System.out.println(Arrays.toString(indexes));
-        System.out.println(Arrays.toString(codeNames));
+        print(indexes);
+        print(codeNames);
     }
 }
