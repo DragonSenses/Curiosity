@@ -1,5 +1,6 @@
 package Java.Java8.Streams;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 /**
@@ -14,8 +15,11 @@ import java.util.stream.Stream;
  * - Stream.ofNullable() - create a stream form a nullable object; where extraction 
  * of an object that may be null and then needs to be converted into a stream; 
  * 
- * - Arrays.stream()
- * - Files.lines
+ * - Arrays.stream() - static method that takes array as parameter
+ * 
+ * - Files.lines - from java.nio.file.Files static method the returns a stream
+ * lines as strings (each element is a line) from a given file
+ * 
  * - Stream.iterate()
  * - Stream.generate()
  */
@@ -37,10 +41,16 @@ public class BuildingStreams {
     }
 
     public static void main(String[] args) {
+        System.out.println("======== Streams from Arrays ========");
+        int[] numbers = { 2, 3, 5, 7, 11, 13 };
+        System.out.println(Arrays.toString(numbers) +  "\nsum = " + Arrays.stream(numbers).sum());
+
         System.out.println("\n======== Streams from Values ========");
 
         Stream<String> stream = Stream.of("Give", "Me", "Liberty", "Or Give me Death!");
         stream.map(String::toUpperCase).forEach(System.out::println);
+
+        System.out.println("\n======== Streams from Files ========");
 
         System.out.println("\n======== Empty Stream ========");
         // Empty Stream
@@ -52,9 +62,9 @@ public class BuildingStreams {
         System.out.println("\n======== Stream.ofNullable() ========");
         HowToUseOfNullable();
 
-        System.out.println("\n======== Streams from Arrays ========");
 
-       
+
+        
 
     }
 }
