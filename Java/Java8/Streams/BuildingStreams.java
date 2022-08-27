@@ -28,6 +28,19 @@ public class BuildingStreams {
     public static long countUniqueWordsFromFile(String pathname){
         long uniqueWords = 0;
 
+        // Surround Files.lines() method by try-catch block as the source is
+        // an I/O resource
+
+        try(Stream<String> lines = 
+            Files.lines(Paths.get(pathname, Charset.defaultCharset())) { 
+            // Streams are AutoCloseable, where the management of the resource
+            // is handled for you within the try block; no need to explicitly
+            // have a finally block to close the open I/O resource to avoid leaks
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+
+
         return uniqueWords;
     }
 
