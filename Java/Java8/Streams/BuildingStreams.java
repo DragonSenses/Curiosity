@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  * - Files.lines - from java.nio.file.Files static method the returns a stream
  * lines as strings (each element is a line) from a given file
  * 
- * - Stream.iterate()
+ * - Stream.iterate()   // To-Do
  * - Stream.generate()
  */
 public class BuildingStreams {
@@ -82,7 +82,17 @@ public class BuildingStreams {
         stream.map(String::toUpperCase).forEach(System.out::println);
 
         System.out.println("\n======== Streams from Files ========");
-        System.out.println("Number of unique words: " + countUniqueWordsFromFile());
+        // Get Current Working Directory and Append path of current package
+        String pathname = System.getProperty("user.dir") + "\\Java\\Java8\\Streams\\"
+            + "Ozymandias.txt";   
+        System.out.println(pathname);
+        System.out.println("Number of unique words: " + countUniqueWordsFromFile(pathname));
+        
+        System.out.println("\n======== Creating Infinite Streams ========");
+        // Always use limit() !
+        System.out.println("Using iterate()");
+
+        System.out.println("Using generate()");
 
         System.out.println("\n======== Empty Stream ========");
         // Empty Stream
