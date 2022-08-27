@@ -36,6 +36,14 @@ public class BuildingStreams {
             // Streams are AutoCloseable, where the management of the resource
             // is handled for you within the try block; no need to explicitly
             // have a finally block to close the open I/O resource to avoid leaks
+
+            // Generate a Stream of words by separating each line into words using 
+            // split() on line
+            // Use flatMap() to flatten stream of words instead of multiple stream of
+            // words for each line
+            uniqueWords = lines.flatMap(line -> Arrays.stream(line.split(" ")))
+                               .distinct()  // Remove duplicates
+                               .count();    // count the number of  uniquewords
         } catch(IOException e){
             e.printStackTrace();
         }
