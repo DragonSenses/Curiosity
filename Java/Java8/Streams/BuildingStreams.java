@@ -25,6 +25,12 @@ import java.util.stream.Stream;
  */
 public class BuildingStreams {
 
+    public static long countUniqueWordsFromFile(String pathname){
+        long uniqueWords = 0;
+
+        return uniqueWords;
+    }
+
     public static void HowToUseOfNullable(){
         // System.getProperty() returns null if there is no property with the 
         // given key ; so must check if value is null
@@ -51,6 +57,7 @@ public class BuildingStreams {
         stream.map(String::toUpperCase).forEach(System.out::println);
 
         System.out.println("\n======== Streams from Files ========");
+        System.out.println("Number of unique words: " + countUniqueWordsFromFile());
 
         System.out.println("\n======== Empty Stream ========");
         // Empty Stream
