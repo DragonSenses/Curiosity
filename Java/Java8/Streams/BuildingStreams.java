@@ -1,5 +1,9 @@
 package Java.Java8.Streams;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -32,7 +36,7 @@ public class BuildingStreams {
         // an I/O resource
 
         try(Stream<String> lines = 
-            Files.lines(Paths.get(pathname, Charset.defaultCharset())) { 
+            Files.lines(Paths.get(pathname), Charset.defaultCharset())) { 
             // Streams are AutoCloseable, where the management of the resource
             // is handled for you within the try block; no need to explicitly
             // have a finally block to close the open I/O resource to avoid leaks
@@ -45,9 +49,9 @@ public class BuildingStreams {
                                .distinct()  // Remove duplicates
                                .count();    // count the number of  uniquewords
         } catch(IOException e){
+            // Exception if one occurs when opening the file, will be dealt with here
             e.printStackTrace();
         }
-
 
         return uniqueWords;
     }
