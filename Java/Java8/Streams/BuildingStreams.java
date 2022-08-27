@@ -20,6 +20,22 @@ import java.util.stream.Stream;
  * - Stream.generate()
  */
 public class BuildingStreams {
+
+    public static void HowToUseOfNullable(){
+        // System.getProperty() returns null if there is no property with the 
+        // given key ; so must check if value is null
+
+        // Explicit Check
+        String homeValue = System.getProperty("home");
+        Stream<String> homeValueStream  
+            = (homeValue == null) ? Stream.empty() : Stream.of(homeValue);
+
+        homeValueStream.forEach(System.out::println); 
+
+         // Java 9 way
+         homeValueStream = Stream.ofNullable(System.getProperty("home"));
+    }
+
     public static void main(String[] args) {
         System.out.println("\n======== Streams from Values ========");
 
@@ -31,17 +47,14 @@ public class BuildingStreams {
         Stream<String> emptyStream = Stream.empty();
 
         // Displaying elements in Stream
-        try{
-            emptyStream.forEach(System.out::println);    // No Output
-        } catch(Exception e){   // IllegalStateException 
-            System.err.println("Stream has no Output");
-        }
+        emptyStream.forEach(System.out::println);    // No Output
 
         System.out.println("\n======== Stream.ofNullable() ========");
-        // System.getProperty() returns null if there is no property with the 
-        // given key 
+        HowToUseOfNullable();
 
-        String homeValue = System.getProperty("home");
+        System.out.println("\n======== Streams from Arrays ========");
+
+       
 
     }
 }
