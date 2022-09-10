@@ -1,6 +1,7 @@
 package Java.Java8.Collectors;
 
 import java.util.List;
+import java.util.Optional;
 
 // import static java.util.stream.Collectors.*;
 
@@ -36,7 +37,12 @@ public class Reducing {
             Comparator.comparingInt(Dish::getCalories);
         // 2. Pass in thhe Comparator to the method Collectors.maxBy()
         Optional<Dish> mostCalorieDish = 
-            menu.stream().collect(maxBy(dishCaloriesComparator));
+            menu.stream().collect(Collectors.maxBy(dishCaloriesComparator));
+
+        // 3. Output the Result
+        System.out.println("Dish with the most Calories is: " +
+            mostCalorieDish.get().getName() + " with " 
+            + mostCalorieDish.get().getCalories() + " Calories");
     }
 
     public static void main(String... args) {
