@@ -38,24 +38,37 @@ public class GroupingTransactions {
     groupFunctionally();
   }
 
+  /** Prior to Java 8 */
   private static void groupImperatively() {
+    // 1. Creates the Map where grouped transactions will be accumulated
     Map<Currency, List<Transaction>> transactionsByCurrencies = new HashMap<>();
+
+    // 2. Iterates the list of Transactions
     for (Transaction transaction : transactions) {
-      Currency currency = transaction.getCurrency();
+      Currency currency = transaction.getCurrency(); // 3. Extracts the Transaction's currency
       List<Transaction> transactionsForCurrency = transactionsByCurrencies.get(currency);
-      if (transactionsForCurrency == null) {
+
+      // 4. If there is no entry in the grouping Map for this currency, creatte it
+      if (transactionsForCurrency == null) { 
         transactionsForCurrency = new ArrayList<>();
         transactionsByCurrencies.put(currency, transactionsForCurrency);
       }
+
+      // 5. Add the currently traversed Transaction to the List of Transactions with the same currency
       transactionsForCurrency.add(transaction);
     }
 
-    System.out.println(transactionsByCurrencies);
+    System.out.println(transactionsByCurrencies); // Output the result
   }
 
+  /**
+   * Can achieve the same result above using a more general Collector parameter
+   * to the collect() method on Stream
+   */
   private static void groupFunctionally() {
     Map<Currency, List<Transaction>> transactionsByCurrencies = transactions.stream()
         .collect(groupingBy(Transaction::getCurrency));
+
     System.out.println(transactionsByCurrencies);
   }
 
