@@ -1,6 +1,11 @@
 package Java.Java8.Collectors;
-// Import Static Factory Methods of Collectors class
-import static java.util.stream.Collectors.*;
+
+import java.util.List;
+
+// import static java.util.stream.Collectors.*;
+
+import java.util.stream.Collectors; 
+import static java.util.stream.Collectors.toList; 
 
 import static Java.Java8.Collectors.Dish.menu; // Use the Menu from Dish.java
 
@@ -16,14 +21,29 @@ import static Java.Java8.Collectors.Dish.menu; // Use the Menu from Dish.java
 public class Reducing {
     
 
-    // Counts the number of dishes in thhe menu
+    // Counts the number of dishes in the menu, using Collectors.counting()
     private static long countDishes(){
         long dishCount = menu.stream().collect(Collectors.counting());
+        return dishCount;
     }
 
     public static void main(String... args) {
-
+        showMenu();
+        System.out.println("\n===== Counting Number of Dishes in the menu =====");
+        System.out.println(" Number of dishes is " + countDishes());
     }
 
-
+    // Prints the available menu and respective calories
+    public static void showMenu(){
+        List<String> dishNames = menu.stream()
+            .map(Dish::getName)
+            .collect(toList());
+        System.out.print("menu: ");
+        System.out.println(dishNames);
+        List<Integer> dishCalories = menu.stream()
+            .map(Dish::getCalories)
+            .collect(toList());
+        System.out.print("Cals: ");
+        System.out.println(dishCalories);    
+    }
 }
