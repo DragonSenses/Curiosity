@@ -5,7 +5,9 @@ import java.util.List;
 // import static java.util.stream.Collectors.*;
 
 import java.util.stream.Collectors; 
-import static java.util.stream.Collectors.toList; 
+import static java.util.stream.Collectors.toList;
+
+import java.util.Comparator;
 
 import static Java.Java8.Collectors.Dish.menu; // Use the Menu from Dish.java
 
@@ -27,10 +29,22 @@ public class Reducing {
         return dishCount;
     }
 
+    // Finds the Most Caloric dish within the menu
+    private static void findMaxCalorie(){
+        // 1. Create the Comparator to compare elements in the Stream
+        Comparator<Dish> dishCaloriesComparator = 
+            Comparator.comparingInt(Dish::getCalories);
+        // 2. Pass in thhe Comparator to the method Collectors.maxBy()
+        Optional<Dish> mostCalorieDish = 
+            menu.stream().collect(maxBy(dishCaloriesComparator));
+    }
+
     public static void main(String... args) {
         showMenu();
         System.out.println("\n===== Counting Number of Dishes in the menu =====");
         System.out.println(" Number of dishes is " + countDishes());
+        System.out.println("\n===== Finding the Maximum within the menu =====");
+        findMaxCalorie();
     }
 
     // Prints the available menu and respective calories
