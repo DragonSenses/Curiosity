@@ -1,4 +1,8 @@
 package Java.Java8.Collectors;
+// Import Static Factory Methods of Collectors class
+import static java.util.stream.Collectors.*;
+
+import static Java.Java8.Collectors.Dish.menu; // Use the Menu from Dish.java
 
 /**
  * Collectors are parameters to the stream method collect(), and are used when
@@ -11,6 +15,11 @@ package Java.Java8.Collectors;
  */
 public class Reducing {
     
+
+    // Counts the number of dishes in thhe menu
+    private static long countDishes(){
+        long dishCount = menu.stream().collect(Collectors.counting());
+    }
 
     public static void main(String... args) {
 
