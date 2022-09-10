@@ -3,8 +3,6 @@ package Java.Java8.Collectors;
 import java.util.List;
 import java.util.Optional;
 
-// import static java.util.stream.Collectors.*;
-
 import java.util.stream.Collectors; 
 import static java.util.stream.Collectors.toList;
 
@@ -20,11 +18,26 @@ import static Java.Java8.Collectors.Dish.menu; // Use the Menu from Dish.java
  * 1. Count the Number of Dishes in the Menu, using counting()
  * 2. Find Maximum in a Stream of Values
  * 3. Find Minimum in a Stream of Values
+ * 
+ * ================================= Methods =================================
+ * -collect() - a terminal stream operation that combines all elements of a 
+ * stream into a List, a reduction operation that takes an argumenty various
+ * recipes for accumulating the elements of a stream into a summary result
+ * 
+ * -Collectors.counting() - counts the number of elements within the stream
+ * 
+ * -Colectors.maxBy() - takes in a Comparator as argument and finds the maximum
+ * element within the stream
+ * 
+ * -Collectors.minBy() - takes in a Comparator as argument and finds the minimum
+ * element within the stream
  */
 public class Reducing {
     
-
     // Counts the number of dishes in the menu, using Collectors.counting()
+    // Can be rewritten as
+    // long dishCount = menu.stream().count(); 
+    // but counting collector can be useful when used in combination with other collectors
     private static long countDishes(){
         long dishCount = menu.stream().collect(Collectors.counting());
         return dishCount;
@@ -35,14 +48,29 @@ public class Reducing {
         // 1. Create the Comparator to compare elements in the Stream
         Comparator<Dish> dishCaloriesComparator = 
             Comparator.comparingInt(Dish::getCalories);
-        // 2. Pass in thhe Comparator to the method Collectors.maxBy()
+        // 2. Pass in the Comparator to the method Collectors.maxBy()
         Optional<Dish> mostCalorieDish = 
             menu.stream().collect(Collectors.maxBy(dishCaloriesComparator));
 
         // 3. Output the Result
-        System.out.println("Dish with the most Calories is: " +
-            mostCalorieDish.get().getName() + " with " 
+        System.out.println("Dish with the most Calories is: " 
+            + mostCalorieDish.get().getName() + " with " 
             + mostCalorieDish.get().getCalories() + " Calories");
+    }
+
+    // Finds the Least Caloric dish within the menu
+    private static void findMinCalorie(){
+        // 1. Create the Comparator to compare elements in the Stream
+        Comparator<Dish> dishCaloriesComparator = 
+            Comparator.comparingInt(Dish::getCalories);
+        // 2. Pass in the Comparator to the method Collectors.maxBy()
+        Optional<Dish> minCalorieDish = 
+            menu.stream().collect(Collectors.minBy(dishCaloriesComparator));
+
+        // 3. Output the Result
+        System.out.println("Dish with the least Calories is: " 
+          + minCalorieDish.get().getName() + " with " 
+          + minCalorieDish.get().getCalories() + " Calories");
     }
 
     public static void main(String... args) {
@@ -51,9 +79,11 @@ public class Reducing {
         System.out.println(" Number of dishes is " + countDishes());
         System.out.println("\n===== Finding the Maximum within the menu =====");
         findMaxCalorie();
+        System.out.println("\n===== Finding the Minimum within the menu =====");
+        findMinCalorie();
     }
 
-    // Prints the available menu and respective calories
+    // Displays the available menu and respective calories
     public static void showMenu(){
         List<String> dishNames = menu.stream()
             .map(Dish::getName)
