@@ -61,9 +61,14 @@ public class GroupingTransactions {
     System.out.println(transactionsByCurrencies); // Output the result
   }
 
-  /**
+  /** 
    * Can achieve the same result above using a more general Collector parameter
-   * to the collect() method on Stream
+   * to the collect() method on Stream. Invoking the collect method on a stream
+   * triggers a Reduction Operation, which is done internally. 
+   * 
+   * 1. Traverse each Transaction in the Stream
+   * 2. Extracts the Transaction's currency [Transforming Function]
+   * 3. Add the currency/transaction pair to the grouping map
    */
   private static void groupFunctionally() {
     Map<Currency, List<Transaction>> transactionsByCurrencies = transactions.stream()
