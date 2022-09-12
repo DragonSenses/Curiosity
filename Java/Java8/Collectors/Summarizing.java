@@ -35,28 +35,48 @@ import static java.util.stream.Collectors.summingInt;
  * int that has to be summed and returns the collector that performs the 
  * requested summarization (when passed to the usual collect() method)
  * 
- * -Collectors.summingLong() - long variant
- * -Collectors.summingDouble() - double variant
- * 
  * -Collectors.averagingInt() - calculates the average of the same set of numeric
  * values
  * 
- * -Collectors.averagingDouble() - double variant of average
- * -Collectors.averagingLong() - long variant of average
+ * -Collectors.summarizingInt() - computes information based on the numeric 
+ * property of the elements, collecting count, sum, min, avg, and max all in
+ * one operation
  * 
- * -
+ * Each method has their respective Double and Long variants:
  * 
+ * -Collectors.summingDouble()
+ * -Collectors.summingLong()
+ * -Collectors.averagingDouble()
+ * -Collectors.averagingLong()
+ * -Collectors.summaryingDouble()
+ * -Collectors.summarizingLong()
  */
 public class Summarizing {
     
     // 1. Calculates Total Calories using summingInt()
     private static int calculateTotalCalories() {
+        // int totalCalories = menu.stream.collect(summingInt(Dish::getCalories));
         return menu.stream().collect(summingInt(Dish::getCalories));
     }
 
     // 2. Calculate the Average Number of Calories within the Menu
     private static Double calculateAverageCalories() {
+        // double avgCalories = menu.stream().collect(averaginingInt(Dish::getCalories));
         return menu.stream().collect(averagingInt(Dish::getCalories));
+    }
+
+    /** 3. Retrieve count, sum, min, average, and max all in one operation
+     * 
+     * This collector gathers all this information in a class called 
+     * IntSummaryStatistics that provides convenient getter methods to access
+     * results. Printing the object produces the following output: 
+     * IntSummaryStatistics{count=9, sum=4300, min=120, average=477.777778, max=800}
+     * @return IntSummaryStatistics object
+     */
+    private static IntSummaryStatistics calculateMenuStatistics() {
+        // IntSummaryStatistics menuStatistics = 
+        //     menu.stream().collect(summarizingInt(Dish::getCalories));
+        return menu.stream().collect(summarizingInt(Dish::getCalories));
     }
 
     public static void main(String[] args) {
@@ -69,6 +89,8 @@ public class Summarizing {
         System.out.println("Total calories in menu: " + calculateTotalCalories());
         System.out.println("\n======== Average Number of Calories in a Menu ========");
         System.out.println("Average calories in menu: " + calculateAverageCalories());
+        System.out.println("\n======== IntSummaryStatistics ========");
+        System.out.println("Menu statistics: " + calculateMenuStatistics());
     }
 
     // Reduction Operations
