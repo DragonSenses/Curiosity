@@ -1,5 +1,8 @@
 package Java.Java8.Collectors;
 
+import java.util.List;
+import java.util.stream.Collectors.toList;
+
 /**
  * Collectors provide specific factory method for summing, which accepts a 
  * function that maps an object into the int that has to be summed and returns
@@ -35,6 +38,21 @@ package Java.Java8.Collectors;
 public class Summarizing {
     
     public static void main(String[] args) {
+        showMenu();
+        System.out.println("======== Finding at least one element that matches ========");
+    }
 
+    // Prints the available menu and respective calories
+    public static void showMenu(){
+        List<String> dishNames = menu.stream()
+            .map(Dish::getName)
+            .collect(toList());
+        System.out.print("menu: ");
+        System.out.println(dishNames);
+        List<Integer> dishCalories = menu.stream()
+            .map(Dish::getCalories)
+            .collect(toList());
+        System.out.print("Cals: ");
+        System.out.println(dishCalories);    
     }
 }
