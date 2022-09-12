@@ -93,9 +93,16 @@ public class Summarizing {
         return menu.stream().map(Dish::getName).collect(joining());
     }
 
+    // 5. Produce a comma-separated list of dish names using overloaded variant
+    // of Collectors.joining(). 
+    private static String getShortMenuCommaSeparated() {
+        // String shortMenu = menu.stream.collect(joining(", "));
+        return menu.stream().map(Dish::getName).collect(joining(", "));
+    }
+
     public static void main(String[] args) {
-        showMenu();
         System.out.println("======== Menu Summary & Statistics ========");
+        showMenu();
         System.out.println("Number of dishes: " + howManyDishes());
         System.out.println("The most caloric dish is: " + findMostCaloricDish());
         System.out.println("The most caloric dish is: " + findMostCaloricDishUsingComparator());
@@ -106,7 +113,8 @@ public class Summarizing {
         System.out.println("\n======== IntSummaryStatistics ========");
         System.out.println("Menu statistics: " + calculateMenuStatistics());
         System.out.println("\n======== Concatenate the names of dishes ========");
-        System.out.println("Short menu: " + getShortMenu());
+        System.out.println("[Short menu]\n" + getShortMenu());
+        System.out.println("\n[Short menu comma-separated]\n" + getShortMenuCommaSeparated());
     }
 
     // Reduction Operations
