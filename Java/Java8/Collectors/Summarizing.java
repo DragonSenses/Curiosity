@@ -52,7 +52,12 @@ public class Summarizing {
     // 1. Calculates Total Calories using summingInt()
     private static int calculateTotalCalories() {
         return menu.stream().collect(summingInt(Dish::getCalories));
-      }
+    }
+
+    // 2. Calculate the Average Number of Calories within the Menu
+    private static Double calculateAverageCalories() {
+        return menu.stream().collect(averagingInt(Dish::getCalories));
+    }
 
     public static void main(String[] args) {
         showMenu();
@@ -60,26 +65,33 @@ public class Summarizing {
         System.out.println("Number of dishes: " + howManyDishes());
         System.out.println("The most caloric dish is: " + findMostCaloricDish());
         System.out.println("The most caloric dish is: " + findMostCaloricDishUsingComparator());
-        System.out.println("======== Total Number of Calories in a Menu ========");
+        System.out.println("\n======== Total Number of Calories in a Menu ========");
         System.out.println("Total calories in menu: " + calculateTotalCalories());
-
+        System.out.println("\n======== Average Number of Calories in a Menu ========");
+        System.out.println("Average calories in menu: " + calculateAverageCalories());
     }
 
     // Reduction Operations
     // counting(), reducing(), and maxBy()
+    
+    // Count the Total Number of Dishes
     private static long howManyDishes() {
         return menu.stream().collect(counting());
-      }
+    }
     
-      private static Dish findMostCaloricDish() {
-        return menu.stream().collect(reducing((d1, d2) -> d1.getCalories() > d2.getCalories() ? d1 : d2)).get();
-      }
-    
-      private static Dish findMostCaloricDishUsingComparator() {
+    // Finds most caloric dish using Collectors.reducing()
+    // Lambda Expression returns an Optional Object
+    private static Dish findMostCaloricDish() {
+        return menu.stream()
+            .collect(reducing((d1, d2) -> d1.getCalories() > d2.getCalories() ? d1 : d2)).get();
+    }
+
+    // Finds most caloric dish using Comparator
+    private static Dish findMostCaloricDishUsingComparator() {
         Comparator<Dish> dishCaloriesComparator = Comparator.comparingInt(Dish::getCalories);
         BinaryOperator<Dish> moreCaloricOf = BinaryOperator.maxBy(dishCaloriesComparator);
         return menu.stream().collect(reducing(moreCaloricOf)).get();
-      }
+    }
 
     // Prints the available menu and respective calories
     public static void showMenu(){
