@@ -1,7 +1,11 @@
 package Java.Java8.Collectors;
 
+import static Java.Java8.Collectors.Dish.menu; // Use the Menu from Dish.java
+
 import java.util.List;
-import java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toList;
+
+import static java.util.stream.Collectors.summingInt;
 
 /**
  * Collectors provide specific factory method for summing, which accepts a 
@@ -23,23 +27,31 @@ import java.util.stream.Collectors.toList;
  * int that has to be summed and returns the collector that performs the 
  * requested summarization (when passed to the usual collect() method)
  * 
- * -Collectors.summingLong - long variant
- * -Collectors.summingDouble - double variant
+ * -Collectors.summingLong() - long variant
+ * -Collectors.summingDouble() - double variant
  * 
- * -Collectors.averagingInt - calculates the average of the same set of numeric
+ * -Collectors.averagingInt() - calculates the average of the same set of numeric
  * values
  * 
- * -Collectors.averagingDouble - double variant of average
- * -Collectors.averagingLong - long variant of average
+ * -Collectors.averagingDouble() - double variant of average
+ * -Collectors.averagingLong() - long variant of average
  * 
- * - 
+ * -
  * 
  */
 public class Summarizing {
     
+    // 1. Calculates Total Calories using summingInt()
+    private static int calculateTotalCalories() {
+        return menu.stream().collect(summingInt(Dish::getCalories));
+      }
+
     public static void main(String[] args) {
         showMenu();
-        System.out.println("======== Finding at least one element that matches ========");
+        System.out.println("======== Menu Summary & Statistics ========");
+        System.out.println("======== Total Number of Calories in a Menu ========");
+        System.out.println("Total calories in menu: " + calculateTotalCalories());
+
     }
 
     // Prints the available menu and respective calories
