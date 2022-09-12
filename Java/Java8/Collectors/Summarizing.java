@@ -25,6 +25,8 @@ import static java.util.stream.Collectors.summingInt;
  * 1. Find Total Number of Calories in the Menu
  * 2. Find Average Number of Calories in the Menu
  * 3. Find count, sum, minimum, average, and maximum all in one operation
+ * 4. Concatenate the names of all dishes in the menu
+ * 5. Produce a comma-separated list of Dish Names 
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -42,7 +44,13 @@ import static java.util.stream.Collectors.summingInt;
  * property of the elements, collecting count, sum, min, avg, and max all in
  * one operation
  * 
- * Each method has their respective Double and Long variants:
+ * -Collectors.joining() - concatenates into a single string, all strings 
+ * resulting form invoking the toString() method on each obj in the stream.
+ * 
+ * -Collectors.joining("delimiter") - overloaded variant which is used to
+ * delimit two consecutive elements
+ * 
+ * Some methods have their respective Double and Long variants:
  * 
  * -Collectors.summingDouble()
  * -Collectors.summingLong()
@@ -79,6 +87,12 @@ public class Summarizing {
         return menu.stream().collect(summarizingInt(Dish::getCalories));
     }
 
+    // 4. Concatenates the names of all dishes in a menu using joining()
+    private static String getShortMenu() {
+        // String shortMenu = menu.stream.collect(joining());
+        return menu.stream().map(Dish::getName).collect(joining());
+    }
+
     public static void main(String[] args) {
         showMenu();
         System.out.println("======== Menu Summary & Statistics ========");
@@ -91,6 +105,8 @@ public class Summarizing {
         System.out.println("Average calories in menu: " + calculateAverageCalories());
         System.out.println("\n======== IntSummaryStatistics ========");
         System.out.println("Menu statistics: " + calculateMenuStatistics());
+        System.out.println("\n======== Concatenate the names of dishes ========");
+        System.out.println("Short menu: " + getShortMenu());
     }
 
     // Reduction Operations
