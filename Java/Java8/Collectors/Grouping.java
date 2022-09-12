@@ -15,6 +15,7 @@ import static java.util.stream.Collectors.groupingBy;
  * 
  * For Instance, we can:
  * 1. Group the dishes in the menu according to their type 
+ * 2. Classify dishes based on caloric levels
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -39,10 +40,39 @@ public class Grouping {
         return menu.stream().collect(groupingBy(Dish::getType));
     }
 
+    // Create a set of enumerated values that will mark a dish as Diet, Normal,
+    // or Fat based on its number of Calories
+    public enum CaloricLevel{ DIET, NORMAL, FAT }
+
+    /**
+     * 2. Classify dishes with something more complex than a simple property
+     * accessor. Here we classify dishes based on CaloricLevel, where
+     * -Diet = 400 Calories or Fewer
+     * -Normal = 400-700 Calories
+     * -Fat = 700 Calories or more
+     * @return a Map with CaloricLevel as Key and List of all dishes as values
+     */
+    private static Map<CaloricLevel, List<Dish>> groupDishesByCaloricLevel() {
+        return menu.stream().collect(
+            groupingBy(dish -> {
+              if (dish.getCalories() <= 400) {
+                return CaloricLevel.DIET;
+              }
+              else if (dish.getCalories() <= 700) {
+                return CaloricLevel.NORMAL;
+              }
+              else {
+                return CaloricLevel.FAT;
+              }
+            })
+        );
+      }
+
     public static void main(String[] args) {
         showMenu();
-        System.out.println("\n======== Group Dishes based on Type ========");
-        System.out.println("[Dishes grouped by type]\n" + groupDishesByType());
+        System.out.println("\n======== Grouping Dishes in the Menu ========");
+        System.out.println("[Dishes grouped by type]\n " + groupDishesByType());
+        System.out.println("\n[Dishes grouped by caloric level]\n " + groupDishesByCaloricLevel());
     }
 
     // Prints the available menu and respective calories
