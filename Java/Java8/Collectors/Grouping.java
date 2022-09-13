@@ -9,6 +9,7 @@ import java.util.Map;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.filtering;
+import static java.util.stream.Collectors.mapping;
 
 /**
  * Grouping is a common databse operation where items in a set are grouped
@@ -19,6 +20,8 @@ import static java.util.stream.Collectors.filtering;
  * 2. Classify dishes based on caloric levels
  * 3. Manipulate elements in each resulting group, such as filtering only
  * caloric dishes
+ * 4. Manipulate elements in a group by transforming them through a mapping
+ * function 
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -31,7 +34,7 @@ import static java.util.stream.Collectors.filtering;
  * that have thhat classified value. 
  * (Ex. Menu-Classification: {Key = Dish.Type, Value = List of Dishes of that Type})
  * 
- * -Collectors class overloads the groupingBy() method with one
+ * -Collectors.groupingBy(Function, Collector) is an overloaded method 
  * variant that accepts a classfication function and a Collector as a 2nd argument
  * 
  * -Collectors.filtering() - Results in a Collector with the filtered elements
@@ -79,6 +82,7 @@ public class Grouping {
 
     /**
      * 3. Manipulate Elements in a Resulting Group, filtering out by Calories
+     * Collectors.groupingBy(Function, Collector.Filtering)
      * 
      * One solution applies filter() to the stream itself, but the drawback is 
      * that if there is no Dish.Type that satisfies the predicate the key
@@ -97,12 +101,33 @@ public class Grouping {
                 filtering(dish -> dish.getCalories() > 500, toList())));
     }
 
+    /**
+     * 4. Manipulate Elements in a Group, transforming them through a mapping function 
+     * Collectors.groupingBy(Function, Collector.Mapping)
+     * 
+     * Mapping Collector which accepts a mapping function and another Collector
+     * used to gather the elements resulting from the application of that 
+     * function to each of them. 
+     * 
+     * Here we convert each Dish in the groups into their respective names.
+     * 
+     * Note the difference between 1. and 4. is that this is a List<String> rather than
+     * a List<Dish> 
+     * @return Map with keys Dish.Type, and values as List of Dish names associated to key
+     */
+    private static Map<Dish.Type, List<String>> groupDishNamesByType() {
+        return menu.stream().collect(
+            groupingBy(Dish::getType,
+                mapping(Dish::getName, toList())));
+    }
+
     public static void main(String[] args) {
         showMenu();
         System.out.println("\n======== Grouping Dishes in the Menu ========");
         System.out.println("[Dishes grouped by type]\n " + groupDishesByType());
         System.out.println("\n[Dishes grouped by caloric level]\n " + groupDishesByCaloricLevel());
         System.out.println("\n[Caloric dishes (>500 Cal) grouped by type]\n " + groupCaloricDishesByType());
+        System.out.println("\n[Dish names grouped by type]\n " + groupDishNamesByType());
     }
 
     // Prints the available menu and respective calories
