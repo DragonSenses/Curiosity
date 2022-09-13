@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.filtering;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.flatMapping;
 import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.reducing;
 
 /**
  * Grouping is a common database operation where items in a set are grouped
@@ -43,6 +44,8 @@ import static java.util.stream.Collectors.counting;
  * 7. Pass any type of Collector as 2nd argument to groupingBy(), for instance
  * to Count the Number of Dishes in the menu for each Type 
  * 
+ * 8. Find Highest Calorie Dish in the menu, but now classified by Type of Dish
+ * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
  * stream into a List, a reduction operation that takes an argumenty various
@@ -53,12 +56,16 @@ import static java.util.stream.Collectors.counting;
  * function and corresponding map value a list of all items in the stream
  * that have thhat classified value. 
  * (Ex. Menu-Classification: {Key = Dish.Type, Value = List of Dishes of that Type})
+ *  - Note: Collectors.groupingBy(f), where f is classification function, is in
+ * reality shorthand for groupingBy(f,toList())
  * 
  * -Collectors.groupingBy(Function, Collector) is an overloaded method 
  * variant that accepts a classfication function and a Collector as a 2nd argument
  *      -groupingBy(Function,Collector.filtering)
  *      -groupingBy(Function,Collector.mapping())
  *      -groupingBy(Function,Collector.flatMapping())
+ *      -groupingBy(Function,groupingBy(Function,Collector))
+ *      -groupingBy(Function,Collector.counting())
  * 
  * -Collectors.filtering() - Results in a Collector with the filtered elements
  * using a filtering predicate
@@ -203,7 +210,22 @@ public class Grouping {
      */
     private static Map<Dish.Type, Long> countDishesInGroups() {
         return menu.stream().collect(groupingBy(Dish::getType, counting()));
-      }
+    }
+
+    /**
+     * 8. Find Highest Calorie Dish in the menu, classified by Dish Type,
+     * result is a Map with keys as available types of Dishes and values 
+     * the Optional<Dish>, wrapping the corresponding highest-calorie Dish
+     * for a given type.
+     * 
+     * @return Map with keys as Dish Types and Values as Optional<Dish> with
+     * the highest calories
+     */
+    private static Map<Dish.Type, Optional<Dish>> mostCaloricDishesByType() {
+        return menu.stream().collect(
+            groupingBy(Dish::getType,
+                reducing((Dish d1, Dish d2) -> d1.getCalories() > d2.getCalories() ? d1 : d2)));
+    }
 
     public static void main(String[] args) {
         showMenu();
@@ -222,6 +244,11 @@ public class Grouping {
 
         System.out.println("\n======= Multilevel Grouping ========");
         System.out.println("[Dishes grouped by type and caloric level]\n " + groupDishedByTypeAndCaloricLevel());
+
+        System.out.println("\n[Count dishes in groups]\n " + countDishesInGroups());
+
+        System.out.println("\n======= Grouping and Reduction ========");
+        System.out.println("[Most caloric dishes by type]\n " + mostCaloricDishesByType());
     }
 
     // Prints the available menu and respective calories
