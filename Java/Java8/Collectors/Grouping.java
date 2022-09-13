@@ -17,6 +17,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.filtering;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.flatMapping;
+import static java.util.stream.Collectors.counting;
 
 /**
  * Grouping is a common database operation where items in a set are grouped
@@ -35,7 +36,12 @@ import static java.util.stream.Collectors.flatMapping;
  * Or Group dishes based on more than one Criterion at the same time 
  * (Multi-Level Grouping):
  * 
- * 6. 
+ * 6. Group by both Dish.Type and CaloricLevel, is a Multilevel grouping
+ *  where Collectors.groupingBy() can be used to perform a two-level grouping,
+ *  by passing a second inner groupingBy() to the outer groupingBy(). 
+ * 
+ * 7. Pass any type of Collector as 2nd argument to groupingBy(), for instance
+ * to Count the Number of Dishes in the menu for each Type 
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -58,7 +64,6 @@ import static java.util.stream.Collectors.flatMapping;
  * using a filtering predicate
  */
 public class Grouping {
-    
     /**
      * 1. We pass in a classification Function (a method reference) which 
      * extracts the Dish.Type for each Dish in the Stream. This returns a
@@ -189,6 +194,16 @@ public class Grouping {
             )
         );
     }
+
+    /**
+     * 7. Count the Number of Dishes in the menu for each Dish Type
+     * By passing in counting Collector as 2nd argument to groupingBy() collector
+     * 
+     * @return a Map, keys as Dish Type and Values as the number of dishes of that type
+     */
+    private static Map<Dish.Type, Long> countDishesInGroups() {
+        return menu.stream().collect(groupingBy(Dish::getType, counting()));
+      }
 
     public static void main(String[] args) {
         showMenu();
