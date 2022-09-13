@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.filtering;
 
 /**
  * Grouping is a common databse operation where items in a set are grouped
@@ -16,6 +17,8 @@ import static java.util.stream.Collectors.groupingBy;
  * For Instance, we can:
  * 1. Group the dishes in the menu according to their type 
  * 2. Classify dishes based on caloric levels
+ * 3. Manipulate elements in each resulting group, such as filtering only
+ * caloric dishes
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -27,6 +30,12 @@ import static java.util.stream.Collectors.groupingBy;
  * function and corresponding map value a list of all items in the stream
  * that have thhat classified value. 
  * (Ex. Menu-Classification: {Key = Dish.Type, Value = List of Dishes of that Type})
+ * 
+ * -Collectors class overloads the groupingBy() method with one
+ * variant that accepts a classfication function and a Collector as a 2nd argument
+ * 
+ * -Collectors.filtering() - Results in a Collector with the filtered elements
+ * using a filtering predicate
  */
 public class Grouping {
     
@@ -54,7 +63,7 @@ public class Grouping {
      */
     private static Map<CaloricLevel, List<Dish>> groupDishesByCaloricLevel() {
         return menu.stream().collect(
-            groupingBy(dish -> {
+            groupingBy(dish -> {    // Classification Function with Lambda Expression
               if (dish.getCalories() <= 400) {
                 return CaloricLevel.DIET;
               }
@@ -66,13 +75,34 @@ public class Grouping {
               }
             })
         );
-      }
+    }
+
+    /**
+     * 3. Manipulate Elements in a Resulting Group, filtering out by Calories
+     * 
+     * One solution applies filter() to the stream itself, but the drawback is 
+     * that if there is no Dish.Type that satisfies the predicate the key
+     * will disappear from the mapping. For instance, there is no Dish.Type FISH
+     * that is greater than 500 calories. 
+     * 
+     * Instead, to keep the entry for FISH type and map to an empty list, use
+     * a Collector made from filtering() as a 2nd argument to overloaded method
+     * of groupingBy(). 
+     * @return a Map of Caloric Dishes greather than 500 calroies, grouped by Type
+     */
+    private static Map<Dish.Type, List<Dish>> groupCaloricDishesByType() {
+        //return menu.stream().filter(dish -> dish.getCalories() > 500).collect(groupingBy(Dish::getType));
+        return menu.stream().collect(
+            groupingBy(Dish::getType,
+                filtering(dish -> dish.getCalories() > 500, toList())));
+    }
 
     public static void main(String[] args) {
         showMenu();
         System.out.println("\n======== Grouping Dishes in the Menu ========");
         System.out.println("[Dishes grouped by type]\n " + groupDishesByType());
         System.out.println("\n[Dishes grouped by caloric level]\n " + groupDishesByCaloricLevel());
+        System.out.println("\n[Caloric dishes (>500 Cal) grouped by type]\n " + groupCaloricDishesByType());
     }
 
     // Prints the available menu and respective calories
