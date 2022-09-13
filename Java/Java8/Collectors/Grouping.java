@@ -1,27 +1,35 @@
 package Java.Java8.Collectors;
 
-import static Java.Java8.Collectors.Dish.menu; // Use the Menu from Dish.java
+// Use Dish.java file from same package
+import static Java.Java8.Collectors.Dish.menu; 
 import static Java.Java8.Collectors.Dish.dishTags;
 
+// Import Data Structures
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
+// Import Stream.Collector factory methods
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.filtering;
 import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.flatMapping;
 
 /**
- * Grouping is a common databse operation where items in a set are grouped
+ * Grouping is a common database operation where items in a set are grouped
  * based on one or more properties. 
  * 
  * For Instance, we can:
  * 1. Group the dishes in the menu according to their type 
  * 2. Classify dishes based on caloric levels
  * 3. Manipulate elements in each resulting group, such as filtering only
- * caloric dishes
+ * caloric dishes, groupingBy(Function,Collector.filtering)
  * 4. Manipulate elements in a group by transforming them through a mapping
- * function 
+ * function, groupingBy(Function,Collector.mapping())
+ * 5. Use flatmapping Collector with groupingBy() to perform a flatMap transformation
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -36,6 +44,9 @@ import static java.util.stream.Collectors.mapping;
  * 
  * -Collectors.groupingBy(Function, Collector) is an overloaded method 
  * variant that accepts a classfication function and a Collector as a 2nd argument
+ *      -groupingBy(Function,Collector.filtering)
+ *      -groupingBy(Function,Collector.mapping())
+ *      -groupingBy(Function,Collector.flatMapping())
  * 
  * -Collectors.filtering() - Results in a Collector with the filtered elements
  * using a filtering predicate
@@ -121,13 +132,42 @@ public class Grouping {
                 mapping(Dish::getName, toList())));
     }
 
+    /**
+     * 5. Use flatmapping Collector with groupingBy() to perform a flatMap transformation
+     * 
+     * Here we have a Map<String, List<String>> dishTags = new HashMap<>();
+     * 
+     * Example Entries in dishTags are:
+     * {pork, {greasy, salty}}
+     * {french fries, {greasy,fried}}
+     * {rice, {light,natural}}
+     * 
+     * First, extract these tags for each group of type of dishes, using the
+     * flatMapping Collector
+     *  For each Dish we obtain a List of Tags, so we need to perform a flatMap
+     * in order to flatten the resulting two-level list into a single one. 
+     * @return Map with Keys Dish.Type and Value as a Set<String> that represent DishTags
+     */
+    private static Map<Dish.Type, Set<String>> groupDishTagsByType() {
+        return menu.stream().collect(
+            groupingBy(Dish::getType,
+                flatMapping(dish -> dishTags.get(dish.getName()).stream(), toSet())));
+    }
+
     public static void main(String[] args) {
         showMenu();
         System.out.println("\n======== Grouping Dishes in the Menu ========");
         System.out.println("[Dishes grouped by type]\n " + groupDishesByType());
         System.out.println("\n[Dishes grouped by caloric level]\n " + groupDishesByCaloricLevel());
-        System.out.println("\n[Caloric dishes (>500 Cal) grouped by type]\n " + groupCaloricDishesByType());
-        System.out.println("\n[Dish names grouped by type]\n " + groupDishNamesByType());
+
+        System.out.println("\n======== Filtering Collector ========");
+        System.out.println("[Caloric dishes (>500 Cal) grouped by type]\n " + groupCaloricDishesByType());
+
+        System.out.println("\n======== Mapping Collector ========");
+        System.out.println("[Dish names grouped by type]\n " + groupDishNamesByType());
+        
+        System.out.println("\n======== flatMapping Collector ========");
+        System.out.println("[Dish tags grouped by type]\n " + groupDishTagsByType());
     }
 
     // Prints the available menu and respective calories
