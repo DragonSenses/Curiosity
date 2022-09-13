@@ -20,9 +20,10 @@ import static java.util.stream.Collectors.flatMapping;
 
 /**
  * Grouping is a common database operation where items in a set are grouped
- * based on one or more properties. 
+ * based on one or more properties. Grouping is powerful because it composes
+ * effectively
  * 
- * For Instance, we can:
+ * For Instance, we can group dishes based on a Single Criterion:
  * 1. Group the dishes in the menu according to their type 
  * 2. Classify dishes based on caloric levels
  * 3. Manipulate elements in each resulting group, such as filtering only
@@ -30,6 +31,11 @@ import static java.util.stream.Collectors.flatMapping;
  * 4. Manipulate elements in a group by transforming them through a mapping
  * function, groupingBy(Function,Collector.mapping())
  * 5. Use flatmapping Collector with groupingBy() to perform a flatMap transformation
+ * 
+ * Or Group dishes based on more than one Criterion at the same time 
+ * (Multi-Level Grouping):
+ * 
+ * 6. 
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -144,8 +150,11 @@ public class Grouping {
      * 
      * First, extract these tags for each group of type of dishes, using the
      * flatMapping Collector
-     *  For each Dish we obtain a List of Tags, so we need to perform a flatMap
+     *  - For each Dish we obtain a List of Tags, so we need to perform a flatMap
      * in order to flatten the resulting two-level list into a single one. 
+     *  - Collect the result of flatMapping() operations executed in each group
+     * into a Set (instead of List) to avoid repetitions of same tags associated
+     * to more than one Dish in the same type
      * @return Map with Keys Dish.Type and Value as a Set<String> that represent DishTags
      */
     private static Map<Dish.Type, Set<String>> groupDishTagsByType() {
@@ -165,7 +174,7 @@ public class Grouping {
 
         System.out.println("\n======== Mapping Collector ========");
         System.out.println("[Dish names grouped by type]\n " + groupDishNamesByType());
-        
+
         System.out.println("\n======== flatMapping Collector ========");
         System.out.println("[Dish tags grouped by type]\n " + groupDishTagsByType());
     }
