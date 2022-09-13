@@ -163,6 +163,33 @@ public class Grouping {
                 flatMapping(dish -> dishTags.get(dish.getName()).stream(), toSet())));
     }
 
+    /**
+     * 6. Multilevel grouping where Collectors.groupingBy() can be used to
+     * perform a two-level grouping, by passing a second inner groupingBy()
+     * to the outer groupingBy().
+     * 
+     * Group Dishes by both Dish.Type and CaloricLevel
+     * @return a Mapping that groups every Dish.Type to another Map by
+     * CaloricLevel and a list of its associated Dishes
+     */
+    private static Map<Dish.Type, Map<CaloricLevel, List<Dish>>> groupDishedByTypeAndCaloricLevel() {
+        return menu.stream().collect(
+            groupingBy(Dish::getType,   // First-Level Classification Function
+                groupingBy((Dish dish) -> { // Second-Level Classfication Function
+                  if (dish.getCalories() <= 400) {
+                    return CaloricLevel.DIET;
+                  }
+                  else if (dish.getCalories() <= 700) {
+                    return CaloricLevel.NORMAL;
+                  }
+                  else {
+                    return CaloricLevel.FAT;
+                  }
+                })
+            )
+        );
+    }
+
     public static void main(String[] args) {
         showMenu();
         System.out.println("\n======== Grouping Dishes in the Menu ========");
@@ -177,6 +204,9 @@ public class Grouping {
 
         System.out.println("\n======== flatMapping Collector ========");
         System.out.println("[Dish tags grouped by type]\n " + groupDishTagsByType());
+
+        System.out.println("\n======= Multilevel Grouping ========");
+        System.out.println("[Dishes grouped by type and caloric level]\n " + groupDishedByTypeAndCaloricLevel());
     }
 
     // Prints the available menu and respective calories
