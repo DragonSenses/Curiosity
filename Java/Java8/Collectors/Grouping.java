@@ -20,6 +20,7 @@ import static java.util.stream.Collectors.flatMapping;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.summingInt;
 
 /**
  * Grouping is a common database operation where items in a set are grouped
@@ -50,6 +51,17 @@ import static java.util.stream.Collectors.collectingAndThen;
  * 
  * 9. Find Highest Calorie Dish in each subgroup in the menu, without Optionals
  * by adapting Collector result to a different type
+ * 
+ * Other Examples of Collectors used in Conjunction with groupingBy():
+ * 
+ * 10. Reuse the collector to sum the calories of all dishes, and apply it to
+ * each group of dishes
+ * 
+ * 11. Use mapping collector to adapt a collector accepting elements of a 
+ * given type to one working on objects of a different type, by applying
+ * a mapping function to each input element before accumulating them. Example
+ * is finding the CaloricLevels that are available in the menu for each type
+ * of Dish.
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -271,6 +283,17 @@ public class Grouping {
                     Optional::get))); // Transformation Function
     }
 
+    /**
+     * 10. Reuse the collector to sum the calories of all dishes, and apply it to
+     * each group of dishes
+     * @return Total calories of each type subgroup within the menu
+     */
+    private static Map<Dish.Type, Integer> sumCaloriesByType() {
+        return menu.stream().collect(groupingBy(Dish::getType,
+            summingInt(Dish::getCalories)));
+    }
+
+
     public static void main(String[] args) {
         showMenu();
         System.out.println("\n======== Grouping Dishes in the Menu ========");
@@ -296,6 +319,10 @@ public class Grouping {
 
         System.out.println("\n[Most caloric dishes by type (without Optionals)]\n "
              + mostCaloricDishesByTypeWithoutOptionals());
+
+        System.out.println("\nCollectors used in Conjunction with groupingBy():");
+        System.out.println("======= Reuse Sum Collector and Group by Type ========");
+        System.out.println("\n[Sum calories by type] " + sumCaloriesByType());
     }
 
     // Prints the available menu and respective calories
