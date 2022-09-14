@@ -19,6 +19,7 @@ import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.flatMapping;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.reducing;
+import static java.util.stream.Collectors.collectingAndThen;
 
 /**
  * Grouping is a common database operation where items in a set are grouped
@@ -73,6 +74,10 @@ import static java.util.stream.Collectors.reducing;
  * 
  * -Collectors.filtering() - Results in a Collector with the filtered elements
  * using a filtering predicate
+ * 
+ * -Collectors.collectingAndThen() - takes two arguments, the collector to be
+ * adapted and a transformation function, and returns another collector. This
+ * method can adapt the collector results of one to a different type
  */
 public class Grouping {
     /**
@@ -235,7 +240,13 @@ public class Grouping {
      * 9. Find Highest Calorie Dish in each subgroup in the menu, without Optionals
      * by adapting Collector result to a different type
      */
-    
+    private static Map<Dish.Type, Dish> mostCaloricDishesByTypeWithoutOptionals() {
+        return menu.stream().collect(
+            groupingBy(Dish::getType,
+                collectingAndThen(
+                    reducing((d1, d2) -> d1.getCalories() > d2.getCalories() ? d1 : d2),
+                    Optional::get)));
+      }
 
     public static void main(String[] args) {
         showMenu();
@@ -259,6 +270,9 @@ public class Grouping {
 
         System.out.println("\n======= Grouping and Reduction ========");
         System.out.println("[Most caloric dishes by type]\n " + mostCaloricDishesByType());
+
+        System.out.println("\n[Most caloric dishes by type (without Optionals)]\n "
+             + mostCaloricDishesByTypeWithoutOptionals());
     }
 
     // Prints the available menu and respective calories
