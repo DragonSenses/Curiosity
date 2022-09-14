@@ -45,6 +45,10 @@ import static java.util.stream.Collectors.reducing;
  * to Count the Number of Dishes in the menu for each Type 
  * 
  * 8. Find Highest Calorie Dish in the menu, but now classified by Type of Dish
+ * (Wrapped around Optional)
+ * 
+ * 9. Find Highest Calorie Dish in each subgroup in the menu, without Optionals
+ * by adapting Collector result to a different type
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -226,6 +230,12 @@ public class Grouping {
             groupingBy(Dish::getType,
                 reducing((Dish d1, Dish d2) -> d1.getCalories() > d2.getCalories() ? d1 : d2)));
     }
+
+    /**
+     * 9. Find Highest Calorie Dish in each subgroup in the menu, without Optionals
+     * by adapting Collector result to a different type
+     */
+    
 
     public static void main(String[] args) {
         showMenu();
