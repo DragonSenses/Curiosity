@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.HashSet;
 
 // Import Stream.Collector factory methods
 import static java.util.stream.Collectors.toList;
@@ -21,6 +22,7 @@ import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.summingInt;
+import static java.util.stream.Collectors.toCollection;
 
 /**
  * Grouping is a common database operation where items in a set are grouped
@@ -62,6 +64,9 @@ import static java.util.stream.Collectors.summingInt;
  * a mapping function to each input element before accumulating them. Example
  * is finding the CaloricLevels that are available in the menu for each type
  * of Dish.
+ * 
+ * 12. Improve the result of mapping collector passed in to groupingBy() by
+ * having more control of the output Set by using toCollection().
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -329,6 +334,37 @@ public class Grouping {
         );
     }
 
+    /**
+     * 12. Improve the result of mapping collector passed in to groupingBy() by
+     * having more control of the output
+     * 
+     * Note: in (11) there are no guarantees about what type of Set is returned,
+     * so by using toCollection() we can have more control over the output. Can
+     * ask for HashSet by passing a constructor reference to it.
+     * 
+     * Only step we changed from 1,2,3 is the (2) step in which instead of 
+     * passing Stream of CaloricLevels to toSet() collector, we pass to a
+     * toCollection()
+     */
+    private static Map<Dish.Type, Set<CaloricLevel>> caloricLevelsByType2() {
+        return menu.stream().collect(
+        groupingBy(Dish::getType, mapping( dish -> {    // (1)
+                    if (dish.getCalories() <= 400) {
+                        return CaloricLevel.DIET;
+                    }
+                    else if (dish.getCalories() <= 700) {
+                        return CaloricLevel.NORMAL;
+                    }
+                    else {
+                        return CaloricLevel.FAT;
+                    }
+                }, 
+                // (2) Instead of toSet() we use toCollection() and pass a Constructor Reference
+                toCollection(HashSet::new)
+            )) // (3)
+        );
+    }
+
     public static void main(String[] args) {
         showMenu();
         System.out.println("\n======== Grouping Dishes in the Menu ========");
@@ -361,6 +397,9 @@ public class Grouping {
 
         System.out.println("\n======= Mapping and Grouping by Type ========");
         System.out.println("[Caloric levels by type]: " + caloricLevelsByType());
+
+        System.out.println("\n======= Mapping and Grouping by Type using HashSet ========");
+        System.out.println("[Caloric levels by type]: " + caloricLevelsByType2());
     }
 
     // Prints the available menu and respective calories
