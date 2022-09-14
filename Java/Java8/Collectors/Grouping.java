@@ -294,6 +294,21 @@ public class Grouping {
     }
 
 
+    /**
+     * 11. Find the CaloricLevels that are available in the menu for each type
+     * of Dish.
+     * 
+     * Use mapping collector to adapt a collector accepting elements of a 
+     * given type to one working on objects of a different type, by applying
+     * a mapping function to each input element before accumulating them.
+     * 
+     * @return Group dishes in the menu by type after mapping dishes into Caloric Levels
+     */
+    private static Map<Dish.Type, Set<CaloricLevel>> caloricLevelsByType() {
+
+    }
+
+
     public static void main(String[] args) {
         showMenu();
         System.out.println("\n======== Grouping Dishes in the Menu ========");
@@ -322,7 +337,10 @@ public class Grouping {
 
         System.out.println("\nCollectors used in Conjunction with groupingBy():");
         System.out.println("======= Reuse Sum Collector and Group by Type ========");
-        System.out.println("\n[Sum calories by type] " + sumCaloriesByType());
+        System.out.println("[Sum calories by type] " + sumCaloriesByType());
+
+        System.out.println("\n======= Mapping and Grouping by Type ========");
+        System.out.println("Caloric levels by type: " + caloricLevelsByType());
     }
 
     // Prints the available menu and respective calories
