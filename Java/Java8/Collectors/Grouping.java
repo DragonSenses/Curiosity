@@ -305,7 +305,21 @@ public class Grouping {
      * @return Group dishes in the menu by type after mapping dishes into Caloric Levels
      */
     private static Map<Dish.Type, Set<CaloricLevel>> caloricLevelsByType() {
-
+        return menu.stream().collect(
+        groupingBy(Dish::getType, mapping( dish -> {
+                if (dish.getCalories() <= 400) {
+                    return CaloricLevel.DIET;
+                }
+                else if (dish.getCalories() <= 700) {
+                    return CaloricLevel.NORMAL;
+                }
+                else {
+                    return CaloricLevel.FAT;
+                }
+                },
+                toSet()
+            ))
+        );
     }
 
 
