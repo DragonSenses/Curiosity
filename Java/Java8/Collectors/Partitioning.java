@@ -1,10 +1,15 @@
 package Java.Java8.Collectors;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-
+// Use file within same package
 import static Java.Java8.Collectors.Dish.menu; // Use the Menu from Dish.java
+
+// Import Data Structures
+import java.util.List;
+import java.util.Map;
+
+// Import java.util.stream.Collector static methods
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.partitioningBy;
+
 
 /**
  * Partitioning is a special case of grouping: having a predicate called a
@@ -39,11 +44,22 @@ import static Java.Java8.Collectors.Dish.menu; // Use the Menu from Dish.java
  */
 public class Partitioning {
 
-    
+    /**
+     * 1. Partition the menu by Vegetarian and Non-Vegetarian dishes
+     * @return Map with keys True and False, and Values as dishes that
+     * are vegetarian and nonvegetarian
+     */
+    private static Map<Boolean, List<Dish>> partitionByVegeterian() {
+        return menu.stream().collect(partitioningBy(Dish::isVegetarian));
+    }
+
     public static void main(String[] args) {
         showMenu();
         System.out.println("\n======== Grouping Dishes in the Menu ========");
-        // System.out.println("[Dishes grouped by type]\n " + groupDishesByType());
+        System.out.println("[Dishes partitioned by vegetarian]\n " + partitionByVegeterian());
+
+        System.out.println("\n======== Grouping Dishes in the Menu ========");
+        System.out.println("[Dishes partitioned by vegetarian]\n " + partitionByVegeterian());
   
     }
 
