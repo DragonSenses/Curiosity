@@ -49,17 +49,28 @@ public class Partitioning {
      * @return Map with keys True and False, and Values as dishes that
      * are vegetarian and nonvegetarian
      */
-    private static Map<Boolean, List<Dish>> partitionByVegeterian() {
+    private static Map<Boolean, List<Dish>> partitionByVegetarian() {
         return menu.stream().collect(partitioningBy(Dish::isVegetarian));
+    }
+
+    /**
+     * 2. Use the predicates negation to retrieve nonvegetarian dishes
+     * @return Map with dishes as nonvegetarian
+     */
+    private static List<Dish> partitionByNonVegetarian(){
+        Map<Boolean, List<Dish>> partitionedMenu 
+            = menu.stream().collect(partitioningBy(Dish::isVegetarian));
+
+        return partitionedMenu.get(false);
     }
 
     public static void main(String[] args) {
         showMenu();
-        System.out.println("\n======== Grouping Dishes in the Menu ========");
-        System.out.println("[Dishes partitioned by vegetarian]\n " + partitionByVegeterian());
+        System.out.println("\n======== Partition Menu by Vegetarian Dishes ========");
+        System.out.println("[Dishes partitioned by vegetarian]\n " + partitionByVegetarian());
 
-        System.out.println("\n======== Grouping Dishes in the Menu ========");
-        System.out.println("[Dishes partitioned by vegetarian]\n " + partitionByVegeterian());
+        System.out.println("\n======== Retrieve Non-Vegetarian Dishes ========");
+        System.out.println("[Dishes partitioned by nonvegetarian]\n " + partitionByNonVegetarian());
   
     }
 
