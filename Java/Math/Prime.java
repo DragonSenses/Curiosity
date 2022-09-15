@@ -44,17 +44,20 @@ import java.util.stream.IntStream;
  * 
  * 2) Wilson's Theorem 
  *  A positive integer n > 1 is prime iff (n-1)! = -1 (mod n)
+ * 
  * 3) Fermat Primality Test
- *  Let p be a prime number and a be an integer not divisible by p. Then 
+ *  Let p be a prime number and a be an integer not divisible by p. Then a^(p-1) -1
+ * is always divisible by p, or a^(p-1) = 1 (mod p). 
+ * The idea of Fermat primality test is to use the contrapositive: if for some a not divisible by n
+ *  we have a^{n-1} =/= 1 mod{n}a , then n is definitely composite.
+ * 
  * 4) Miller-Rabin Primality Test (favorite)
  * 
- * 
+ * 5) AKS Primality Test? 
  */
 public class Prime {
     
-
     // The Following 2 methods is Trial Division
-
     /**
      * Given a candidate number, checks whether it is prime or not
      * @param candidate number to check Primality
