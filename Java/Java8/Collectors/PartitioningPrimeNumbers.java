@@ -13,6 +13,9 @@ import static java.util.stream.Collectors.partitioningBy;
  * Here we use partitioningBy() from the Collectors class, and partition
  * the first n natural numbers into prime and nonprime.
  * 
+ * 1. Create a Predicate that determines whether a given number is prime or not
+ * 2. Partition the first n natural numbers between prime and nonprime
+ * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
  * stream into a List, a reduction operation that takes an argumenty various
@@ -24,7 +27,7 @@ import static java.util.stream.Collectors.partitioningBy;
 public class PartitioningPrimeNumbers {
     
     /**
-     * A Predicate that determines if a given candidate number is prime or not.
+     * 1) A Predicate that determines if a given candidate number is prime or not.
      * Contains the optimization that tests only for factors less than or 
      * equal to square of candidate. 
      * @param candidate number to check primality
@@ -37,8 +40,8 @@ public class PartitioningPrimeNumbers {
     }
 
     /**
-     * Partition a stream of the first n natural numbers between prime and 
-     * nonprime. 
+     * 2) Partition a stream of the first n natural numbers between
+     * prime and nonprime. 
      * @param n the first n natural numbers to partition by
      * @return a Map containing the partitioned n numbers by prime or nonprime
      */
