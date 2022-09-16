@@ -1,5 +1,9 @@
 package Java.Java8.Collectors;
 
+import java.util.stream.Collector;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 /**
  * Partitioning is a special case of grouping: having a predicate called a
  * partitioning function as a classfication function.
@@ -14,6 +18,19 @@ package Java.Java8.Collectors;
  */
 public class PartitioningPrimeNumbers {
     
+    /**
+     * A Predicate that determines if a given candidate number is prime or not.
+     * Contains the optimization that tests only for factors less than or 
+     * equal to square of candidate. 
+     * @param candidate number to check primality
+     * @return true if number is prime, false otherwise
+     */
+    public static boolean isPrime(int candidate) {
+        return IntStream.rangeClosed(2, candidate-1)
+            .limit((long) Math.floor(Math.sqrt(candidate)) - 1)
+            .noneMatch(i -> candidate % i == 0);
+    }
+
     public static void main(String[] args) {
     
     }
