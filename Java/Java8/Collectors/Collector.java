@@ -1,5 +1,7 @@
 package Java.Java8.Collectors;
 
+import java.util.function.Supplier;
+
 /**
  * Collector interface consists of a set of methods that provide a blueprint
  * for how to implement specific reduction operations (Collectors).
@@ -26,9 +28,39 @@ package Java.Java8.Collectors;
  * 
  * public class ToListCollector<T> implements Collector<T, List<T>, List<T>>
  * 
+ * ================================= Methods =================================
+ * - Notice how the first four methods returns a function that will be invoked 
+ * by the collect() method
+ * - The fifth method, characteristics, provides a set of characteristics 
+ * that's a list of hints used by the collect() method itself to know which 
+ * optimizations(i.e. parallelization) it's allowed to employ while performing
+ * the reduction operation.
+ * 
  */
+// public interface Collector<T, A, R> {
+//     Supplier<A> supplier();
+//     BiConsumer<A, T> accumulator();
+//     Function<A, R> finisher();
+//     BinaryOperator<A> combiner();
+//     Set<Characteristics> characteristics();
+// }
 public interface Collector<T, A, R> {
+    /**
+     * 1) Making a New Result Container: The Supplier Method
+     * Returns a supplier of an empty accumulator - a parameterless function
+     * that when invoked creates an instance of an empty accumulator used 
+     * during the collection process. 
+     * 
+     * For a collector returning the accumulator itself as a result, like 
+     * ToListCollector this empty accumulator will also represent the 
+     * result of the collection process when performed on an empty stream. 
+     * 
+     * In ToListCollector, thhe supplier will return an empty List.
+     * 
+     * @return a Supplier of an empty accumulator
+     */
     Supplier<A> supplier();
+    
     BiConsumer<A, T> accumulator();
     Function<A, R> finisher();
     BinaryOperator<A> combiner();
