@@ -1,6 +1,7 @@
 package Java.Java8.Collectors;
 
 import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -110,7 +111,24 @@ public interface Collector<T, A, R> {
      */
     Function<A, R> finisher();
 
-
+    /**
+     * 4. Merging Two Result Containers: The Combiner Method
+     * Returns a function used by the reduction operation, defines how accumulators
+     * resulting from the reduction of different subparts of the stream are 
+     * combined when the subparts are processed in parallel. 
+     * 
+     * In toList case, the implementation is simple: add the list containing
+     * the items gathered from the second subpart of the stream to the end of 
+     * the list obtained when traversing the first subpart
+     * 
+     * This fourth method allows a parallel reduction of the stream, as it uses
+     * the fork/join framework introduced in Java 7 and Spliterator abstraction.
+     * 
+     * @return a function used by the reduction operation, defines how accumulators
+     * resulting from the reduction of different subparts of the stream are
+     * combined when the subparts are processed in parallel. 
+     */
     BinaryOperator<A> combiner();
+    
     Set<Characteristics> characteristics();
 }
