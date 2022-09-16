@@ -1,12 +1,17 @@
 package Java.Java8.Collectors;
 
-import java.util.stream.Collector;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.partitioningBy;
 
 /**
  * Partitioning is a special case of grouping: having a predicate called a
  * partitioning function as a classfication function.
+ * 
+ * Here we use partitioningBy() from the Collectors class, and partition
+ * the first n natural numbers into prime and nonprime.
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -31,7 +36,21 @@ public class PartitioningPrimeNumbers {
             .noneMatch(i -> candidate % i == 0);
     }
 
+    /**
+     * Partition a stream of the first n natural numbers between prime and 
+     * nonprime. 
+     * @param n the first n natural numbers to partition by
+     * @return a Map containing the partitioned n numbers by prime or nonprime
+     */
+    public static Map<Boolean, List<Integer>> partitionPrimes(int n) {
+        return IntStream.rangeClosed(2, n).boxed()
+            .collect(partitioningBy(candidate -> isPrime(candidate)));
+    }
+
     public static void main(String[] args) {
-    
+        int n = 100;
+        System.out.print("======== Partition first ");
+        System.out.print(n + " numbers into prime and nonprime ========\n");
+        System.out.println("\n[Numbers partitioned in prime and non-prime]\n\n " + partitionPrimes(n));
     }
 }
