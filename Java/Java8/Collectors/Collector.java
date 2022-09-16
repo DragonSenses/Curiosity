@@ -11,12 +11,21 @@ package Java.Java8.Collectors;
  * This implies that you're free to create customized reduction operations by
  * providing your own implementation of the Collector interface. 
  * 
- * Breakdown: public interface Collector<T, A, R> 
+ * Signature Breakdown: 
+ * 
+ * public interface Collector<T, A, R> 
+ * 
  * T - the generic type of the items in the Stream to be collected
  * A - the type of Accumulator, the object on which the partial result will be
  *     accumulated during the collection process
  * R - the type of Object (typically, but not always, the Collection) resulting
  *     from the collect operation
+ * 
+ * For instance, ToListCollector<T> class that gathers all elements of a 
+ * Stream<T> into a List<T> have the following signature:
+ * 
+ * public class ToListCollector<T> implements Collector<T, List<T>, List<T>>
+ * 
  */
 public interface Collector<T, A, R> {
     Supplier<A> supplier();
