@@ -1,6 +1,7 @@
 package Java.Java8.Collectors;
 
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -36,6 +37,11 @@ import java.util.function.Supplier;
  * that's a list of hints used by the collect() method itself to know which 
  * optimizations(i.e. parallelization) it's allowed to employ while performing
  * the reduction operation.
+ * - The first three methods are enough to execute a sequential reduction of
+ * the stream. The implementation details are a bit more difficult in practice
+ * due to both the lazy nature of the stream and which could require a pipeline 
+ * of other intermediate operations to execute before the collect() operation,
+ * and possibility - in theory - of performing the reduction in parallel
  * 
  * 1) supplier()
  * 2) accumulator()
@@ -87,8 +93,24 @@ public interface Collector<T, A, R> {
      */
     BiConsumer<A, T> accumulator();
 
-
+    /**
+     * 3. Applying the Final Transformation to the Result Container: The Finisher Method
+     * Has to return a function that's invoked at the end of accumulation process,
+     * after having completely traversed the stream, in order to transform the 
+     * accumulator object into the final result of the whole collection operation. 
+     * 
+     * In ToListCollector, often as in this case, the accumulator object already
+     * coincides with the final expected result. As a consequence, there's no need
+     * to perform a transformation, so the finisher method has to return the 
+     * identity function 
+     * @return returns a function that's invoked at the end of the accumulation
+     * process, aftering having completely traversed the stream, in order to 
+     * transform the accumulator object into the final result of the whole 
+     * collection operation; often just returns identity function
+     */
     Function<A, R> finisher();
+
+
     BinaryOperator<A> combiner();
     Set<Characteristics> characteristics();
 }
