@@ -83,7 +83,7 @@ public interface Collector<T, A, R> {
      * traversing the nth element in the stream, this function is applied
      * with two arguments:
      * 1) the accumulator being the result of the reduction 
-     * (after hhaving collected the first n-1 items of the stream) 
+     * (after having collected the first n-1 items of the stream) 
      * 2) and the nth element itself. 
      * 
      * The function returns void because the accumulator is modified in place,

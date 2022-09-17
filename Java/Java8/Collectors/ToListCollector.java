@@ -17,7 +17,7 @@ import static java.util.stream.Collector.Characteristics.*;
 public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
     
     /**
-     * The Supplier Method
+     * The Supplier Method: Making a New Result Container
      * Returns a supplier of an empty accumulator - a parameterless function
      * that when invoked creates an instance of an empty accumulator used 
      * during the collection process. 
@@ -58,6 +58,7 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
          // Accumulates the traversed item, modifying accumulator in place
         return List::add;  
     }
+    
     
     @Override
     Function<A, R> finisher();
