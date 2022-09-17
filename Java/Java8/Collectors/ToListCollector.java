@@ -59,9 +59,25 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
         return List::add;  
     }
     
-    
+    /**
+     * The Finisher Method: Applying the Final Transformation to the Result Container
+     * Has to return a function that's invoked at the end of accumulation process,
+     * after having completely traversed the stream, in order to transform the 
+     * accumulator object into the final result of the whole collection operation. 
+     * 
+     * In ToListCollector, often as in this case, the accumulator object already
+     * coincides with the final expected result. As a consequence, there's no need
+     * to perform a transformation, so the finisher method has to return the 
+     * identity function 
+     * @return returns a function that's invoked at the end of the accumulation
+     * process, aftering having completely traversed the stream, in order to 
+     * transform the accumulator object into the final result of the whole 
+     * collection operation; often just returns identity function
+     */
     @Override
-    Function<A, R> finisher();
+    public Function<List<T>, List<T>> finisher(){
+        return Function.identity(); // Identifies Function
+    }
     
     @Override
     BinaryOperator<A> combiner();
