@@ -36,14 +36,13 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
         return ArrayList::new;  // Creates the collection operation starting point    
     }
 
-        
     /**
-     * 2. Adding an Element to a Result Container: The Accumulator Method
+     * The Accumulator Method: Adding an Element to a Result Container
      * Returns the function that performs the reduction operation. While 
      * traversing the nth element in the stream, this function is applied
      * with two arguments:
      * 1) the accumulator being the result of the reduction 
-     * (after hhaving collected the first n-1 items of the stream) 
+     * (after having collected the first n-1 items of the stream) 
      * 2) and the nth element itself. 
      * 
      * The function returns void because the accumulator is modified in place,
@@ -55,7 +54,10 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
      * @return the function that performs the reduction operation
      */
     @Override
-    public BiConsumer<List<T>, T> accumulator();
+    public BiConsumer<List<T>, T> accumulator(){
+         // Accumulates the traversed item, modifying accumulator in place
+        return List::add;  
+    }
     
     @Override
     Function<A, R> finisher();
