@@ -1,5 +1,6 @@
 package Java.Java8.Collectors;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import java.util.function.BiConsumer;
@@ -31,7 +32,9 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
      * @return a Supplier of an empty accumulator
      */
     @Override
-    Supplier<A> supplier();
+    public Supplier<List<T>> supplier(){
+        return ArrayList::new;  // Creates the collection operation starting point    
+    }
 
     @Override
     BiConsumer<A, T> accumulator();
