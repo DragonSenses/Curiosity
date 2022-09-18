@@ -3,7 +3,8 @@ package Java.Java8.Collectors;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
-
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -136,6 +137,7 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
      */
     @Override
     public Set<Characteristics> characteristics(){
-        return;
+        return Collections.unmodifiableSet(EnumSet<T>.of(
+            IDENTITY_FINISH, CONCURRENT)); 
     }
 }
