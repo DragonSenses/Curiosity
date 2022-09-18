@@ -56,6 +56,28 @@ public class PartitioningPrimeNumbers2 {
     // access to the partial result; don't have access to the list of other prime
     // numbers found so far
 
+    /**
+     * 3) Optimization that tests only if the candidate number is divisible by
+     * prime numbers.
+     * @param primes    List of Prime Numbers found so far
+     * @param candidate Candidate number to test primality
+     * @return true if candidate number is prime, false otherwise
+     */
+    public static boolean isPrimeTest(List<Integer> primes, int candidate) {
+        return primes.stream().noneMatch(i -> candidate % i == 0);
+    }
+
+    /**
+     * 4) Optimization that tests only if the candidate number is divisible by
+     * prime numbers. Also the optimization that tests only with primes smaller
+     * than the square root of the candidate number. Stops testing whether the 
+     * candidate is divisible by a prime as soon as the next prime is greater 
+     * than the candidate's root. Stream's takeWhile() method will be used. 
+     * 
+     * @param primes    List of Prime Numbers found so far
+     * @param candidate Candidate number to test primality
+     * @return true if candidate number is prime, false otherwise
+     */
     public static boolean isPrime(List<Integer> primes, int candidate) {
         return primes.stream().noneMatch(i -> candidate % i == 0);
     }
