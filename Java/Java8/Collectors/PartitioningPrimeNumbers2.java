@@ -50,6 +50,16 @@ public class PartitioningPrimeNumbers2 {
             .collect(partitioningBy(candidate -> isPrime(candidate)));
     }
 
+    // One Optimization is test only if the candiate number is divisble by prime numbers
+    // Pointless to test against a divisor that's not itself prime!
+    // Problem with predefined collectors, during the collection process, you don't have
+    // access to the partial result; don't have access to the list of other prime
+    // numbers found so far
+
+    public static boolean isPrime(List<Integer> primes, int candidate) {
+        return primes.stream().noneMatch(i -> candidate % i == 0);
+    }
+
     public static void main(String[] args) {
         int n = 100;
         System.out.print("======== Partition first ");
