@@ -79,7 +79,10 @@ public class PartitioningPrimeNumbers2 {
      * @return true if candidate number is prime, false otherwise
      */
     public static boolean isPrime(List<Integer> primes, int candidate) {
-        return primes.stream().noneMatch(i -> candidate % i == 0);
+        int candidateRoot = (int) Math.sqrt((double) candidate);
+        return primes.stream()
+                     .takeWhile(i -> i <= candidateRoot)   // next prime greater than root
+                     .noneMatch(i -> candidate % i == 0);  // Tests only from list of found primes
     }
 
     public static void main(String[] args) {
