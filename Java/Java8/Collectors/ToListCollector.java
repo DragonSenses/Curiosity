@@ -98,8 +98,12 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
      */
     @Override
     public BinaryOperator<List<T>> combiner(){
-        
+        return(list1, list2) -> {
+            list1.addAll(list2);
+            return list1; 
+        };
     }
+    
     
     @Override
     Set<Characteristics> characteristics();
