@@ -1,6 +1,7 @@
 package Java.Java8.Collectors;
 
 import java.util.List;
+import java.util.Set;
 import java.util.ArrayList;
 
 import java.util.function.BiConsumer;
@@ -124,7 +125,17 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
      * the accumulator object is directly used as the final result of the reduction
      * process. This also implies that it’s safe to do an unchecked cast from the
      * accumulator A to the result R.
+     * 
+     * ToListCollector developed so far is IDENTITY_FINISH, because the List used
+     * to accumulate the elements in the stream is already the expected final
+     * result and doesn't need any further transformation. 
+     * Not UNORDERED because if you applly it to an ordered stream you want this 
+     * ordering to be preserved in the resulting List. Finally, it's CONCURRENT,
+     * the stream will be processed in parallel only if its underlying data source
+     * is unordered.
      */
     @Override
-    Set<Characteristics> characteristics();
+    public Set<Characteristics> characteristics(){
+        return;
+    }
 }
