@@ -100,9 +100,9 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
      */
     @Override
     public BinaryOperator<List<T>> combiner(){
-        return(list1, list2) -> {
-            list1.addAll(list2);
-            return list1; 
+        return(list1, list2) -> { // Modifies the first accumulator
+            list1.addAll(list2);  // combining it with the content of the second one
+            return list1;         // returns the modified first accumulator
         };
     }
     
@@ -137,7 +137,7 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
      */
     @Override
     public Set<Characteristics> characteristics(){
-        return Collections.unmodifiableSet(EnumSet<T>.of(
-            IDENTITY_FINISH, CONCURRENT)); 
+        // Flags the collector as IDENTITY_FINISH and CONCURRENT
+        return Collections.unmodifiableSet(EnumSet.of(IDENTITY_FINISH, CONCURRENT)); 
     }
 }
