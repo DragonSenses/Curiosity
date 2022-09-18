@@ -104,7 +104,27 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
         };
     }
     
-    
+    /**
+     * The Characteristics Method
+     * Returns an immutable set of Characteristics, defining the behavior of the
+     * collector—in particular providing hints about whether the stream can be
+     * reduced in parallel and which optimizations are valid when doing so.
+     * 
+     * Characteristics is an enumeration containing three items:
+     * I) UNORDERED—The result of the reduction isn’t affected by the order in
+     * which the items in the stream are traversed and accumulated.
+     * 
+     * II) CONCURRENT—The accumulator function can be called concurrently from 
+     * multiple threads, and then this collector can perform a parallel reduction
+     * of the stream. If the collector isn’t also flagged as UNORDERED, it can 
+     * perform a parallel reduction only when it’s applied to an unordered data source.
+     * 
+     * III) IDENTITY_FINISH—This indicates the function returned by the finisher
+     * method is the identity one, and its application can be omitted. In this case,
+     * the accumulator object is directly used as the final result of the reduction
+     * process. This also implies that it’s safe to do an unchecked cast from the
+     * accumulator A to the result R.
+     */
     @Override
     Set<Characteristics> characteristics();
 }
