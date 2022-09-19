@@ -13,24 +13,37 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 /**
- * Custom Collector that implements the Collector interface. 
+ * Custom Collector that partitions a present count of numbers between primes
+ * and non primes; implements the Collector interface. Will create Collector
+ * class step-by-step.
  * 
+ * 1) Defining the Collector Class Signature
  * public interface Collector<T, A, R>
  * 
  * T - Type of Elements in the Stream                    -> Streams of Integers
  * A - Type of Object used to Accumulate Partial results -> Map<Boolean, List<Integer>>
  * R - Type of the final result of the collect operation -> Map<Boolean, List<Integer>>
+ * 
+ * 2) Implementing the Reduction Process
+ * Implemnting the five methods declared in Collector interface. 
  */
 public class PrimeNumbersCollector 
     implements Collector<Integer, Map<Boolean, List<Integer>>, Map<Boolean, List<Integer>>>  {
      
     /**
      * The Supplier Method: Making a New Result Container
+     * 
+     * Has to return a function that when invoked creates the accumulator.
+     * 
      * @return a Supplier of an empty accumulator
      */
     @Override
-    public Supplier<List<T>> supplier(){
-        return ArrayList::new;  // Creates the collection operation starting point    
+    public Supplier<Map<Boolean, List<Integer>>> supplier(){
+        // Creates the collection operation starting point 
+        // A HashMap<Boolean,List<Integer>> is our accumulator
+        return () -> new HashMap<Boolean, List<Integer>>() {{
+               
+        }};     
     }
 
     /**
