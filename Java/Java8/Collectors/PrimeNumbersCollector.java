@@ -63,7 +63,11 @@ public class PrimeNumbersCollector
     @Override
     public BiConsumer<List<T>, T> accumulator(){
          // Accumulates the traversed item, modifying accumulator in place
-        return List::add;  
+        return (Map<Boolean, List<Integer>> acc, Integer candidate) -> { 
+            // Access the primes found so far: partial result of collection process
+            // add the candidate number at this iteration to the accumulator 
+
+        };  
     }
     
     /**
