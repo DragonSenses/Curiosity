@@ -14,7 +14,21 @@ import java.util.stream.Collector;
 import static java.util.stream.Collector.Characteristics.*;
 
 /**
- * Developing a ToListCollector. 
+ * A ToListCollector implementation. Differs from the one returned by 
+ * Collectors.toList() method in some minor optimizations. Optimizations are
+ * mostly related to the fact that collector provided by the Java API uses
+ * the Collects.emptyList() singleton  when it has to return an empty list.
+ * This means that it could be safely used in place of the original Java as an
+ * example to gather a list of all the Dishes of a menu stream:
+ * 
+ * List<Dish> dishes = menuStream.collect(new ToListCollector<Dish>());
+ * 
+ * whereas the difference form this and standard formulation is:
+ * 
+ * List<Dish> dishes = menuStream.collect(toList());
+ * 
+ * is that toList() is a factory, whereas you have to use new to instanatiate
+ * your ToListCollector.
  */
 public class ToListCollector<T> implements Collector<T, List<T>, List<T>>{
     
