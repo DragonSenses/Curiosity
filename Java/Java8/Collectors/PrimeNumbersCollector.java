@@ -43,7 +43,10 @@ public class PrimeNumbersCollector
      * @return true if candidate number is prime, false otherwise
      */
     public static boolean isPrime(List<Integer> primes, int candidate){
-        
+        int candidateRoot = (int) Math.sqrt((double) candidate); 
+        return takeWhile(primes, i -> i <= candidateRoot)
+                        .stream()
+                        .noneMatch(p -> candidate % p == 0);
     }
 
     /**
