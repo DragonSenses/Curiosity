@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -42,7 +43,9 @@ public class PrimeNumbersCollector
         // Creates the collection operation starting point 
         // A HashMap<Boolean,List<Integer>> is our accumulator
         return () -> new HashMap<Boolean, List<Integer>>() {{
-               
+            // Instantiate both List of primes and nonprimes
+               put(true, new ArrayList<Integer>());
+               put(false, new ArrayList<Integer>());
         }};     
     }
 
