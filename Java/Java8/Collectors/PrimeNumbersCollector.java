@@ -30,7 +30,22 @@ import java.util.stream.Collector;
  */
 public class PrimeNumbersCollector 
     implements Collector<Integer, Map<Boolean, List<Integer>>, Map<Boolean, List<Integer>>>  {
-     
+    
+    /**
+     * Tests only if the candidate number is divisible by prime numbers. 
+     * Also tests only with primes smaller than the square root of the candidate
+     * number. Stops testing whether the candidate is divisible by a prime as
+     * soon as the next prime is greater than the candidate's root. 
+     * Stream's takeWhile() method will be used. 
+     * 
+     * @param primes    List of Prime Numbers found so far
+     * @param candidate Candidate number to test primality
+     * @return true if candidate number is prime, false otherwise
+     */
+    public static boolean isPrime(List<Integer> primes, int candidate){
+        
+    }
+
     /**
      * The Supplier Method: Making a New Result Container
      * 
@@ -65,7 +80,7 @@ public class PrimeNumbersCollector
          // Accumulates the traversed item, modifying accumulator in place
         return (Map<Boolean, List<Integer>> acc, Integer candidate) -> { 
             // Access the primes found so far: partial result of collection process
-                acc.get( isPrime(acc.get(true), candidate))
+                acc.get(isPrime(acc.get(true), candidate))
                    .add(candidate);
             // add the candidate number at this iteration to the accumulator 
         };  
