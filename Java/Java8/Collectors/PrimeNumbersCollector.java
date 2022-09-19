@@ -51,6 +51,13 @@ public class PrimeNumbersCollector
 
     /**
      * The Accumulator Method: Adding an Element to a Result Container
+     * 
+     * Most important method of collector as it contains the logic defining how
+     * the elements of the stream have to be collected. In this case, it's also 
+     * the key to implementing the optimization: at any given iteration you can
+     * now access the partial result of the collection process, which is the 
+     * accumulator containing the prime numbers found so far. 
+     * 
      * @return the function that performs the reduction operation
      */
     @Override
