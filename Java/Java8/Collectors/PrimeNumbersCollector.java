@@ -61,12 +61,13 @@ public class PrimeNumbersCollector
      * @return the function that performs the reduction operation
      */
     @Override
-    public BiConsumer<List<T>, T> accumulator(){
+    public BiConsumer<Map<Boolean, List<Integer>>, Integer> accumulator(){
          // Accumulates the traversed item, modifying accumulator in place
         return (Map<Boolean, List<Integer>> acc, Integer candidate) -> { 
             // Access the primes found so far: partial result of collection process
+                acc.get( isPrime(acc.get(true), candidate))
+                   .add(candidate);
             // add the candidate number at this iteration to the accumulator 
-
         };  
     }
     
