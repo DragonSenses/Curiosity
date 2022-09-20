@@ -15,6 +15,13 @@ import static java.util.stream.Collectors.partitioningBy;
  * 
  * 1. Create a Predicate that determines whether a given number is prime or not
  * 2. Partition the first n natural numbers between prime and nonprime
+ * 3. Optimization that tests only if the candidate number is divisible by
+ *    prime numbers.
+ * 4. Combine optimizations, to use trial division on the candidate
+ * number only divisble by prime numbers and tests only with primes smaller
+ * than the square root of the candidate number.
+ * 5. Use a Custom Collector to partition the first n natural numbers between
+ * prime and nonprime numbers. Also using the above optimizations.
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -85,10 +92,24 @@ public class PartitioningPrimeNumbers {
                      .noneMatch(i -> candidate % i == 0);  // Tests only from list of found primes
     }
 
+    /**
+     * 5. Use a Custom Collector to partition the first n natural numbers between
+     * prime and nonprime numbers. Also using the above optimizations.
+     * 
+     * @param n the first n natural natures to partition by prime and nonprime
+     * @return a Map containing prime and nonprime numbers, true and false key respectively
+     */
+    public Map<Boolean, List<Integer>> partitionPrimesWithCustomCollector(int n) {
+        return IntStream.rangeClosed(2, n).boxed()
+                        .collect(new PrimeNumbersCollector());
+    }
+
     public static void main(String[] args) {
         int n = 100;
         System.out.print("======== Partition first ");
         System.out.print(n + " numbers into prime and nonprime ========\n");
         System.out.println("\n[Numbers partitioned in prime and non-prime]\n\n " + partitionPrimes(n));
+
+        // Test here for collector performance
     }
 }
