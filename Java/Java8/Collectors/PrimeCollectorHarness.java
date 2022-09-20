@@ -48,7 +48,8 @@ public class PrimeCollectorHarness {
 
     public static void main(String[] args){
       System.out.println("Partitioning done in: "
-         + execute(PartitioningPrimeNumbers::partitionPrimes) + " msecs");
-    //   System.out.println("Partitioning done in: " + execute(PartitionPrimeNumbers::partitionPrimesWithCustomCollector) + " msecs");
+         + execute(PartitionPrimeNumbers::partitionPrimes) + " msecs");
+      System.out.println("Partitioning done in: "
+         + execute(PartitionPrimeNumbers::partitionPrimesWithCustomCollector) + " msecs");
     }
 }

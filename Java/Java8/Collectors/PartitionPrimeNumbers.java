@@ -31,7 +31,7 @@ import static java.util.stream.Collectors.partitioningBy;
  * -partitioningBy(f) - takes a partitioning function and splits the elements
  * into a Map with two different groups, True or False as keys
  */
-public class PartitioningPrimeNumbers {
+public class PartitionPrimeNumbers {
     
     /**
      * 1) A Predicate that determines if a given candidate number is prime or not.
@@ -99,7 +99,7 @@ public class PartitioningPrimeNumbers {
      * @param n the first n natural natures to partition by prime and nonprime
      * @return a Map containing prime and nonprime numbers, true and false key respectively
      */
-    public Map<Boolean, List<Integer>> partitionPrimesWithCustomCollector(int n) {
+    public static Map<Boolean, List<Integer>> partitionPrimesWithCustomCollector(int n) {
         return IntStream.rangeClosed(2, n).boxed()
                         .collect(new PrimeNumbersCollector());
     }
