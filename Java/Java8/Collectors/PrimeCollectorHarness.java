@@ -22,18 +22,28 @@ import java.util.function.Consumer;
  */
 public class PrimeCollectorHarness {
     
+    /**
+     * Tests a partitioning by primes collector by running 10 tests,
+     * partitioning the first million natural numbers into primes and nonprimes,
+     * and checks which is the fastest execution time out of those 10 tests.
+     * @param primePartitioner The collector to test
+     * @return the fastest execution time using this collector
+     */
     private static long execute(Consumer<Integer> primePartitioner) {
         long fastest = Long.MAX_VALUE;
-        for (int i = 0; i < 10; i++) {
+        
+        for (int i = 0; i < 10; i++) { // Run the test 10 times
           long start = System.nanoTime();
+          // Partition the first million natural numbers into primes and nonprimes
           primePartitioner.accept(1_000_000);
           long duration = (System.nanoTime() - start) / 1_000_000;
+          // Check if current execution is the fastest one
           if (duration < fastest) {
             fastest = duration;
           }
-          System.out.println("done in " + duration);
+          System.out.println("done in " + duration); // Prints times of each test
         }
-        return fastest;
+        return fastest; // Return the fastest execution time
     }
 
     public static void main(String[] args){
