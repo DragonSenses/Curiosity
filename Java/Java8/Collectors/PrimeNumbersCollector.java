@@ -106,7 +106,8 @@ public class PrimeNumbersCollector
      * The Combiner Method:  Merging Two Result Containers 
      * In this case, merge two Maps by adding all the numbers in the prime and
      * nonprime lists of the second Map to the corresponding lists in the first
-     * Map
+     * Map.
+     * 
      * @return a function used by the reduction operation, defines how accumulators
      * resulting from the reduction of different subparts of the stream are
      * combined when the subparts are processed in parallel. 
@@ -114,9 +115,11 @@ public class PrimeNumbersCollector
     @Override
     public BinaryOperator< Map<Boolean, List<Integer>>> combiner(){
         return( Map<Boolean, List<Integer>> map1,
-                Map<Boolean, List<Integer>> map2) -> { // Modifies the first accumulator
-            map1.addAll(map2);  // combining it with the content of the second one
-            return map1;         // returns the modified first accumulator
+                Map<Boolean, List<Integer>> map2) -> { 
+                    // Modifies the first accumulator combining it with the contents of the second one
+                    map1.get(true).addAll(map2.get(true));  
+                    map1.get(false).addAll(map2.get(false));
+                    return map1;    // returns the modified first accumulator
         };
     }
     
