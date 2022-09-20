@@ -108,6 +108,11 @@ public class PrimeNumbersCollector
      * nonprime lists of the second Map to the corresponding lists in the first
      * Map.
      * 
+     * Parallelism: in reality this collector can't be used in parallel, because
+     * tthe algorithm is inherently sequential. This means combiner method won't
+     * ever be invoked, and you could leave its implementation empty (or better,
+     * throw an UnsupportedOperationException). Implemented for completeness.
+     * 
      * @return a function used by the reduction operation, defines how accumulators
      * resulting from the reduction of different subparts of the stream are
      * combined when the subparts are processed in parallel. 
