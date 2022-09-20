@@ -109,7 +109,7 @@ public class PartitionPrimeNumbers {
         System.out.print("======== Partition first ");
         System.out.print(n + " numbers into prime and nonprime ========\n");
         System.out.println("\n[Numbers partitioned in prime and non-prime]\n\n " + partitionPrimes(n));
-
-        // Test here for collector performance
+        System.out.println("\n[Numbers partitioned in prime and non-prime" + 
+            " with Custom Collector]\n\n " + partitionPrimesWithCustomCollector(n));
     }
 }
