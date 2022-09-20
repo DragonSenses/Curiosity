@@ -112,10 +112,11 @@ public class PrimeNumbersCollector
      * combined when the subparts are processed in parallel. 
      */
     @Override
-    public BinaryOperator<List<T>> combiner(){
-        return(list1, list2) -> { // Modifies the first accumulator
-            list1.addAll(list2);  // combining it with the content of the second one
-            return list1;         // returns the modified first accumulator
+    public BinaryOperator< Map<Boolean, List<Integer>>> combiner(){
+        return( Map<Boolean, List<Integer>> map1,
+                Map<Boolean, List<Integer>> map2) -> { // Modifies the first accumulator
+            map1.addAll(map2);  // combining it with the content of the second one
+            return map1;         // returns the modified first accumulator
         };
     }
     
