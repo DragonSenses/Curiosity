@@ -1,5 +1,7 @@
 package Java.Java8.Collectors;
-import Java.Java8.Collectors.PartitioningPrimeNumbers;
+
+import java.util.function.Consumer;
+
 /**
  * Class that tests the performance of Partitioning Prime Number Collector 
  * compared to using collector created with partitioningBy() factory 
@@ -20,17 +22,23 @@ import Java.Java8.Collectors.PartitioningPrimeNumbers;
  */
 public class PrimeCollectorHarness {
     
-    public static void main(String[] args){
+    private static long execute(Consumer<Integer> primePartitioner) {
         long fastest = Long.MAX_VALUE;
-
         for (int i = 0; i < 10; i++) {
-            long start = System.nanoTime();
-            partitionPrimes(1_000_000);
-            long duration = (System.nanoTime() - start) / 1_000_000;
-            if (duration < fastest) fastest = duration;
+          long start = System.nanoTime();
+          primePartitioner.accept(1_000_000);
+          long duration = (System.nanoTime() - start) / 1_000_000;
+          if (duration < fastest) {
+            fastest = duration;
+          }
+          System.out.println("done in " + duration);
         }
+        return fastest;
+    }
 
-        System.out.println(
-            "Fastest execution done in " + fastest + " msecs");
+    public static void main(String[] args){
+      System.out.println("Partitioning done in: "
+         + execute(PartitioningPrimeNumbers::partitionPrimes) + " msecs");
+    //   System.out.println("Partitioning done in: " + execute(PartitionPrimeNumbers::partitionPrimesWithCustomCollector) + " msecs");
     }
 }
