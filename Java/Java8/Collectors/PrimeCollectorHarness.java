@@ -47,8 +47,16 @@ public class PrimeCollectorHarness {
     }
 
     public static void main(String[] args){
+        
+      System.out.println("======== [Benchmark]: partitioning prime numbers by "
+        + "predefined collector from partitioningBy() factory method ========\n");
+
       System.out.println("Partitioning done in: "
          + execute(PartitionPrimeNumbers::partitionPrimes) + " msecs");
+
+      System.out.println("\n======== [Benchmark]: partitioning prime numbers by "
+             + "Custom Collector ========\n");
+
       System.out.println("Partitioning done in: "
          + execute(PartitionPrimeNumbers::partitionPrimesWithCustomCollector) + " msecs");
     }
