@@ -44,6 +44,8 @@ public class PrimeNumbersCollector
      */
     public static boolean isPrime(List<Integer> primes, int candidate){
         int candidateRoot = (int) Math.sqrt((double) candidate); 
+        // Testing only the candidate prime against only the primes that aren't
+        // greather than its square root
         return primes.stream()
                      .takeWhile(i -> i <= candidateRoot)    
                      .noneMatch(p -> candidate % p == 0);
@@ -83,9 +85,8 @@ public class PrimeNumbersCollector
          // Accumulates the traversed item, modifying accumulator in place
         return (Map<Boolean, List<Integer>> acc, Integer candidate) -> { 
             // Access the primes found so far: partial result of collection process
-                acc.get(isPrime(acc.get(true), candidate))
-                   .add(candidate);
-            // add the candidate number at this iteration to the accumulator 
+                acc.get(isPrime(acc.get(true), candidate)) // get list of prime or nonprime numbers
+                   .add(candidate); // add the candidate number at this iteration to the accumulator 
         };  
     }
     
@@ -97,12 +98,15 @@ public class PrimeNumbersCollector
      * collection operation; often just returns identity function
      */
     @Override
-    public Function<List<T>, List<T>> finisher(){
+    public Function< Map<Boolean, List<Integer>>,  Map<Boolean, List<Integer>>> finisher(){
         return Function.identity(); // Identifies Function
     }
     
     /**
      * The Combiner Method:  Merging Two Result Containers 
+     * In this case, merge two Maps by adding all the numbers in the prime and
+     * nonprime lists of the second Map to the corresponding lists in the first
+     * Map
      * @return a function used by the reduction operation, defines how accumulators
      * resulting from the reduction of different subparts of the stream are
      * combined when the subparts are processed in parallel. 
