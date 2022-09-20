@@ -139,14 +139,16 @@ public class PrimeNumbersCollector
      * collector—in particular providing hints about whether the stream can be
      * reduced in parallel and which optimizations are valid when doing so.
      * 
+     * Neither CONCURRENT nor UNORDERED, but is IDENTITY_FINISH.
+     * 
      * Characteristics is an enumeration containing three items:
-     * I) UNORDERED
-     * II) CONCURRENT
-     * III) IDENTITY_FINISH
+     * I)   UNORDERED           false
+     * II)  CONCURRENT          false
+     * III) IDENTITY_FINISH     true
      */
     @Override
     public Set<Characteristics> characteristics(){
-        // Flags the collector as IDENTITY_FINISH and CONCURRENT
-        return Collections.unmodifiableSet(EnumSet.of(IDENTITY_FINISH, CONCURRENT)); 
+        // Flags the collector as IDENTITY_FINISH
+        return Collections.unmodifiableSet(EnumSet.of(IDENTITY_FINISH)); 
     }
 }
