@@ -92,13 +92,18 @@ public class PrimeNumbersCollector
     
     /**
      * The Finisher Method: Applying the Final Transformation to the Result Container
+     * 
+     * The accumulator coincides with the collector's result so it won't need
+     * any further transformation, so this returns the identity function
+     * 
      * @return returns a function that's invoked at the end of the accumulation
      * process, after having completely traversed the stream, in order to 
      * transform the accumulator object into the final result of the whole 
      * collection operation; often just returns identity function
      */
     @Override
-    public Function< Map<Boolean, List<Integer>>,  Map<Boolean, List<Integer>>> finisher(){
+    public Function<Map<Boolean, List<Integer>>,
+                    Map<Boolean, List<Integer>>> finisher(){
         return Function.identity(); // Identifies Function
     }
     
