@@ -13,6 +13,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
+
 /**
  * Custom Collector that partitions a present count of numbers between primes
  * and non primes; implements the Collector interface. Will create Collector
@@ -151,4 +153,4 @@ public class PrimeNumbersCollector
         // Flags the collector as IDENTITY_FINISH
         return Collections.unmodifiableSet(EnumSet.of(IDENTITY_FINISH)); 
     }
-}
+} // end of PrimeNumbersCollector class
