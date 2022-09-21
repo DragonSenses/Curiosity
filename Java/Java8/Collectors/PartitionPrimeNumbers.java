@@ -122,7 +122,16 @@ public class PartitionPrimeNumbers {
      */
     public static Map<Boolean, List<Integer>> 
         partitionPrimesWithCustomCollectorNoClass(int n) {
-        
+        IntStream.rangeClosed(2,n).boxed()
+            .collect( // Overloaded collect method takes three arguments
+                // Supplier
+                    () -> new HashMap<Boolean, List<Integer>>() {{
+                        put(true, new ArrayList<Integer>());
+                        put(false, new ArrayList<Integer>());
+                    }},
+                // Accumulator
+                // Combiner
+            );
         
     }
 
