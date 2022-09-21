@@ -18,10 +18,23 @@ import java.util.function.Consumer;
  * 
  * Then we replace partitionPrimes with partitionPrimesWithCustomCollector
  * in the harness, in order to test the performances of the custom collector
- * developed.
+ * developed. Then calculate the performance increase and output the results.
+ * 
  */
 public class PrimeCollectorHarness {
     
+    /**
+     * Calculates the performance increase of the custom collector over the 
+     * predefined collector and outputs it.
+     * @param bench1 the slower benchmark, predefined collector
+     * @param bench2 the faster benchmark, custom collector
+     */
+    private static void measurePerformance(long bench1, long bench2){
+        double val = 1.0 - ((double)bench2)/ ((double)bench1); 
+        double percent =  Math.round(val*100.0);   
+        System.out.println("Performance Increase: ~ " + percent + " %!");
+    }
+
     /**
      * Tests a partitioning by primes collector by running 10 tests,
      * partitioning the first million natural numbers into primes and nonprimes,
@@ -47,17 +60,24 @@ public class PrimeCollectorHarness {
     }
 
     public static void main(String[] args){
+        long bench1, bench2;
         
-      System.out.println("======== [Benchmark]: partitioning prime numbers by "
-        + "predefined collector from partitioningBy() factory method ========\n");
+        System.out.println("======== [Benchmark]: partitioning prime numbers by "
+            + "predefined collector from partitioningBy() factory method ========");
 
-      System.out.println("Partitioning done in: "
-         + execute(PartitionPrimeNumbers::partitionPrimes) + " msecs");
+        bench1 = execute(PartitionPrimeNumbers::partitionPrimes);
 
-      System.out.println("\n======== [Benchmark]: partitioning prime numbers by "
-             + "Custom Collector ========\n");
+        System.out.println("Partitioning done in: " +  bench1 + " msecs");
 
-      System.out.println("Partitioning done in: "
-         + execute(PartitionPrimeNumbers::partitionPrimesWithCustomCollector) + " msecs");
-    }
+         System.out.println("\n======== [Benchmark]: partitioning prime numbers by "
+             + "Custom Collector ========");
+
+        bench2 = + execute(PartitionPrimeNumbers::partitionPrimesWithCustomCollector);
+        System.out.println("Partitioning done in: " + bench2 + " msecs\n");
+
+        System.out.println("[Summary]\nPredefined Collector:\t" 
+            + bench1 + " msecs\nCustom Collector:\t"
+            + bench2 + " msecs");
+        measurePerformance(bench1,bench2);
+    } 
 }
