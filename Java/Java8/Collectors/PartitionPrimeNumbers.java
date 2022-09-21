@@ -22,6 +22,10 @@ import static java.util.stream.Collectors.partitioningBy;
  * than the square root of the candidate number.
  * 5. Use a Custom Collector to partition the first n natural numbers between
  * prime and nonprime numbers. Also using the above optimizations.
+ * 6. Obtain the same result as 5, and create a Custom Collector to partition
+ * the first n natural numbers between prime and nonprimes without making a
+ * class. Instead use the overloaded version of the collect() method, that
+ * takes the core logic of PrimeNumbersCollector as arguments. 
  * 
  * ================================= Methods =================================
  * -collect() - a terminal stream operation that combines all elements of a 
@@ -102,6 +106,24 @@ public class PartitionPrimeNumbers {
     public static Map<Boolean, List<Integer>> partitionPrimesWithCustomCollector(int n) {
         return IntStream.rangeClosed(2, n).boxed()
                         .collect(new PrimeNumbersCollector());
+    }
+
+    /**
+     * 6. Obtain the same result as 5, and create a Custom Collector to partition
+     * the first n natural numbers between prime and nonprimes without making a
+     * class. Instead use the overloaded version of the collect() method, that
+     * takes the core logic of PrimeNumbersCollector as arguments. 
+     * 
+     * Benefits: Avoids creating a completely new class, compact
+     * Drawbacks: Less Readable, Less Reusable
+     * 
+     * @param n the first n natural numbers to partition by
+     * @return Map with numbers partition by prime and nonprime, true and false key respectively
+     */
+    public static Map<Boolean, List<Integer>> 
+        partitionPrimesWithCustomCollectorNoClass(int n) {
+        
+        
     }
 
     public static void main(String[] args) {
