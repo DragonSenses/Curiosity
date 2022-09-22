@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.partitioningBy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -124,7 +125,7 @@ public class PartitionPrimeNumbers {
      */
     public static Map<Boolean, List<Integer>> 
         partitionPrimesWithCustomCollectorNoClass(int n) {
-        IntStream.rangeClosed(2,n).boxed()
+        return IntStream.rangeClosed(2,n).boxed()
             .collect( // Overloaded collect method takes three arguments
                 // Supplier
                     () -> new HashMap<Boolean, List<Integer>>() {{
@@ -137,8 +138,11 @@ public class PartitionPrimeNumbers {
                        .add(candidate);
                 },
                 // Combiner
+                (map1, map2) -> {
+                    map1.get(true).addAll(map2.get(true));
+                    map1.get(false).addAll(map2.get(false));
+                }
             );
-        
     }
 
     public static void main(String[] args) {
