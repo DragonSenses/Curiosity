@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.HashSet;
 
 /**
@@ -36,17 +38,31 @@ public class CollectionFactories {
 
     /**
      * Make a small Set of objects. Using HashSet constructor which accepts a
-     * List.
+     * List. Alternatively, could use Streams API.
+     * 
+     * The Set returned is mutable.
      */
-    public static Set<String> makeSetFriends(){
+    public static Set<String> makeSet(){
+        // HashSet constructor
         Set<String> friends 
             =  new HashSet<>(Arrays.asList("Harriet", "Ellen", "Olivia"));
+        
+        // Streams API
+        friends = Stream.of("Ami", "Ouka", "Akane", "Riho", "Shiragiku")
+                        .collect(Collectors.toSet());
         return friends;
     }
+
+
 
     public static void main(String[] args){
         List<String> friends = makeFriendsBetter();
         friends.set(2, "Olivia");   // Updating via set() is allowed
-        friends.add("Aria");    // throws an UnsupportedOperationException
+        // friends.add("Aria");    // throws an UnsupportedOperationException
+
+        Set<String> family = makeSet();
+        family.add("Hayato");
+
+        family.stream().forEach(System::println);
     }
 }
