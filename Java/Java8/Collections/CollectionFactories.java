@@ -15,7 +15,7 @@ public class CollectionFactories {
     /**
      * One way to create a small collection of objects, manually
      */
-    public static List<String> makeFriends(){
+    public static List<String> makeFriends1(){
         List<String> friends = new ArrayList<>();
         friends.add("Ellen");
         friends.add("Daedalus");
@@ -30,7 +30,7 @@ public class CollectionFactories {
      * Attempting to add elements throws an exception.
      * Updating via set() method is allowed. 
      */
-    public static List<String> makeFriendsBetter(){
+    public static List<String> makeFriends2(){
         List<String> friends =  Arrays.asList("Harriet", "Ellen", "Reinhardt");
         
         return friends;
@@ -53,16 +53,29 @@ public class CollectionFactories {
         return friends;
     }
 
+    // All Methods above are inelegant and involve unncessary object allocation
+
+    // List Factory Methods - a better way
+
+    
+    public static List<String> makeFriends3(){
+        return List.of("Harriet", "Ellen", "Olivia");
+    }
 
 
     public static void main(String[] args){
-        List<String> friends = makeFriendsBetter();
+        List<String> friends = makeFriends2();
         friends.set(2, "Olivia");   // Updating via set() is allowed
         // friends.add("Aria");    // throws an UnsupportedOperationException
+        
+        System.out.println("======== Friends ========");
+        friends.stream().forEach(System.out::println);
+
 
         Set<String> family = makeSet();
-        family.add("Hayato");
+        family.add("Hayato");   // Set returned is mutable, adding is allowed
 
-        family.stream().forEach(System::println);
+        System.out.println("======== Family ========");
+        family.stream().forEach(System.out::println);
     }
 }
