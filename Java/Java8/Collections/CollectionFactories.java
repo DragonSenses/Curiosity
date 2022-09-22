@@ -1,6 +1,7 @@
 package Java.Java8.Collections;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  */
 public class CollectionFactories {
     
-    public List<String> makeFriends(){
+    public static List<String> makeFriends(){
         // One way to create a small collection of objects, manually
         List<String> friends = new ArrayList<>();
         friends.add("Ellen");
@@ -18,7 +19,21 @@ public class CollectionFactories {
         return friends;
     }
 
-    public static void main(String[] args){
+    /**
+     * Convenient way to create a small collection of objects, use Arrays.asList()
+     * method. Fixed-sized list that you can update, but cannot add elements to 
+     * or remove elements from. Attempting to add elements throws an exception.
+     * Updating via set() method is allowed. 
+     * 
+     * @return List of Strings
+     */
+    public static List<String> makeFriendsBetter(){
+        List<String> friends =  Arrays.asList("Harriet", "Ellen", "Reinhardt");
+        
+        return friends;
+    }
 
+    public static void main(String[] args){
+        List<String> friends = makeFriendsBetter();
     }
 }
