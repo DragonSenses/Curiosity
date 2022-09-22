@@ -9,7 +9,26 @@ import java.util.stream.Stream;
 import java.util.HashSet;
 
 /**
- * Java 9 introduced a few convenient ways to create small collection objects
+ * Java 9 introduced a few convenient ways to create small collection objects.
+ * 
+ * Overloading vs varargs
+ * Inspecting the List interface, one can see several overloaded variants of 
+ * List.of:
+ * static <E> List<E> of(E e1, E e2, E e3, E e4)
+ * static <E> List<E> of(E e1, E e2, E e3, E e4, E e5)
+ * 
+ * Why did Java API not have one method that use varargs to accept an arbitrary
+ * number of elements in the following style:
+ * static <E> List<E> of(E... elements)
+ * 
+ * Internally, varargs version allocates an extra array, which is wrapped up 
+ * inside a list. You pay the cost for allocating an array, initializing it, 
+ * and having itt garbage-collected later.
+ * 
+ * By providing a fixed number of elements (up to ten) through an API, you don't
+ * pay this cost. Note that you can still create List.of() using more than 10 
+ * elements, but in thhat case the varargs signature is invoked. Same pattern is
+ * seen with Set.of() and Map.of().
  */
 public class CollectionFactories {
     /**
@@ -72,6 +91,11 @@ public class CollectionFactories {
     // Similarly can make a small set with Set.of() factory method
     public static Set<String> makeSetFamily(){
         return Set.of("Ami", "Ouka", "Akane", "Riho", "Shiragiku");
+    }
+
+    // Map.of() factory method
+    public static Map<String> makeMapFamily(){
+        return Map.of("Ami", "Ouka", "Akane", "Riho", "Shiragiku");
     }
 
     public static void main(String[] args){
