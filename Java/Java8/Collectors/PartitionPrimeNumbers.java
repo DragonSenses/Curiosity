@@ -6,6 +6,8 @@ import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.partitioningBy;
 
+import java.util.HashMap;
+
 /**
  * Partitioning is a special case of grouping: having a predicate called a
  * partitioning function as a classfication function.
@@ -130,6 +132,10 @@ public class PartitionPrimeNumbers {
                         put(false, new ArrayList<Integer>());
                     }},
                 // Accumulator
+                (acc,candidate) -> {
+                    acc.get( isPrime(acc.get(true), candidate))
+                       .add(candidate);
+                },
                 // Combiner
             );
         
