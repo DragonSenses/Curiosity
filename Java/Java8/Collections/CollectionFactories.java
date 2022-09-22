@@ -56,12 +56,23 @@ public class CollectionFactories {
     // All Methods above are inelegant and involve unncessary object allocation
 
     // List Factory Methods - a better way
-
-    
+    /**
+     * Factory method List.of creates an immutable list, that cannot be added 
+     * to or modified with set() method. Protects from unwanted mutations of 
+     * the collections.
+     * 
+     * Null elements are disallowed, to prevent bugs and enable more-compact 
+     * internal representation.
+     * Elements can be mutable themselves. 
+     */
     public static List<String> makeFriends3(){
         return List.of("Harriet", "Ellen", "Olivia");
     }
 
+    // Similarly can make a small set with Set.of() factory method
+    public static Set<String> makeSetFamily(){
+        return Set.of("Ami", "Ouka", "Akane", "Riho", "Shiragiku");
+    }
 
     public static void main(String[] args){
         List<String> friends = makeFriends2();
