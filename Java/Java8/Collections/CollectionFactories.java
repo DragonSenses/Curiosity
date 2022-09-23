@@ -3,6 +3,7 @@ package Java.Java8.Collections;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -88,14 +89,35 @@ public class CollectionFactories {
         return List.of("Harriet", "Ellen", "Olivia");
     }
 
-    // Similarly can make a small set with Set.of() factory method
+    /**
+     * Similarly can make a small set with Set.of() factory method.
+     * Cannot create a Set with a duplicated element, throws exception
+     * @return an immutable Set out of a list of elements
+     */
     public static Set<String> makeSetFamily(){
         return Set.of("Ami", "Ouka", "Akane", "Riho", "Shiragiku");
     }
+    /**
+     * Map factory method: Map.of() creates a small map of up to 10 keys and values
+     * 
+     * @return an immutable Map out of a list of up to 10 elements
+     */
+    public static Map<String, Integer> ageMapOfFamily(){
+        return Map.of("Ami", 18, "Ouka", 19, "Akane", 19,
+             "Riho", 21, "Shiragiku", 21);
+    }
 
-    // Map.of() factory method
-    public static Map<String> makeMapFamily(){
-        return Map.of("Ami", "Ouka", "Akane", "Riho", "Shiragiku");
+    /**
+     * Create A Map using Map.ofEntries() factory method (with more than 10 elements)
+     * 
+     * Note: To go beyond 10 elements, use Map.ofEntries() which takes Map.Entry<K,V>
+     * objects but is implemented with varargs. This method requires additional 
+     * object allocations to wrap up a key and a value. Use with Map.Entry a new
+     * factory method to create Map.Entry objects.
+     * @return a Map out of a list of elements
+     */
+    public static Map<String, Integer> ageOfFamily(){
+        return Map.ofEntries(entry)
     }
 
     public static void main(String[] args){
