@@ -142,5 +142,11 @@ public class CollectionFactories {
 
         System.out.println("======== Family ========");
         family.stream().forEach(System.out::println);
+
+        Map<String, Integer> familyMap = ageMapOfFamily();
+        System.out.println(familyMap);
+        
+        familyMap = ageOfFamily();
+        System.out.println(familyMap);
     }
 }
