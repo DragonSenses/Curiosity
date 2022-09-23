@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.HashSet;
 
+// To Use Map.Entry factory method
+import static java.util.Map.entry;
+
 /**
  * Java 9 introduced a few convenient ways to create small collection objects.
  * 
@@ -117,7 +120,12 @@ public class CollectionFactories {
      * @return a Map out of a list of elements
      */
     public static Map<String, Integer> ageOfFamily(){
-        return Map.ofEntries(entry)
+        return Map.ofEntries(entry("Ami", 18),
+                             entry("Ouka", 19),
+                             entry("Akane", 19),
+                             entry("Riho", 21),
+                             entry("Shiragiku", 21)
+        );
     }
 
     public static void main(String[] args){
