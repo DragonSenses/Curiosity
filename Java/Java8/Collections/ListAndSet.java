@@ -1,5 +1,8 @@
 package Java.Java8.Collections;
 
+import Java.Java8.Collectors.GroupingTransactions;
+import static Java.Java8.Collectors.GroupingTransactions.transactions;
+
 /**
  * Java 8 introduced new methods into the List and Set interfaces.
  * 
@@ -19,7 +22,21 @@ package Java.Java8.Collections;
  */
 public class ListAndSet {
     
-    public static void main(String[] args){
-        
+
+    public static void useRemoveIf(){
+        transactions.removeIf(transaction 
+            -> Character.isDigit(transaction.getReferenceCode().charAt(0)));
     }
+
+    public static void main(String[] args){
+        System.out.println("------ Working with Lists ------");
+        System.out.println("--> Transforming list items with a Stream");
+        List<String> referenceCodes = Arrays.asList("a12", "C14", "b13");
+        referenceCodes.stream()
+            .map(code -> Character.toUpperCase(code.charAt(0)) + code.substring(1))
+            .collect(Collectors.toList())
+            .forEach(System.out::println);
+        System.out.println("... but the original List remains unchanged: " + referenceCodes);
+    }
+
 }
