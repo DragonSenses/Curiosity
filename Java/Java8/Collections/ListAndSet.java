@@ -56,15 +56,31 @@ public class ListAndSet {
         List<String> family = build();
         System.out.println("------- Before Removal -------");
         family.stream().forEach(System.out::println);
-        
+
         System.out.println("------- After Removal -------");
         family.removeIf(member -> member.charAt(0) == 'A');
+        family.stream().forEach(System.out::println);
+    }
+
+    // Old Way which throws an error
+    public static void removeIfForEach(){
+        List<String> family = build();
+        System.out.println("------- Before Removal -------");
+        family.stream().forEach(System.out::println);
+        
+        System.out.println("------- After Removal -------");
+        for(String member: family){
+            if(member.charAt(0) == 'A') {
+                family.remove(member);  // Problem we are iterating and modifying
+            }                           // The collection through two separate objects
+        }
         family.stream().forEach(System.out::println);
     }
 
     public static void main(String[] args){
         System.out.println("------ Working with Lists ------");
         useRemoveIf();
+        removeIfForEach();
     }
 
 }
