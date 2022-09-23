@@ -9,10 +9,17 @@ package Java.Java8.Collections;
  * these methods were added.
  * 
  * ================================= Methods =================================
- * -removeIf() -  
- * -replaceAll() -
- * -sort() - 
+ * -removeIf() -  removes element matching a predicate. Available on all 
+ * classes that implement List or Set (inherited from Collection interface)
+ * 
+ * -replaceAll() - replaces elements using a (UnaryOperator) function. 
+ * Available on List.
+ * 
+ * -sort() - sorts the list itself, available on list. 
  */
 public class ListAndSet {
     
+    public static void main(String[] args){
+        
+    }
 }
