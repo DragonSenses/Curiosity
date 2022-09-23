@@ -3,6 +3,12 @@ package Java.Java8.Collections;
 import Java.Java8.Collectors.GroupingTransactions;
 import static Java.Java8.Collectors.GroupingTransactions.transactions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * Java 8 introduced new methods into the List and Set interfaces.
  * 
@@ -22,21 +28,23 @@ import static Java.Java8.Collectors.GroupingTransactions.transactions;
  */
 public class ListAndSet {
     
-
+    /**
+     * Consider a Map of family names and age. 
+     */
     public static void useRemoveIf(){
-        transactions.removeIf(transaction 
-            -> Character.isDigit(transaction.getReferenceCode().charAt(0)));
+        Map<String, Integer> family = Map.of("Ami", 18, "Ouka", 19, "Akane", 19,
+            "Riho", 21, "Shiragiku", 21);
+        
+        ArrayList<Map.Entry<String, Integer>> list = new ArrayList<>();
+
+        for(Map.Entry<String, Integer> member: family){
+            list.add(member);
+        }
     }
 
     public static void main(String[] args){
         System.out.println("------ Working with Lists ------");
-        System.out.println("--> Transforming list items with a Stream");
-        List<String> referenceCodes = Arrays.asList("a12", "C14", "b13");
-        referenceCodes.stream()
-            .map(code -> Character.toUpperCase(code.charAt(0)) + code.substring(1))
-            .collect(Collectors.toList())
-            .forEach(System.out::println);
-        System.out.println("... but the original List remains unchanged: " + referenceCodes);
+        
     }
 
 }
