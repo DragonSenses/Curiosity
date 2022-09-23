@@ -1,14 +1,15 @@
 package Java.Java8.Collections;
 
-import Java.Java8.Collectors.GroupingTransactions;
-import static Java.Java8.Collectors.GroupingTransactions.transactions;
+// import Java.Java8.Collectors.GroupingTransactions;
+// import static Java.Java8.Collectors.GroupingTransactions.transactions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+// import java.util.ArrayList;
+// import java.util.Arrays;
+
+// import java.util.Map;
+// import java.util.stream.Collectors;
+
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 /**
  * Java 8 introduced new methods into the List and Set interfaces.
  * 
@@ -29,22 +30,22 @@ import java.util.stream.Collectors;
 public class ListAndSet {
     
     /**
-     * Consider a Map of family names and age. 
+     * Consider a List of family names. We can remove members from the list
+     * if their names start with the letter A. 
      */
     public static void useRemoveIf(){
-        Map<String, Integer> family = Map.of("Ami", 18, "Ouka", 19, "Akane", 19,
-            "Riho", 21, "Shiragiku", 21);
-        
-        ArrayList<Map.Entry<String, Integer>> list = new ArrayList<>();
+        List<String> family = 
+            List.of("Ami", "Ouka", "Akane", "Riho", "Shiragiku");
+        family.stream().forEach(System.out::println);
 
-        for(Map.Entry<String, Integer> member: family){
-            list.add(member);
-        }
+        System.out.println("After Removal");
+        family.removeIf(member -> member.charAt(0) == 'A');
+        family.stream().forEach(System.out::println);
     }
 
     public static void main(String[] args){
         System.out.println("------ Working with Lists ------");
-        
+        useRemoveIf();
     }
 
 }
