@@ -42,10 +42,15 @@ public class WorkingWithMap {
             age + " years old"));
     }
 
-    public static void sortByEntry(){
-        Map<String, Integer> familyMap = build();
+    // Sorting Map by Entries
 
+    public static void sortByKey(Map<String, Integer> familyMap){
         familyMap.entrySet().stream().sorted(Entry.comparingByKey())
+                 .forEachOrdered(System.out::println);
+    }
+
+    public static void sortByValue(Map<String, Integer> familyMap){
+        familyMap.entrySet().stream().sorted(Entry.comparingByValue())
                  .forEachOrdered(System.out::println);
     }
 
@@ -57,7 +62,9 @@ public class WorkingWithMap {
         System.out.println("======= Working with Maps =======");
         forEach();
 
-        System.out.println("------- Sorting Entries by Key: Name ------- ");
-        sortByEntry();
+        System.out.println("------- Sorting Entries by Key: [Name] ------- ");
+        sortByKey(familyMap);
+        System.out.println("------- Sorting Entries by Value: [Age] ------- ");
+        sortByValue(familyMap);
     }
 }
