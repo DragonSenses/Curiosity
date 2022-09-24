@@ -1,6 +1,7 @@
 package Java.Java8.Collections;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Java 8 introduced several default methods supported by the Map interface. 
@@ -13,10 +14,10 @@ import java.util.Map;
  * BiConsumer, taking the key and value as arguments
  * 
  * Sorting
- * -replaceAll() - replaces elements using a (UnaryOperator) function. 
- * Available on List.
+ * -Entry.comparingByValue - sorts the entire map by Values
+ * -Entry.comparingByKey - sorts the entire map by Keys
  * 
- * -sort() - sorts the list itself, available on list. 
+ * -sort() - 
  */
 public class WorkingWithMap {
     
@@ -41,8 +42,22 @@ public class WorkingWithMap {
             age + " years old"));
     }
 
+    public static void sortByEntry(){
+        Map<String, Integer> familyMap = build();
+
+        familyMap.entrySet().stream().sorted(Entry.comparingByKey())
+                 .forEachOrdered(System.out::println);
+    }
+
     public static void main(String[] args){
+        System.out.println("Map:\n----");
+        Map<String, Integer> familyMap = build();
+        familyMap.forEach((member,age) -> System.out.println(member + ", " + age));
+
         System.out.println("======= Working with Maps =======");
         forEach();
+
+        System.out.println("------- Sorting Entries by Key: Name ------- ");
+        sortByEntry();
     }
 }
