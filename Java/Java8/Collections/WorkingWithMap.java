@@ -43,15 +43,27 @@ public class WorkingWithMap {
     }
 
     // Sorting Map by Entries
-
+    // Entry.comparingByKey() sorts the Map by its Keys
     public static void sortByKey(Map<String, Integer> familyMap){
         familyMap.entrySet().stream().sorted(Entry.comparingByKey())
                  .forEachOrdered(System.out::println);
     }
 
+    // Entry comparingByValue() sorts the Map by its Values
     public static void sortByValue(Map<String, Integer> familyMap){
         familyMap.entrySet().stream().sorted(Entry.comparingByValue())
                  .forEachOrdered(System.out::println);
+    }
+
+    /**
+     * 
+     */
+    public static void getOrDefault(){
+        Map<String, Integer> familyMap = build();
+        System.out.println("Looking up Riho's age within the Map ....");
+        System.out.println(familyMap.getOrDefault("Riho", 0));
+        System.out.println("Looking up Hayato's age within the Map ....");
+        System.out.println(familyMap.getOrDefault("Hayato", 0));
     }
 
     public static void main(String[] args){
@@ -66,5 +78,8 @@ public class WorkingWithMap {
         sortByKey(familyMap);
         System.out.println("------- Sorting Entries by Value: [Age] ------- ");
         sortByValue(familyMap);
+
+        System.out.println("------- Looking up a Key within the Map ------- ");
+        getOrDefault();
     }
 }
