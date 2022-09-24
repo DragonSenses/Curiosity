@@ -106,9 +106,24 @@ public class ListAndSet {
         family.stream().forEach(System.out::println);
     }
 
+    /**
+     * replaceAll() method on List interface lets you replace each element in a
+     * list with a new one. It allows one to update the existing collection. 
+     * 
+     * The old way is to use the Iterator.set() method, but using Iterator objects
+     * in conjunction with collection objects can be error-prone by mixing 
+     * iteration and modification of collection.
+     */
     public static void replaceAllNames(){
         List<String> family = build();
-        System.out.println("\n------- Before Replacing -------");
+        System.out.println("------- Before Replacing -------");
+        family.stream().forEach(System.out::println);
+        
+        family.replaceAll(name -> Character.toLowerCase(name.charAt(0))
+            + name.substring(1));
+
+        System.out.println("------- After Replacing All Names -------");
+        family.stream().forEach(System.out::println);
     }
 
     public static void main(String[] args){
@@ -125,7 +140,8 @@ public class ListAndSet {
 
         removeIfWithIterator();
 
-        System.out.println("======= Replacing with Lists =======");
+        System.out.println("\n======= Replacing with Lists =======");
+        replaceAllNames();
     }
 
 }
