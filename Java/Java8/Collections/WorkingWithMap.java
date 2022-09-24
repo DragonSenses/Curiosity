@@ -31,14 +31,18 @@ public class WorkingWithMap {
     }
 
     /**
-     * Iterating over the keys and values of a Map
+     * Iterating over the keys and values of a Map, using the forEach method
+     * makes the code more concise rather than iterating over entrySet.
      */
     public static void forEach(){
+        Map<String, Integer> familyMap = build();
 
+        familyMap.forEach((friend, age) -> System.out.println(friend + " is " +
+            age + " years old"));
     }
 
     public static void main(String[] args){
         System.out.println("======= Working with Maps =======");
-    
+        forEach();
     }
 }
