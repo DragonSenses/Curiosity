@@ -2,6 +2,7 @@ package Java.Java8.Collections;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
@@ -116,13 +117,27 @@ public class ListAndSet {
      */
     public static void replaceAllNames(){
         List<String> family = build();
-        System.out.println("------- Before Replacing -------");
+        System.out.println("\n------- Before Replacing -------");
         family.stream().forEach(System.out::println);
-        
+
         family.replaceAll(name -> Character.toLowerCase(name.charAt(0))
             + name.substring(1));
 
-        System.out.println("------- After Replacing All Names -------");
+        System.out.println("------- After Replacing -------");
+        family.stream().forEach(System.out::println);
+    }
+
+    /**
+     * sort() method of List interface takes in a Comparator.
+     */
+    public static void sortNames(){
+        List<String> family = build();
+        System.out.println("\n------- Before Sorting -------");
+        family.stream().forEach(System.out::println);
+
+        family.sort(Comparator.naturalOrder()); // Natural Ordering of Strings
+
+        System.out.println("------- After Sorting -------");
         family.stream().forEach(System.out::println);
     }
 
@@ -139,9 +154,8 @@ public class ListAndSet {
         } 
 
         removeIfWithIterator();
-
-        System.out.println("\n======= Replacing with Lists =======");
         replaceAllNames();
+        sortNames();
     }
 
 }
