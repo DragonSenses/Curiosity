@@ -1,13 +1,10 @@
 package Java.Java8.Collections;
 
-// import Java.Java8.Collectors.GroupingTransactions;
-// import static Java.Java8.Collectors.GroupingTransactions.transactions;
 
 import java.util.ArrayList;
-// import java.util.Arrays;
+import java.util.Iterator;
 
-// import java.util.Map;
-// import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
 import java.util.List;
 /**
@@ -28,7 +25,8 @@ import java.util.List;
  * -sort() - sorts the list itself, available on list. 
  */
 public class ListAndSet {
-    
+    // A Predicate that checks if the String name starts with A
+    private static Predicate<String> nameStartsWithA =  s -> s.charAt(0) == 'A';
 
     // Build the List of Strings
     public static List<String> build(){
@@ -40,7 +38,7 @@ public class ListAndSet {
         list.add("Shiragiku");
         return list;
     }
-    
+
     /**
      * Consider a List of family names. We can remove members from the list
      * if their names start with the letter A.  
@@ -62,25 +60,47 @@ public class ListAndSet {
         family.stream().forEach(System.out::println);
     }
 
-    // Old Way which throws an error
-    public static void removeIfForEach(){
+    /**
+     * Two separate objects manage the collection. 
+     * 1) The Iterator object, which is querying the source by using next()
+     * and hasNext(), and the 
+     * 2) The Collection object itself, which is removing the element by
+     * calling remove()
+     * As a result, Iterator object is no longer synced with state of collection
+     * such that a ConcurrentModificationException is thrown. 
+     */
+    public static void removeIfWithForEach(){
         List<String> family = build();
         System.out.println("------- Before Removal -------");
         family.stream().forEach(System.out::println);
         
         System.out.println("------- After Removal -------");
         for(String member: family){
-            if(member.charAt(0) == 'A') {
+            if(nameStartsWithA.test(member)) {
                 family.remove(member);  // Problem we are iterating and modifying
             }                           // The collection through two separate objects
         }
         family.stream().forEach(System.out::println);
     }
 
+    /**
+     * The solution to the removeIf with enhanced for loop is to use the
+     * Iterator object explicitly and call its remove() method. 
+     */
+    public static void removeIfWithIterator(){
+        List<String> family = build();
+        for(Iterator<String> iterator = family.iterator(); iterator.hasNext();){
+            String member = iterator.next();
+            if(nameStartsWithA.test(member)) {
+                iterator.remove();
+            }
+        }
+    }
+
     public static void main(String[] args){
         System.out.println("------ Working with Lists ------");
         useRemoveIf();
-        removeIfForEach();
+        removeIfWithForEach();
     }
 
 }
