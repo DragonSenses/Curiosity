@@ -2,6 +2,7 @@ package Java.Java8.Collections;
 
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 import java.util.function.Predicate;
@@ -41,7 +42,8 @@ public class ListAndSet {
 
     /**
      * Consider a List of family names. We can remove members from the list
-     * if their names start with the letter A.  
+     * if their names start with the letter A.  removeIf() takes a predicate
+     * indicating which elements to remove.
      * 
      * Cannot remove using a for each loop as it uses an Iterator object and
      * the Collection object itself, which is removing the element by calling
@@ -50,12 +52,12 @@ public class ListAndSet {
      * is the substitution to this fairly verbose way of removing elements 
      * within collection and without getting a ConcurrentModificationException.
      */
-    public static void useRemoveIf(){
+    public static void removeIf(){
         List<String> family = build();
-        System.out.println("------- Before Removal -------");
+        System.out.println("\n------- Before Removal -------");
         family.stream().forEach(System.out::println);
 
-        System.out.println("------- After Removal -------");
+        System.out.println("------- After Removal with removeIf() -------");
         family.removeIf(member -> member.charAt(0) == 'A');
         family.stream().forEach(System.out::println);
     }
@@ -71,15 +73,16 @@ public class ListAndSet {
      */
     public static void removeIfWithForEach(){
         List<String> family = build();
-        System.out.println("------- Before Removal -------");
+        System.out.println("\n------- Before Removal -------");
         family.stream().forEach(System.out::println);
         
-        System.out.println("------- After Removal -------");
         for(String member: family){
             if(nameStartsWithA.test(member)) {
                 family.remove(member);  // Problem we are iterating and modifying
             }                           // The collection through two separate objects
         }
+
+        System.out.println("------- After Removal with Collection -------");
         family.stream().forEach(System.out::println);
     }
 
@@ -89,18 +92,40 @@ public class ListAndSet {
      */
     public static void removeIfWithIterator(){
         List<String> family = build();
+        System.out.println("\n------- Before Removal -------");
+        family.stream().forEach(System.out::println);
+
         for(Iterator<String> iterator = family.iterator(); iterator.hasNext();){
             String member = iterator.next();
             if(nameStartsWithA.test(member)) {
                 iterator.remove();
             }
         }
+
+        System.out.println("------- After Removal with Iterator -------");
+        family.stream().forEach(System.out::println);
+    }
+
+    public static void replaceAllNames(){
+        List<String> family = build();
+        System.out.println("\n------- Before Replacing -------");
     }
 
     public static void main(String[] args){
-        System.out.println("------ Working with Lists ------");
-        useRemoveIf();
-        removeIfWithForEach();
+        System.out.println("======= Working with Lists =======");
+        removeIf(); 
+
+        try{ 
+            removeIfWithForEach(); 
+        } catch(ConcurrentModificationException e) {
+            // e.printStackTrace();
+            System.out.println("------- After Removal with Collection -------");
+            System.out.println("Threw ConcurrentModificationException!");
+        } 
+
+        removeIfWithIterator();
+
+        System.out.println("======= Replacing with Lists =======");
     }
 
 }
