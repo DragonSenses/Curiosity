@@ -1,5 +1,6 @@
 package Java.Java8.Collections;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -111,6 +112,23 @@ public class WorkingWithMap {
     public static double toHumanAge(double n){
         // human_age = 16ln(dog_age) + 31
         return 16*Math.log(n) + 31;
+    }
+
+    /**
+     * Maps that Store multiple variables, lets suppose we add an element to a
+     * Map<K, List<V>>, and need to ensure that entry has been initialized. 
+     * 
+     * Say we want to build up a list of games for a friend. 
+     */
+    public static void games(){
+        String friend = "Ami";
+        List<String> games = friendsToGames.get(friend);
+        if(games == null) {
+            games = new ArrayList<>();
+            friendsToGames.put(friend,games);
+        }
+        games.add("Street Fighter 4");
+        System.out.println(friendsToGames); 
     }
 
     public static void main(String[] args){
