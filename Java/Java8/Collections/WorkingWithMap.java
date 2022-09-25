@@ -125,15 +125,22 @@ public class WorkingWithMap {
     public static void games(){
         Map<String, List<String>> friendsToGames = new HashMap<>();
 
-        String friend = "Ami";
+        String friend = "Hayato";
         List<String> games = friendsToGames.get(friend);
         if(games == null) {
             games = new ArrayList<>();
             friendsToGames.put(friend,games);
         }
-        games.add("Street Fighter 4");
+        games.add("SF4");
         System.out.println(friendsToGames); 
+
+
+        // A better way" to use computeIfAbsent
+        friendsToGames.computeIfAbsent("Hayato", name -> new ArrayList<>())
+                      .add("SF4") ;
     }
+
+    
 
     public static void main(String[] args){
         System.out.println("Map:\n----");
