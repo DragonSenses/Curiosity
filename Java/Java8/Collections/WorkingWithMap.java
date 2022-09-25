@@ -40,7 +40,11 @@ import java.util.Map.Entry;
  * given key. Removes an entry only if the key is associated with a specific
  * value. 
  * 
- * 
+ * Replacement Patterns
+ * -replaceAll() - Replaces each entry's value with the result of applying a 
+ * BiFunction. This method works similarly to replaceAll() on a List
+ *
+ * -Replace()
  */
 public class WorkingWithMap {
     
