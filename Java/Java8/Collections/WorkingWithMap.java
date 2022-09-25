@@ -34,6 +34,13 @@ import java.util.Map.Entry;
  * 
  * -compute() - This operation calculates a new value for a given key and
  * stores it in the Map.
+ * 
+ * Remove Patterns
+ * -Map.remove(key,value) - overloaded version that removes a Map entry for a
+ * given key. Removes an entry only if the key is associated with a specific
+ * value. 
+ * 
+ * 
  */
 public class WorkingWithMap {
     
@@ -134,10 +141,12 @@ public class WorkingWithMap {
         games.add("SF4");
         System.out.println(friendsToGames); 
 
-
-        // A better way" to use computeIfAbsent
+        // A better way is to use computeIfAbsent
         friendsToGames.computeIfAbsent("Hayato", name -> new ArrayList<>())
                       .add("SF4") ;
+
+        // Returns the calculated value after adding it to the Map if the key
+        // wasn't found, otherwise it returns the existing value 
     }
 
     
