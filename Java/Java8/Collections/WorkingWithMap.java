@@ -1,5 +1,7 @@
 package Java.Java8.Collections;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -121,6 +123,8 @@ public class WorkingWithMap {
      * Say we want to build up a list of games for a friend. 
      */
     public static void games(){
+        Map<String, List<String>> friendsToGames = new HashMap<>();
+
         String friend = "Ami";
         List<String> games = friendsToGames.get(friend);
         if(games == null) {
