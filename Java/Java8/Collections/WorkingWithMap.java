@@ -56,7 +56,14 @@ public class WorkingWithMap {
     }
 
     /**
+     * getOrDefault() method is used when the key you're looking up isn't 
+     * present you get a default value instead of a null reference, the
+     * first argument is the key to get and the second argument is the default
+     * value used when the key is absent from the Map.
      * 
+     * Note: if key existed in the Map but was accidentally associated with a 
+     * null value, getOrDefault() can still return null. The expression you 
+     * pass as a fallback is always evaluated, whether the key exists or not. 
      */
     public static void getOrDefault(){
         Map<String, Integer> familyMap = build();
