@@ -44,7 +44,9 @@ import java.util.Map.Entry;
  * -replaceAll() - Replaces each entry's value with the result of applying a 
  * BiFunction. This method works similarly to replaceAll() on a List
  *
- * -Replace()
+ * -Replace() - Lets you replace a value in the Map if a key is present. An
+ * additional overload replaces the value only if the key is mapped to a 
+ * certain value.
  */
 public class WorkingWithMap {
     
