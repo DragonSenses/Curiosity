@@ -14,10 +14,23 @@ import java.util.Map.Entry;
  * BiConsumer, taking the key and value as arguments
  * 
  * Sorting
- * -Entry.comparingByValue - sorts the entire map by Values
- * -Entry.comparingByKey - sorts the entire map by Keys
+ * -Entry.comparingByValue() - sorts the entire map by Values
+ * -Entry.comparingByKey() - sorts the entire map by Keys
  * 
- * -sort() - 
+ * -getOrDefault() - takes the key to look up as the first argument and a
+ * default value  (to be used when the key is absent from the Map) as the
+ * second argument
+ * 
+ * Compute Patterns
+ * -computeIfAbsent() - If there’s no specified value for the given key 
+ * (it’s absent or its value is null), calculate a new value by using the key
+ * and add it to the Map.
+ * 
+ * -computeIfPresent() - If the specified key is present, calculate a new 
+ * value for it and add it to the Map.
+ * 
+ * -compute() - This operation calculates a new value for a given key and
+ * stores it in the Map.
  */
 public class WorkingWithMap {
     
