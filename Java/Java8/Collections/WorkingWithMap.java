@@ -86,6 +86,21 @@ public class WorkingWithMap {
         System.out.println(familyMap.getOrDefault("Hayato", 0));
     }
 
+    /**
+     * Compute Patterns - when you want to perform an operation conditionally
+     * and store its result depending on whether a key is present or absent in
+     * a Map. You may want to cace the result of an expensive operation given a
+     * key. If the key is present, there's no need to recalculate the result. 
+     * 
+     * One use of computeIfAbsent() is caching information. Suppose that you 
+     * parse each line of a set of files and calculate their SHA-256 
+     * representation. If you processed the data previously, there's no need
+     * to recalculate it. 
+     * 
+     * Suppose you implement a cache by using a Map, and you use an instance
+     * of MessageDigest to calculate SHA-256 hases. 
+     */
+
     public static void main(String[] args){
         System.out.println("Map:\n----");
         Map<String, Integer> familyMap = build();
