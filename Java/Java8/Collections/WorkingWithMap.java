@@ -192,7 +192,7 @@ public class WorkingWithMap {
     // if the key wasn't found; otherwise, returns the existing value.
 
     public static void replaceAll(Map<String, List<String>> friendsToGames){
-        friendsToGames.replaceAll((friend,game) -> game.toUpperCase());
+        // friendsToGames.replaceAll((friend,game) -> game.toUpperCase());
     }
 
     public static void main(String[] args){
@@ -236,8 +236,14 @@ public class WorkingWithMap {
         ageMap.forEach((friend, age) -> System.out.printf("<%s,%d>\n",friend,age));
 
         System.out.println("\n======= Replacement Patterns =======");
+        // Create a new Map, with name of each member and their game, then print
+        Map<String, String> gameMap = new HashMap<>(); 
+        friendsToGames.forEach((name,list) -> gameMap.put(name,list.get(0)));
+        gameMap.forEach((name,game) -> System.out.printf("%s = %s\n", name, game));
         System.out.println("------- formatting all the values in the Map using Map.replaceAll() ------- ");
-        friendsToGames.replaceAll((friend, game) -> game.toUpperCase());
+        // Transform each value to Uppercase, then print each result
+        gameMap.replaceAll((name,game) -> game.toUpperCase()); 
+        gameMap.forEach((name,game) -> System.out.printf("%s = %s\n", name, game));
     } // end of Main
 
     // Prints out values of the Map parameter
