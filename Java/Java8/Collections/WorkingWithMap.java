@@ -61,6 +61,13 @@ public class WorkingWithMap {
     }
 
     /**
+     * @return A Map with the name as Key, and a List as Values
+     */
+    public static Map<String, List<String>> buildList(){
+        return new HashMap<String, List<String>>();
+    }
+
+    /**
      * Iterating over the keys and values of a Map, using the forEach method
      * makes the code more concise rather than iterating over entrySet.
      */
@@ -135,9 +142,8 @@ public class WorkingWithMap {
      * 
      * Say we want to build up a list of games for a friend. 
      */
-    public static void games(){
-        Map<String, List<String>> friendsToGames = new HashMap<>();
-
+    public static void mapToGames(Map<String, List<String>> friendsToGames){
+        // Old Way
         String friend = "Hayato";
         List<String> games = friendsToGames.get(friend);
         if(games == null) {
@@ -172,5 +178,10 @@ public class WorkingWithMap {
 
         System.out.println("------- Looking up a Key within the Map ------- ");
         getOrDefault();
+
+        // Build up a list of games for each of our family/friends
+        Map<String, List<String>> friendsToGames = buildList();
+        familyMap.forEach(member -> friendsToGames.computeIfAbsent(member, name -> new ArrayList<>())
+            .add("SF4"));
     }
 }
