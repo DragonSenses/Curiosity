@@ -161,7 +161,16 @@ public class WorkingWithMap {
         // wasn't found, otherwise it returns the existing value 
     }
 
-    
+    /**
+     * Populates the list of games for each member within the Map. Using
+     * computeIfPresent() calculates a new value if the current value associated
+     * with the key is present in the Map and non-null. Takes in the key as
+     * first argument, and function as the second argument.
+     * @param friendsToGames Map of family/friends to fill their list of games
+     */
+    public static void addGames(Map<String, List<String>> friendsToGames){
+        friendsToGames.computeIfPresent("Ami", name -> new ArrayList<>()).add("SF4");
+    }
 
     public static void main(String[] args){
         System.out.println("Map:\n----");
@@ -179,9 +188,13 @@ public class WorkingWithMap {
         System.out.println("------- Looking up a Key within the Map ------- ");
         getOrDefault();
 
+        System.out.println("\n------- computeIfAbsent() operation ------- ");
         // Build up a list of games for each of our family/friends
         Map<String, List<String>> friendsToGames = buildList();
-        familyMap.forEach(member -> friendsToGames.computeIfAbsent(member, name -> new ArrayList<>())
-            .add("SF4"));
+        familyMap.forEach((member, age) -> friendsToGames.computeIfAbsent(member, name -> new ArrayList<>()));
+
+        System.out.println("------- Map containing each member's list of games ------- ");
+        // print out newly initialized map
+        friendsToGames.forEach((name,list) -> System.out.println(name + ": " + list));
     }
 }
