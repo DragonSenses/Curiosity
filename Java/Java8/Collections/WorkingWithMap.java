@@ -176,18 +176,18 @@ public class WorkingWithMap {
      */
     public static void addGames(Map<String, List<String>> friendsToGames){
         friendsToGames.computeIfPresent("Ami", (name,list) ->
-            friendsToGames.get(name)).add("SF4");
+            friendsToGames.get(name)).add("Street Fighter 4");
         friendsToGames.computeIfPresent("Akane", (name,list) ->
-            friendsToGames.get(name)).add("SF4");
+            friendsToGames.get(name)).add("NieR:Automata");
         friendsToGames.computeIfPresent("Ouka", (name,list) ->
-            friendsToGames.get(name)).add("SF4");
+            friendsToGames.get(name)).add("Pokemon Sun and Moon");
         friendsToGames.computeIfPresent("Riho", (name,list) ->
-            friendsToGames.get(name)).add("SF4");
+            friendsToGames.get(name)).add("Monster Hunter: Rise");
         friendsToGames.computeIfPresent("Shiragiku", (name,list) ->
-            friendsToGames.get(name)).add("SF4");
+            friendsToGames.get(name)).add("Zelda: Breath of the Wild");
         // "Hayato" key will not be present in the map, so throws Exception
-        friendsToGames.computeIfPresent("Hayato", (name,list) ->
-            friendsToGames.get(name)).add("SF4");
+        // friendsToGames.computeIfPresent("Hayato", (name,list) ->
+        //     friendsToGames.get(name)).add("SF4");
     }
 
     public static void main(String[] args){
@@ -209,6 +209,8 @@ public class WorkingWithMap {
         System.out.println("\n------- computeIfAbsent() operation ------- ");
         // Build up a list of games for each of our family/friends
         Map<String, List<String>> friendsToGames = buildList();
+        // computeIfAbsent() returns the calculated value after adding it to the
+        // Map if the key wasn't found; otherwise, it returns the existing value
         familyMap.forEach((member, age) -> friendsToGames.computeIfAbsent(member, name -> new ArrayList<>()));
 
         System.out.println("------- Map containing each member's list of games ------- ");
@@ -216,6 +218,10 @@ public class WorkingWithMap {
         System.out.println("------- After computeIfPresent() operation, adding the games ------- ");
         addGames(friendsToGames);
         print(friendsToGames);
+        System.out.println("------- Age Map before Map.remove() operation ------- ");
+        familyMap.computeIfAbsent("Hayato", name -> familyMap.add(name,19));
+        print(friendsToGames);
+
         
     }
 
