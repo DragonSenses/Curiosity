@@ -165,11 +165,29 @@ public class WorkingWithMap {
      * Populates the list of games for each member within the Map. Using
      * computeIfPresent() calculates a new value if the current value associated
      * with the key is present in the Map and non-null. Takes in the key as
-     * first argument, and function as the second argument.
+     * first argument, and a BiFunction as the second argument.
+     * 
+     * Note: If the function that produces the value returns null, the current
+     * mapping is removed from the Map. 
+     * 
+     * Throws NullPointerException if the specified key is null and this map
+     * does not support null keys, or remapping function is null. 
      * @param friendsToGames Map of family/friends to fill their list of games
      */
     public static void addGames(Map<String, List<String>> friendsToGames){
-        friendsToGames.computeIfPresent("Ami", name -> new ArrayList<>()).add("SF4");
+        friendsToGames.computeIfPresent("Ami", (name,list) ->
+            friendsToGames.get(name)).add("SF4");
+        friendsToGames.computeIfPresent("Akane", (name,list) ->
+            friendsToGames.get(name)).add("SF4");
+        friendsToGames.computeIfPresent("Ouka", (name,list) ->
+            friendsToGames.get(name)).add("SF4");
+        friendsToGames.computeIfPresent("Riho", (name,list) ->
+            friendsToGames.get(name)).add("SF4");
+        friendsToGames.computeIfPresent("Shiragiku", (name,list) ->
+            friendsToGames.get(name)).add("SF4");
+        // "Hayato" key will not be present in the map, so throws Exception
+        friendsToGames.computeIfPresent("Hayato", (name,list) ->
+            friendsToGames.get(name)).add("SF4");
     }
 
     public static void main(String[] args){
@@ -194,7 +212,15 @@ public class WorkingWithMap {
         familyMap.forEach((member, age) -> friendsToGames.computeIfAbsent(member, name -> new ArrayList<>()));
 
         System.out.println("------- Map containing each member's list of games ------- ");
-        // print out newly initialized map
+        print(friendsToGames); // print out newly initialized map
+        System.out.println("------- After computeIfPresent() operation, adding the games ------- ");
+        addGames(friendsToGames);
+        print(friendsToGames);
+        
+    }
+
+    // Prints out values of the Map parameter
+    private static void print(Map<String, List<String>> friendsToGames){
         friendsToGames.forEach((name,list) -> System.out.println(name + ": " + list));
     }
 }
