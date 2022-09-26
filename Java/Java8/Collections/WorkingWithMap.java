@@ -191,6 +191,10 @@ public class WorkingWithMap {
     // been initialized and returns the calculated value after adding it to the Map
     // if the key wasn't found; otherwise, returns the existing value.
 
+    public static void replaceAll(Map<String, List<String>> friendsToGames){
+        friendsToGames.replaceAll((friend,game) -> game.toUpperCase());
+    }
+
     public static void main(String[] args){
         System.out.println("Map:\n----");
         Map<String, Integer> familyMap = build();
@@ -232,6 +236,8 @@ public class WorkingWithMap {
         ageMap.forEach((friend, age) -> System.out.printf("<%s,%d>\n",friend,age));
 
         System.out.println("\n======= Replacement Patterns =======");
+        System.out.println("------- formatting all the values in the Map using Map.replaceAll() ------- ");
+        friendsToGames.replaceAll((friend, game) -> game.toUpperCase());
     } // end of Main
 
     // Prints out values of the Map parameter
