@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import static java.util.Map.entry; // To be used with Map.ofEntries()
 
 /**
  * Java 8 introduced several default methods supported by the Map interface. 
@@ -15,6 +16,13 @@ import java.util.Map.Entry;
  * ================================= Methods =================================
  * -forEach - Map interface supports forEach() method which accepts a 
  * BiConsumer, taking the key and value as arguments
+ * 
+ * Map Factories
+ * -Map.of - Initialize a small immutable map of up to 10 keys and values
+ * 
+ * -Map.ofEntries - Alternative factory method that goes beyond 10 keys & values,
+ * which takes Map.Entry<K,V> objects but is implemented with varargs. 
+ * This method requires additional object allocations to wraup up a key and value.
  * 
  * Sorting
  * -Entry.comparingByValue() - sorts the entire map by Values
@@ -59,7 +67,25 @@ public class WorkingWithMap {
         return Map.of("Ami", 18, "Ouka", 19, "Akane", 19,
              "Riho", 21, "Shiragiku", 21);
     }
+    
+    /**
+     * Map factory method: Map.ofEntries() that invokes the varargs signature.
+     * @return an immutable Map out of a list of any n elements
+     */
+    public static Map<String, Integer> buildImmutableMap(){
+        Map<String, Integer> map = Map.ofEntries(
+            entry("Ami",18),
+            entry("Ouka" , 19),
+            entry("Akane" , 19),
+            entry("Riho" , 21),
+            entry("Shiragiku" , 21),
+            entry("Hayato" , 19));
+        return map;
+    }
 
+    /**
+     * @return a Mutable Map of Elements
+     */
     public static Map<String, Integer> buildMutableMap(){
         Map<String, Integer> map = new HashMap<>();
         map.put("Ami",18);
@@ -244,6 +270,11 @@ public class WorkingWithMap {
         // Transform each value to Uppercase, then print each result
         gameMap.replaceAll((name,game) -> game.toUpperCase()); 
         gameMap.forEach((name,game) -> System.out.printf("%s = %s\n", name, game));
+
+        // Merging Maps here
+
+
+
     } // end of Main
 
     // Prints out values of the Map parameter
