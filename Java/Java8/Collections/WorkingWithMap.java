@@ -60,6 +60,17 @@ public class WorkingWithMap {
              "Riho", 21, "Shiragiku", 21);
     }
 
+    public static Map<String, Integer> buildMutableMap(){
+        Map<String, Integer> map = new HashMap<>();
+        map.put("Ami",18);
+        map.put("Ouka" , 19);
+        map.put("Akane" , 19);
+        map.put("Riho" , 21);
+        map.put("Shiragiku" , 21);
+        map.put("Hayato" , 19);
+        return map;
+    }
+
     /**
      * @return A Map with the name as Key, and a List as Values
      */
@@ -124,7 +135,6 @@ public class WorkingWithMap {
      * of MessageDigest to calculate SHA-256 hases. 
      */
 
-
     /**
      * Maps that Store multiple variables, lets suppose we add an element to a
      * Map<K, List<V>>, and need to ensure that entry has been initialized. 
@@ -177,7 +187,9 @@ public class WorkingWithMap {
         // "Hayato" key will not be present in the map, so throws Exception
         // friendsToGames.computeIfPresent("Hayato", (name,list) ->
         //     friendsToGames.get(name)).add("SF4");
-    }
+    } // Note: computeIfAbsent() works better here as this ensures entry has already 
+    // been initialized and returns the calculated value after adding it to the Map
+    // if the key wasn't found; otherwise, returns the existing value.
 
     public static void main(String[] args){
         System.out.println("Map:\n----");
@@ -209,14 +221,17 @@ public class WorkingWithMap {
         print(friendsToGames);
 
         System.out.println("------- Age Map before Map.remove() operation ------- ");
-        Map<String, Integer> ageMap = new HashMap<>(familyMap); // Copy Constructor
+        Map<String, Integer> ageMap = buildMutableMap(); 
         
         ageMap.computeIfAbsent("Hayato", name -> familyMap.put(name,19));
         // Print out a new and mutable age Map
-        ageMap.forEach((friend, age) -> System.out.println(friend + " is " +
-            age + " years old"));
+        ageMap.forEach((friend, age) -> System.out.printf("<%s,%d>\n",friend,age));
 
-        
+        System.out.println("------- Age Map after Map.remove() operation ------- ");
+        ageMap.remove("Hayato",19);
+        ageMap.forEach((friend, age) -> System.out.printf("<%s,%d>\n",friend,age));
+
+        System.out.println("\n======= Replacement Patterns =======");
     } // end of Main
 
     // Prints out values of the Map parameter
