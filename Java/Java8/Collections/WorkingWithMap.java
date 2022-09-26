@@ -125,7 +125,6 @@ public class WorkingWithMap {
      */
 
 
-
     /**
      * Maps that Store multiple variables, lets suppose we add an element to a
      * Map<K, List<V>>, and need to ensure that entry has been initialized. 
@@ -208,15 +207,20 @@ public class WorkingWithMap {
         System.out.println("------- After computeIfPresent() operation, adding the games ------- ");
         addGames(friendsToGames);
         print(friendsToGames);
+
         System.out.println("------- Age Map before Map.remove() operation ------- ");
-        familyMap.computeIfAbsent("Hayato", name -> familyMap.add(name,19));
-        print(friendsToGames);
+        Map<String, Integer> ageMap = new HashMap<>(familyMap); // Copy Constructor
+        
+        ageMap.computeIfAbsent("Hayato", name -> familyMap.put(name,19));
+        // Print out a new and mutable age Map
+        ageMap.forEach((friend, age) -> System.out.println(friend + " is " +
+            age + " years old"));
 
         
-    }
+    } // end of Main
 
     // Prints out values of the Map parameter
     private static void print(Map<String, List<String>> friendsToGames){
         friendsToGames.forEach((name,list) -> System.out.println(name + ": " + list));
     }
-}
+} // end of WorkingWithMap Class
