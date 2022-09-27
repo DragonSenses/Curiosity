@@ -55,6 +55,14 @@ import static java.util.Map.entry; // To be used with Map.ofEntries()
  * -Replace() - Lets you replace a value in the Map if a key is present. An
  * additional overload replaces the value only if the key is mapped to a 
  * certain value.
+ * 
+ * Merge
+ * -putAll() - merges two intermediate and separate Maps as long as they don't
+ * have duplicate keys.
+ * 
+ * -merge() - takes a BiFunction to merge values that have a duplicate key. Can
+ * also be used in combination with forEach() to provide a way to deal with 
+ * conflict.  
  */
 public class WorkingWithMap {
     
