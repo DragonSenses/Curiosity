@@ -18,9 +18,9 @@ import static java.util.Map.entry; // To be used with Map.ofEntries()
  * BiConsumer, taking the key and value as arguments
  * 
  * Map Factories
- * -Map.of - Initialize a small immutable map of up to 10 keys and values
+ * -Map.of() - Initialize a small immutable map of up to 10 keys and values
  * 
- * -Map.ofEntries - Alternative factory method that goes beyond 10 keys & values,
+ * -Map.ofEntries() - Alternative factory method that goes beyond 10 keys & values,
  * which takes Map.Entry<K,V> objects but is implemented with varargs. 
  * This method requires additional object allocations to wraup up a key and value.
  * 
@@ -226,7 +226,15 @@ public class WorkingWithMap {
     // if the key wasn't found; otherwise, returns the existing value.
 
     public static void replaceAll(Map<String, List<String>> friendsToGames){
-        // friendsToGames.replaceAll((friend,game) -> game.toUpperCase());
+        // Create a new Map, with name of each member and their game, then print
+        Map<String, String> gameMap = new HashMap<>(); 
+        friendsToGames.forEach((name,list) -> gameMap.put(name,list.get(0)));
+        gameMap.forEach((name,game) -> System.out.printf("%s = %s\n", name, game));
+        System.out.println("------- formatting all the values in the Map using Map.replaceAll() ------- ");
+        // Transform each value to Uppercase, then print each result
+        gameMap.replaceAll((name,game) -> game.toUpperCase()); 
+        gameMap.forEach((name,game) -> System.out.printf("%s = %s\n", name, game));
+
     }
 
     public static void main(String[] args){
@@ -270,17 +278,26 @@ public class WorkingWithMap {
         ageMap.forEach((friend, age) -> System.out.printf("<%s,%d>\n",friend,age));
 
         System.out.println("\n======= Replacement Patterns =======");
-        // Create a new Map, with name of each member and their game, then print
-        Map<String, String> gameMap = new HashMap<>(); 
-        friendsToGames.forEach((name,list) -> gameMap.put(name,list.get(0)));
-        gameMap.forEach((name,game) -> System.out.printf("%s = %s\n", name, game));
-        System.out.println("------- formatting all the values in the Map using Map.replaceAll() ------- ");
-        // Transform each value to Uppercase, then print each result
-        gameMap.replaceAll((name,game) -> game.toUpperCase()); 
-        gameMap.forEach((name,game) -> System.out.printf("%s = %s\n", name, game));
+        replaceAll(friendsToGames);
+        
+        System.out.println("\n======= Merging Maps =======");
+        // Two Maps that contain the members and their hobbies
+        Map<String, String> map1 
+            = Map.of("Ami", "Karate", "Ouka","Dressmaking");
+        Map<String, String> map2 
+            = Map.of("Akane", "Music", "Riho", "Acting", "Shiragiku", "Cooking");
+        
 
-        // Merging Maps here
-
+        // map1.putAll(map2); // Merges both maps as long as there are no duplicate keys
+        System.out.println("---- First Map ----\n" + map1);
+        System.out.println("---- Second Map ----\n" + map2);
+        System.out.println("---- Third Map ----\n" + map3);
+        
+        // Using the merge() method in combination with forEach()
+        Map<String, String> family = new HashMap<>(map1); // Copy Constructor of first map
+        // Merges Two values for duplicate keys, combining them with " & " 
+        map2.forEach((k,v) -> family.merge(k,v, (hobby1, hobby2) -> hobby1 + " & " + hobby2));
+        System.out.println("---- Merged Map ----\n" + family);
 
 
     } // end of Main
