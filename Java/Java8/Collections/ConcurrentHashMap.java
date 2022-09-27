@@ -7,10 +7,18 @@ package Java.Java8.Collections;
  * operations have improved performance compared with the synchronized HashTable
  * 
  * ================================= Methods =================================
- * -forEach()
- * -reduce()
+ * ConcurrentHashMap supports three new kinds of operations, with each supporting
+ * four forms: accepting functions with keys, values, Map.entry, and (key,value)
+ * arguments. 
+ * 
+ * -forEach() - Performs a given action for each (key, value)
+ * -reduce() - Combines all (key,value) given a reduction function into a result
  * -search()
  */
 public class ConcurrentHashMap {
     
+    
+    public static void main(String[] args){
+
+    }
 }
