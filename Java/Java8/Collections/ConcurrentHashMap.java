@@ -10,10 +10,15 @@ package Java.Java8.Collections;
  * ConcurrentHashMap supports three new kinds of operations, with each supporting
  * four forms: accepting functions with keys, values, Map.entry, and (key,value)
  * arguments. 
+ * 1. Operations with Keys and Values (forEach, reduce, search)
+ * 2. Operations with Keys (forEachKey, reduceKeys, searchKeys)
+ * 3. Operations with Values (forEachValue, reduceValues, searchValues)
+ * 4. Operations with Map.Entry objects (forEachEntry, reduceEntries, searchEntries)
  * 
  * -forEach() - Performs a given action for each (key, value)
  * -reduce() - Combines all (key,value) given a reduction function into a result
- * -search()
+ * -search() - Applies a function on each (key,value) until the function produces
+ * a non-null result
  */
 public class ConcurrentHashMap {
     
