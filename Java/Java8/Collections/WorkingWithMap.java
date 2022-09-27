@@ -245,17 +245,18 @@ public class WorkingWithMap {
     public static void mergeMaps(){
         // Two Maps that contain names of family members and their hobbies
         Map<String, String> map1 
-            = Map.of("Ami", "Karate", "Ouka","Dressmaking");
+            = Map.of("Ami", "Karate","Akane", "Coffee Brewing", "Ouka","Dressmaking");
         Map<String, String> map2 
-            = Map.of("Akane", "Music", "Riho", "Acting", "Shiragiku", "Cooking");
+            = Map.of("Ami", "Comedy", "Akane", "Music",
+                     "Riho", "Acting", "Shiragiku", "Cooking");
         // Third Map contains duplicate keys of the first two maps
         Map<String, String> map3 
-            = Map.of("Akane", "Coffee Brewing","Riho","Haggling",
+            = Map.of("Akane", "Cooking","Riho","Haggling",
              "Shiragiku", "Eating", "Ami", "Eating");
 
-        System.out.println("---- First Map ----\n" + map1);
-        System.out.println("---- Second Map ----\n" + map2);
-        System.out.println("---- Third Map ----\n" + map3);
+        System.out.println("---- 1st Map ----\t" + map1);
+        System.out.println("---- 2nd Map ----\t" + map2);
+        System.out.println("---- 3rd Map ----\t" + map3);
         
         // Using the merge() method in combination with forEach()
         Map<String, String> family = new HashMap<>(map1); // Copy Constructor of first map
@@ -270,7 +271,7 @@ public class WorkingWithMap {
          * map before incrementing its value.
          */
         Map<String, Long> hobbiesToCount = new HashMap<>();
-        String hobbyName = "Cooking";
+        String hobbyName = "Cooking";   // Both Akane and Shiragiku can cook
         hobbiesToCount.merge(hobbyName, 1L, (key, count) -> count + 1L);
         // Is shorthand for: 
         // if(count == null){
@@ -303,6 +304,7 @@ public class WorkingWithMap {
         System.out.println("\n------- computeIfAbsent() operation ------- ");
         // Build up a list of games for each of our family/friends
         Map<String, List<String>> friendsToGames = buildList();
+
         // computeIfAbsent() returns the calculated value after adding it to the
         // Map if the key wasn't found; otherwise, it returns the existing value
         familyMap.forEach((member, age) -> friendsToGames.computeIfAbsent(member, name -> new ArrayList<>()));
