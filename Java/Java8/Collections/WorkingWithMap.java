@@ -272,6 +272,16 @@ public class WorkingWithMap {
         Map<String, Long> hobbiesToCount = new HashMap<>();
         String hobbyName = "Cooking";
         hobbiesToCount.merge(hobbyName, 1L, (key, count) -> count + 1L);
+        // Is shorthand for: 
+        // if(count == null){
+        //     hobbiesToCount.put(hobbyName,1);
+        // } else {
+        //     hobbiesToCount.put(hobbyName, count+1);
+        // }
+        map1.forEach((name,hobby) -> hobbiesToCount.merge(hobby, 1L, (key, count) -> count + 1L));
+        map2.forEach((name,hobby) -> hobbiesToCount.merge(hobby, 1L, (key, count) -> count + 1L));
+        map3.forEach((name,hobby) -> hobbiesToCount.merge(hobby, 1L, (key, count) -> count + 1L));
+        System.out.println("---- Hobby Map Count ----\n" + hobbiesToCount);
     }
 
     public static void main(String[] args){
