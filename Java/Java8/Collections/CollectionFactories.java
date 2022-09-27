@@ -33,6 +33,24 @@ import static java.util.Map.entry;
  * pay this cost. Note that you can still create List.of() using more than 10 
  * elements, but in thhat case the varargs signature is invoked. Same pattern is
  * seen with Set.of() and Map.of().
+ * 
+ * ================================= Methods =================================
+ * All the Collection factory methods below return an immutable Collection in
+ * which operations such as adding or setting are Unsupported. 
+ * 
+ * List Factories
+ * -List.of() - creates a small immutable list of elements; null elements are
+ * disallowed
+ * 
+ * Set Factories
+ * -Set.of() - creates a small immutable set of unique elements
+ * 
+ * Map Factories
+ * -Map.of() - Initialize a small immutable map of up to 10 keys and values
+ * 
+ * -Map.ofEntries() - Alternative factory method that goes beyond 10 keys & values,
+ * which takes Map.Entry<K,V> objects but is implemented with varargs. 
+ * This method requires additional object allocations to wraup up a key and value. 
  */
 public class CollectionFactories {
     /**
