@@ -286,7 +286,10 @@ public class WorkingWithMap {
             = Map.of("Ami", "Karate", "Ouka","Dressmaking");
         Map<String, String> map2 
             = Map.of("Akane", "Music", "Riho", "Acting", "Shiragiku", "Cooking");
-        
+        // Third Map contains duplicate keys of the first two maps
+        Map<String, String> map3 
+            = Map.of("Akane", "Coffee Brewing","Riho","Haggling",
+             "Shiragiku", "Eating", "Ami", "Eating");
 
         // map1.putAll(map2); // Merges both maps as long as there are no duplicate keys
         System.out.println("---- First Map ----\n" + map1);
@@ -297,8 +300,8 @@ public class WorkingWithMap {
         Map<String, String> family = new HashMap<>(map1); // Copy Constructor of first map
         // Merges Two values for duplicate keys, combining them with " & " 
         map2.forEach((k,v) -> family.merge(k,v, (hobby1, hobby2) -> hobby1 + " & " + hobby2));
+        map3.forEach((k,v) -> family.merge(k,v, (hobby1, hobby2) -> hobby1 + " & " + hobby2));
         System.out.println("---- Merged Map ----\n" + family);
-
 
     } // end of Main
 
