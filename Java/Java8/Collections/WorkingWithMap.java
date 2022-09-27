@@ -237,6 +237,43 @@ public class WorkingWithMap {
 
     }
 
+    /**
+     * For maps with a duplicate key, but different values, merge() takes a 
+     * BiFunction to merge values that have a duplicate key. The method can
+     * also be used to implement initialization checks. 
+     */
+    public static void mergeMaps(){
+        // Two Maps that contain names of family members and their hobbies
+        Map<String, String> map1 
+            = Map.of("Ami", "Karate", "Ouka","Dressmaking");
+        Map<String, String> map2 
+            = Map.of("Akane", "Music", "Riho", "Acting", "Shiragiku", "Cooking");
+        // Third Map contains duplicate keys of the first two maps
+        Map<String, String> map3 
+            = Map.of("Akane", "Coffee Brewing","Riho","Haggling",
+             "Shiragiku", "Eating", "Ami", "Eating");
+
+        System.out.println("---- First Map ----\n" + map1);
+        System.out.println("---- Second Map ----\n" + map2);
+        System.out.println("---- Third Map ----\n" + map3);
+        
+        // Using the merge() method in combination with forEach()
+        Map<String, String> family = new HashMap<>(map1); // Copy Constructor of first map
+        // Merges Two values for duplicate keys, combining them with " & " 
+        map2.forEach((k,v) -> family.merge(k,v, (hobby1, hobby2) -> hobby1 + " & " + hobby2));
+        map3.forEach((k,v) -> family.merge(k,v, (hobby1, hobby2) -> hobby1 + " & " + hobby2));
+        System.out.println("---- Merged Map ----\n" + family);
+
+        /**
+         * After merging, we would also like to keep record of how many have the
+         * same hobbies. We have to check the key representing the hobby is in the
+         * map before incrementing its value.
+         */
+        Map<String, Long> hobbiesToCount = new HashMap<>();
+        String hobbyName = "Cooking";
+        hobbiesToCount.merge(hobbyName, 1L, (key, count) -> count + 1L);
+    }
+
     public static void main(String[] args){
         System.out.println("Map:\n----");
         Map<String, Integer> familyMap = build();
@@ -281,27 +318,7 @@ public class WorkingWithMap {
         replaceAll(friendsToGames);
         
         System.out.println("\n======= Merging Maps =======");
-        // Two Maps that contain the members and their hobbies
-        Map<String, String> map1 
-            = Map.of("Ami", "Karate", "Ouka","Dressmaking");
-        Map<String, String> map2 
-            = Map.of("Akane", "Music", "Riho", "Acting", "Shiragiku", "Cooking");
-        // Third Map contains duplicate keys of the first two maps
-        Map<String, String> map3 
-            = Map.of("Akane", "Coffee Brewing","Riho","Haggling",
-             "Shiragiku", "Eating", "Ami", "Eating");
-
-        // map1.putAll(map2); // Merges both maps as long as there are no duplicate keys
-        System.out.println("---- First Map ----\n" + map1);
-        System.out.println("---- Second Map ----\n" + map2);
-        System.out.println("---- Third Map ----\n" + map3);
-        
-        // Using the merge() method in combination with forEach()
-        Map<String, String> family = new HashMap<>(map1); // Copy Constructor of first map
-        // Merges Two values for duplicate keys, combining them with " & " 
-        map2.forEach((k,v) -> family.merge(k,v, (hobby1, hobby2) -> hobby1 + " & " + hobby2));
-        map3.forEach((k,v) -> family.merge(k,v, (hobby1, hobby2) -> hobby1 + " & " + hobby2));
-        System.out.println("---- Merged Map ----\n" + family);
+        mergeMaps();
 
     } // end of Main
 
