@@ -37,12 +37,19 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CHashMapExample {
     
+    public static void fill(ConcurrentHashMap<String,Long> map){
+        int n = 10;
+        for(int i = 0; i < n; i++){
+            map.put(String.valueOf(i),(long)i);
+        }
+    }
+
     /**
      * Using reduceValues(), finds the maximum value within the Map.
      * @param map the map to reduce into a single value : the maximum
      * @return the maximum value within the Map
      */
-    public static Long findMaximumValue(ConcurrentHashMap<String, Long> map){
+    public static Long findMaxValue(ConcurrentHashMap<String, Long> map){
         long parallelismThreshold = 1;
         Optional<Long> maxValue =
             Optional.ofNullable(map.reduceValues(parallelismThreshold, Long::max));
@@ -50,6 +57,9 @@ public class CHashMapExample {
     }
 
     public static void main(String[] args){
-        
+        ConcurrentHashMap<String,Long> map = new ConcurrentHashMap<>();
+        fill(map);
+        System.out.println(map);
+        System.out.println(findMaxValue(map));
     }
 }
