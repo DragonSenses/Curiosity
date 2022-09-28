@@ -37,13 +37,19 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CHashMapExample {
     
-    public static void findMaximumValue(ConcurrentHashMap<String, Long> map){
+    /**
+     * Using reduceValues(), finds the maximum value within the Map.
+     * @param map the map to reduce into a single value : the maximum
+     * @return the maximum value within the Map
+     */
+    public static Long findMaximumValue(ConcurrentHashMap<String, Long> map){
         long parallelismThreshold = 1;
-        Optional<Integer> maxValue =
+        Optional<Long> maxValue =
             Optional.ofNullable(map.reduceValues(parallelismThreshold, Long::max));
+        return maxValue.get();
     }
 
     public static void main(String[] args){
-
+        
     }
 }
