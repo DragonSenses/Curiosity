@@ -1,6 +1,7 @@
 package Java.Java8.Collections;
 
-// import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ConcurrentHashMap class provides a more modern HashMap which is also 
@@ -36,7 +37,12 @@ package Java.Java8.Collections;
  */
 public class CHashMapExample {
     
-    
+    public static void findMaximumValue(ConcurrentHashMap<String, Long> map){
+        long parallelismThreshold = 1;
+        Optional<Integer> maxValue =
+            Optional.ofNullable(map.reduceValues(parallelismThreshold, Long::max));
+    }
+
     public static void main(String[] args){
 
     }
