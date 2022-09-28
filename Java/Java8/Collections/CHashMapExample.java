@@ -34,7 +34,7 @@ package Java.Java8.Collections;
  * -search() - Applies a function on each (key,value) until the function produces
  * a non-null result
  */
-public class ConcurrentHashMap {
+public class CHashMapExample {
     
     
     public static void main(String[] args){
