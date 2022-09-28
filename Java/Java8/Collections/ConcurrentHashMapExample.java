@@ -44,7 +44,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * in new code in preference to the size method, which returns an int. Future
  * proofs code for use when number of mappings no longer fits in an int.
  */
-public class CHashMapExample {
+public class ConcurrentHashMapExample {
     
     public static void fill(ConcurrentHashMap<String,Long> map){
         int n = 10;
@@ -66,10 +66,10 @@ public class CHashMapExample {
     }
 
     public static Long count(ConcurrentHashMap<String, Long> map){
-        long parallelismThreshold = 1;
-        Optional<Long> count =
-            Optional.ofNullable(map.mappingCount(parallelismThreshold, Long::max));
-        return count.get();
+        // long parallelismThreshold = 1;
+        // Optional<Long> count =
+        //     Optional.ofNullable(map.mappingCount(parallelismThreshold, Long::max));
+        return map.mappingCount();
     }
 
     public static void main(String[] args){
