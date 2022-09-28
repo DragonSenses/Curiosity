@@ -43,6 +43,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * -mappingCount() - returns the number of mappings in the map as a long; used
  * in new code in preference to the size method, which returns an int. Future
  * proofs code for use when number of mappings no longer fits in an int.
+ * 
+ * Set Views
+ * -keySet() - returns a view of the ConcurrentHashmap as a Set. (Changes in 
+ * the map are reflected in the Set, and vice versa). 
  */
 public class ConcurrentHashMapExample {
     
@@ -66,9 +70,6 @@ public class ConcurrentHashMapExample {
     }
 
     public static Long count(ConcurrentHashMap<String, Long> map){
-        // long parallelismThreshold = 1;
-        // Optional<Long> count =
-        //     Optional.ofNullable(map.mappingCount(parallelismThreshold, Long::max));
         return map.mappingCount();
     }
 
@@ -76,6 +77,8 @@ public class ConcurrentHashMapExample {
         ConcurrentHashMap<String,Long> map = new ConcurrentHashMap<>();
         fill(map);
         System.out.println(map);
-        System.out.println(findMaxValue(map));
+        System.out.println("Max Value in Map:\t" + findMaxValue(map));
+        System.out.println("Number of mappings:\t" + count(map));
+        System.out.println("Key Set:\t\t" + map.keySet());
     }
 }
