@@ -25,4 +25,25 @@ public class Person {
         public String getName() { return name; }
     }
 
+
+    /**
+     * flatMap() operation allows the chaining of Optional objects.
+     * @param person to extract Insurance Name from
+     * @return the Name of Insurance
+     */
+    public String getInsuranceName(Optional<Person> person){
+        /** Nested Optional Problem
+         * p is of type Optional<Person> so fine to call map method, but getCar()
+         * returns an object of type Optional<Car>, so result of operation is 
+         * object of type Optional<Optional<Car>>, which does not support getInsurance()
+         */                         
+        // Optional<String> name = p.map(Person::getCar)       
+        //                          .map(Car::getInsurance)     
+        //                          .map(Insurance::getName);
+
+        return person.flatMap(Person::getCar)       
+                     .flatMap(Car::getInsurance)
+                     .map(Insurance::getName)
+                     .orElse("Unknown");
+    }
 }
