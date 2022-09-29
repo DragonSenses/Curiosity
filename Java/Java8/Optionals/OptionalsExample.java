@@ -47,6 +47,9 @@ package Java.Java8.Optionals;
  * -flatMap() - operation that takes a function as an argument and returns the
  * transformed value. This allows for chaining of Optional objects. Instead of
  * having a two-level or multi-level Optional, it flattens them into one. 
+ * 
+ * -orElse(other) - if the value is present, return the value, otherwise return
+ * other
  */
 public class OptionalsExample {
     // Creating Optional Objects
