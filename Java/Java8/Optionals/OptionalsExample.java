@@ -17,7 +17,17 @@ package Java.Java8.Optionals;
  * Consistenly using Optional values creates a clear distinction
  * between a missing value that's planned for and a value that's absent only
  * because of a bug in the alogirthm or problem in data. 
+ * 
+ * ================================= Methods =================================
+ * -Optional.empty() - static factory method that returns a special singleton
+ * instance of an empty optional object
+ * 
+ * -Optional.of() - static factory method creates an optional from a non-null
+ * value 
+ * 
+ * -Optional.ofNullable() - can create an Optional object that may hold a null
+ * value 
  */
 public class OptionalsExample {
-    
+    // Creating Optional Objects
 }
