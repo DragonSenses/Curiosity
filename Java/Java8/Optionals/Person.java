@@ -11,9 +11,10 @@ public class Person {
     // Member Fields      
     private Optional<Car> car; // A person may not own a car
 
-    public Car getCar(){
-        return this.car.get();
-    }
+    // Changed getter method to return an Optional<Car>
+    public Optional<Car> getCar() {
+        return car;
+      }
 
     public class Car {
         private Optional<Insurance> insurance;  // A car may not be insured
@@ -31,7 +32,7 @@ public class Person {
      * @param person to extract Insurance Name from
      * @return the Name of Insurance
      */
-    public String getInsuranceName(Optional<Person> person){
+    public String getCarInsuranceName(Optional<Person> person){
         /** Nested Optional Problem
          * p is of type Optional<Person> so fine to call map method, but getCar()
          * returns an object of type Optional<Car>, so result of operation is 
