@@ -51,7 +51,17 @@ public class Person {
          * transformed into an instance of that type, resulting in a two-level optional
          * that's flattened as part of the flatMap operation
          * 
+         * From a theoretical point of view, you can think of this flattening operation
+         * as the operation that combines two nested optionals, resultinging in an
+         * empty optional if at least one of them is empty.
          * 
+         * In reality, if you invoked flatMap on an empty optional, nothing is changed,
+         * and the empty optional is returned as is. 
+         * 
+         * Conversely, if the optional wraps a Person, the Function passed to the 
+         * flatMap() is applied to that Person. Because the value produced by that
+         * Function application is already an optional, the flatMap() method can
+         * return as is.
          */
         return person.flatMap(Person::getCar)       
                      .flatMap(Car::getInsurance)
