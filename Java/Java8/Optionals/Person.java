@@ -24,5 +24,5 @@ public class Person {
         private String name;    // An Insurance company must have a name
         public String getName() { return name; }
     }
-    
+
 }
