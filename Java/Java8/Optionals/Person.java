@@ -42,6 +42,17 @@ public class Person {
         //                          .map(Car::getInsurance)     
         //                          .map(Insurance::getName);
 
+        /**
+         * First, you begin with the optional that wraps the Person and invokes
+         * -flatMap(Person::getCar), think of this invocation as two steps
+         * 1) a Function is applied to the PErson inside the optional to transform it
+         * Function is expressed with a method reference invoking the method getCar()
+         * on Person. It retursn an Optional<Car>, the Person inside the optional is
+         * transformed into an instance of that type, resulting in a two-level optional
+         * that's flattened as part of the flatMap operation
+         * 
+         * 
+         */
         return person.flatMap(Person::getCar)       
                      .flatMap(Car::getInsurance)
                      .map(Insurance::getName)
