@@ -56,8 +56,7 @@ public class OptionalsExample {
      * @param person to extract Insurance Name from
      * @return the Name of Insurance
      */
-    public String getInsuranceName(Person person){
-        Optional<Person> p = Optional.of(person);
+    public String getInsuranceName(Optional<Person> person){
         /** Nested Optional Problem
          * p is of type Optional<Person> so fine to call map method, but getCar()
          * returns an object of type Optional<Car>, so result of operation is 
@@ -67,10 +66,10 @@ public class OptionalsExample {
         //                          .map(Car::getInsurance)     
         //                          .map(Insurance::getName);
 
-        Optional<String> name = p.flatMap(Person::getCar)       
-                                 .flatMap(Car::getInsurance)
-                                 .map(Insurance::getName);
-        return name.get();
+        return person.flatMap(Person::getCar)       
+                     .flatMap(Car::getInsurance)
+                     .map(Insurance::getName)
+                     .orElse("Unknown");
     }
 
     public static void main(String[] args){
