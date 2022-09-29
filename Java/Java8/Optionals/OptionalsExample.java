@@ -18,7 +18,16 @@ package Java.Java8.Optionals;
  * between a missing value that's planned for and a value that's absent only
  * because of a bug in the alogirthm or problem in data. 
  * 
+ * A get method raises an exception when the optional is empty, so using it in
+ * an ill-disciplined manner effectively re-creates all the maintenance problems
+ * caused by using null. Instead look at ways of using optional values that 
+ * avoids explicity tests, sinpired by similar operations on streams.
+ * 
  * ================================= Methods =================================
+ * -get() - gets the value out of an optional; raise an exception when the 
+ * optional is empty
+ * 
+ * Creating Optional Objects
  * -Optional.empty() - static factory method that returns a special singleton
  * instance of an empty optional object
  * 
@@ -27,6 +36,12 @@ package Java.Java8.Optionals;
  * 
  * -Optional.ofNullable() - can create an Optional object that may hold a null
  * value 
+ * 
+ * Extracting/Transforming Values from Optional
+ * - map() - operation that takes in a function and applies it to the Optional
+ * element and transforms it. If Optional is empty, nothing happens. 
+ * 
+ * -flatMap() - 
  */
 public class OptionalsExample {
     // Creating Optional Objects
