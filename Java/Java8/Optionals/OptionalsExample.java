@@ -41,7 +41,9 @@ package Java.Java8.Optionals;
  * - map() - operation that takes in a function and applies it to the Optional
  * element and transforms it. If Optional is empty, nothing happens. 
  * 
- * -flatMap() - 
+ * -flatMap() - operation that takes a function as an argument and returns the
+ * transformed value. This allows for chaining of Optional objects. Instead of
+ * having a two-level or multi-level Optional, it flattens them into one. 
  */
 public class OptionalsExample {
     // Creating Optional Objects
