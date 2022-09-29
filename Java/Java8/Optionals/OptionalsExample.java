@@ -1,4 +1,7 @@
 package Java.Java8.Optionals;
+
+import java.util.Optional;
+
 /**
  * Optional class, inspired by Haskell and Skala, encapsulates an optional value.
  * Checking is enforced by the type system. 
@@ -47,4 +50,16 @@ package Java.Java8.Optionals;
  */
 public class OptionalsExample {
     // Creating Optional Objects
+    public Optional<String> getInsuranceName(Person person){
+        Optional<Person> p = Optional.of(person);
+        Optional<String> name = p.map(Person::getCar)
+                                 .map(Car::getInsurance)
+                                 .map(Insurance::getName);
+        return name;
+    }
+
+    public static void main(String[] args){
+        Person p = new Person();
+
+    }
 }
