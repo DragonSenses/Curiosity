@@ -1,5 +1,6 @@
 package Java.Java8.Optionals;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -95,6 +96,11 @@ public class Person {
      * @return a Set of distinct names of Insurance companies from list of persons
      */
     public Set<String> getCarInsuranceNames(List<Person> persons) {
+        // Turn List into Stream
+        return persons.stream() 
+                      .map(Person::getCar) // Get each person who owns a car
+                      .map()    // Get each car with insurance
+    }                           // Get each insurance with name
+                                // Collector toSet()
 
-    }
 }
