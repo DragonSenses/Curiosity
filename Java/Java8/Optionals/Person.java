@@ -96,11 +96,15 @@ public class Person {
      * @return a Set of distinct names of Insurance companies from list of persons
      */
     public Set<String> getCarInsuranceNames(List<Person> persons) {
-        // Turn List into Stream
+        // 1. After First Map transformation, obtain a Stream<Optional<Car>>
+        // Next subsequent maps transform each Optional<Car> into Optional<Insurance>
+        // then Optional<String>, then a flatMap returns a Stream<Optional<String>> 
+        // when a Optional may be empty when either person doesn't own car or isn't insured
         return persons.stream() 
-                      .map(Person::getCar) // Get each person who owns a car
-                      .map()    // Get each car with insurance
-    }                           // Get each insurance with name
-                                // Collector toSet()
-
+                      .map(Person::getCar)                           // Extract Car Owners
+                      .map(car -> car.flatMap(Car::getInsurance))    // Extract Cars with Insurance
+                      .map(insur -> insur.map(Insurance::getName))   // Extract Insurance Name
+                      .flatMap(Optional::stream)                     // Convert to Optional Stream
+                      .collect(toSet());    // Collect results into a Set
+    }                           
 }
