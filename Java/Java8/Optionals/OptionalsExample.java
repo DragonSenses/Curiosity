@@ -58,11 +58,18 @@ package Java.Java8.Optionals;
  * 
  * -orElse(other) - if the value is present, return the value, otherwise return
  * other
+ * 
+ * Stream of Optionals
+ * -stream() - method from Optional class converts an Optional with a value to a 
+ * Stream containing only that value or an empty Optional to an equally empty 
+ * Stream. When you have a Stream of Optionals and need to transform it into 
+ * another Stream containing only the values present in the nonempty Optional of 
+ * the original Stream
  */
 public class OptionalsExample {
     // Creating Optional Objects
 
-
+    
 
     public static void main(String[] args){
 
