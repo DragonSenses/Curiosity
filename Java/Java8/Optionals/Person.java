@@ -52,7 +52,7 @@ public class Person {
          * that's flattened as part of the flatMap operation
          * 
          * From a theoretical point of view, you can think of this flattening operation
-         * as the operation that combines two nested optionals, resultinging in an
+         * as the operation that combines two nested optionals, resulting in an
          * empty optional if at least one of them is empty.
          * 
          * In reality, if you invoked flatMap on an empty optional, nothing is changed,
@@ -62,6 +62,22 @@ public class Person {
          * flatMap() is applied to that Person. Because the value produced by that
          * Function application is already an optional, the flatMap() method can
          * return as is.
+         * 
+         * 2) Similarly, transforming the Optional<Car> into an Optional<Insurance>.
+         * 
+         * Step 3) turns the Optional<Insurance> into an Optional<String>: because the 
+         * Insurance.getName() method returns a String. In this case, a flatMap isn't
+         * necessary.  
+         * 
+         * At this point the resulting optional will be empty if any of the
+         * methods in this invocation chain returns an empty optional or otherwise 
+         * contains the desired insurance company name. 
+         * 
+         * Step 4) Since it returns an Optional<String>, which may or may not contain
+         * the insurance company name, so orElse() method is called which provides
+         * a default value in case the optional is empty. 
+         * 
+         * Many methods provide a default actions or unwrap an optional. 
          */
         return person.flatMap(Person::getCar)       
                      .flatMap(Car::getInsurance)
