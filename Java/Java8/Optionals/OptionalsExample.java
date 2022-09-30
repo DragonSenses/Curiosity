@@ -26,6 +26,14 @@ package Java.Java8.Optionals;
  * caused by using null. Instead look at ways of using optional values that 
  * avoids explicity tests, sinpired by similar operations on streams.
  * 
+ * NOTE: Optionals in your domain model to mark with a specific type the values
+ * that are allowed to be missing or remain undefined. The designers of the 
+ * Optional class, however, developed it based on different assumptions and 
+ * with a different use case in mind. In particular, Java language architect
+ *  Brian Goetz clearly stated that the purpose of Optional is to support the 
+ * optional return idiom only. Because the Optional class wasn’t intended for
+ *  use as a field type, it doesn’t implement the Serializable interface.
+ * 
  * ================================= Methods =================================
  * -get() - gets the value out of an optional; raise an exception when the 
  * optional is empty
