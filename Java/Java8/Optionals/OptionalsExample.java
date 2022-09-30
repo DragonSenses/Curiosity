@@ -65,11 +65,27 @@ package Java.Java8.Optionals;
  * Stream. When you have a Stream of Optionals and need to transform it into 
  * another Stream containing only the values present in the nonempty Optional of 
  * the original Stream
+ * 
+ * Default Actions & Unwrapping an Optional
+ * -get() - is the simplest but also the least safe of these methods. It returns
+ * the wrapped value if one is present and throws a NoSuchElementException otherwise.
+ * For this reason, using this method is almost always a bad idea unless you’re sure
+ * that the optional contains a value. In addition, this method isn’t much of an
+ * improvement on nested null checks.
+ * 
+ * -orElse(T other) - allows you to provide a default value when the optional 
+ * doesn't contain a value 
+ * 
+ * -orElseGet()
+ * -or()
+ * -orElseThrow()
+ * -ifPresent()
+ * -ifPresentOrElse()
  */
 public class OptionalsExample {
     // Creating Optional Objects
 
-    
+
 
     public static void main(String[] args){
 
