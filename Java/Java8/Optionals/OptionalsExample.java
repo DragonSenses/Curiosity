@@ -76,11 +76,25 @@ package Java.Java8.Optionals;
  * -orElse(T other) - allows you to provide a default value when the optional 
  * doesn't contain a value 
  * 
- * -orElseGet()
- * -or()
- * -orElseThrow()
- * -ifPresent()
- * -ifPresentOrElse()
+ * -orElseGet() - lazy counterpart of orElse(), because the supplier is invoked
+ * only if the optional contains no value. Use this method when the default 
+ * value is time-consuming to create(to gain efficiency) or you want the supplier
+ * to be invoked only if the optional is empty (when using orElseGet is vital)
+ * 
+ * -or() - similar to orElseGet(), but doesn't unwrap thte value inside the 
+ * Optional, if present. In practice, this method doesn't perform any action
+ * returns the Optional as it is when it contains a value, but lazily provides
+ * a different Optional when the original one is empty
+ * 
+ * -orElseThrow() - simlar to get() in that it throws an exception when optional
+ * is empty, but it allows you to choose the type of exception that you want to
+ * throw
+ * 
+ * -ifPresent() - lets you execute the action given as argument if a value is 
+ * present; otherwise, no action is taken
+ * 
+ * -ifPresentOrElse() - differs from ifPresent by taking a Runnable that gives
+ * an empty-based action to be executed when the Optional is empty 
  */
 public class OptionalsExample {
     // Creating Optional Objects
