@@ -84,4 +84,17 @@ public class Person {
                      .map(Insurance::getName)
                      .orElse("Unknown");
     }
+
+    // Problem: Take a List<Person> and return a Set<String> containing all the
+    // distinct names of the insurance companies used by people in that list
+
+    /**
+     * Take a list of persons and return a Set of Strings that contain all the
+     * distinct names of the insurance companies used by people in that list
+     * @param persons List of persons to extract insurance company names
+     * @return a Set of distinct names of Insurance companies from list of persons
+     */
+    public Set<String> getCarInsuranceNames(List<Person> persons) {
+
+    }
 }
