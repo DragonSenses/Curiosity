@@ -97,9 +97,13 @@ public class Person {
      */
     public Set<String> getCarInsuranceNames(List<Person> persons) {
         // 1. After First Map transformation, obtain a Stream<Optional<Car>>
-        // Next subsequent maps transform each Optional<Car> into Optional<Insurance>
+        // 2. Subsequent maps transform each Optional<Car> into Optional<Insurance>
         // then Optional<String>, then a flatMap returns a Stream<Optional<String>> 
         // when a Optional may be empty when either person doesn't own car or isn't insured
+
+        // 4. Now need to filter out empty Optionals, but can do this by using stream() of
+        // Optional class converting into Stream with 0 or 1 elements, depending 
+        // on when Optional is empty (in line flatMap(Optional::stream))
         return persons.stream() 
                       .map(Person::getCar)                           // Extract Car Owners
                       .map(car -> car.flatMap(Car::getInsurance))    // Extract Cars with Insurance
