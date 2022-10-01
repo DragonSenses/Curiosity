@@ -2,6 +2,9 @@ package Java.Java8.Optionals;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet; 
 
 /**
  * Model a Person that may have a Car and may have Car Insurance.
@@ -123,7 +126,7 @@ public class Person {
     }
 
     // Null-Safe version Attempt 1: Too close to null checks
-    public Optional<Insurance> nullSafeFindCheapestInsurance(
+    public Optional<Insurance> nullSafeFindCheapestInsuranceV1(
                     Optional<Person> person, Optional<Car> car) {
         if (person.isPresent() && car.isPresent()) {
             return Optional.of(findCheapestInsurance(person.get(), car.get()));
