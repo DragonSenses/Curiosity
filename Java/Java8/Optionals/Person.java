@@ -115,7 +115,7 @@ public class Person {
     // Combining Two Optionals: Suppose you are given a Person and Car, queries
     // some external services and implements some complex business logic to 
     // find insurance company that offers the cheapest policy for that combo
-    // Null-Safe version Attempt 1:
+    // Null-Safe version Attempt 1: Too close to null checks
     public Optional<Insurance> nullSafeFindCheapestInsurance(
                     Optional<Person> person, Optional<Car> car) {
         if (person.isPresent() && car.isPresent()) {
@@ -123,5 +123,16 @@ public class Person {
         } else {
             return Optional.empty();
         }
+    }
+
+    /**
+     * Better way to combine two optionals without unwrapping them; Null-Safe version.
+     * Here we use a combination of map() and flatMap()
+     * @param person Optional Person 
+     * @param car Optional Car
+     * @return return the cheapest Insurance based on the combination of person and car
+     */
+    public Optional<Insurance> findCheapestInsurance(Optional<Person> person, Optional<Car> car){
+        return person.flatMap(p -> car.map(c -> findCheapestInsurance(p,c)));
     }
 }
