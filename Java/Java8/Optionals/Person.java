@@ -22,10 +22,10 @@ public class Person {
     //     public Optional<Insurance> getInsurance() { return insurance; }
     // }
 
-    public class Insurance {
-        private String name;    // An Insurance company must have a name
-        public String getName() { return name; }
-    }
+    // public class Insurance {
+    //     private String name;    // An Insurance company must have a name
+    //     public String getName() { return name; }
+    // }
 
 
     /**
