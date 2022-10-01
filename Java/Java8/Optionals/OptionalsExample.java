@@ -40,6 +40,11 @@ import static java.util.stream.Collectors.toSet;
  * 
  * ================================= Summary =================================
  * 1. Chaining Optional Objects
+ * 2. Manipulate a stream of optionals: take a list of persons and find 
+ * distinct insurance company names
+ * 3. Combining Two Optionals
+ * 4. Rejecting certain values with filter
+ * 5. 
  * ================================= Methods =================================
  * -get() - gets the value out of an optional; raise an exception when the 
  * optional is empty
@@ -104,6 +109,7 @@ import static java.util.stream.Collectors.toSet;
  */
 public class OptionalsExample {
     /** (1) Chaining Optional Objects
+     * Given an Optional<Person>, extract the Insurance name.
      * flatMap() operation allows the chaining of Optional objects.
      * @param person to extract Insurance Name from
      * @return the Name of Insurance
@@ -161,10 +167,8 @@ public class OptionalsExample {
                      .orElse("Unknown");
     }
 
-    // Problem: Take a List<Person> and return a Set<String> containing all the
-    // distinct names of the insurance companies used by people in that list
-
-    /**
+    /** (2) Manipulate a stream of optionals: take a list of persons and find 
+     * distinct insurance company names
      * Take a list of persons and return a Set of Strings that contain all the
      * distinct names of the insurance companies used by people in that list
      * @param persons List of persons to extract insurance company names
@@ -186,10 +190,13 @@ public class OptionalsExample {
                       .flatMap(Optional::stream)                     // Convert to Optional Stream
                       .collect(toSet());    // Collect results into a Set
     }   
-    
-    // Combining Two Optionals: Suppose you are given a Person and Car, queries
-    // some external services and implements some complex business logic to 
-    // find insurance company that offers the cheapest policy for that combo
+   
+    /** (3) Combining Two Optionals 
+     * Suppose you are given a Person and Car, queries some external services
+     * and implements some complex business logic to find insurance company 
+     * that offers the cheapest policy for that combo
+     * @return an insurance company given the combination of person and car
+     */
     public Insurance findCheapestInsurance(Person person, Car car){
         Insurance cheapestCompany = new Insurance("Costco");
         // queries services provided by different insurance companies
@@ -197,7 +204,7 @@ public class OptionalsExample {
         return cheapestCompany;
     }
 
-    // Null-Safe version 1: Too close to null checks
+    // (3.1) Null-Safe version 1: Too close to null checks
     public Optional<Insurance> nullSafeFindCheapestInsuranceV1(
                     Optional<Person> person, Optional<Car> car) {
         if (person.isPresent() && car.isPresent()) {
@@ -207,8 +214,7 @@ public class OptionalsExample {
         }
     }
 
-    /**
-     * Better way to combine two optionals without unwrapping them; Null-Safe version.
+    /** (3.2) Better way to combine two optionals without unwrapping them. 
      * Here we use a combination of map() and flatMap(). 
      * 1) Invoke flatMap() on first optional, so if this optional is empty, then lambda
      * expression passed to it won't be executed, and this invocation will return an 
@@ -229,6 +235,24 @@ public class OptionalsExample {
         return person.flatMap(p -> car.map(c -> findCheapestInsurance(p,c)));
     }
 
+    /** (4) Rejecting certain values with filter, often need to call a method
+     * on an object to check some property.
+     * 
+     * @return true if the given Insurance has the same name to check for, false
+     * otherwise
+     */
+    public boolean checkInsuranceName(Optional<Insurance> insurance){
+        boolean flag = false; 
+        // OLD WAY: Null Check Pattern to check an object for some property
+        // if(insurance != null && "CambridgeInsurance".equals(insurance.getName())){
+        //     return true; 
+        // }
+        
+        // NEW WAY: Null-Safe Pattern using filter() on Optional object
+        insurance.filter(insurance -> "CostcoInsurance".equals(insurance.getName()))
+                 .ifPresent(flag -> true);
+            
+    }
 
     public static void main(String[] args){
 
