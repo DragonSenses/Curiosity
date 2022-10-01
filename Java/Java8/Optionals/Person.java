@@ -115,6 +115,13 @@ public class Person {
     // Combining Two Optionals: Suppose you are given a Person and Car, queries
     // some external services and implements some complex business logic to 
     // find insurance company that offers the cheapest policy for that combo
+    public Insurance findCheapestInsurance(Person person, Car car){
+        Insurance cheapestCompany = new Insurance("Costco");
+        // queries services provided by different insurance companies
+        // compare all those data
+        return cheapestCompany;
+    }
+
     // Null-Safe version Attempt 1: Too close to null checks
     public Optional<Insurance> nullSafeFindCheapestInsurance(
                     Optional<Person> person, Optional<Car> car) {
@@ -127,12 +134,23 @@ public class Person {
 
     /**
      * Better way to combine two optionals without unwrapping them; Null-Safe version.
-     * Here we use a combination of map() and flatMap()
+     * Here we use a combination of map() and flatMap(). 
+     * 1) Invoke flatMap() on first optional, so if this optional is empty, then lambda
+     * expression passed to it won't be executed, and this invocation will return an 
+     * empty optional
+     * 2) If the person is present, flatMap() uses it as the input to a Function returning
+     * an Optional<Insurance> as required by flatMap() method
+     * 3) Body of this function invokes a map on the second optional, so if it doesn't
+     * contain any Car, the Function returns an empty Optional, and so does the whole 
+     * findCheapestInsurance() method. 
+     * 4) Finally, if both the Person and Car are present, the lambda expression passed as
+     * an argument to the map() method can safely invoke the original findCheapestInsurance
+     * method within them
      * @param person Optional Person 
      * @param car Optional Car
      * @return return the cheapest Insurance based on the combination of person and car
      */
-    public Optional<Insurance> findCheapestInsurance(Optional<Person> person, Optional<Car> car){
+    public Optional<Insurance> nullSafeFindCheapestInsurance(Optional<Person> person, Optional<Car> car){
         return person.flatMap(p -> car.map(c -> findCheapestInsurance(p,c)));
     }
 }
