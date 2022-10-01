@@ -110,5 +110,18 @@ public class Person {
                       .map(insur -> insur.map(Insurance::getName))   // Extract Insurance Name
                       .flatMap(Optional::stream)                     // Convert to Optional Stream
                       .collect(toSet());    // Collect results into a Set
-    }                           
+    }   
+    
+    // Combining Two Optionals: Suppose you are given a Person and Car, queries
+    // some external services and implements some complex business logic to 
+    // find insurance company that offers the cheapest policy for that combo
+    // Null-Safe version Attempt 1:
+    public Optional<Insurance> nullSafeFindCheapestInsurance(
+                    Optional<Person> person, Optional<Car> car) {
+        if (person.isPresent() && car.isPresent()) {
+            return Optional.of(findCheapestInsurance(person.get(), car.get()));
+        } else {
+            return Optional.empty();
+        }
+    }
 }
