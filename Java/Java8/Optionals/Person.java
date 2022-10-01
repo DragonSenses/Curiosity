@@ -15,12 +15,12 @@ public class Person {
     // Changed getter method to return an Optional<Car>
     public Optional<Car> getCar() {
         return car;
-      }
-
-    public class Car {
-        private Optional<Insurance> insurance;  // A car may not be insured
-        public Optional<Insurance> getInsurance() { return insurance; }
     }
+
+    // public class Car {
+    //     private Optional<Insurance> insurance;  // A car may not be insured
+    //     public Optional<Insurance> getInsurance() { return insurance; }
+    // }
 
     public class Insurance {
         private String name;    // An Insurance company must have a name
