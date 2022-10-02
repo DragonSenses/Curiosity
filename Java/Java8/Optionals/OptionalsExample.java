@@ -1,6 +1,7 @@
 package Java.Java8.Optionals;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -45,6 +46,7 @@ import static java.util.stream.Collectors.toSet;
  * 3. Combining Two Optionals
  * 4. Rejecting certain values with filter
  * 5. Filtering an Optional
+ * 6. Wrapping a Potentially Null value in an Optional
  * ================================= Methods =================================
  * -get() - gets the value out of an optional; raise an exception when the 
  * optional is empty
@@ -273,6 +275,18 @@ public class OptionalsExample {
                      .flatMap(Car::getInsurance) // Map Car to Insurance
                      .map(Insurance::getName)    // Map Insurance to Name
                      .orElse("Unknown");  // Return Unknown if any empty
+    }
+
+    /**
+     * 6. Wrapping a Potentially Null value in an Optional
+     * get() method of Map returns null as its value if it contains no mapping
+     * for the requested key. Using Map<String,Object>, a map.get("key") will
+     * return null if no value associated to key: "key". 
+     * @return
+     */
+    public Optional<Object> getValueWrappedInOptional(Map<String,Object> map){
+        // Safely transforms a value that could be null into an optional
+        return Optional.ofNullable(map.get("key")); 
     }
 
     public static void main(String[] args){
