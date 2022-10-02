@@ -44,7 +44,7 @@ import static java.util.stream.Collectors.toSet;
  * distinct insurance company names
  * 3. Combining Two Optionals
  * 4. Rejecting certain values with filter
- * 5. 
+ * 5. Filtering an Optional
  * ================================= Methods =================================
  * -get() - gets the value out of an optional; raise an exception when the 
  * optional is empty
@@ -258,6 +258,21 @@ public class OptionalsExample {
         // NEW WAY: Null-Safe Pattern using filter() on Optional object
         insurance.filter(i -> "CostcoInsurance".equals(i.getName()))
                  .ifPresent(x -> System.out.println("ok"));
+    }
+
+    /** (5) Filtering an optional 
+     * Returns the insurance company name only if the person has an age greater
+     * than or equal to the minAge requirement. 
+     * @param person to extract insurance name from
+     * @param minAge minimum age requirement to filter by
+     * @return name of insurance company if predicate is true
+     */
+    public String getCarInsuranceName(Optional<Person> person, int minAge){
+        return person.filter(p -> p.getAge() >= minAge)     // Filter Optional person by minimum age
+                     .flatMap(Person::getCar)    // Map Person to Car
+                     .flatMap(Car::getInsurance) // Map Car to Insurance
+                     .map(Insurance::getName)    // Map Insurance to Name
+                     .orElse("Unknown");  // Return Unknown if any empty
     }
 
     public static void main(String[] args){
