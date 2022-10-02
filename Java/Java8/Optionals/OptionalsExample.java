@@ -241,17 +241,15 @@ public class OptionalsExample {
      * @return true if the given Insurance has the same name to check for, false
      * otherwise
      */
-    public boolean checkInsuranceName(Optional<Insurance> insurance){
-        boolean flag = false; 
+    public void checkInsuranceName(Optional<Insurance> insurance){
         // OLD WAY: Null Check Pattern to check an object for some property
         // if(insurance != null && "CambridgeInsurance".equals(insurance.getName())){
-        //     return true; 
+        //     System.out.println("ok");
         // }
         
         // NEW WAY: Null-Safe Pattern using filter() on Optional object
-        insurance.filter(insurance -> "CostcoInsurance".equals(insurance.getName()))
-                 .ifPresent(flag -> true);
-            
+        insurance.filter(i -> "CostcoInsurance".equals(i.getName()))
+                 .ifPresent(x -> System.out.println("ok"));
     }
 
     public static void main(String[] args){
