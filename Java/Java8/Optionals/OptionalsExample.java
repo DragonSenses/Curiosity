@@ -59,6 +59,10 @@ import static java.util.stream.Collectors.toSet;
  * -Optional.ofNullable() - can create an Optional object that may hold a null
  * value 
  * 
+ * -filter() - takes predicate as argument, if a value is present in the Optional
+ * object, and that value matches the predicate, the filter method returns that
+ * value; otherwise, it returns an empty Optional object.
+ * 
  * Extracting/Transforming Values from Optional
  * - map() - operation that takes in a function and applies it to the Optional
  * element and transforms it. If Optional is empty, nothing happens. 
@@ -235,11 +239,15 @@ public class OptionalsExample {
         return person.flatMap(p -> car.map(c -> findCheapestInsurance(p,c)));
     }
 
-    /** (4) Rejecting certain values with filter, often need to call a method
+    /** (4) Rejecting certain values with filter, often needed to call a method
      * on an object to check some property.
-     * 
-     * @return true if the given Insurance has the same name to check for, false
-     * otherwise
+     * Optional.filter() - takes predicate as argument, if a value is present
+     * in the Optional object, and that value matches the predicate, the filter
+     * method returns that value; otherwise, it returns an empty Optional object.
+     * If optional is already empty, it doesn't have any effect; otherwise, it
+     * applies the predicate to the value contained in the optional. If application 
+     * returns true, the optional returns unchanged; otherwise, the value is 
+     * filtered away, leaving the otpional empty. 
      */
     public void checkInsuranceName(Optional<Insurance> insurance){
         // OLD WAY: Null Check Pattern to check an object for some property
