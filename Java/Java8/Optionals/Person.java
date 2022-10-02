@@ -14,10 +14,15 @@ import static java.util.stream.Collectors.toSet;
 public class Person {     
     // Member Fields      
     private Optional<Car> car; // A person may not own a car
+    private int age;
 
     // Changed getter method to return an Optional<Car>
     public Optional<Car> getCar() {
         return car;
+    }
+
+    public int getAge() {
+        return this.age; 
     }
 
     // public class Car {
