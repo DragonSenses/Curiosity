@@ -10,13 +10,18 @@ import java.util.Optional;
  * This class will showcase ways we can adapt null values and Optional with
  * existing Java API.
  * 
+ * Primitive Optionals shouldn't be used as they lack map, flatMap, and filter
+ * methods. They also can't be composed with its primitve counterpart. 
  * ================================= Summary =================================
  * 1. Wrapping a Potentially Null value in an Optional
  * 2. Throwing Exception as an alternative in Java API to returning null when
  * a value can't be provided
  * ================================= Methods =================================
- * -Optional.ofNullable()
- * -Optional.of()
+ * -Optional.of() - static factory method creates an optional from a non-null
+ * value 
+ * 
+ * -Optional.ofNullable() - can create an Optional object that may hold a null
+ * value 
  */
 public class OptionalUtility {
     /**
