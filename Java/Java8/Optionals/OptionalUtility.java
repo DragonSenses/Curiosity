@@ -15,6 +15,8 @@ import java.util.Optional;
  * 2. Throwing Exception as an alternative in Java API to returning null when
  * a value can't be provided
  * ================================= Methods =================================
+ * -Optional.ofNullable()
+ * -Optional.of()
  */
 public class OptionalUtility {
     /**
@@ -33,9 +35,21 @@ public class OptionalUtility {
      * Exceptions vs. Optional
      * 2. Throwing Exception as an alternative in Java API to returning null when
      * a value can't be provided. 
-     * 
+     * Example: Conversion of String into an int provided by Integer.parseInt(String)
+     * static method. If String doesn't contain a parseable integer, this method
+     * throws a NumberFormatException. The net effect is that the code signals an
+     * invalid argument if a String doesn't represent an integer, only difference
+     * is using a try/catch blokc instead of if to control whether a value isn't null.
+     * @return An Optional containing the String converted to an Integer, if it cannot
+     * be converted then returns an empty Optional
      */
     public static Optional<Integer> stringToInt(String s){
-
+        try {
+            // If String can be converted to an Integer, return an Optional containing it
+            return Optional.of(Integer.parseInt(s)); 
+        } catch (NumberFormatException e) {
+            // Otherwise, return an empty Optional
+            return Optional.empty();
+        }
     }
 }
