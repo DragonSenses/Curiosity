@@ -290,6 +290,10 @@ public class OptionalsExample {
     }
 
     public static void main(String[] args){
-
+        System.out.println("======== Creating Optional Objects ========");
+        System.out.println("Turning 7 into Optional -> " + Optional.of(7));
+        System.out.println("--------- Using Optional.ofNullable() ---------");
+        // If specified value is null, returns an empty instance of Optional class
+        System.out.print("Turning null into Optional -> " + Optional.ofNullable(null));
     }
 }
