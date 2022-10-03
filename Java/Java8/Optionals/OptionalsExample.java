@@ -282,7 +282,7 @@ public class OptionalsExample {
      * get() method of Map returns null as its value if it contains no mapping
      * for the requested key. Using Map<String,Object>, a map.get("key") will
      * return null if no value associated to key: "key". 
-     * @return
+     * @return value wrapped in an optional
      */
     public Optional<Object> getValueWrappedInOptional(Map<String,Object> map){
         // Safely transforms a value that could be null into an optional
@@ -290,6 +290,6 @@ public class OptionalsExample {
     }
 
     public static void main(String[] args){
-
+        
     }
 }
