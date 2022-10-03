@@ -59,7 +59,7 @@ import java.util.Optional;
  * value is time-consuming to create(to gain efficiency) or you want the supplier
  * to be invoked only if the optional is empty (when using orElseGet is vital)
  * 
- * -or() - similar to orElseGet(), but doesn't unwrap thte value inside the 
+ * -or() - similar to orElseGet(), but doesn't unwrap the value inside the 
  * Optional, if present. In practice, this method doesn't perform any action
  * returns the Optional as it is when it contains a value, but lazily provides
  * a different Optional when the original one is empty
@@ -79,17 +79,22 @@ public class OperationsWithOptional {
   public static void main(String... args) {
     System.out.print("Finding the Maximum between " + of(3) +" and " + of(5) +":\t");
     System.out.println(max(of(3), of(5)));
-    
+
+    System.out.print("Finding the Maximum between " + empty() +" and " + of(5) +":\t");
     System.out.println(max(empty(), of(5)));
 
+    System.out.println("Optional[5] or Optional[4] ");
     Optional<Integer> opt1 = of(5);
     Optional<Integer> opt2 = opt1.or(() -> of(4));
-
+    
     System.out.println(
         of(5).or(() -> of(4))
     );
   }
 
+  /**
+   * @return Returns the maximum Optional integer between two Optionals.
+   */
   public static final Optional<Integer> max(Optional<Integer> i, Optional<Integer> j) {
      return i.flatMap(a -> j.map(b -> Math.max(a, b)));
   }

@@ -98,7 +98,7 @@ import static java.util.stream.Collectors.toSet;
  * value is time-consuming to create(to gain efficiency) or you want the supplier
  * to be invoked only if the optional is empty (when using orElseGet is vital)
  * 
- * -or() - similar to orElseGet(), but doesn't unwrap thte value inside the 
+ * -or() - similar to orElseGet(), but doesn't unwrap the value inside the 
  * Optional, if present. In practice, this method doesn't perform any action
  * returns the Optional as it is when it contains a value, but lazily provides
  * a different Optional when the original one is empty
@@ -290,6 +290,6 @@ public class OptionalsExample {
     }
 
     public static void main(String[] args){
-        
+
     }
 }
