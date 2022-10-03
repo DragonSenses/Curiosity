@@ -64,7 +64,7 @@ import java.util.Optional;
  * returns the Optional as it is when it contains a value, but lazily provides
  * a different Optional when the original one is empty
  * 
- * -orElseThrow() - simlar to get() in that it throws an exception when optional
+ * -orElseThrow() - similar to get() in that it throws an exception when optional
  * is empty, but it allows you to choose the type of exception that you want to
  * throw
  * 
@@ -76,27 +76,29 @@ import java.util.Optional;
  */
 public class OperationsWithOptional {
 
-  public static void main(String... args) {
-    System.out.print("Finding the Maximum between " + of(3) +" and " + of(5) +":\t");
-    System.out.println(max(of(3), of(5)));
-
-    System.out.print("Finding the Maximum between " + empty() +" and " + of(5) +":\t");
-    System.out.println(max(empty(), of(5)));
-
-    System.out.println("Optional[5] or Optional[4] ");
-    Optional<Integer> opt1 = of(5);
-    Optional<Integer> opt2 = opt1.or(() -> of(4));
-    
-    System.out.println(
-        of(5).or(() -> of(4))
-    );
-  }
-
   /**
    * @return Returns the maximum Optional integer between two Optionals.
    */
   public static final Optional<Integer> max(Optional<Integer> i, Optional<Integer> j) {
-     return i.flatMap(a -> j.map(b -> Math.max(a, b)));
+    return i.flatMap(a -> j.map(b -> Math.max(a, b)));
+  }
+
+  public static void main(String... args) {
+    System.out.println("======== Finding the Maximum ========");
+    System.out.print("Max between " + of(3) +" and " + of(5) +":\t");
+    System.out.println(max(of(3), of(5)));
+
+    System.out.print("Max between " + empty() +" and " + of(5) +":\t");
+    System.out.println(max(empty(), of(5)));
+
+    System.out.println("\n======== Optionals.or() prints the value if present, but doesn't unwrap ========");
+    Optional<Integer> opt1 = of(5);
+    Optional<Integer> opt2 = opt1.or(() -> of(4));
+    System.out.print("Optional[5] or Optional[4]:\t");
+    System.out.println(opt2);
+
+    System.out.println( empty() + " or " + of(4) + ":\t" +
+        empty().or(() -> of(4)) );
   }
 
 }

@@ -103,7 +103,7 @@ import static java.util.stream.Collectors.toSet;
  * returns the Optional as it is when it contains a value, but lazily provides
  * a different Optional when the original one is empty
  * 
- * -orElseThrow() - simlar to get() in that it throws an exception when optional
+ * -orElseThrow() - similar to get() in that it throws an exception when optional
  * is empty, but it allows you to choose the type of exception that you want to
  * throw
  * 
