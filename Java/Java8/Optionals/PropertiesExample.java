@@ -69,7 +69,22 @@ public class PropertiesExample {
      * @return the String represented as a positive integer, 0 in all other cases
      */
     public int readDuration(Properties props, String name) {
-        // Using Optional class, the method can be done in a single statement
+        /**  Using Optional class, the method can be done in a single statement
+         * 
+         * 1. Because the value returned by Properties.getProperty(String) method
+         * is null when the property doesn't exist, it's convenient to turn this
+         * value intot an optional with factory method ofNullable().
+         * 
+         * 2. Then can convert the Optional<String> to an Optional<Integer>, 
+         * passing to its flatMap() method a reference to 
+         * OptionalUtility.stringToInt()
+         * 
+         * 3. Finally, can easily filter away the negative number. 
+         * 
+         * If any of these operations returns an empty optional, the method 
+         * returns a 0 that's passed as the default value to the orElse(),
+         * otherwise it returns the positive integer contained in the optional
+         */
         return 0;
     }
 
