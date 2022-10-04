@@ -1,5 +1,15 @@
 package Java.Java8.Optionals;
 
+//junit test imports
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Properties;
 
 /**
@@ -25,13 +35,21 @@ public class PropertiesExample {
         return 0;
     }
 
-    // @Test
-    // public void testReadDuration(){
-    //     assertEquals(5, readDuration(param, "a"));
-    //     assertEquals(0, readDuration(param, "b"));
-    //     assertEquals(0, readDuration(param, "c"));
-    //     assertEquals(0, readDuration(param, "d"));
-    // }
+    
+    @Test
+    public void testReadDuration(){
+        Properties props = new Properties();
+        props.setProperty("a", "5");
+        props.setProperty("b", "true");
+        props.setProperty("c", "-3");
+
+        Properties param = props; 
+
+        assertEquals(5, readDuration(param, "a")); // returns 5, a pos. num
+        assertEquals(0, readDuration(param, "b")); // returns true, not a pos. num
+        assertEquals(0, readDuration(param, "c")); // returns -3, a neg. num
+        assertEquals(0, readDuration(param, "d")); // propert with "d" does not exist
+    }
 
     public static void main(String[] args){
         
