@@ -39,7 +39,11 @@ import java.util.Properties;
  */
 public class PropertiesExample {
     
-
+    /**
+     * Imperative way to check a value of a given property is a String
+     * representing a positive integer, returning that integer. 
+     * @return the String represented as a positive integer, 0 in all other cases
+     */
     public int readDurationImperatively(Properties props, String name) {
         // 1. Make sure that a property exists with the required name
         String value = props.getProperty(name);
@@ -47,6 +51,8 @@ public class PropertiesExample {
             // 2. Try to convert the String Property to a number
             try{
                 int i = Integer.parseInt(value); 
+                // 3. Check whether the resulting number is positive
+                if(i > 0) { return i; } 
             } catch (NumberFormatException nfe) { }
         }
         return 0; // Return 0 if any of the conditions fails
@@ -63,6 +69,7 @@ public class PropertiesExample {
      * @return the String represented as a positive integer, 0 in all other cases
      */
     public int readDuration(Properties props, String name) {
+        // Using Optional class, the method can be done in a single statement
         return 0;
     }
 
