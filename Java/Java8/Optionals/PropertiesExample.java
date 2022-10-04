@@ -10,8 +10,8 @@ import java.util.Properties;
 /**
  * Suppose you have some Properties that are passed as configuration arguments
  * to your program. Also suppose that your program needs to read a value from 
- * these Properties and interpret as a duration in seconds. A. duration
- * has to be a positive number (>0).
+ * these Properties and interpret as a duration in seconds. A duration has to
+ * be a positive number (>0).
  * 
  * ========================== Properties Class ================================
  * - Represents a persistent set of properties
@@ -82,7 +82,7 @@ public class PropertiesExample {
          * 
          * 3. Finally, can easily filter away the negative number. 
          * 
-         * If any of these operations returns an empty optional, the method 
+         * 4. If any of these operations returns an empty optional, the method 
          * returns a 0 that's passed as the default value to the orElse(),
          * otherwise it returns the positive integer contained in the optional
          */
@@ -94,7 +94,7 @@ public class PropertiesExample {
 
     
     @Test
-    public void testReadDuration(){
+    public void readDurationTest(){
         Properties props = new Properties();
         props.setProperty("a", "5");
         props.setProperty("b", "true");
@@ -105,7 +105,19 @@ public class PropertiesExample {
         assertEquals(5, readDuration(param, "a")); // returns 5, a pos. num
         assertEquals(0, readDuration(param, "b")); // returns true, not a pos. num
         assertEquals(0, readDuration(param, "c")); // returns -3, a neg. num
-        assertEquals(0, readDuration(param, "d")); // propert with "d" does not exist
+        assertEquals(0, readDuration(param, "d")); // property with "d" does not exist
+    }
+
+    @Test
+    public void readDurationZero(){
+        Properties props = new Properties();
+        props.setProperty("x", "5");
+        props.setProperty("y", "0");
+
+        Properties param = props; 
+
+        assertEquals(5, readDuration(param, "x")); // returns 5, a pos. num
+        assertEquals(0, readDuration(param, "y")); // returns 0, nonpositive
     }
 
     public static void main(String[] args){
