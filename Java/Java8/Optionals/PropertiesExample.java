@@ -17,6 +17,31 @@ import java.util.Properties;
  * to your program. Also suppose that your program needs to read a value from 
  * these Properties and interpret as a duration in seconds. A. duration
  * has to be a positive number (>0).
+ * 
+ * ========================== Properties Class ================================
+ * - Represents a persistent set of properties
+ * - Can be saved to a stream or loaded from a stream
+ * - From java.util package
+ * - Properties define the following instance variable, the variable holds a 
+ * default property list asscoiated with Properties object
+ * - Properties defaults: this variable holds a default property list associated
+ * with a Properties object
+ * 
+ * - Subclass of HashTable, but does not inherit concept of a load factor
+ * - It is used to maintain a list of values in which the key is a string and the
+ * value is also a string i.e; it can be used to store and retrieve string type
+ * data from the properties file.
+ * - Properties class can specify other properties list as it’s the default. If a 
+ * particular key property is not present in the original Properties list, the 
+ * default properties will be searched.
+ * - Properties object does not require external synchronization and Multiple
+ * threads can share a single Properties object.
+ * - Can be used to retrieve the properties of the system
+ * 
+ * ================================ Advantages ================================
+ * -In the event that any data is changed from the properties record, you don’t 
+ * have to recompile the java class. It is utilized to store data that is to be
+ * changed habitually.
  */
 public class PropertiesExample {
     
@@ -27,8 +52,8 @@ public class PropertiesExample {
     /**
      * A value of a given property is a String representing a positive integer,
      * the method returns that integer, but it returns zero in all other cases. 
-     * @param props
-     * @param name
+     * @param props Properties that are passed as configuration arguments
+     * @param name 
      * @return
      */
     public int readDuration(Properties props, String name) {
