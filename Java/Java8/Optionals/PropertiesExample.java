@@ -39,8 +39,17 @@ import java.util.Properties;
  */
 public class PropertiesExample {
     
+
     public int readDurationImperatively(Properties props, String name) {
-        return 0;
+        // 1. Make sure that a property exists with the required name
+        String value = props.getProperty(name);
+        if(value != null) {
+            // 2. Try to convert the String Property to a number
+            try{
+                int i = Integer.parseInt(value); 
+            } catch (NumberFormatException nfe) { }
+        }
+        return 0; // Return 0 if any of the conditions fails
     }
 
     /**
