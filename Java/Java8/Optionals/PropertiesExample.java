@@ -2,12 +2,6 @@ package Java.Java8.Optionals;
 
 //junit test imports
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Properties;
@@ -52,9 +46,12 @@ public class PropertiesExample {
     /**
      * A value of a given property is a String representing a positive integer,
      * the method returns that integer, but it returns zero in all other cases. 
+     * In other words, in checks if the Properties has a mapping entry of the
+     * String name parameter, and check if its value is a positive integer. 
+     * 
      * @param props Properties that are passed as configuration arguments
-     * @param name 
-     * @return
+     * @param name the String to interpret as a positive integer
+     * @return the String represented as a positive integer, 0 in all other cases
      */
     public int readDuration(Properties props, String name) {
         return 0;
