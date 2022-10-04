@@ -4,6 +4,7 @@ package Java.Java8.Optionals;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -85,7 +86,10 @@ public class PropertiesExample {
          * returns a 0 that's passed as the default value to the orElse(),
          * otherwise it returns the positive integer contained in the optional
          */
-        return 0;
+        return Optional.ofNullable(props.getProperty(name))
+                       .flatMap(OptionalUtility::stringToInt)
+                       .filter(i -> i > 0)
+                       .orElse(0);
     }
 
     
