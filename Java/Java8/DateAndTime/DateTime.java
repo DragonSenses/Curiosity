@@ -12,20 +12,30 @@ import java.time.temporal.ChronoField;
  * ================================= Summary =================================
  * 1. Creating a LocalDate object
  * 2. Creating a LocalTime object
+ * 3. Creating a LocalDateTime object 
  * ================================= Methods =================================
  * 
  * ----------------------- LocalDate Methods ---------------------------------
  * -LocalDate.of() - static factory method that produces a LocalDate object 
- * with year, month, day as parameters
+ * with (year, month, day) as parameters
  * - getYear(), getMonth(), getDayOfMonth(), getDayOfWeek() - field getters
  * - lengthOfMonth() - returns number of days within that month
  * - isLeapYear() - true if leap year, false otherwise
  * - parse() - creates date object by parsing a String
+ * 
  *  ----------------------- LocalTime Methods ---------------------------------
  * -LocalTime.of() - static factory method that produces a LocalTime object 
- * with hour, minute, second as parameters
+ * with (hour, minute, second) as parameters
  * - getHour(), getMinute(), getSecond() - field getters
  * - parse() - creates date object by parsing a String
+ * 
+ *  ------------------- LocalDateTime Methods ---------------------------------
+ *  -LocalDate.of() - static factory method that produces a LocalDateTime
+ * object with (year, month, day, hour, minute, second) as parameters
+ * - atTime(LocalTime) - passing a time to LocalDate creates a LocalDateTime
+ * - atDate(LocalDate) - passing a Date to LocalTime creates a LocalDateTime
+ * - toLocalDate() - extracts LocalDate component of LocalDateTime
+ * - toLocalTime() - extracts LocalTime component of LocalDateTime
  */
 public class DateTime {
 
@@ -87,12 +97,21 @@ public class DateTime {
      * @throws DateTimeParseException when String argument can't be parsed as 
      * valid LocalDate or LocalTime
      */
-    public static void makeLocalDateAndTimeWithString(){
+    public static void makeLocalDateOrTimeWithString(){
         LocalDate date = LocalDate.parse("2017-09-21");
         LocalTime time = LocalTime.parse("13:45:20");
 
         System.out.println("Local Date:\t" + date);
         System.out.println("Local Time:\t" + time);
+    }
+
+    public static void makeLocalDateTime(){
+        // 2017-09-21T13:45:20
+        LocalDateTime dt1 = LocalDateTime.of(2017, Month.SEPTEMBER, 21, 13, 45, 20);
+        LocalDateTime dt2 = LocalDateTime.of(date, time);
+        LocalDateTime dt3 = date.atTime(13, 45, 20);
+        LocalDateTime dt4 = date.atTime(time);
+        LocalDateTime dt5 = time.atDate(date);
     }
 
     public static void main(String[] args) {
@@ -103,7 +122,10 @@ public class DateTime {
 
         System.out.println("\n======== Working with LocalTime ========");
         makeLocalTime();
-        System.out.println("\n== Create LocalDate & LocalTime with String ==");
-        makeLocalDateAndTimeWithString();
+        System.out.println("\n-- Create LocalDate & LocalTime with String --");
+        makeLocalDateOrTimeWithString();
+
+        System.out.println("\n--- Combining Date and Time: LocalDateTime ---");
+        makeLocalDateTime();
     }
 }
