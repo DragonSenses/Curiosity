@@ -42,13 +42,13 @@ public class DateTime {
         int len = date.lengthOfMonth();      // 30
         boolean leap = date.isLeapYear();    // false (not a leap year)
 
-        System.out.println("Local Date:\t" + date);
-        System.out.println("Year:\t" + year);
-        System.out.println("Month:\t" + month);
-        System.out.println("Day:\t" + day);
+        System.out.println("Local Date:\t\t" + date);
+        System.out.println("Year:\t\t\t" + year);
+        System.out.println("Month:\t\t\t" + month);
+        System.out.println("Day:\t\t\t" + day);
         System.out.println("Day of the Week:\t" + dow);
         System.out.println("Length of the Month:\t" + len);
-        System.out.println("Is Leap Year?\t" + leap);
+        System.out.println("Is Leap Year?\t\t" + leap);
     }
 
     /**
@@ -83,10 +83,16 @@ public class DateTime {
 
     /**
      * Can create both LocalDate and LocalTime by parsing a String representing
-     * them. 
+     * them. Note: Possible to pass DateTimeFormatter to parse method. 
+     * @throws DateTimeParseException when String argument can't be parsed as 
+     * valid LocalDate or LocalTime
      */
     public static void makeLocalDateAndTimeWithString(){
+        LocalDate date = LocalDate.parse("2017-09-21");
+        LocalTime time = LocalTime.parse("13:45:20");
 
+        System.out.println("Local Date:\t" + date);
+        System.out.println("Local Time:\t" + time);
     }
 
     public static void main(String[] args) {
@@ -97,5 +103,7 @@ public class DateTime {
 
         System.out.println("\n======== Working with LocalTime ========");
         makeLocalTime();
+        System.out.println("\n== Create LocalDate & LocalTime with String ==");
+        makeLocalDateAndTimeWithString();
     }
 }
