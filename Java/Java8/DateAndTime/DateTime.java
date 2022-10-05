@@ -20,7 +20,12 @@ import java.time.temporal.ChronoField;
  * - getYear(), getMonth(), getDayOfMonth(), getDayOfWeek() - field getters
  * - lengthOfMonth() - returns number of days within that month
  * - isLeapYear() - true if leap year, false otherwise
- * 
+ * - parse() - creates date object by parsing a String
+ *  ----------------------- LocalTime Methods ---------------------------------
+ * -LocalTime.of() - static factory method that produces a LocalTime object 
+ * with hour, minute, second as parameters
+ * - getHour(), getMinute(), getSecond() - field getters
+ * - parse() - creates date object by parsing a String
  */
 public class DateTime {
 
@@ -74,6 +79,14 @@ public class DateTime {
         System.out.println("Hour:\t" + hour);
         System.out.println("Minute:\t" + minute);
         System.out.println("Second:\t" + second);
+    }
+
+    /**
+     * Can create both LocalDate and LocalTime by parsing a String representing
+     * them. 
+     */
+    public static void makeLocalDateAndTimeWithString(){
+
     }
 
     public static void main(String[] args) {
