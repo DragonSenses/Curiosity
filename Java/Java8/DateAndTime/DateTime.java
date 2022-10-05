@@ -2,7 +2,9 @@ package Java.Java8.DateAndTime;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
+import java.time.temporal.ChronoField;
 
 /**
  * Experimenting with the new Java 8's Date and Time API. 
@@ -59,10 +61,28 @@ public class DateTime {
         System.out.println("Day:\t" + day);
     }
 
+    /**
+     * Creating a LocalTime and reading its values. 
+     */
+    public static void makeLocalTime(){
+        LocalTime time = LocalTime.of(13, 45, 20);  // 13:45:20
+        int hour = time.getHour();                  // 13
+        int minute = time.getMinute();              // 45
+        int second = time.getSecond();              // 20
+
+        System.out.println("Local Time:\t" + time);
+        System.out.println("Hour:\t" + hour);
+        System.out.println("Minute:\t" + minute);
+        System.out.println("Second:\t" + second);
+    }
+
     public static void main(String[] args) {
-        System.out.println("======== Working with LocalDate and LocalTime ========");
+        System.out.println("======== Working with LocalDate ========");
         makeLocalDate();
         System.out.println("\n---- Reading LocalDate values via TemporalField ----");
         readLocalDate();
+
+        System.out.println("\n======== Working with LocalTime ========");
+        makeLocalTime();
     }
 }
