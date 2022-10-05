@@ -36,6 +36,7 @@ import java.util.List;
  * ----------------------- LocalDate Methods ---------------------------------
  * -LocalDate.of() - static factory method that produces a LocalDate object 
  * with (year, month, day) as parameters
+ * -LocalDate.now() - obtains the current date from the system clock 
  * - getYear(), getMonth(), getDayOfMonth(), getDayOfWeek() - field getters
  * - lengthOfMonth() - returns number of days within that month
  * - isLeapYear() - true if leap year, false otherwise
@@ -97,6 +98,15 @@ public class DateTime {
         System.out.println("Year:\t" + year);
         System.out.println("Month:\t" + month);
         System.out.println("Day:\t" + day);
+    }
+
+    /**
+     * now() factory method obtains the current date from the system clock
+     */ 
+    public static void currentDate(){
+        System.out.println("\n--- Current Date using now() ---");
+        LocalDate today = LocalDate.now();
+        System.out.println("Today is\t" + today);
     }
 
     /**
@@ -172,6 +182,7 @@ public class DateTime {
         // 1. LocalDate
         System.out.println("======== Working with LocalDate ========");
         makeLocalDate();
+        currentDate();
         System.out.println("\n---- Reading LocalDate values via TemporalField ----");
         readLocalDate();
 
