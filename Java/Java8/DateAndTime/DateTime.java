@@ -44,8 +44,25 @@ public class DateTime {
         System.out.println("Is Leap Year?\t" + leap);
     }
 
+    /**
+     * Reading LocalDate values by using a TemporalField
+     */
+    public static void readLocalDate(){
+        LocalDate date = LocalDate.of(2017, 9, 21);
+        int year = date.get(ChronoField.YEAR);
+        int month = date.get(ChronoField.MONTH_OF_YEAR);
+        int day = date.get(ChronoField.DAY_OF_MONTH);
+
+        System.out.println("Local Date:\t" + date);
+        System.out.println("Year:\t" + year);
+        System.out.println("Month:\t" + month);
+        System.out.println("Day:\t" + day);
+    }
+
     public static void main(String[] args) {
         System.out.println("======== Working with LocalDate and LocalTime ========");
         makeLocalDate();
+        System.out.println("\n---- Reading LocalDate values via TemporalField ----");
+        readLocalDate();
     }
 }
