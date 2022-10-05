@@ -14,13 +14,23 @@ import java.util.List;
 /**
  * Experimenting with the new Java 8's Date and Time API. 
  * 
+ * [Human Time]
  * LocalDate, LocalTime
  * LocalDateTime is a composite class that pairs a LocalDate and a LocalTime,
  * representing both a date and a time without a time zone. 
+ * 
+ * [Machine Time]
+ * From machine point of view, most natural format to model time is a single
+ * large number representing a point on a continuous timeline. 
+ * java.time.Instant class, represents the number of seconds passed since the
+ * Unix epoch time, set by convention to midnight of January 1, 1970. 
+ * 
+ * Instant class suports nanosecond precision. 
  * ================================= Summary =================================
- * 1. Creating a LocalDate object
- * 2. Creating a LocalTime object
- * 3. Creating a LocalDateTime object 
+ * 1. Working with LocalDate
+ * 2. Working with LocalTime
+ * 3. Working with LocalDateTime 
+ * 4. Working with Instant
  * ================================= Methods =================================
  * 
  * ----------------------- LocalDate Methods ---------------------------------
@@ -44,6 +54,11 @@ import java.util.List;
  * - atDate(LocalDate) - passing a Date to LocalTime creates a LocalDateTime
  * - toLocalDate() - extracts LocalDate component of LocalDateTime
  * - toLocalTime() - extracts LocalTime component of LocalDateTime
+ * 
+ *  ------------------------- Instant Methods ---------------------------------
+ * -ofEpochSecond() - static factory method that creates an instance of Instant
+ * by passing number of seconds as a parameter
+ * 
  */
 public class DateTime {
 
@@ -136,22 +151,42 @@ public class DateTime {
      * LocalDateTime. 
      */
     public static void extractLocalDateTime(){
+        System.out.println("\n--- Extracting Date and Time from LocalDateTime ---");
+        LocalDateTime dt = LocalDateTime.of(2017, Month.SEPTEMBER, 21, 13, 45, 20);
+        LocalDate date = dt.toLocalDate(); // 2017-09-21
+        LocalTime time = dt.toLocalTime(); // 13:45:20
+
+        System.out.println("Local DateTime:\t" + dt);
+        System.out.println("Local Date:\t" + date);
+        System.out.println("Local Time:\t" + time);
+    }
+
+    /**
+     * 
+     */
+    public static void makeInstant(){
 
     }
 
     public static void main(String[] args) {
+        // 1. LocalDate
         System.out.println("======== Working with LocalDate ========");
         makeLocalDate();
         System.out.println("\n---- Reading LocalDate values via TemporalField ----");
         readLocalDate();
 
+        // 2. LocalTime
         System.out.println("\n======== Working with LocalTime ========");
         makeLocalTime();
         System.out.println("\n-- Create LocalDate & LocalTime with String --");
         makeLocalDateOrTimeWithString();
 
+        // 3. LocalDateTime
         System.out.println("\n--- Combining Date and Time: LocalDateTime ---");
         makeLocalDateTime();
         extractLocalDateTime();
+
+        // 4. Instant
+
     }
 }
