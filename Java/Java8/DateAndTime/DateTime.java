@@ -1,14 +1,22 @@
 package Java.Java8.DateAndTime;
 
+// Import java.time package
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.temporal.ChronoField;
 
+// import data structures
+import java.util.List;
+
 /**
  * Experimenting with the new Java 8's Date and Time API. 
  * 
+ * LocalDate, LocalTime
+ * LocalDateTime is a composite class that pairs a LocalDate and a LocalTime,
+ * representing both a date and a time without a time zone. 
  * ================================= Summary =================================
  * 1. Creating a LocalDate object
  * 2. Creating a LocalTime object
@@ -104,14 +112,31 @@ public class DateTime {
         System.out.println("Local Date:\t" + date);
         System.out.println("Local Time:\t" + time);
     }
-
+    
+    /**
+     * Showcase the various ways in creating a LocalDateTime object, creating
+     * it directly or by combing a date and time. 
+     */
     public static void makeLocalDateTime(){
+        LocalDate date = LocalDate.parse("2017-09-21");
+        LocalTime time = LocalTime.parse("13:45:20");
         // 2017-09-21T13:45:20
         LocalDateTime dt1 = LocalDateTime.of(2017, Month.SEPTEMBER, 21, 13, 45, 20);
         LocalDateTime dt2 = LocalDateTime.of(date, time);
         LocalDateTime dt3 = date.atTime(13, 45, 20);
         LocalDateTime dt4 = date.atTime(time);
         LocalDateTime dt5 = time.atDate(date);
+
+        List<LocalDateTime> list = List.of(dt1, dt2, dt3, dt4, dt5);
+        list.stream().forEach(System.out::println);
+    }
+
+    /**
+     * Showcase how to extract the LocalDate or LocalTime component from a 
+     * LocalDateTime. 
+     */
+    public static void extractLocalDateTime(){
+
     }
 
     public static void main(String[] args) {
@@ -127,5 +152,6 @@ public class DateTime {
 
         System.out.println("\n--- Combining Date and Time: LocalDateTime ---");
         makeLocalDateTime();
+        extractLocalDateTime();
     }
 }
