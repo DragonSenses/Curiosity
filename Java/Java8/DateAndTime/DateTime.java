@@ -45,6 +45,7 @@ import java.util.List;
  *  ----------------------- LocalTime Methods ---------------------------------
  * -LocalTime.of() - static factory method that produces a LocalTime object 
  * with (hour, minute, second) as parameters
+ * -LocalTime.now() - obtains the current time from the system clock 
  * - getHour(), getMinute(), getSecond() - field getters
  * - parse() - creates date object by parsing a String
  * 
@@ -125,6 +126,15 @@ public class DateTime {
     }
 
     /**
+     * now() factory method obtains the current time from the system clock
+     */ 
+    public static void currentTime(){
+        System.out.println("\n--- Current Time using now() ---");
+        LocalTime today = LocalTime.now();
+        System.out.println("Today's time is\t" + today);
+    }
+
+    /**
      * Can create both LocalDate and LocalTime by parsing a String representing
      * them. Note: Possible to pass DateTimeFormatter to parse method. 
      * @throws DateTimeParseException when String argument can't be parsed as 
@@ -189,6 +199,7 @@ public class DateTime {
         // 2. LocalTime
         System.out.println("\n======== Working with LocalTime ========");
         makeLocalTime();
+        currentTime();
         System.out.println("\n-- Create LocalDate & LocalTime with String --");
         makeLocalDateOrTimeWithString();
 
