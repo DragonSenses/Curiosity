@@ -2,6 +2,7 @@ package Java.Java8.DateAndTime;
 
 // Import java.time package
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -235,15 +236,23 @@ public class DateTime {
      * modeled after years, months, and days. 
      */
     public static void makeDuration(){
+        LocalTime time1 = LocalTime.of(18, 45, 00);  // 6:45 PM
+        LocalTime time2 = LocalTime.of(21, 45, 00);  // 9:45 PM
+        LocalDateTime dateTime1 = LocalDateTime.of(2017, Month.SEPTEMBER,
+             21, 18, 45, 20);   // 2017-9-21, 18:45:20
+        LocalDateTime dateTime2 = LocalDateTime.of(2017, Month.SEPTEMBER,
+             22, 19, 45, 20);   // 2017-9-22, 19:45:20
+        Instant instant1 = Instant.ofEpochSecond(3);
+        Instant instant2 = Instant.ofEpochSecond(7);
         Duration d1 = Duration.between(time1, time2);
-        Duration d1 = Duration.between(dateTime1, dateTime2);
-        Duration d2 = Duration.between(instant1, instant2);
+        Duration d2 = Duration.between(dateTime1, dateTime2);
+        Duration d3 = Duration.between(instant1, instant2);
 
-        System.out.println("Duration between" + i1);
-        
-
-        System.out.println("\n---- Capture Timestamp of Current Moment ----");
-        System.out.println("Current Instant:\t" + currentInstant);
+        System.out.printf("Duration between {%s} and {%s} is {%s}\n",time1, time2, d1);
+        System.out.printf("Duration between {%s} and {%s} is {%s}\n",time2, time1,
+                Duration.between(time2,time1) ); // Duration in reverse
+        System.out.printf("Duration between {%s} and {%s} is {%s}\n",dateTime1, dateTime2, d2);
+        System.out.printf("Duration between {%s} and {%s} is {%s}\n",instant1, instant2, d3);
     }
 
     public static void execute(EnumSet<Flag> flags){
@@ -287,7 +296,7 @@ public class DateTime {
 
     public static void main(String[] args) {
         EnumSet<Flag> allOptions = EnumSet.allOf(Flag.class); 
-        EnumSet<Flag> currentOption = EnumSet.of(Flag.INSTANT);
+        EnumSet<Flag> currentOption = EnumSet.of(Flag.DURATION);
 
         // execute(allOptions);
         execute(currentOption);
