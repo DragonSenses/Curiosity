@@ -38,7 +38,8 @@ import java.util.List;
  * 2. Working with LocalTime
  * 3. Working with LocalDateTime 
  * 4. Working with Instant
- * 5. Create a Duration, between two Temporal Objects
+ * 5. Create a Duration between two Temporal Objects
+ * 6. Create a Period between two LocalDates 
  * ================================= Methods =================================
  * ----------------------- LocalDate Methods ---------------------------------
  * - of() - static factory method that produces a LocalDate object 
@@ -72,17 +73,22 @@ import java.util.List;
  * - now() - static factory method that captures a timestamp of the current moment
  * 
  * ------------------------- Duration Methods ---------------------------------
+ * - of() - static factory method that creates instance of a Duration directly
+ * without defining them as a difference between two temporal objects
  * - between() - static factory method that takes two temporal objects to 
  * create a Duration. Cannot mix Instant and LocalDateTime. Cannot pass LocalDate.
+ * 
+ * --------------------------- Period Methods ---------------------------------
+ * - of() - static factory method that creates instance of a Period directly
+ * without defining them as a difference between two temporal objects
+ * - between() - static factory method that takes two LocalDates to create a
+ * Period, an amount of time in terms of years, months, and days. 
  */
 public class DateTime {
     // EnumSet instead of bit flag, determines which objects to output in main
     public enum Flag { 
         // From Summary
-        LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME, INSTANT, DURATION;
-
-        // Must defined EnumSet<> consisting of all constants in Flag type
-        public static final EnumSet<Flag> ALL_OPTIONS = EnumSet.allOf(Flag.class);
+        LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME, INSTANT, DURATION, PERIOD;
     }
 
     /**
@@ -253,6 +259,32 @@ public class DateTime {
                 Duration.between(time2,time1) ); // Duration in reverse
         System.out.printf("Duration between {%s} and {%s} is {%s}\n",dateTime1, dateTime2, d2);
         System.out.printf("Duration between {%s} and {%s} is {%s}\n",instant1, instant2, d3);
+
+        System.out.println("\n---- Creating Duration Directly ----");
+        // To Do
+    }
+
+    // To Do
+    public static void makePeriod(){
+        // LocalTime time1 = LocalTime.of(18, 45, 00);  // 6:45 PM
+        // LocalTime time2 = LocalTime.of(21, 45, 00);  // 9:45 PM
+        // LocalDateTime dateTime1 = LocalDateTime.of(2017, Month.SEPTEMBER,
+        //      21, 18, 45, 20);   // 2017-9-21, 18:45:20
+        // LocalDateTime dateTime2 = LocalDateTime.of(2017, Month.SEPTEMBER,
+        //      22, 19, 45, 20);   // 2017-9-22, 19:45:20
+        // Instant instant1 = Instant.ofEpochSecond(3);
+        // Instant instant2 = Instant.ofEpochSecond(7);
+        // Duration d1 = Duration.between(time1, time2);
+        // Duration d2 = Duration.between(dateTime1, dateTime2);
+        // Duration d3 = Duration.between(instant1, instant2);
+
+        // System.out.printf("Duration between {%s} and {%s} is {%s}\n",time1, time2, d1);
+        // System.out.printf("Duration between {%s} and {%s} is {%s}\n",time2, time1,
+        //         Duration.between(time2,time1) ); // Duration in reverse
+        // System.out.printf("Duration between {%s} and {%s} is {%s}\n",dateTime1, dateTime2, d2);
+        // System.out.printf("Duration between {%s} and {%s} is {%s}\n",instant1, instant2, d3);
+
+        System.out.println("\n---- Creating Period Directly ----");
     }
 
     public static void execute(EnumSet<Flag> flags){
@@ -292,11 +324,17 @@ public class DateTime {
             System.out.println("\n======== Working with Duration ========");
             makeDuration();
         }
+
+        // 5. Period
+        if(flags.contains(Flag.PERIOD)) {
+            System.out.println("\n======== Working with Period ========");
+            makePeriod(); 
+        }
     }
 
     public static void main(String[] args) {
         EnumSet<Flag> allOptions = EnumSet.allOf(Flag.class); 
-        EnumSet<Flag> currentOption = EnumSet.of(Flag.DURATION);
+        EnumSet<Flag> currentOption = EnumSet.of(Flag.DURATION, Flag.PERIOD);
 
         // execute(allOptions);
         execute(currentOption);
