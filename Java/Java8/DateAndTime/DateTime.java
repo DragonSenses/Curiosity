@@ -202,30 +202,45 @@ public class DateTime {
         // * 2. Working with LocalTime
         // * 3. Working with LocalDateTime 
         // * 4. Working with Instant
-        if(flags.contains(LOCAL_DATE))
+
+        // 1. LocalDate
+        if(flags.contains(Flag.LOCAL_DATE)) {
+            System.out.println("======== Working with LocalDate ========");
+            makeLocalDate();
+            currentDate();
+            System.out.println("\n---- Reading LocalDate values via TemporalField ----");
+            readLocalDate();
+        }
+
+        // 2. LocalTime
+        if(flags.contains(Flag.LOCAL_TIME)) {
+            System.out.println("\n======== Working with LocalTime ========");
+            makeLocalTime();
+            currentTime();
+            System.out.println("\n-- Create LocalDate & LocalTime with String --");
+            makeLocalDateOrTimeWithString();
+        }
+
+        // 3. LocalDateTime
+        if(flags.contains(Flag.LOCAL_DATE_TIME)) {
+            System.out.println("\n--- Combining Date and Time: LocalDateTime ---");
+            makeLocalDateTime();
+            extractLocalDateTime();
+        }
+
+        // 4. Instant
+        if(flags.contains(Flag.INSTANT)) {
+            System.out.println("\n======== Working with Instant ========");
+            makeInstant();
+        }
     }
 
     public static void main(String[] args) {
-        // 1. LocalDate
-        System.out.println("======== Working with LocalDate ========");
-        makeLocalDate();
-        currentDate();
-        System.out.println("\n---- Reading LocalDate values via TemporalField ----");
-        readLocalDate();
+        EnumSet<Flag> allOptions = EnumSet.allOf(Flag.class); 
+        EnumSet<Flag> onlyInstant = EnumSet.of(Flag.INSTANT);
 
-        // 2. LocalTime
-        System.out.println("\n======== Working with LocalTime ========");
-        makeLocalTime();
-        currentTime();
-        System.out.println("\n-- Create LocalDate & LocalTime with String --");
-        makeLocalDateOrTimeWithString();
 
-        // 3. LocalDateTime
-        System.out.println("\n--- Combining Date and Time: LocalDateTime ---");
-        makeLocalDateTime();
-        extractLocalDateTime();
-
-        // 4. Instant
-
+        // execute(allOptions);
+        execute(onlyInstant);
     }
 }
