@@ -9,6 +9,7 @@ import java.time.Month;
 import java.time.temporal.ChronoField;
 
 // import data structures
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -63,6 +64,14 @@ import java.util.List;
  * 
  */
 public class DateTime {
+    // EnumSet instead of bit flag, determines which objects to output in main
+    public enum Flag { 
+        // From Summary
+        LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME, INSTANT;
+
+        // Must defined EnumSet<> consisting of all constants in Flag type
+        public static final EnumSet<Flag> ALL_OPTIONS = EnumSet.allOf(Flag.class);
+    }
 
     /**
      * Creating a LocalDate and reading its values. 
@@ -186,6 +195,14 @@ public class DateTime {
      */
     public static void makeInstant(){
 
+    }
+
+    public static void execute(EnumSet<Flag> flags){
+        // * 1. Working with LocalDate
+        // * 2. Working with LocalTime
+        // * 3. Working with LocalDateTime 
+        // * 4. Working with Instant
+        if(flags.contains(LOCAL_DATE))
     }
 
     public static void main(String[] args) {
