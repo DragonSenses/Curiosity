@@ -28,13 +28,17 @@ import java.util.List;
  * Unix epoch time, set by convention to midnight of January 1, 1970. 
  * 
  * Instant class suports nanosecond precision. 
+ * 
+ * All the classes so far implement the Temporal interface, which defines how 
+ * to read and manipulate values of an object modeling a generic point in time.
+ * The next step is tot create a duration between two temporal objects. 
  * ================================= Summary =================================
  * 1. Working with LocalDate
  * 2. Working with LocalTime
  * 3. Working with LocalDateTime 
  * 4. Working with Instant
+ * 5. Create a Duration, between two Temporal Objects
  * ================================= Methods =================================
- * 
  * ----------------------- LocalDate Methods ---------------------------------
  * - of() - static factory method that produces a LocalDate object 
  * with (year, month, day) as parameters
@@ -65,12 +69,16 @@ import java.util.List;
  * - ofEpochSecond(seconds, nanoAdjustment) - overloaded method that adjusts the
  * passed number of seconds by nanosecond precision
  * - now() - static factory method that captures a timestamp of the current moment
+ * 
+ * ------------------------- Duration Methods ---------------------------------
+ * - between() - static factory method that takes two temporal objects to 
+ * create a Duration. Cannot mix Instant and LocalDateTime. Cannot pass LocalDate.
  */
 public class DateTime {
     // EnumSet instead of bit flag, determines which objects to output in main
     public enum Flag { 
         // From Summary
-        LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME, INSTANT;
+        LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME, INSTANT, DURATION;
 
         // Must defined EnumSet<> consisting of all constants in Flag type
         public static final EnumSet<Flag> ALL_OPTIONS = EnumSet.allOf(Flag.class);
@@ -215,6 +223,20 @@ public class DateTime {
         System.out.println("Current Instant:\t" + currentInstant);
     }
 
+    /**
+     * Demonstrate ways to instantiate Duration class. 
+     */
+    public static void makeDuration(){
+
+        System.out.println("Instant(3s) =\t" + i1);
+        System.out.println("Instant(3s,0ns) =\t" + i2);
+        System.out.println("Instant(2s, 1,000,000,000 ns) =\t" + i3);
+        System.out.println("Instant(4s, -1,000,000,000 ns) =\t" + i4);
+
+        System.out.println("\n---- Capture Timestamp of Current Moment ----");
+        System.out.println("Current Instant:\t" + currentInstant);
+    }
+
     public static void execute(EnumSet<Flag> flags){
         // 1. LocalDate
         if(flags.contains(Flag.LOCAL_DATE)) {
@@ -245,6 +267,12 @@ public class DateTime {
         if(flags.contains(Flag.INSTANT)) {
             System.out.println("\n======== Working with Instant ========");
             makeInstant();
+        }
+
+        // 4. Duration
+        if(flags.contains(Flag.DURATION)) {
+            System.out.println("\n======== Working with Duration ========");
+            makeDuration();
         }
     }
 
