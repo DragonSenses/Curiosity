@@ -11,12 +11,16 @@ import java.time.Month;
 import java.time.Period;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+
 // import data structures
 import java.util.EnumSet;
 import java.util.List;
 
 /**
- * Experimenting with the new Java 8's Date and Time API. 
+ * Experimenting with the new Java 8's Date and Time API. All classes here are
+ * immutable, a great design choice to allow a more functional programming
+ * style, ensure thready safety, and preserve the consistency of the domain 
+ * model.
  * 
  * [Human Time]
  * LocalDate, LocalTime
@@ -84,6 +88,23 @@ import java.util.List;
  * without defining them as a difference between two temporal objects
  * - between() - static factory method that takes two LocalDates to create a
  * Period, an amount of time in terms of years, months, and days. 
+ * 
+ * Duration & Period are date-time classess that represent an Interval so
+ * share the following methods: 
+ * - between() - creates an interval between two points in time
+ * - from() - creates an interval from a temporal unit
+ * - of() - creates an instance of this interval from its constituent parts
+ * - parse() - creates an instance of this interval from a String
+ * - addTo() - creates a copy of thhis interval, adding it to the specified 
+ * temporal object
+ * - get() - reads part of the state of this interval
+ * - isNegative - checks whether this interval is negative, excluding zero
+ * - is Zero() - checks whether this interval is zero-length
+ * - minus() - creates a copy of this interval with an amount of time subtracted
+ * - multipliedBy() - creates a copy of this interval multipled by the given scalar
+ * - negated() - creates a copy of this interval with the length negated
+ * - plus()  - creates a copy of this interval with an amount of time added
+ * - subtractFrom() - subtracts this interval from the specified temporal object
  */
 public class DateTime {
     // EnumSet instead of bit flag, determines which objects to output in main
@@ -268,28 +289,20 @@ public class DateTime {
         System.out.println("Duration of 7 mins:\t" + sevenMinutes);
     }
 
-    // To Do
+    /**
+     * To model an amount of time in terms of years, months, and days one can
+     * use Period class. Using between() static factory method finds the 
+     * difference between two LocalDates.
+     */
     public static void makePeriod(){
-        // LocalTime time1 = LocalTime.of(18, 45, 00);  // 6:45 PM
-        // LocalTime time2 = LocalTime.of(21, 45, 00);  // 9:45 PM
-        // LocalDateTime dateTime1 = LocalDateTime.of(2017, Month.SEPTEMBER,
-        //      21, 18, 45, 20);   // 2017-9-21, 18:45:20
-        // LocalDateTime dateTime2 = LocalDateTime.of(2017, Month.SEPTEMBER,
-        //      22, 19, 45, 20);   // 2017-9-22, 19:45:20
-        // Instant instant1 = Instant.ofEpochSecond(3);
-        // Instant instant2 = Instant.ofEpochSecond(7);
-        // Duration d1 = Duration.between(time1, time2);
-        // Duration d2 = Duration.between(dateTime1, dateTime2);
-        // Duration d3 = Duration.between(instant1, instant2);
-
-        // System.out.printf("Duration between {%s} and {%s} is {%s}\n",time1, time2, d1);
-        // System.out.printf("Duration between {%s} and {%s} is {%s}\n",time2, time1,
-        //         Duration.between(time2,time1) ); // Duration in reverse
-        // System.out.printf("Duration between {%s} and {%s} is {%s}\n",dateTime1, dateTime2, d2);
-        // System.out.printf("Duration between {%s} and {%s} is {%s}\n",instant1, instant2, d3);
+        LocalDate date1 = LocalDate.of(2017, 9, 11);
+        LocalDate date2 = LocalDate.of(2017, 9, 21);
+        Period tenDays = Period.between(date1, date2);
+        System.out.printf("The period between {%s} and {%s} is {%s}\n",
+                          date1, date2, tenDays);
 
         System.out.println("\n---- Creating Period Directly ----");
-        Period tenDays = Period.ofDays(10);
+        tenDays = Period.ofDays(10);
         Period threeWeeks = Period.ofWeeks(3);
         Period twoYearsSixMonthsOneDay = Period.of(2, 6, 1);
         System.out.println("Period of 10 Days:\t" + tenDays);
@@ -345,9 +358,6 @@ public class DateTime {
 
     public static void main(String[] args) {
         EnumSet<Flag> allOptions = EnumSet.allOf(Flag.class); 
-        EnumSet<Flag> currentOption = EnumSet.of(Flag.PERIOD);
-
-        // execute(allOptions);
-        execute(currentOption);
+        execute(allOptions);
     }
 }
