@@ -2,6 +2,7 @@ package Java.Java8.DateAndTime;
 
 // Import java.time package
 import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,23 +36,23 @@ import java.util.List;
  * ================================= Methods =================================
  * 
  * ----------------------- LocalDate Methods ---------------------------------
- * -LocalDate.of() - static factory method that produces a LocalDate object 
+ * - of() - static factory method that produces a LocalDate object 
  * with (year, month, day) as parameters
- * -LocalDate.now() - obtains the current date from the system clock 
+ * - now() - obtains the current date from the system clock 
  * - getYear(), getMonth(), getDayOfMonth(), getDayOfWeek() - field getters
  * - lengthOfMonth() - returns number of days within that month
  * - isLeapYear() - true if leap year, false otherwise
  * - parse() - creates date object by parsing a String
  * 
  *  ----------------------- LocalTime Methods ---------------------------------
- * -LocalTime.of() - static factory method that produces a LocalTime object 
+ * - of() - static factory method that produces a LocalTime object 
  * with (hour, minute, second) as parameters
- * -LocalTime.now() - obtains the current time from the system clock 
+ * - now() - obtains the current time from the system clock 
  * - getHour(), getMinute(), getSecond() - field getters
  * - parse() - creates date object by parsing a String
  * 
  *  ------------------- LocalDateTime Methods ---------------------------------
- *  -LocalDate.of() - static factory method that produces a LocalDateTime
+ *  - of() - static factory method that produces a LocalDateTime
  * object with (year, month, day, hour, minute, second) as parameters
  * - atTime(LocalTime) - passing a time to LocalDate creates a LocalDateTime
  * - atDate(LocalDate) - passing a Date to LocalTime creates a LocalDateTime
@@ -59,9 +60,11 @@ import java.util.List;
  * - toLocalTime() - extracts LocalTime component of LocalDateTime
  * 
  *  ------------------------- Instant Methods ---------------------------------
- * -ofEpochSecond() - static factory method that creates an instance of Instant
+ * - ofEpochSecond() - static factory method that creates an instance of Instant
  * by passing number of seconds as a parameter
- * 
+ * - ofEpochSecond(seconds, nanoAdjustment) - overloaded method that adjusts the
+ * passed number of seconds by nanosecond precision
+ * - now() - static factory method that captures a timestamp of the current moment
  */
 public class DateTime {
     // EnumSet instead of bit flag, determines which objects to output in main
@@ -191,18 +194,28 @@ public class DateTime {
     }
 
     /**
-     * 
+     * Demonstrate ways to instantiate Instant class. 
      */
     public static void makeInstant(){
+        Instant currentInstant = Instant.now();
+        // Following invocations of the ofEpochSecond() return exactly the
+        // the same Instant
+        Instant i1 = Instant.ofEpochSecond(3);
+        Instant i2 = Instant.ofEpochSecond(3, 0);
+        Instant i3 = Instant.ofEpochSecond(2, 1_000_000_000);
+        Instant i4 = Instant.ofEpochSecond(4, -1_000_000_000);
 
+
+        System.out.println("Instant(3s) =\t" + i1);
+        System.out.println("Instant(3s,0ns) =\t" + i2);
+        System.out.println("Instant(2s, 1,000,000,000 ns) =\t" + i3);
+        System.out.println("Instant(4s, -1,000,000,000 ns) =\t" + i4);
+
+        System.out.println("\n---- Capture Timestamp of Current Moment ----");
+        System.out.println("Current Instant:\t" + currentInstant);
     }
 
     public static void execute(EnumSet<Flag> flags){
-        // * 1. Working with LocalDate
-        // * 2. Working with LocalTime
-        // * 3. Working with LocalDateTime 
-        // * 4. Working with Instant
-
         // 1. LocalDate
         if(flags.contains(Flag.LOCAL_DATE)) {
             System.out.println("======== Working with LocalDate ========");
@@ -237,10 +250,9 @@ public class DateTime {
 
     public static void main(String[] args) {
         EnumSet<Flag> allOptions = EnumSet.allOf(Flag.class); 
-        EnumSet<Flag> onlyInstant = EnumSet.of(Flag.INSTANT);
-
+        EnumSet<Flag> currentOption = EnumSet.of(Flag.INSTANT);
 
         // execute(allOptions);
-        execute(onlyInstant);
+        execute(currentOption);
     }
 }
