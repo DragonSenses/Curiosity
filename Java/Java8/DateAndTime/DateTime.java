@@ -8,8 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.Period;
 import java.time.temporal.ChronoField;
-
+import java.time.temporal.ChronoUnit;
 // import data structures
 import java.util.EnumSet;
 import java.util.List;
@@ -261,7 +262,10 @@ public class DateTime {
         System.out.printf("Duration between {%s} and {%s} is {%s}\n",instant1, instant2, d3);
 
         System.out.println("\n---- Creating Duration Directly ----");
-        // To Do
+        Duration threeMinutes = Duration.ofMinutes(3);
+        Duration sevenMinutes = Duration.of(7, ChronoUnit.MINUTES);
+        System.out.println("Duration of 3 mins:\t" + threeMinutes);
+        System.out.println("Duration of 7 mins:\t" + sevenMinutes);
     }
 
     // To Do
@@ -285,6 +289,13 @@ public class DateTime {
         // System.out.printf("Duration between {%s} and {%s} is {%s}\n",instant1, instant2, d3);
 
         System.out.println("\n---- Creating Period Directly ----");
+        Period tenDays = Period.ofDays(10);
+        Period threeWeeks = Period.ofWeeks(3);
+        Period twoYearsSixMonthsOneDay = Period.of(2, 6, 1);
+        System.out.println("Period of 10 Days:\t" + tenDays);
+        System.out.println("Period of 3 Weeks:\t" + threeWeeks);
+        System.out.println("Period of 2 Years, 6 Months, 1 Day:\t" 
+            + twoYearsSixMonthsOneDay);
     }
 
     public static void execute(EnumSet<Flag> flags){
@@ -334,7 +345,7 @@ public class DateTime {
 
     public static void main(String[] args) {
         EnumSet<Flag> allOptions = EnumSet.allOf(Flag.class); 
-        EnumSet<Flag> currentOption = EnumSet.of(Flag.DURATION, Flag.PERIOD);
+        EnumSet<Flag> currentOption = EnumSet.of(Flag.PERIOD);
 
         // execute(allOptions);
         execute(currentOption);
