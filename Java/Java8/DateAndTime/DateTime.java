@@ -224,14 +224,23 @@ public class DateTime {
     }
 
     /**
-     * Demonstrate ways to instantiate Duration class. 
+     * Creates a Duration between two temporal objects. Using between(), a
+     * Duration can be made between:
+     * - Two LocalTimes
+     * - Two LocalDateTimes
+     * - Two Instants
+     * Note: Cannot Mix Instant and LocalDateTime. Also cannot pass LocalDate
+     * to between() as Duration represents amount of time measured in seconds
+     * or nanoseconds. Use Period instead of Duration if time needs to be 
+     * modeled after years, months, and days. 
      */
     public static void makeDuration(){
+        Duration d1 = Duration.between(time1, time2);
+        Duration d1 = Duration.between(dateTime1, dateTime2);
+        Duration d2 = Duration.between(instant1, instant2);
 
-        System.out.println("Instant(3s) =\t" + i1);
-        System.out.println("Instant(3s,0ns) =\t" + i2);
-        System.out.println("Instant(2s, 1,000,000,000 ns) =\t" + i3);
-        System.out.println("Instant(4s, -1,000,000,000 ns) =\t" + i4);
+        System.out.println("Duration between" + i1);
+        
 
         System.out.println("\n---- Capture Timestamp of Current Moment ----");
         System.out.println("Current Instant:\t" + currentInstant);
