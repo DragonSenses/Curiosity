@@ -25,7 +25,7 @@ import java.util.EnumSet;
  * (3) Manipulating a LocalDate, chaining and concatenating manipulations
  * (4) Using predefined TemporalAdjusters
  * (5) Using a custom TemporalAdjuster
- * (6) Printing & Parsing Date-Time Objects
+ * (6) Printing & Parsing Date-Time Objects using DateTimeFormatter
  * 
  * ================================= Methods ==================================
  * - get() - reads fields of a Temporal object
@@ -44,6 +44,13 @@ import java.util.EnumSet;
  * firstDayOfYear, firstInMonth, lastDayOfMonth, lastDayOfNextMonth,
  * lastDayOfNextYear, lastDayOfYear, lastInMonth, next, previous, nextOrSame,
  * previousOrSame
+ * 
+ * ---------------- DateTimeFormatter Methods ---------------------------------
+ * Instances are thread-safe. Can create singleton formatters like the ones 
+ * defined by DateTimeFormatter constants and share them among multiple threads.
+ * -format() - 
+ * -parse() - 
+ * -
  */
 public class WorkingWithDates {
 
@@ -162,6 +169,12 @@ public class WorkingWithDates {
         System.out.println("Today is:\t" + date);
         System.out.println("BASIC_ISO_DATE:\t" + s1);
         System.out.println("ISO_LOCAL_DATE:\t" + s2);
+
+        System.out.println("\n------- Parsing a String to a Date -------");
+        LocalDate date1 = LocalDate.parse(s1, DateTimeFormatter.BASIC_ISO_DATE); // YYYYMMDD
+        LocalDate date2 = LocalDate.parse(s2, DateTimeFormatter.ISO_LOCAL_DATE); // YYYY-MM-DD
+        System.out.printf("Parsing String:{%s} into Date:{%s}\n",s1,date1);
+        System.out.printf("Parsing String:{%s} into Date:{%s}\n",s2,date2);
     }
 
     private enum Flags {
