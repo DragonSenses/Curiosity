@@ -24,6 +24,7 @@ import java.util.EnumSet;
  * (3) Manipulating a LocalDate, chaining and concatenating manipulations
  * (4) Using predefined TemporalAdjusters
  * (5) Working with TemporalAdjusters
+ * (6) Create a custom Temporal Adjuster
  * ================================= Methods ==================================
  * - get() - reads fields of a Temporal object
  * - with() - modifies fields of a Temporal object
@@ -119,6 +120,24 @@ public class WorkingWithDates {
     //     Temporal adjustInto(Temporal temporal);
     // }
 
+    public static void customTemporalAdjuster(){
+        System.out.println("\n------- Custom Temporal Adjuster -------");
+        LocalDate date = LocalDate.now(); // Get the current date from system clock
+        LocalDate date1 = LocalDate.of(2014, 3, 18); 
+        LocalDate date2 = date1.with(nextOrSame(DayOfWeek.SUNDAY));
+        LocalDate date3 = date2.with(lastDayOfMonth());
+
+        System.out.println("Today is:\t " + date);
+        System.out.println("Cycling through 7 workdays skipping weekends...");
+        System.out.println("1)\t " + date);
+        System.out.println("2)\t " + date);
+        System.out.println("3)\t " + date);
+        System.out.println("4)\t " + date);
+        System.out.println("5)\t " + date);
+        System.out.println("6)\t " + date);
+        System.out.println("7)\t " + date);
+    }
+
     private enum Flags {
         Manipulate, Two, Three, Four
     }
@@ -137,6 +156,7 @@ public class WorkingWithDates {
             System.out.println("\tUsing TemporalAdjusters");
             System.out.println("\t=======================");
             predefinedTemporalAdjusters();
+            customTemporalAdjuster();
         }
         if(flags.contains(Flags.Three)) {
             // System.out.println("Top");
