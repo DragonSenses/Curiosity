@@ -89,8 +89,9 @@ import java.util.List;
  * - between() - static factory method that takes two LocalDates to create a
  * Period, an amount of time in terms of years, months, and days. 
  * 
- * Duration & Period are date-time classess that represent an Interval so
- * share the following methods: 
+* ----------------- Duration & Period Methods ---------------------------------
+ * Duration & Period are date-time classes that represent an Interval so share
+ * the following methods: 
  * - between() - creates an interval between two points in time
  * - from() - creates an interval from a temporal unit
  * - of() - creates an instance of this interval from its constituent parts
@@ -343,13 +344,13 @@ public class DateTime {
             makeInstant();
         }
 
-        // 4. Duration
+        // 5. Duration
         if(flags.contains(Flag.DURATION)) {
             System.out.println("\n======== Working with Duration ========");
             makeDuration();
         }
 
-        // 5. Period
+        // 6. Period
         if(flags.contains(Flag.PERIOD)) {
             System.out.println("\n======== Working with Period ========");
             makePeriod(); 
