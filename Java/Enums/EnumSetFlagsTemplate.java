@@ -7,25 +7,32 @@ import java.util.EnumSet;
  * This file serves as a Template for future classes that will implement EnumSet
  * which is designed specifically to replace bit flags. 
  * 
+ * ================================= Summary =================================
+ * (1) 
+ * (2) 
+ * (3) 
+ * (4) 
+ * ================================= Methods ==================================
+ * - 
  */
 public class EnumSetFlagsTemplate {
 
     enum Flags {
-        Left, Top, Right, Bottom
+        One, Two, Three, Four
     }
 
     public static void execute(EnumSet<Flags> flags){
-        if(flags.contains(Flags.Left)) {
-            System.out.println("Left");
+        if(flags.contains(Flags.One)) {
+            System.out.println("One");
         }
-        if(flags.contains(Flags.Right)) {
-            System.out.println("Right");
+        if(flags.contains(Flags.Two)) {
+            System.out.println("Two");
         }
-        if(flags.contains(Flags.Top)) {
-            System.out.println("Top");
+        if(flags.contains(Flags.Three)) {
+            System.out.println("Three");
         }
-        if(flags.contains(Flags.Bottom)) {
-            System.out.println("Bottom");
+        if(flags.contains(Flags.Four)) {
+            System.out.println("Four");
         }
     }
 
@@ -33,7 +40,7 @@ public class EnumSetFlagsTemplate {
         EnumSet<Flags> allOptions = EnumSet.allOf(Flags.class); 
         execute(allOptions);
 
-        EnumSet<Flags> currentOpt = EnumSet.of(Flags.Right);
+        EnumSet<Flags> currentOpt = EnumSet.of(Flags.Two);
         execute(currentOpt);
     }
 }
