@@ -1,6 +1,7 @@
 package Java.Java8.DateAndTime;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import static java.time.temporal.TemporalAdjusters.*;
@@ -24,6 +25,8 @@ import java.util.EnumSet;
  * (3) Manipulating a LocalDate, chaining and concatenating manipulations
  * (4) Using predefined TemporalAdjusters
  * (5) Using a custom TemporalAdjuster
+ * (6) Printing & Parsing Date-Time Objects
+ * 
  * ================================= Methods ==================================
  * - get() - reads fields of a Temporal object
  * - with() - modifies fields of a Temporal object
@@ -146,6 +149,21 @@ public class WorkingWithDates {
         System.out.println("7)\t " + date7 + " a " + date7.getDayOfWeek());
     }
 
+    /** (6)
+     * Using java.time.format's DateTimeFormatter class allows creation of 
+     * formatters through its static factory methods and constants. 
+     */
+    public static void dateTimeFormatters(){
+        System.out.println("------- Formatting Date to a String -------");
+        LocalDate date = LocalDate.now(); // Get the current date from system clock
+        String s1 = date.format(DateTimeFormatter.BASIC_ISO_DATE); // YYYYMMDD
+        String s2 = date.format(DateTimeFormatter.ISO_LOCAL_DATE); // YYYY-MM-DD
+
+        System.out.println("Today is:\t" + date);
+        System.out.println("BASIC_ISO_DATE:\t" + s1);
+        System.out.println("ISO_LOCAL_DATE:\t" + s2);
+    }
+
     private enum Flags {
         Manipulate, TemporalAdjuster, Three, Four
     }
@@ -167,7 +185,10 @@ public class WorkingWithDates {
             customTemporalAdjuster();
         }
         if(flags.contains(Flags.Three)) {
-            // System.out.println("Top");
+            System.out.println("\t====================================");
+            System.out.println("\tPrinting & Parsing Date-Time Objects");
+            System.out.println("\t====================================");
+            dateTimeFormatters();
         }
         if(flags.contains(Flags.Four)) {
             // System.out.println("Bottom");
