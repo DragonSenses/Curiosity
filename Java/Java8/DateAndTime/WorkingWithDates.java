@@ -10,17 +10,24 @@ import java.util.EnumSet;
  * to perform these actions. 
  * 
  * ================================= Summary =================================
- * 1. Create a modified version of an existing LocalDate
+ * (1) Create a modified version of an existing LocalDate, absolute way
+ * (2) Create a modified version of an existing LocalDate, relative way
+ * (3) Manipulating a LocalDate, chaining and concatenating manipulations
+ * 
  * ================================= Methods =================================
  * - get() - reads fields of a Temporal object
  * - with() - modifies fields of a Temporal object
  * - withYear() - returns a LocalDate with modified year attribute
  * - withMonth() - returns a LocalDate with modified month attribute
  * - withDayOfMonth - returns a LocalDate with modified day attribute
+ * - plus() - move a Temporal forward a given amount of time
+ * - minus() - move a Temporal backward a given amount of time 
+ * - plusWeeks() - adds weeks to the date
+ * - minusYears() - subtracts years to the date
  */
 public class WorkingWithDates {
 
-    /**
+    /** (1)
      * To create a modified version of an existing LocalDate is to change one
      * of its attributes using one of its withAttribute methods. Each of these
      * methods return a new object with the modified attribute, they do not 
@@ -39,7 +46,7 @@ public class WorkingWithDates {
         System.out.println("Changed Month:\t " + date4);
     }
 
-    /**
+    /** (2)
      * Manipulating a LocalDate in a declarative manner, can add or subtract
      * a given amount of time. 
      */
@@ -56,6 +63,23 @@ public class WorkingWithDates {
         System.out.println("Add 6 Months:\t " + date4);
     }
 
+    /** (3)
+     * Can manipulate date in both absolute and relative way. One can also
+     * concatenate more manipulations in a single statement! Each change
+     * creates a new LocalDate object, and subsequent invocation manipulates
+     * the object created by former one. 
+     */
+    public static void manipulateDate(){
+        System.out.println("\n------- Manipulating LocalDate -------");
+        LocalDate date = LocalDate.of(2014, 3, 18); // 2014-3-18
+        System.out.println("LocalDate:\t " + date);
+
+        date = date.with(ChronoField.MONTH_OF_YEAR, 9);
+        date = date.plusYears(2).minusDays(10); 
+        date.withYear(2011); // No effect as date is not assigned to new obj created
+        System.out.println("LocalDate:\t " + date);
+    }
+
     private enum Flags {
         One, Two, Three, Four
     }
@@ -67,6 +91,7 @@ public class WorkingWithDates {
             System.out.println("\t====================================");
             manipulateAttributesOfLocalDateAbsolute();
             manipulateAttributesOfLocalDateRelative();
+            manipulateDate();
         }
         if(flags.contains(Flags.Two)) {
             // System.out.println("Right");
