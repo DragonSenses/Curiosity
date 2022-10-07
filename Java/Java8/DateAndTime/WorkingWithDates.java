@@ -36,7 +36,11 @@ import java.util.EnumSet;
  * - minusYears() - subtracts years to the date
  * 
  * --------------- Temporal Adjusters Methods ---------------------------------
- * -
+ * List of static factory methods of TemporalAdjusters
+ * - dayOfWeekInMonth, firstDayOfMonth, firstDayOfNextMonth, firstDayOfNextYear,
+ * firstDayOfYear, firstInMonth, lastDayOfMonth, lastDayOfNextMonth,
+ * lastDayOfNextYear, lastDayOfYear, lastInMonth, next, previous, nextOrSame,
+ * previousOrSame
  */
 public class WorkingWithDates {
 
@@ -94,7 +98,7 @@ public class WorkingWithDates {
     }
 
     /** (4)
-     * Date and Time API provides many predfined TemporalAdjusters for common 
+     * Date and Time API provides many predefined TemporalAdjusters for common 
      * use cases. Can access them by using static factory methods contained in
      * TemporalAdjusters class. 
      */
@@ -108,6 +112,12 @@ public class WorkingWithDates {
         System.out.println("Next Sunday:\t " + date2);
         System.out.println("Last Day of the Month:\t " + date3);
     }
+
+    // Defines how to convert a Temporal object to another Temporal
+    // @FunctionalInterface
+    // public interface TemporalAdjuster {
+    //     Temporal adjustInto(Temporal temporal);
+    // }
 
     private enum Flags {
         Manipulate, Two, Three, Four
