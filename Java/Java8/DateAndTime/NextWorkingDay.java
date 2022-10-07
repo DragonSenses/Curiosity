@@ -30,4 +30,29 @@ public class NextWorkingDay implements TemporalAdjuster {
         // Return the modified date adding the right number of days
         return temporal.plus(dayToAdd, ChronoUnit.DAYS);
     }
+
+    // Behavior can be passed in as a lambda expression
+    // date = date.with(temporal -> {
+    //     DayOfWeek dow =
+    //     DayOfWeek.of(temporal.get(ChronoField.DAY_OF_WEEK));
+    //     int dayToAdd = 1;
+    //     if (dow == DayOfWeek.FRIDAY) dayToAdd = 3;
+    //     else if (dow == DayOfWeek.SATURDAY) dayToAdd = 2;
+    //     return temporal.plus(dayToAdd, ChronoUnit.DAYS);
+    // });
+
+    // If Using Lambda Expression, more preferrable to do so using
+    // ofDateAdjuster static factory of TemporalAdjusters, which
+    // accepts a UnaryOperator<LocalDate>. 
+
+    // TemporalAdjuster nextWorkingDay = TemporalAdjusters.ofDateAdjuster(
+    //     temporal -> {
+    //         DayOfWeek dow =
+    //             DayOfWeek.of(temporal.get(ChronoField.DAY_OF_WEEK));
+    //         int dayToAdd = 1;
+    //         if (dow == DayOfWeek.FRIDAY) dayToAdd = 3;
+    //         else if (dow == DayOfWeek.SATURDAY) dayToAdd = 2;
+    //         return temporal.plus(dayToAdd, ChronoUnit.DAYS);
+    //     });
+    // date = date.with(nextWorkingDay);
 }
