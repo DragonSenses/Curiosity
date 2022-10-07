@@ -23,8 +23,7 @@ import java.util.EnumSet;
  * (2) Create a modified version of an existing LocalDate, relative way
  * (3) Manipulating a LocalDate, chaining and concatenating manipulations
  * (4) Using predefined TemporalAdjusters
- * (5) Working with TemporalAdjusters
- * (6) Create a custom Temporal Adjuster
+ * (5) Using a custom TemporalAdjuster
  * ================================= Methods ==================================
  * - get() - reads fields of a Temporal object
  * - with() - modifies fields of a Temporal object
@@ -120,6 +119,11 @@ public class WorkingWithDates {
     //     Temporal adjustInto(Temporal temporal);
     // }
 
+    /** (5)
+     * Here we use a separate class that implements TemporalAdjuster interface
+     * that moves a date forward by one day but skips weekends. This is passed
+     * in to the generic with() method which returns a new adjusted date. 
+     */
     public static void customTemporalAdjuster(){
         System.out.println("\n------- Custom Temporal Adjuster -------");
         LocalDate date = LocalDate.now(); // Get the current date from system clock
@@ -133,17 +137,17 @@ public class WorkingWithDates {
 
         System.out.println("Today is: " + date + " a " + date.getDayOfWeek());
         System.out.println("Cycling through 7 workdays skipping weekends...");
-        System.out.println("1)\t " + date1);
-        System.out.println("2)\t " + date2);
-        System.out.println("3)\t " + date3);
-        System.out.println("4)\t " + date4);
-        System.out.println("5)\t " + date5);
-        System.out.println("6)\t " + date6);
-        System.out.println("7)\t " + date7);
+        System.out.println("1)\t " + date1 + " a " + date1.getDayOfWeek());
+        System.out.println("2)\t " + date2 + " a " + date2.getDayOfWeek());
+        System.out.println("3)\t " + date3 + " a " + date3.getDayOfWeek());
+        System.out.println("4)\t " + date4 + " a " + date4.getDayOfWeek());
+        System.out.println("5)\t " + date5 + " a " + date5.getDayOfWeek());
+        System.out.println("6)\t " + date6 + " a " + date6.getDayOfWeek());
+        System.out.println("7)\t " + date7 + " a " + date7.getDayOfWeek());
     }
 
     private enum Flags {
-        Manipulate, Two, Three, Four
+        Manipulate, TemporalAdjuster, Three, Four
     }
 
     public static void execute(EnumSet<Flags> flags){
@@ -155,7 +159,7 @@ public class WorkingWithDates {
             manipulateAttributesOfLocalDateRelative();
             manipulateDate();
         }
-        if(flags.contains(Flags.Two)) {
+        if(flags.contains(Flags.TemporalAdjuster)) {
             System.out.println("\t=======================");
             System.out.println("\tUsing TemporalAdjusters");
             System.out.println("\t=======================");
@@ -174,7 +178,7 @@ public class WorkingWithDates {
         // EnumSet<Flags> allOptions = EnumSet.allOf(Flags.class); 
         // execute(allOptions);
 
-        EnumSet<Flags> currentOpt = EnumSet.of(Flags.Two);
+        EnumSet<Flags> currentOpt = EnumSet.of(Flags.Three);
         execute(currentOpt);
     }
 }
