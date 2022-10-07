@@ -2,6 +2,7 @@ package Java.Java8.DateAndTime;
 
 import java.time.DayOfWeek;
 import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
 
@@ -10,6 +11,12 @@ import java.time.temporal.TemporalAdjuster;
  * Saturdays and Sundays.
  */
 public class NextWorkingDay implements TemporalAdjuster {
+    // Defines how to convert a Temporal object to another Temporal
+    // @FunctionalInterface
+    // public interface TemporalAdjuster {
+    //     Temporal adjustInto(Temporal temporal);
+    // }
+
     @Override
     public Temporal adjustInto(Temporal temporal) {
         DayOfWeek dow = 
@@ -20,11 +27,7 @@ public class NextWorkingDay implements TemporalAdjuster {
         } else if (dow == DayOfWeek.SATURDAY) { // add 2 days if today is Saturday
             dayToAdd = 2;
         } 
-        return;
+        // Return the modified date adding the right number of days
+        return temporal.plus(dayToAdd, ChronoUnit.DAYS);
     }
-    // Defines how to convert a Temporal object to another Temporal
-    // @FunctionalInterface
-    // public interface TemporalAdjuster {
-    //     Temporal adjustInto(Temporal temporal);
-    // }
 }
