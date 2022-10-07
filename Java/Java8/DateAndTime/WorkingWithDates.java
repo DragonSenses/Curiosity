@@ -123,19 +123,23 @@ public class WorkingWithDates {
     public static void customTemporalAdjuster(){
         System.out.println("\n------- Custom Temporal Adjuster -------");
         LocalDate date = LocalDate.now(); // Get the current date from system clock
-        LocalDate date1 = LocalDate.of(2014, 3, 18); 
-        LocalDate date2 = date1.with(nextOrSame(DayOfWeek.SUNDAY));
-        LocalDate date3 = date2.with(lastDayOfMonth());
+        LocalDate date1 = date.with(new NextWorkingDay()); 
+        LocalDate date2 = date1.with(new NextWorkingDay()); 
+        LocalDate date3 = date2.with(new NextWorkingDay()); 
+        LocalDate date4 = date3.with(new NextWorkingDay()); 
+        LocalDate date5 = date4.with(new NextWorkingDay()); 
+        LocalDate date6 = date5.with(new NextWorkingDay()); 
+        LocalDate date7 = date6.with(new NextWorkingDay()); 
 
-        System.out.println("Today is:\t " + date);
+        System.out.println("Today is: " + date + " a " + date.getDayOfWeek());
         System.out.println("Cycling through 7 workdays skipping weekends...");
-        System.out.println("1)\t " + date);
-        System.out.println("2)\t " + date);
-        System.out.println("3)\t " + date);
-        System.out.println("4)\t " + date);
-        System.out.println("5)\t " + date);
-        System.out.println("6)\t " + date);
-        System.out.println("7)\t " + date);
+        System.out.println("1)\t " + date1);
+        System.out.println("2)\t " + date2);
+        System.out.println("3)\t " + date3);
+        System.out.println("4)\t " + date4);
+        System.out.println("5)\t " + date5);
+        System.out.println("6)\t " + date6);
+        System.out.println("7)\t " + date7);
     }
 
     private enum Flags {
