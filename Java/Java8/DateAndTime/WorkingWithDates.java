@@ -3,18 +3,28 @@ package Java.Java8.DateAndTime;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import static java.time.temporal.TemporalAdjusters.*;
+
+import java.time.DayOfWeek;
 import java.util.EnumSet;
 
 /**
  * Manipulating, Parsing, and Formatting dates. This class will showcase ways
  * to perform these actions. 
  * 
+ * To perform advanced operations such as adjusting a date to the next Sunday,
+ * the next working day, or the last day of the month pass a TemporalAdjuster
+ * to overloaded version of with() method. 
+ * 
+ * Temporal Adjusters provides a more customizable way to define the 
+ * manipulation needed to operate on a specific date. 
  * ================================= Summary =================================
  * (1) Create a modified version of an existing LocalDate, absolute way
  * (2) Create a modified version of an existing LocalDate, relative way
  * (3) Manipulating a LocalDate, chaining and concatenating manipulations
- * 
- * ================================= Methods =================================
+ * (4) Using predefined TemporalAdjusters
+ * (5) Working with TemporalAdjusters
+ * ================================= Methods ==================================
  * - get() - reads fields of a Temporal object
  * - with() - modifies fields of a Temporal object
  * - withYear() - returns a LocalDate with modified year attribute
@@ -24,6 +34,9 @@ import java.util.EnumSet;
  * - minus() - move a Temporal backward a given amount of time 
  * - plusWeeks() - adds weeks to the date
  * - minusYears() - subtracts years to the date
+ * 
+ * --------------- Temporal Adjusters Methods ---------------------------------
+ * -
  */
 public class WorkingWithDates {
 
@@ -80,12 +93,28 @@ public class WorkingWithDates {
         System.out.println("LocalDate:\t " + date);
     }
 
+    /** (4)
+     * Date and Time API provides many predfined TemporalAdjusters for common 
+     * use cases. Can access them by using static factory methods contained in
+     * TemporalAdjusters class. 
+     */
+    public static void predefinedTemporalAdjusters(){
+        System.out.println("\n------- Predefined Temporal Adjusters -------");
+        LocalDate date1 = LocalDate.of(2014, 3, 18); // 2014-03-18
+        LocalDate date2 = date1.with(nextOrSame(DayOfWeek.SUNDAY));
+        LocalDate date3 = date2.with(lastDayOfMonth());
+
+        System.out.println("LocalDate:\t " + date1);
+        System.out.println("Next Sunday:\t " + date2);
+        System.out.println("Last Day of the Month:\t " + date3);
+    }
+
     private enum Flags {
-        One, Two, Three, Four
+        Manipulate, Two, Three, Four
     }
 
     public static void execute(EnumSet<Flags> flags){
-        if(flags.contains(Flags.One)) {
+        if(flags.contains(Flags.Manipulate)) {
             System.out.println("\t====================================");
             System.out.println("\tManipulating Attributes of LocalDate");
             System.out.println("\t====================================");
@@ -94,7 +123,10 @@ public class WorkingWithDates {
             manipulateDate();
         }
         if(flags.contains(Flags.Two)) {
-            // System.out.println("Right");
+            System.out.println("\t=======================");
+            System.out.println("\tUsing TemporalAdjusters");
+            System.out.println("\t=======================");
+            predefinedTemporalAdjusters();
         }
         if(flags.contains(Flags.Three)) {
             // System.out.println("Top");
@@ -108,7 +140,7 @@ public class WorkingWithDates {
         // EnumSet<Flags> allOptions = EnumSet.allOf(Flags.class); 
         // execute(allOptions);
 
-        EnumSet<Flags> currentOpt = EnumSet.of(Flags.One);
+        EnumSet<Flags> currentOpt = EnumSet.of(Flags.Two);
         execute(currentOpt);
     }
 }
