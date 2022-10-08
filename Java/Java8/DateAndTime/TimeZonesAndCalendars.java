@@ -1,10 +1,8 @@
 package Java.Java8.DateAndTime;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.ZoneId;        // new
 import java.util.EnumSet;
-import java.util.Set;
 import java.util.TimeZone;      // old
 
 /**
@@ -27,7 +25,9 @@ import java.util.TimeZone;      // old
  * 
  * When you have a ZoneId object, you can combine it with a LocalDate, a 
  * LocalDateTime, or an Instant to transform it into ZonedDateTime instances,
- * which represent points in time relative to the specified time zone
+ * which represent points in time relative to the specified time zone. 
+ * 
+ * ZonedDateTime has LocalDate, LocalTime, and ZoneId as its components. 
  * ================================= Summary =================================
  * (1) Get the ZoneId of a particular timezone
  * (2) Convert an old TimeZone object to a ZoneId
@@ -58,11 +58,11 @@ public class TimeZonesAndCalendars {
         System.out.println(romeZone.getRules());
 
         System.out.println("\n------- List of US ZoneIds -------");
-        // Get the Set of ZoneIds   
-        Set<String> zones = ZoneId.getAvailableZoneIds();
-        // Stream and select only US 
-        zones.stream().filter(s -> s.contains("US")).forEach(System.out::println);
-       
+        // Get the Set of Zone Ids, Stream and select only US TimeZones 
+        ZoneId.getAvailableZoneIds()
+              .stream()
+              .filter(s -> s.contains("US"))
+              .forEach(System.out::println);
     }
 
     /**
@@ -79,12 +79,27 @@ public class TimeZonesAndCalendars {
      * (3) Applying Time Zone to a Point in Time, creating ZonedDateTime
      */
     public static void applyZoneIdToPointInTime(){
-        LocalDate date = LocalDate.of(2014, Month.MARCH, 18);
-       
+        ZoneId seoulZone = ZoneId.of("Asia/Seoul");
+
+        LocalDate date = LocalDate.now();
+        ZonedDateTime zdt1 = date.atStartOfDay(romeZone);
+
+        LocalDateTime dateTime = LocalDateTime.of(2014, Month.MARCH, 18, 13, 45);
+        ZonedDateTime zdt2 = dateTime.atZone(romeZone);
+        
+        Instant instant = Instant.now();
+        ZonedDateTime zdt3 = instant.atZone(romeZone);
+
+        System.out.println("Date:\t" + date);
+        System.out.println("ZonedDateTime:\t" + zdt1);
+
+        System.out.println("ZonedDateTime:\t" + zdt2);
+
+        System.out.println("ZonedDateTime:\t" + zdt3);
     }
 
     enum Options {
-        ZoneId, Top, Right, Bottom
+        ZoneId, ZonedDateTime, Top, Bottom
     }
 
     // Controls the Output in main
@@ -94,7 +109,7 @@ public class TimeZonesAndCalendars {
             getZoneId();
             convertTimeZoneToZoneId();
         }
-        if(options.contains(Options.Right)) {
+        if(options.contains(Options.ZonedDateTime)) {
             System.out.println("\t========= Applying ZoneId to Point in Time =========\t"); 
             applyZoneIdToPointInTime();
         }
@@ -110,7 +125,10 @@ public class TimeZonesAndCalendars {
         // EnumSet<Options> allOptions = EnumSet.allOf(Options.class); 
         // execute(allOptions);
 
-        EnumSet<Options> currentOpt = EnumSet.of(Options.Right);
+        EnumSet<Options> currentOpt = EnumSet.of(Options.ZonedDateTime);
         execute(currentOpt);
+
+        // ZoneId.getAvailableZoneIds().stream().filter(s -> s.contains("Asia")).forEach(System.out::println);
+
     } 
 } // end of Class
