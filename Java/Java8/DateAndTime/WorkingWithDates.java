@@ -2,6 +2,7 @@ package Java.Java8.DateAndTime;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import static java.time.temporal.TemporalAdjusters.*;
@@ -29,6 +30,7 @@ import java.util.Locale;
  * (6) Printing & Parsing Date-Time Objects using DateTimeFormatter
  * (7) Creating a DateTimeFormatter from a pattern
  * (8) Creating a localized DateTimeFormatter
+ * (9) Building a DateTimeFormatter with DateTimeFormatterBuilder class
  * ================================= Methods ==================================
  * - get() - reads fields of a Temporal object
  * - with() - modifies fields of a Temporal object
@@ -220,10 +222,42 @@ public class WorkingWithDates {
         System.out.println("Parsed Date:\t" + date2);
     }
 
+    /** (9) Building a DateTimeFormatter with DateTimeFormatterBuilder class
+     * DateTimeFormatterBuilder class lets you define complex formatters step 
+     * by step using meaningful methods. Provides the ability to have 
+     * case-insensitive parsing, lenient parsing (allowing the parser to use
+     * heuristics to interpret inputs that don't precisely match the 
+     * specified format), padding, and optional sections of the formatter. 
+     * 
+     * Here we build the same italianFormatter.
+     */
+    public static void buildDateTimeFormatter(){
+        System.out.println("\n------- Creating a localized DateTimeFormatter with builder class -------");
+
+        DateTimeFormatter italianFormatter = new DateTimeFormatterBuilder()
+            .appendText(ChronoField.DAY_OF_MONTH)
+            .appendLiteral(". ")
+            .appendText(ChronoField.MONTH_OF_YEAR)
+            .appendLiteral(" ")
+            .appendText(ChronoField.YEAR)
+            .parseCaseInsensitive()
+            .toFormatter(Locale.ITALIAN);
+
+        LocalDate date1 = LocalDate.of(2014, 3, 18);
+        String formattedDate = date1.format(italianFormatter); // 18. marzo 2014
+        LocalDate date2 = LocalDate.parse(formattedDate, italianFormatter);
+
+        System.out.println("Date:\t" + date1);
+        System.out.println("Pattern: [d. MMMM yyyy], Locale: Italian");
+        System.out.println("Formatted Date:\t" + formattedDate);
+        System.out.println("Parsed Date:\t" + date2);
+    }
+
     private enum Flags {
         Manipulate, TemporalAdjuster, Three, Four
     }
 
+    // Controls the Output in main
     public static void execute(EnumSet<Flags> flags){
         if(flags.contains(Flags.Manipulate)) {
             System.out.println("\t====================================");
@@ -247,6 +281,7 @@ public class WorkingWithDates {
             dateTimeFormatters();
             createDateTimeFormatterFromPattern();
             createLocalizedDateTimeFormatter();
+            buildDateTimeFormatter();
         }
         if(flags.contains(Flags.Four)) {
             // System.out.println("Bottom");
