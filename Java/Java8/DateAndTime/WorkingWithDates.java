@@ -254,7 +254,7 @@ public class WorkingWithDates {
     }
 
     private enum Flags {
-        Manipulate, TemporalAdjuster, Three, Four
+        Manipulate, TemporalAdjuster, DateTimeFormatter
     }
 
     // Controls the Output in main
@@ -268,14 +268,14 @@ public class WorkingWithDates {
             manipulateDate();
         }
         if(flags.contains(Flags.TemporalAdjuster)) {
-            System.out.println("\t=======================");
+            System.out.println("\n\t=======================");
             System.out.println("\tUsing TemporalAdjusters");
             System.out.println("\t=======================");
             predefinedTemporalAdjusters();
             customTemporalAdjuster();
         }
-        if(flags.contains(Flags.Three)) {
-            System.out.println("\t====================================");
+        if(flags.contains(Flags.DateTimeFormatter)) {
+            System.out.println("\n\t====================================");
             System.out.println("\tPrinting & Parsing Date-Time Objects");
             System.out.println("\t====================================");
             dateTimeFormatters();
@@ -283,16 +283,10 @@ public class WorkingWithDates {
             createLocalizedDateTimeFormatter();
             buildDateTimeFormatter();
         }
-        if(flags.contains(Flags.Four)) {
-            // System.out.println("Bottom");
-        }
     }
 
     public static void main(String[] args) {
-        // EnumSet<Flags> allOptions = EnumSet.allOf(Flags.class); 
-        // execute(allOptions);
-
-        EnumSet<Flags> currentOpt = EnumSet.of(Flags.Three);
-        execute(currentOpt);
+        EnumSet<Flags> allOptions = EnumSet.allOf(Flags.class); 
+        execute(allOptions);
     }
 }
