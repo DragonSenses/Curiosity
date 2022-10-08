@@ -8,6 +8,7 @@ import static java.time.temporal.TemporalAdjusters.*;
 
 import java.time.DayOfWeek;
 import java.util.EnumSet;
+import java.util.Locale;
 
 /**
  * Manipulating, Parsing, and Formatting dates. This class will showcase ways
@@ -27,6 +28,7 @@ import java.util.EnumSet;
  * (5) Using a custom TemporalAdjuster
  * (6) Printing & Parsing Date-Time Objects using DateTimeFormatter
  * (7) Creating a DateTimeFormatter from a pattern
+ * (8) Creating a localized DateTimeFormatter
  * ================================= Methods ==================================
  * - get() - reads fields of a Temporal object
  * - with() - modifies fields of a Temporal object
@@ -50,7 +52,10 @@ import java.util.EnumSet;
  * defined by DateTimeFormatter constants and share them among multiple threads.
  * -format() - formats a date-time object using this formatter (Date to String)
  * -parse() - fully parses the text producing a temporal object (String to Date)
- * -
+ * -ofPattern(pattern) - allows you to create a formatter using the specified
+ * pattern
+ * -ofPattern(pattern, locale) - overloaded version that creates a formatter 
+ * using the specified pattern and locale
  */
 public class WorkingWithDates {
 
@@ -184,6 +189,7 @@ public class WorkingWithDates {
      */
     public static void createDateTimeFormatterFromPattern(){
         System.out.println("\n------- Creating a DateTimeFormatter from a pattern -------");
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate date1 = LocalDate.of(2014, 3, 18);
         String formattedDate = date1.format(formatter);
@@ -191,6 +197,25 @@ public class WorkingWithDates {
 
         System.out.println("Date:\t" + date1);
         System.out.println("Pattern: [dd/MM/yyyy]");
+        System.out.println("Formatted Date:\t" + formattedDate);
+        System.out.println("Parsed Date:\t" + date2);
+    }
+
+    /** (8) Creating a localized DateTimeFormatter
+     * The ofPattern() method also has overloaded version that allows you to 
+     * create a formatter for a given Locale
+     */
+    public static void createLocalizedDateTimeFormatter(){
+        System.out.println("\n------- Creating a localized DateTimeFormatter -------");
+
+        DateTimeFormatter italianFormatter =
+            DateTimeFormatter.ofPattern("d. MMMM yyyy", Locale.ITALIAN);
+        LocalDate date1 = LocalDate.of(2014, 3, 18);
+        String formattedDate = date1.format(italianFormatter); // 18. marzo 2014
+        LocalDate date2 = LocalDate.parse(formattedDate, italianFormatter);
+
+        System.out.println("Date:\t" + date1);
+        System.out.println("Pattern: [d. MMMM yyyy], Locale: Italian");
         System.out.println("Formatted Date:\t" + formattedDate);
         System.out.println("Parsed Date:\t" + date2);
     }
@@ -221,6 +246,7 @@ public class WorkingWithDates {
             System.out.println("\t====================================");
             dateTimeFormatters();
             createDateTimeFormatterFromPattern();
+            createLocalizedDateTimeFormatter();
         }
         if(flags.contains(Flags.Four)) {
             // System.out.println("Bottom");
