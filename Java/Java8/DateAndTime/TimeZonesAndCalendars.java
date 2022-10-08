@@ -1,5 +1,7 @@
 package Java.Java8.DateAndTime;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;        // new
 import java.util.EnumSet;
 import java.util.Set;
@@ -23,12 +25,13 @@ import java.util.TimeZone;      // old
  * supplied by the Internet Assigned Numbers Authority (IANA) Time Zone
  * Database (see https://www.iana.org/time-zones).
  * 
- * You can also convert an old TimeZone object to a ZoneId by using the new
- * method toZoneId:
+ * When you have a ZoneId object, you can combine it with a LocalDate, a 
+ * LocalDateTime, or an Instant to transform it into ZonedDateTime instances,
+ * which represent points in time relative to the specified time zone
  * ================================= Summary =================================
  * (1) Get the ZoneId of a particular timezone
  * (2) Convert an old TimeZone object to a ZoneId
- * (3) 
+ * (3) Applying Time Zone to a Point in Time, creating ZonedDateTime
  * (4) 
  * ================================= Methods ==================================
  * - ZoneId.of("{area}/{city}") - static factory method that returns the ZoneId
@@ -72,19 +75,28 @@ public class TimeZonesAndCalendars {
         System.out.println("TimeZone.getDefault().toZoneId yields:\t" + zoneId);
     }
 
+    /**
+     * (3) Applying Time Zone to a Point in Time, creating ZonedDateTime
+     */
+    public static void applyZoneIdToPointInTime(){
+        LocalDate date = LocalDate.of(2014, Month.MARCH, 18);
+       
+    }
+
     enum Options {
-        Left, Top, Right, Bottom
+        ZoneId, Top, Right, Bottom
     }
 
     // Controls the Output in main
     public static void execute(EnumSet<Options> options){
-        if(options.contains(Options.Left)) {
+        if(options.contains(Options.ZoneId)) {
             System.out.println("\t========= ZoneId =========\t");
             getZoneId();
             convertTimeZoneToZoneId();
         }
         if(options.contains(Options.Right)) {
-            System.out.println("Right");
+            System.out.println("\t========= Applying ZoneId to Point in Time =========\t"); 
+            applyZoneIdToPointInTime();
         }
         if(options.contains(Options.Top)) {
             System.out.println("Top");
@@ -98,7 +110,7 @@ public class TimeZonesAndCalendars {
         // EnumSet<Options> allOptions = EnumSet.allOf(Options.class); 
         // execute(allOptions);
 
-        EnumSet<Options> currentOpt = EnumSet.of(Options.Left);
+        EnumSet<Options> currentOpt = EnumSet.of(Options.Right);
         execute(currentOpt);
     } 
 } // end of Class
