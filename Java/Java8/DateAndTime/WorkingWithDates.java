@@ -26,7 +26,7 @@ import java.util.EnumSet;
  * (4) Using predefined TemporalAdjusters
  * (5) Using a custom TemporalAdjuster
  * (6) Printing & Parsing Date-Time Objects using DateTimeFormatter
- * 
+ * (7) Creating a DateTimeFormatter from a pattern
  * ================================= Methods ==================================
  * - get() - reads fields of a Temporal object
  * - with() - modifies fields of a Temporal object
@@ -48,13 +48,13 @@ import java.util.EnumSet;
  * ---------------- DateTimeFormatter Methods ---------------------------------
  * Instances are thread-safe. Can create singleton formatters like the ones 
  * defined by DateTimeFormatter constants and share them among multiple threads.
- * -format() - 
- * -parse() - 
+ * -format() - formats a date-time object using this formatter (Date to String)
+ * -parse() - fully parses the text producing a temporal object (String to Date)
  * -
  */
 public class WorkingWithDates {
 
-    /** (1)
+    /** (1) Create a modified version of an existing LocalDate, absolute way
      * To create a modified version of an existing LocalDate is to change one
      * of its attributes using one of its withAttribute methods. Each of these
      * methods return a new object with the modified attribute, they do not 
@@ -73,7 +73,7 @@ public class WorkingWithDates {
         System.out.println("Changed Month:\t " + date4);
     }
 
-    /** (2)
+    /** (2) Create a modified version of an existing LocalDate, relative way
      * Manipulating a LocalDate in a declarative manner, can add or subtract
      * a given amount of time. 
      */
@@ -90,7 +90,7 @@ public class WorkingWithDates {
         System.out.println("Add 6 Months:\t " + date4);
     }
 
-    /** (3)
+    /** (3) Manipulating a LocalDate, chaining and concatenating manipulations
      * Can manipulate date in both absolute and relative way. One can also
      * concatenate more manipulations in a single statement! Each change
      * creates a new LocalDate object, and subsequent invocation manipulates
@@ -107,7 +107,7 @@ public class WorkingWithDates {
         System.out.println("LocalDate:\t " + date);
     }
 
-    /** (4)
+    /** (4) Using predefined TemporalAdjusters
      * Date and Time API provides many predefined TemporalAdjusters for common 
      * use cases. Can access them by using static factory methods contained in
      * TemporalAdjusters class. 
@@ -129,7 +129,7 @@ public class WorkingWithDates {
     //     Temporal adjustInto(Temporal temporal);
     // }
 
-    /** (5)
+    /** (5) Using a custom TemporalAdjuster
      * Here we use a separate class that implements TemporalAdjuster interface
      * that moves a date forward by one day but skips weekends. This is passed
      * in to the generic with() method which returns a new adjusted date. 
@@ -156,7 +156,7 @@ public class WorkingWithDates {
         System.out.println("7)\t " + date7 + " a " + date7.getDayOfWeek());
     }
 
-    /** (6)
+    /** (6) Printing & Parsing Date-Time Objects using DateTimeFormatter
      * Using java.time.format's DateTimeFormatter class allows creation of 
      * formatters through its static factory methods and constants. 
      */
@@ -175,6 +175,24 @@ public class WorkingWithDates {
         LocalDate date2 = LocalDate.parse(s2, DateTimeFormatter.ISO_LOCAL_DATE); // YYYY-MM-DD
         System.out.printf("Parsing String:{%s} into Date:{%s}\n",s1,date1);
         System.out.printf("Parsing String:{%s} into Date:{%s}\n",s2,date2);
+    }
+
+    /** (7) Creating a DateTimeFormatter from a pattern
+     * First LocalDate's format() produces a String representing the date with
+     * the requested pattern. Next, the static parse method re-cretes the same
+     * date by parsing the generating String, using the same formatter. 
+     */
+    public static void createDateTimeFormatterFromPattern(){
+        System.out.println("\n------- Creating a DateTimeFormatter from a pattern -------");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate date1 = LocalDate.of(2014, 3, 18);
+        String formattedDate = date1.format(formatter);
+        LocalDate date2 = LocalDate.parse(formattedDate, formatter);
+
+        System.out.println("Date:\t" + date1);
+        System.out.println("Pattern: [dd/MM/yyyy]");
+        System.out.println("Formatted Date:\t" + formattedDate);
+        System.out.println("Parsed Date:\t" + date2);
     }
 
     private enum Flags {
@@ -202,6 +220,7 @@ public class WorkingWithDates {
             System.out.println("\tPrinting & Parsing Date-Time Objects");
             System.out.println("\t====================================");
             dateTimeFormatters();
+            createDateTimeFormatterFromPattern();
         }
         if(flags.contains(Flags.Four)) {
             // System.out.println("Bottom");
