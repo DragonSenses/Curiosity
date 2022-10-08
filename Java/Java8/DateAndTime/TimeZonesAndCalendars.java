@@ -1,13 +1,17 @@
 package Java.Java8.DateAndTime;
 
-import java.time.ZoneId;
+import java.time.ZoneId;        // new
 import java.util.EnumSet;
+import java.util.Set;
+import java.util.TimeZone;      // old
 
 /**
  * The new java.time.ZoneId class, part of the new Date and Time API, aims to
  * better shield you from the complexities related to time zones, such as 
  * dealing with Daylight Saving Time (DST). Just like other Date-Time classes
- * ZoneId class is immutable. 
+ * ZoneId class is immutable.
+ * 
+ * java.time.ZoneId replaces java.util.TimeZone class
  * 
  * A time zone is a set of rules corresponding to a region in which the
  * standard time is the same. About 40 time zones are held in instances of the
@@ -50,8 +54,22 @@ public class TimeZonesAndCalendars {
         // System.out.println("ZoneId of Europe/Paris is " + ZoneId.of("Europe/Paris"));
         System.out.println(romeZone.getRules());
 
-        System.out.println("\n------- List of ZoneIds -------");   
+        System.out.println("\n------- List of US ZoneIds -------");
+        // Get the Set of ZoneIds   
+        Set<String> zones = ZoneId.getAvailableZoneIds();
+        // Stream and select only US 
+        zones.stream().filter(s -> s.contains("US")).forEach(System.out::println);
+       
+    }
 
+    /**
+     * (2) Convert an old TimeZone object to a ZoneId
+     */
+    public static void convertTimeZoneToZoneId(){
+        System.out.println("\n------- Converting TimeZone to ZoneId -------");
+        ZoneId zoneId = TimeZone.getDefault().toZoneId(); 
+
+        System.out.println("TimeZone.getDefault().toZoneId yields:\t" + zoneId);
     }
 
     enum Options {
@@ -63,6 +81,7 @@ public class TimeZonesAndCalendars {
         if(options.contains(Options.Left)) {
             System.out.println("\t========= ZoneId =========\t");
             getZoneId();
+            convertTimeZoneToZoneId();
         }
         if(options.contains(Options.Right)) {
             System.out.println("Right");
