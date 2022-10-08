@@ -1,5 +1,6 @@
 package Java.Java8.DateAndTime;
 
+import java.time.ZoneId;
 import java.util.EnumSet;
 
 /**
@@ -28,18 +29,29 @@ import java.util.EnumSet;
  * ================================= Methods ==================================
  * - ZoneId.of("{area}/{city}") - static factory method that returns the ZoneId
  * of the passed in area and city
+ * - getRules() - used on a ZoneId to obtain rules for that time zone
  * - toZoneId() - Converts an old TimeZone object to a ZoneId 
  */
 public class TimeZonesAndCalendars {
     
     /**
-     * 
+     * (1) Get the ZoneId of a particular timezone
      */
     public static void getZoneId() {
-        System.out.println("\n------- Getting ZoneId -------");
+        System.out.println("------- Getting ZoneId -------");
         ZoneId romeZone = ZoneId.of("Europe/Rome");
-
+        System.out.println("ZoneId of Europe/Rome is " + romeZone);
         
+        System.out.println("ZoneId of Europe/Paris is " 
+            + ZoneId.of("Europe/Paris"));
+
+        System.out.println("\n------- Get Rules of ZoneId -------");   
+        // System.out.println(ZoneId.getAvailableZoneIds());
+        // System.out.println("ZoneId of Europe/Paris is " + ZoneId.of("Europe/Paris"));
+        System.out.println(romeZone.getRules());
+
+        System.out.println("\n------- List of ZoneIds -------");   
+
     }
 
     enum Options {
@@ -49,7 +61,8 @@ public class TimeZonesAndCalendars {
     // Controls the Output in main
     public static void execute(EnumSet<Options> options){
         if(options.contains(Options.Left)) {
-            System.out.println("Left");
+            System.out.println("\t========= ZoneId =========\t");
+            getZoneId();
         }
         if(options.contains(Options.Right)) {
             System.out.println("Right");
@@ -66,6 +79,7 @@ public class TimeZonesAndCalendars {
         // EnumSet<Options> allOptions = EnumSet.allOf(Options.class); 
         // execute(allOptions);
 
-        EnumSet<Options> currentOpt = EnumSet.of(Options.Right);
+        EnumSet<Options> currentOpt = EnumSet.of(Options.Left);
         execute(currentOpt);
-    }
+    } 
+} // end of Class
