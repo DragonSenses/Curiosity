@@ -103,10 +103,14 @@ public class TimeZonesAndCalendars {
         System.out.println("\nInstant:\t" + instant);
         System.out.println("ZonedDateTime:\t" + zdt3);
 
-        // System.out.println("\n------- Converting LocalDateTime to Instant using ZoneId -------");
-        // Instant instantFromDateTime = date.atStartOfDay(seoulZone).toInstant();
-        // System.out.println("\n------- Converting Instant to LocalDateTime using ZoneId -------");
-        
+        System.out.println("\n------- Converting LocalDateTime to Instant using ZoneId -------");
+        Instant instantFromDateTime = dateTime.toInstant(seoulZone);
+
+        System.out.println("\n------- Converting Instant to LocalDateTime using ZoneId -------");
+        instant = Instant.now();
+        LocalDateTime timeFromInstant = LocalDateTime.ofInstant(instant, seoulZone);
+        System.out.println("Instant: " + instant + ",\t" + "LocalDateTime:\t" + timeFromInstant);
+
     }
 
     enum Options {
