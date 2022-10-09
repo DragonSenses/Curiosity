@@ -32,6 +32,12 @@ import java.util.TimeZone;      // old
  * which represent points in time relative to the specified time zone. 
  * 
  * ZonedDateTime has LocalDate, LocalTime, and ZoneId as its components. 
+ * 
+ * ZoneOffset class, a subclass of ZoneId that represents the difference 
+ * between a time and the zero meridian of Greenwich, London. 
+ * 
+ * Another common way to express a time zone is to use a fixed offset from 
+ * UTC/Greenwich. 
  * ================================= Summary =================================
  * (1) Get the ZoneId of a particular timezone
  * (2) Convert an old TimeZone object to a ZoneId
@@ -103,8 +109,10 @@ public class TimeZonesAndCalendars {
         System.out.println("\nInstant:\t" + instant);
         System.out.println("ZonedDateTime:\t" + zdt3);
 
-        System.out.println("\n------- Converting LocalDateTime to Instant using ZoneId -------");
-        Instant instantFromDateTime = dateTime.toInstant(seoulZone);
+        System.out.println("\n------- Converting LocalDate to Instant using ZonedDateTime -------");
+        Instant instantFromDateTime = date.atStartOfDay(seoulZone).toInstant();
+        System.out.println("Date: " + date + "\nZonedDateTime: " + date.atStartOfDay(seoulZone) 
+            +"\nInstant: " + instantFromDateTime);
 
         System.out.println("\n------- Converting Instant to LocalDateTime using ZoneId -------");
         instant = Instant.now();
