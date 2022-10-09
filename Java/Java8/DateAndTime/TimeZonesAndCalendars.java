@@ -8,8 +8,15 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;        // new
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.Chronology;
+import java.time.chrono.HijrahDate;
+import java.time.chrono.IsoChronology;
 import java.time.chrono.JapaneseDate;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAdjusters;
 import java.util.EnumSet;
+import java.util.Locale;
 import java.util.TimeZone;      // old
 
 /**
@@ -55,7 +62,22 @@ import java.util.TimeZone;      // old
  * ChronoLocalDate interface, which is intended to model a date in an
  * arbitrary chronology. You can create an instance of one of these classes
  * out of a LocalDate. More generally, you can create any other Temporal
- * instance by using their from static factory methods
+ * instance by using their from static factory methods.
+ * 
+ * Alternatively, can explicitly create a calendar system for a specific Locale
+ * and create an instance of a date for that Locale. Using the Chronology 
+ * interface models a calendar system, and you can obtain an instance of it by
+ * using ofLocale() static factory method. However, designers of Date & Time
+ * API advise using LocalDate instead of ChronoLocalDate for most cases, because
+ * a developer could make assumptions in his code that unfortunately aren't
+ * true in a multicalendar system. Such assumptions might include believing
+ * that a value of a day or month will never be higheer than 31, or that a 
+ * year contains 12 months, or even that a year has a fixed number of months. 
+ * 
+ * Recommended to use LocalDate throughout your application, including all 
+ * storage, manipulation, and interpretation of business rules, whereas you 
+ * should employ ChronoLocalDate only when you need to localize the input or
+ * output of your program. 
  * ================================= Summary =================================
  * (1) Get the ZoneId of a particular timezone
  * (2) Convert an old TimeZone object to a ZoneId
@@ -110,7 +132,7 @@ public class TimeZonesAndCalendars {
      * (2) Convert an old TimeZone object to a ZoneId
      */
     public static void convertTimeZoneToZoneId(){
-        System.out.println("\n------- Converting TimeZone to ZoneId -------");
+        System.out.println("\n------- Converting an Old TimeZone-Object to ZoneId-Object -------");
         ZoneId zoneId = TimeZone.getDefault().toZoneId(); 
 
         System.out.println("TimeZone.getDefault().toZoneId yields:\t" + zoneId);
@@ -189,8 +211,41 @@ public class TimeZonesAndCalendars {
 
         System.out.println("\n------- Explicitly creating a calendar system for a specific Locale -------");
         // Create Calendar System from Locale through factory method ofLocale()
-        // Obtain an instance of a date for that Locale
-    
+        // Then Obtain an instance of a date for that Locale
+        Chronology japaneseChronology = Chronology.ofLocale(Locale.JAPAN);
+        ChronoLocalDate now = japaneseChronology.dateNow();
+
+        System.out.println("Chronology.ofLocale(Locale.JAPAN)");
+        System.out.println("ChronoLocalDate: " + now);
+    }
+
+    /**
+     * HijarahDate (Islamic calendar) seems to be the most complex as it can
+     * have variants. The Hijrah calendar system is based on lunar months. There
+     * are a variety of methods to determine a new month, such as a new moon that
+     * could be visible anywhere in the world or that must be visible first in
+     * Saudi Arabia. The withVariant method is used to choose the desired variant.
+     * Java 8 includes the Umm Al-Qura variant for HijrahDate as standard.
+     * 
+     * The following code illustrates an example of displaying the start and end
+     * dates of Ramadan for the current Islamic year in ISO date.
+     */
+    public static void usingIslamicCalendar(){
+        System.out.println("\n------- Islamic Calendar -------");
+        // Get the current Hijrah date; then change it to have the first day
+        // of Ramadan, which is the ninth month
+        HijrahDate ramadanDate =
+            HijrahDate.now().with(ChronoField.DAY_OF_MONTH, 1)
+                            .with(ChronoField.MONTH_OF_YEAR, 9);
+
+        // Ramadan  1438 started on 2017-05-26 and ended on 2017-06-24.
+        // IsoChronology.INSTANCE is a static instance of the IsoChronology class.
+        System.out.println("Ramadan starts on " +
+                            IsoChronology.INSTANCE.date(ramadanDate) +
+                            " and ends on " +
+                            IsoChronology.INSTANCE.date(
+                                ramadanDate.with(
+                                    TemporalAdjusters.lastDayOfMonth())));
     }
 
     enum Options {
@@ -205,27 +260,22 @@ public class TimeZonesAndCalendars {
             convertTimeZoneToZoneId();
         }
         if(options.contains(Options.ZonedDateTime)) {
-            System.out.println("\t====== Applying ZoneId to Point in Time ======\t"); 
+            System.out.println("\n\t====== Applying ZoneId to Point in Time ======\t"); 
             applyZoneIdToPointInTime();
         }
         if(options.contains(Options.ZoneOffSet)) {
-            System.out.println("\t==== Representing Timezones through ZoneOffset ====\t"); 
+            System.out.println("\n\t==== Representing Timezones through ZoneOffset ====\t"); 
             useZoneOffSet();
         }
         if(options.contains(Options.AlternativeCalendarSystem)) {
-            System.out.println("\t====== Using Alternative Calendar Systems ======\t"); 
+            System.out.println("\n\t====== Using Alternative Calendar Systems ======\t"); 
             useAlternativeCalendarSystem();
+            usingIslamicCalendar();
         }
     }
 
     public static void main(String[] args) {
-        // EnumSet<Options> allOptions = EnumSet.allOf(Options.class); 
-        // execute(allOptions);
-
-        EnumSet<Options> currentOpt = EnumSet.of(Options.AlternativeCalendarSystem);
-        execute(currentOpt);
-
-        // ZoneId.getAvailableZoneIds().stream().filter(s -> s.contains("Asia")).forEach(System.out::println);
-
+        EnumSet<Options> allOptions = EnumSet.allOf(Options.class); 
+        execute(allOptions);
     } 
 } // end of Class
