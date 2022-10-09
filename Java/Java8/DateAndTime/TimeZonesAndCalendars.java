@@ -8,6 +8,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;        // new
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.chrono.JapaneseDate;
 import java.util.EnumSet;
 import java.util.TimeZone;      // old
 
@@ -169,7 +170,14 @@ public class TimeZonesAndCalendars {
      * (5) Using alternative Calendar Systems
      */
     public static void useAlternativeCalendarSystem(){
+        System.out.println("\n------- Creating a LocalDate instance of an Alternative Calendar System -------");
+        LocalDate date = LocalDate.of(2014, Month.MARCH, 18);
+        JapaneseDate japaneseDate = JapaneseDate.from(date);
 
+        System.out.println("Date:\t\t" + date);
+        System.out.println("Japanese Date:\t" + japaneseDate);
+
+        
     }
 
     enum Options {
@@ -193,6 +201,7 @@ public class TimeZonesAndCalendars {
         }
         if(options.contains(Options.AlternativeCalendarSystem)) {
             System.out.println("\t====== Using Alternative Calendar Systems ======\t"); 
+            useAlternativeCalendarSystem();
         }
     }
 
