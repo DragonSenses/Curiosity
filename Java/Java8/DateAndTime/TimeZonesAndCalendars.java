@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;        // new
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.EnumSet;
 import java.util.TimeZone;      // old
@@ -37,12 +38,17 @@ import java.util.TimeZone;      // old
  * between a time and the zero meridian of Greenwich, London. 
  * 
  * Another common way to express a time zone is to use a fixed offset from 
- * UTC/Greenwich. 
+ * UTC/Greenwich. Be aware that ZoneOffset does not have any Daylight Saving
+ * Time management, and for this reason, isn't suggested in the majority of
+ * cases. Because ZoneOffset is also a ZoneId, one can apply it to a point in
+ * time. Can also create OffsetDateTime, which represents a date-time with an
+ * offset from UTC/Greenwich in the ISO-8601 calendar system. 
  * ================================= Summary =================================
  * (1) Get the ZoneId of a particular timezone
  * (2) Convert an old TimeZone object to a ZoneId
  * (3) Applying Time Zone to a Point in Time, creating ZonedDateTime
- * (4) 
+ * (4) Using ZoneOffset class and OffsetDateTime.
+ * (5)
  * ================================= Methods ==================================
  * - ZoneId.of("{area}/{city}") - static factory method that returns the ZoneId
  * of the passed in area and city
@@ -119,6 +125,15 @@ public class TimeZonesAndCalendars {
         LocalDateTime timeFromInstant = LocalDateTime.ofInstant(instant, seoulZone);
         System.out.println("Instant: " + instant + ",\t" + "LocalDateTime:\t" + timeFromInstant);
 
+    }
+
+    /**
+     * (4) Using ZoneOffset class and OffsetDateTime.
+     */
+    public static void useZoneOffSet(){
+        // To express a time zone by a fixed offset from UTC/Greenwich 
+        // "New York is five hours behind London"
+        ZoneOffset newYorkOffset = ZoneOffset.of("-5.00");
     }
 
     enum Options {
