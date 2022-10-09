@@ -44,12 +44,23 @@ import java.util.TimeZone;      // old
  * cases. Because ZoneOffset is also a ZoneId, one can apply it to a point in
  * time. Can also create OffsetDateTime, which represents a date-time with an
  * offset from UTC/Greenwich in the ISO-8601 calendar system. 
+ * 
+ * ------- Calendar Systems --------
+ * The ISO-8601 calendar system is the de facto world civil calendar system.
+ * 
+ * Java 8 includes four additional calendar systems. Each of these calendar systems
+ * has a dedicated date class: ThaiBuddhistDate, MinguoDate, JapaneseDate,
+ * and Hijrah-Date. All these classes, together with LocalDate, implement the
+ * ChronoLocalDate interface, which is intended to model a date in an
+ * arbitrary chronology. You can create an instance of one of these classes
+ * out of a LocalDate. More generally, you can create any other Temporal
+ * instance by using their from static factory methods
  * ================================= Summary =================================
  * (1) Get the ZoneId of a particular timezone
  * (2) Convert an old TimeZone object to a ZoneId
  * (3) Applying Time Zone to a Point in Time, creating ZonedDateTime
  * (4) Using ZoneOffset class and OffsetDateTime.
- * (5)
+ * (5) Using alternative Calendar Systems
  * ================================= Methods ==================================
  * - ZoneId.of("{area}/{city}") - static factory method that returns the ZoneId
  * of the passed in area and city
@@ -59,6 +70,10 @@ import java.util.TimeZone;      // old
  * ZoneOffSet
  * -ZoneOffSet.of() - static factory method that creates a ZoneOffset object.
  * Passing in "-05:00" offset corresponds to U.S. Eastern Standard Time
+ * 
+ * Calendar Systems (i.e. JapaneseDate)
+ * -from() - static factory method that creates an  Temporal instance of a
+ * particular calendar system
  */
 public class TimeZonesAndCalendars {
     
@@ -150,8 +165,15 @@ public class TimeZonesAndCalendars {
 
     }
 
+    /**
+     * (5) Using alternative Calendar Systems
+     */
+    public static void useAlternativeCalendarSystem(){
+
+    }
+
     enum Options {
-        ZoneId, ZonedDateTime, ZoneOffSet, Bottom
+        ZoneId, ZonedDateTime, ZoneOffSet, AlternativeCalendarSystem
     }
 
     // Controls the Output in main
@@ -162,15 +184,15 @@ public class TimeZonesAndCalendars {
             convertTimeZoneToZoneId();
         }
         if(options.contains(Options.ZonedDateTime)) {
-            System.out.println("\t========= Applying ZoneId to Point in Time =========\t"); 
+            System.out.println("\t====== Applying ZoneId to Point in Time ======\t"); 
             applyZoneIdToPointInTime();
         }
         if(options.contains(Options.ZoneOffSet)) {
-            System.out.println("\t========= Representing Timezones through ZoneOffset =========\t"); 
+            System.out.println("\t==== Representing Timezones through ZoneOffset ====\t"); 
             useZoneOffSet();
         }
-        if(options.contains(Options.Bottom)) {
-            System.out.println("Bottom");
+        if(options.contains(Options.AlternativeCalendarSystem)) {
+            System.out.println("\t====== Using Alternative Calendar Systems ======\t"); 
         }
     }
 
@@ -178,7 +200,7 @@ public class TimeZonesAndCalendars {
         // EnumSet<Options> allOptions = EnumSet.allOf(Options.class); 
         // execute(allOptions);
 
-        EnumSet<Options> currentOpt = EnumSet.of(Options.ZoneOffSet);
+        EnumSet<Options> currentOpt = EnumSet.of(Options.AlternativeCalendarSystem);
         execute(currentOpt);
 
         // ZoneId.getAvailableZoneIds().stream().filter(s -> s.contains("Asia")).forEach(System.out::println);
