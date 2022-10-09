@@ -132,12 +132,18 @@ public class TimeZonesAndCalendars {
      */
     public static void useZoneOffSet(){
         // To express a time zone by a fixed offset from UTC/Greenwich 
-        // "New York is five hours behind London"
-        ZoneOffset newYorkOffset = ZoneOffset.of("-5.00");
+        System.out.println("New York is five hours behind London");
+        ZoneOffset newYorkOffset = ZoneOffset.of("-05:00");
+
+        System.out.println("New York Offset is " + newYorkOffset);
+
+        System.out.println("\n------- Creating OffsetDateTime -------");
+        LocalDateTime dateTime = LocalDateTime.of(2014, Month.MARCH, 18, 13, 45);
+        
     }
 
     enum Options {
-        ZoneId, ZonedDateTime, Top, Bottom
+        ZoneId, ZonedDateTime, ZoneOffSet, Bottom
     }
 
     // Controls the Output in main
@@ -151,8 +157,9 @@ public class TimeZonesAndCalendars {
             System.out.println("\t========= Applying ZoneId to Point in Time =========\t"); 
             applyZoneIdToPointInTime();
         }
-        if(options.contains(Options.Top)) {
-            System.out.println("Top");
+        if(options.contains(Options.ZoneOffSet)) {
+            System.out.println("\t========= Representing Timezones through ZoneOffset =========\t"); 
+            useZoneOffSet();
         }
         if(options.contains(Options.Bottom)) {
             System.out.println("Bottom");
@@ -163,7 +170,7 @@ public class TimeZonesAndCalendars {
         // EnumSet<Options> allOptions = EnumSet.allOf(Options.class); 
         // execute(allOptions);
 
-        EnumSet<Options> currentOpt = EnumSet.of(Options.ZonedDateTime);
+        EnumSet<Options> currentOpt = EnumSet.of(Options.ZoneOffSet);
         execute(currentOpt);
 
         // ZoneId.getAvailableZoneIds().stream().filter(s -> s.contains("Asia")).forEach(System.out::println);
