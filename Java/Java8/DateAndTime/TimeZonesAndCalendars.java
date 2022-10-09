@@ -74,7 +74,11 @@ import java.util.TimeZone;      // old
  * 
  * Calendar Systems (i.e. JapaneseDate)
  * -from() - static factory method that creates an  Temporal instance of a
- * particular calendar system
+ * particular calendar system out of a LocalDate passed in as a parameter
+ * 
+ * Chronology Interface
+ * -Chronology.ofLocale() - creates an instance of a calendar system of the 
+ * Locale passed in as a parameter
  */
 public class TimeZonesAndCalendars {
     
@@ -168,6 +172,12 @@ public class TimeZonesAndCalendars {
 
     /**
      * (5) Using alternative Calendar Systems
+     * Can create an instance of one of these classes out of LocalDate, and 
+     * using the from() static factory method.
+     * Alternatively, can explicitly create a calendar system for a specific
+     * Locale and create an instance of a date for that Locale. In Date & Time
+     * API, the Chronology interface models a calendary system, can obtain an
+     * instance of it by using its ofLocale() static factory method
      */
     public static void useAlternativeCalendarSystem(){
         System.out.println("\n------- Creating a LocalDate instance of an Alternative Calendar System -------");
@@ -177,7 +187,10 @@ public class TimeZonesAndCalendars {
         System.out.println("Date:\t\t" + date);
         System.out.println("Japanese Date:\t" + japaneseDate);
 
-        
+        System.out.println("\n------- Explicitly creating a calendar system for a specific Locale -------");
+        // Create Calendar System from Locale through factory method ofLocale()
+        // Obtain an instance of a date for that Locale
+    
     }
 
     enum Options {
