@@ -1,7 +1,11 @@
 package Java.Java8.DateAndTime;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneId;        // new
+import java.time.ZonedDateTime;
 import java.util.EnumSet;
 import java.util.TimeZone;      // old
 
@@ -82,20 +86,27 @@ public class TimeZonesAndCalendars {
         ZoneId seoulZone = ZoneId.of("Asia/Seoul");
 
         LocalDate date = LocalDate.now();
-        ZonedDateTime zdt1 = date.atStartOfDay(romeZone);
+        ZonedDateTime zdt1 = date.atStartOfDay(seoulZone);
 
         LocalDateTime dateTime = LocalDateTime.of(2014, Month.MARCH, 18, 13, 45);
-        ZonedDateTime zdt2 = dateTime.atZone(romeZone);
+        ZonedDateTime zdt2 = dateTime.atZone(seoulZone);
         
         Instant instant = Instant.now();
-        ZonedDateTime zdt3 = instant.atZone(romeZone);
+        ZonedDateTime zdt3 = instant.atZone(seoulZone);
 
-        System.out.println("Date:\t" + date);
+        System.out.println("Local Date:\t" + date);
         System.out.println("ZonedDateTime:\t" + zdt1);
 
+        System.out.println("\nLocalDateTime:\t" + dateTime);
         System.out.println("ZonedDateTime:\t" + zdt2);
 
+        System.out.println("\nInstant:\t" + instant);
         System.out.println("ZonedDateTime:\t" + zdt3);
+
+        // System.out.println("\n------- Converting LocalDateTime to Instant using ZoneId -------");
+        // Instant instantFromDateTime = date.atStartOfDay(seoulZone).toInstant();
+        // System.out.println("\n------- Converting Instant to LocalDateTime using ZoneId -------");
+        
     }
 
     enum Options {
