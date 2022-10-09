@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;        // new
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -54,6 +55,10 @@ import java.util.TimeZone;      // old
  * of the passed in area and city
  * - getRules() - used on a ZoneId to obtain rules for that time zone
  * - toZoneId() - Converts an old TimeZone object to a ZoneId 
+ * 
+ * ZoneOffSet
+ * -ZoneOffSet.of() - static factory method that creates a ZoneOffset object.
+ * Passing in "-05:00" offset corresponds to U.S. Eastern Standard Time
  */
 public class TimeZonesAndCalendars {
     
@@ -123,8 +128,7 @@ public class TimeZonesAndCalendars {
         System.out.println("\n------- Converting Instant to LocalDateTime using ZoneId -------");
         instant = Instant.now();
         LocalDateTime timeFromInstant = LocalDateTime.ofInstant(instant, seoulZone);
-        System.out.println("Instant: " + instant + ",\t" + "LocalDateTime:\t" + timeFromInstant);
-
+        System.out.println("Instant: " + instant + ",\t" + "LocalDateTime:\t" + timeFromInstant);   
     }
 
     /**
@@ -139,7 +143,11 @@ public class TimeZonesAndCalendars {
 
         System.out.println("\n------- Creating OffsetDateTime -------");
         LocalDateTime dateTime = LocalDateTime.of(2014, Month.MARCH, 18, 13, 45);
-        
+        OffsetDateTime dateTimeInNewYork = OffsetDateTime.of(dateTime, newYorkOffset);
+
+        System.out.println("Date Time:\t\t" + dateTime);
+        System.out.println("Offset Date Time:\t" + dateTimeInNewYork);
+
     }
 
     enum Options {
