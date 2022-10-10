@@ -1,5 +1,8 @@
 package Java.Java8.DefaultMethods;
 
+import java.util.Iterator;
+import java.util.function.Predicate;
+
 /**
  * Default Methods in a Nutshell
  * An interface can contain method signatures for which an implementing class 
@@ -25,19 +28,30 @@ package Java.Java8.DefaultMethods;
  * (1) Implement removeIf() as a default method 
  * ================================= Methods ================================== 
  */
-public interface CollectionsExample {
+public interface CollectionsExample <E> {
     int size();
     
     default boolean isEmpty() {  // A default method
         return size() == 0;
     }
 
+    Iterator<E> iterator(); 
+
     /** (1)
      * Removes every element that fulfills the condition within the Collection
      * @return true when an element that fulfills the condition is removed,
      * false otherwise
      */
-    default boolean removeIf(boolean test){
-
+    default boolean removeIf(Predicate<Boolean> test){
+        boolean removed = false;
+        Iterator<E> each = iterator();
+        while(each.hasNext()) {
+            if(test.test(each.next())) {
+                each.remove();
+                removed = true;
+            }
+        }
+        return removed;
     }
-}
+
+} // end of Class
