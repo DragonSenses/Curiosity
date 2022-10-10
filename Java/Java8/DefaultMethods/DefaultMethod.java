@@ -38,6 +38,22 @@ import java.util.List;
  * can be moved inside an interface. These companion classes remain in the 
  * Java API to preserve backward compatibility.
  * 
+ * ------------------- Different Types of Compatabilities --------------------
+ * 1. Binary Compatibility - means that existing binaries running without 
+ * errors continue to link (which involves verification, preparation, and 
+ * resolution) without error after introducing a change. Adding a method to an
+ * interface is binary compatible, for example, because if it's not called, 
+ * existing methods of the interface can still run without problems. 
+ * 
+ * 2. Source Compatibility - means that an existing program will still compile 
+ * after introducing a change. Adding a method to an interface isn’t source 
+ * compatible; existing implementations won’t recompile because they need to
+ * implement the new method.
+ * 
+ * 3. Behavioral Compatibility - means running a program after a change with
+ * the same input results in the same behavior. Adding a method to an
+ * interface is behavioral compatible because the method is never called in
+ * the program (or gets overridden by an implementation).
  * ================================= Summary =================================
  * (1) 
  * (2) 
