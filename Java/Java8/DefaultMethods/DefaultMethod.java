@@ -26,6 +26,10 @@ import java.util.List;
  * inheritance of behavior; a class can inherit default methods from multiple
  * interfaces. 
  * 
+ * Adding a new method to an interface is binary compatible, which means that
+ * existing class file implementations still run without the implementation 
+ * of the new method if no attempt is made to recompile them.
+ * 
  * Examples of default methods: List.sort(), Collection.stream() 
  * Examples of static methods: Comparator.naturalOrder() 
  * 
@@ -38,7 +42,7 @@ import java.util.List;
  * can be moved inside an interface. These companion classes remain in the 
  * Java API to preserve backward compatibility.
  * 
- * ------------------- Different Types of Compatabilities --------------------
+ * ------------------- Different Types of Compatibilities --------------------
  * 1. Binary Compatibility - means that existing binaries running without 
  * errors continue to link (which involves verification, preparation, and 
  * resolution) without error after introducing a change. Adding a method to an
@@ -54,11 +58,7 @@ import java.util.List;
  * the same input results in the same behavior. Adding a method to an
  * interface is behavioral compatible because the method is never called in
  * the program (or gets overridden by an implementation).
- * ================================= Summary =================================
- * (1) 
- * (2) 
- * (3) 
- * (4) 
+ * 
  * ================================= Methods ==================================
  * - List.sort() - default method that sorts the List
  * - Comparator.naturalOrder() - static method of Comparator interface that 
