@@ -48,13 +48,23 @@ import java.util.List;
  * - Comparator.naturalOrder() - static method of Comparator interface that 
  * returns a Comparator object to sort the elements in natural order (the 
  * standard alphanumerical sort)
- * -Collection.stream() - 
+ * -Collection.stream() - returns a Stream of the passed in Collection's elements
  */
 public class DefaultMethod {
 
-    // Example of default method in List interface: 
+    /* Example of default method in List interface:  */
     // default void sort(Comparator<? super E> c){
     //     Collections.sort(this, c);
+    // }
+
+    /**
+     * Collection.stream() default method calls the StreamSupport.stream
+     * method to return a stream. The body of the stream method is calling
+     * the method spliterator, which is also a default method of the 
+     * Collection interface.
+     */
+    // default Stream<E> stream() {
+    //     return StreamSupport.stream(spliterator(), false);
     // }
 
     /**
