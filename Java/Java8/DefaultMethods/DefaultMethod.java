@@ -1,6 +1,7 @@
 package Java.Java8.DefaultMethods;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -43,7 +44,11 @@ import java.util.List;
  * (3) 
  * (4) 
  * ================================= Methods ==================================
- * - 
+ * - List.sort() - default method that sorts the List
+ * - Comparator.naturalOrder() - static method of Comparator interface that 
+ * returns a Comparator object to sort the elements in natural order (the 
+ * standard alphanumerical sort)
+ * -Collection.stream() - 
  */
 public class DefaultMethod {
 
@@ -52,10 +57,15 @@ public class DefaultMethod {
     //     Collections.sort(this, c);
     // }
 
+    /**
+     * Sorts passed in List of numbers. Uses List.sort() default method, and
+     * new static method in Comparator interface
+     * @param numbers List of numbers
+     */
     public static void sortingList(List<Integer> numbers){
-        System.out.println(numbers);
+        System.out.println("Before Sort:\t" + numbers);
         numbers.sort(Comparator.naturalOrder());    
-        System.out.println(numbers);
+        System.out.println("After Sort:\t" + numbers);
     }
 
     enum Flags {
@@ -67,7 +77,7 @@ public class DefaultMethod {
             System.out.println("One");
         }
         if(flags.contains(Flags.Two)) {
-            System.out.println("Two");
+            // System.out.println("Two");
         }
         if(flags.contains(Flags.Three)) {
             System.out.println("Three");
@@ -86,5 +96,7 @@ public class DefaultMethod {
 
         List<Integer> numbers = Arrays.asList(3, 5, 1, 2, 6);
         sortingList (numbers);
+      
+
     }
 }
