@@ -1,6 +1,6 @@
 package Java.Java8.DefaultMethods;
 
-import java.util.Iterator;
+// import java.util.Iterator;
 import java.util.function.Predicate;
 
 /**
