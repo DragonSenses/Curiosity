@@ -12,8 +12,8 @@ package Java.Java8.DefaultMethods;
 public class Box implements Moveable, Resizable, Rotatable {
     private int x;
     private int y;
-    private int w;
-    private int h;
+    private int width;
+    private int height;
     private int rotationAngle; 
 
     // Moveable Methods
@@ -26,13 +26,13 @@ public class Box implements Moveable, Resizable, Rotatable {
     public void setY(int y) { this.y = y; }
     
     // Resizable methods
-    public int getWidth(){ return this.w;}
-    public int getHeight() { return this.h; }
-    public void setWidth(int width) { this.w = width; }
-    public void setHeight(int height) { this.h = height; }
+    public int getWidth(){ return this.width;}
+    public int getHeight() { return this.height; }
+    public void setWidth(int width) { this.width = width; }
+    public void setHeight(int height) { this.height = height; }
     public void setAbsoluteSize(int width, int height){
-        this.w = width;
-        this.h = height; 
+        this.width = width;
+        this.height = height; 
     }
 
     // Rotatable Methods
@@ -40,4 +40,11 @@ public class Box implements Moveable, Resizable, Rotatable {
         this.rotationAngle = angleInDegrees;
     }
     public int getRotationAngle() { return rotationAngle; }
+
+    public static void main(String[] args){
+        // Constructor internally sets the coordinates, height, width, and default angle
+        Box b = new Box();
+        b.rotateBy(180);
+        b.moveVertically(10); 
+    }
 }
