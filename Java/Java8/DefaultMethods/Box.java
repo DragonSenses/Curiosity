@@ -18,11 +18,8 @@ public class Box implements Moveable, Resizable, Rotatable {
 
     // Moveable Methods
     public int getX(){ return this.x; }
-
     public int getY(){ return this.y; }
-
     public void setX(int x) { this.x = x; }
-
     public void setY(int y) { this.y = y; }
     
     // Resizable methods
@@ -44,7 +41,7 @@ public class Box implements Moveable, Resizable, Rotatable {
     public static void main(String[] args){
         // Constructor internally sets the coordinates, height, width, and default angle
         Box b = new Box();
-        b.rotateBy(180);
-        b.moveVertically(10); 
+        b.rotateBy(180); // Call rotateBy() from Rotatable
+        b.moveVertically(10);  // Call moveVertically() from Moveable
     }
 }
