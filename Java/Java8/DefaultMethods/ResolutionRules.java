@@ -39,7 +39,13 @@ public class ResolutionRules {
     }
     
     // Rule 2 doesn't help as there's no more-specific interface to select
-    public class C implements B, A { }
+    public class C implements B, A { 
+        // To Resolve the conflict we introduce new syntax X.super.m(...)
+        public void hello(){
+            // Explicitly choosing to call the methhod from interface B
+            B.super.hello();
+        }
+    }
 
     // public static void main(String... args) {
     //   new D().hello();
