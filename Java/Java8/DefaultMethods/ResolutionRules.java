@@ -22,53 +22,69 @@ package Java.Java8.DefaultMethods;
  * explicitly.
  */
 public class ResolutionRules {
-    // public class Diamond {
 
-    //     public static void main(String... args) {
-    //       new D().hello();
-    //     }
-      
-    //     static interface A {
-      
-    //       public default void hello() {
-    //         System.out.println("Hello from A");
-    //       }
-      
-    //     }
-      
-    //     static interface B extends A {
-    //         default void hello() {
-    //           System.out.println("Hello from B");
-    //         }
-    //     }
-      
-    //     static interface C extends A {
-    //       default void hello() {
-    //         System.out.println("Hello from C");
-    //       }
-    //     }
-      
-    //     static class D implements B, C {
-    //     }
-      
-    //   }
-
-    public static void main(String... args) {
-        new D().hello();
-      }
-    
-      static interface A {
-    
-        public default void hello() {
-          System.out.println("Hello from A");
+    /**
+     * This case we have Conflicts and Explicit Disambiguation
+     */
+    public interface A {
+        default void hello() {
+            System.out.println("Hello from A");
         }
+    }
+
+    public interface B {
+        default void hello() {
+            System.out.println("Hello from B");
+        }
+    }
     
-      }
+    // Rule 2 doesn't help as there's no more-specific interface to select
+    public class C implements B, A { }
+
+    // public static void main(String... args) {
+    //   new D().hello();
+    // }
     
-      static interface B extends A {}
+    // static interface A {
     
-      static interface C extends A {}
+    //   public default void hello() {
+    //     System.out.println("Hello from A");
+    //   }
     
-      static class D implements B, C {}
+    // }
+    
+    // static interface B extends A {
+    //     default void hello() {
+    //       System.out.println("Hello from B");
+    //     }
+    // }
+    
+    // static interface C extends A {
+    //     // public static void main(String... args) {
+    //     //     new C().hello();
+    //     // }
+    // }
+    
+    // static class D implements B, C {
+    // }
+    
+
+    // public static void main(String... args) {
+    //     new D().hello();
+    //   }
+    
+    //   static interface A {
+    
+    //     public default void hello() {
+    //       System.out.println("Hello from A");
+    //     }
+    
+    //   }
+    
+    //   static interface B extends A {}
+    
+    //   static interface C extends A {}
+    
+    //   static class D implements B, C {}
     
 }
