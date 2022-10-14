@@ -35,9 +35,17 @@ public class Diamond {
   
     }
   
-    static interface B extends A {}
+    static interface B extends A {
+        default void hello() {
+          System.out.println("Hello from B");
+        }
+    }
   
-    static interface C extends A {}
+    static interface C extends A {
+      default void hello() {
+        System.out.println("Hello from C");
+      }
+    }
   
     static class D implements B, C {}
   
