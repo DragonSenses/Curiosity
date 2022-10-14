@@ -6,7 +6,20 @@ package Java.Java8.DefaultMethods;
  * should be used? Such conflicts are rare in practice, but when they do 
  * occur, there must be rules that specify hhow to deal with the conflict. 
  * 
- * Here we explore the Resolution Rules. 
+ * Most specific default-providing interface wins. 
+ * =========================== Resolution Rules ===============================
+ * 
+ * 1. Classes always win. A method declaration in the class or a superclass
+ * takes priority over any default method declaration.
+ * 
+ * 2. Otherwise, subinterfaces win: the method with the same signature in the
+ * most specific default-providing interface is selected. (If B extends A,
+ * B is more specific than A.)
+ * 
+ * 3. Finally, if the choice is still ambiguous, the class inheriting from
+ * multiple interfaces has to explicitly select which default method 
+ * implementation to use by overriding it and calling the desired method 
+ * explicitly.
  */
 public class ResolutionRules {
     
