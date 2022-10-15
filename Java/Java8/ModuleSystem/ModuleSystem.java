@@ -26,6 +26,21 @@ package Java.Java8.ModuleSystem;
  * - Allowing work on individual parts in isolation, which helps team collaboration
  * - Facilitating reuse of separate parts
  * - Easier maintenance of the overall system
+ * 
+ * 2. Information Hiding is a principle that encourages hiding implementation details.
+ * In the context of building software, requirements can change frequently. By hiding
+ * implementation details, you can reduce the chances that a local change will
+ * require cascading changes in other parts of your program. 
+ * 
+ * It’s a useful principle for managing and protecting your code. You often hear
+ * the term encapsulation used to indicate that a specific piece of code is so
+ * well isolated from the other parts of the application that changing its
+ * internal implementation won’t negatively affect them.
+ * 
+ * In Java, you can get a compiler to check that components within a class are
+ * well encapsulated by using the private keyword appropriately. But until Java 9,
+ * there was no language structure to allow the compiler to check that classes
+ * and packages were available only for the intended purposes.
  */
 public class ModuleSystem {
     
