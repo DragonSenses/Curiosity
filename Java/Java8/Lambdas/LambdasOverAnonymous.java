@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.util.Comparator.comparingInt;
+
 /**
  * Prefer Lambdas to Anonymous Classes. 
  * 
@@ -67,6 +69,18 @@ public class LambdasOverAnonymous {
         Collections.sort(words,
                 (s1, s2) -> Integer.compare(s1.length(), s2.length()));
     } 
+
+    /** Sort list of Strings by length with Comparator Construction */
+    public static void sortWithComparatorConstruction(List<String> words){
+        // Comparator Construction Method is used in place of lambda
+        Collections.sort(words, comparingInt(String::length));
+    } 
+
+    /** Sort a list of Strings by length, using List interface default method sort() */
+    public static void sortWithDefaultMethod(List<String> words){
+        // List interface's sort method compares String by Length
+        words.sort(comparingInt(String::length));
+    } 
     
     public static void main(String[] args){
         List<String> list = makeList();
@@ -81,6 +95,16 @@ public class LambdasOverAnonymous {
         System.out.println("\n------- Sorting with Lambda -------");
         list = makeList();
         sortWithLambda(list);
+        list.stream().forEach(System.out::println);
+
+        System.out.println("\n------- Sorting with Comparator Construction Method -------");
+        list = makeList();
+        sortWithComparatorConstruction(list);
+        list.stream().forEach(System.out::println);
+
+        System.out.println("\n------- Sorting with Default Method of List Interface's sort() -------");
+        list = makeList();
+        sortWithDefaultMethod(list);
         list.stream().forEach(System.out::println);
     }   
 }
