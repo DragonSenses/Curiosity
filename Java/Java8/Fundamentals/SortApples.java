@@ -1,4 +1,4 @@
-package Java.Java8;
+package Java.Java8.Fundamentals;
 
 import java.util.Arrays;
 // import java.util.Comparator;
