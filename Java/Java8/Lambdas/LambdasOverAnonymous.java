@@ -27,13 +27,15 @@ import java.util.List;
  */
 public class LambdasOverAnonymous {
     
+    // Generates a List of Strings
     public static List<String> makeList(){
         List<String> list = new ArrayList<>();
         list.add("abc");
         list.add("1234567");
         list.add("ab");
+        list.add("The secret of getting ahead is getting started.");
         list.add("1234");
-        list.add("The secret of getting ahead is getting started. ~Mark Twain");
+        return list; 
     }
 
     /* Sort a list of Strings in order of length */
@@ -68,6 +70,17 @@ public class LambdasOverAnonymous {
     
     public static void main(String[] args){
         List<String> list = makeList();
-        
+        System.out.println("------- Original List, before Sort -------");
+        list.stream().forEach(System.out::println);
+
+        System.out.println("\n------- Sorting with Anonymous Class -------");
+        list = makeList();
+        sortWithAnonymousClass(list);
+        list.stream().forEach(System.out::println);
+
+        System.out.println("\n------- Sorting with Lambda -------");
+        list = makeList();
+        sortWithLambda(list);
+        list.stream().forEach(System.out::println);
     }   
 }
