@@ -2,6 +2,8 @@ package Java.Challenges;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 // import data structures
@@ -48,6 +50,17 @@ public class Anagrams {
         }
     }
 
+    /**
+     * Creates Anagrams from a source and prints them, a Java 8 way to be 
+     * more efficient. Essentially holds the same algorithm below. 
+     */
+    private static void streamAnagrams(String[] args){
+        // attempt here TO DO
+        Path dictionary = Paths.get(args[0]);
+        int minGroupSize = Integer.parseInt(args[1]);
+        
+    }
+
     // Prints all large anagram groups in a dictionary iteratively
     public static void main(String[] args) throws IOException {
         // Gather Strings from the source, and extract the minimum group size
@@ -74,6 +87,9 @@ public class Anagrams {
         }
 
         print(groups, minGroupSize); 
+
+        System.out.println("--- Angrams using Streams --- ");
+        streamAnagrams(args);
     } // end of Main
 
 } // end of Class
