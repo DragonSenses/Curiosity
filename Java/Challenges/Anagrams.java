@@ -1,10 +1,13 @@
 package Java.Challenges;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+
 // import data structures
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -19,11 +22,6 @@ import java.util.Set;
  * form (aka alphagram). 
  */
 public class Anagrams {
-    // pseudo code 
-    // use data structure to store anagrams --> Map
-    // read from collection of strings
-    // make anagrams 
-
     /**
      * Alphabetizes a given String and returns it. 
      * @param s String to alphabetize
@@ -49,16 +47,20 @@ public class Anagrams {
         }
     }
 
-    // Later will update to read words from a file 
+    // Prints all large anagram groups in a dictionary iteratively
     public static void main(String[] args) throws IOException {
-        // Create string words from the source
-        String[] source = new String[12]; 
-        int minGroupSize = 4; 
+        // Gather Strings from the source, and extract the minimum group size
+        File dictionary = new File(args[0]);
+        int minGroupSize = Integer.parseInt(args[1]);
 
         // Store anagrams in data structure, in this case a Map
         // Key are the String words, Value is the Set of anagrams formed 
         // since each combination is unique
         Map<String, Set<String>> groups = new HashMap<>(); 
+
+        try(Scanner s = new Scanner(dictionary)) {
+            
+        }
 
         print(groups, minGroupSize); 
     }
