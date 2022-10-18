@@ -50,7 +50,7 @@ public class Anagrams {
     // Prints all large anagram groups in a dictionary iteratively
     public static void main(String[] args) throws IOException {
         // Gather Strings from the source, and extract the minimum group size
-        File dictionary = new File(args[0]);
+        File dictionary = new File(args[0]);            // source 
         int minGroupSize = Integer.parseInt(args[1]);
 
         // Store anagrams in data structure, in this case a Map
@@ -58,10 +58,19 @@ public class Anagrams {
         // since each combination is unique
         Map<String, Set<String>> groups = new HashMap<>(); 
 
+        /**
+         * computeIfAbsent looks up a key in Map, if present, the method 
+         * returns the value associated with it. If not, the method computes, 
+         * the value by applying the given function object to the key, 
+         * associates this value with the key, and returns the computed value
+         */
         try(Scanner s = new Scanner(dictionary)) {
-            
+            while(s.hasNext()){
+                String word = s.next();
+                groups.computeIfAbsent(alphabetize(word),
+                    (unused) -> new TreeSet<>()).add(word));
+            }
         }
 
         print(groups, minGroupSize); 
     }
-}
