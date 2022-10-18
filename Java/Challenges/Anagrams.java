@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Class that prints all the anagram groups whose size meets a user-specified
@@ -68,9 +69,11 @@ public class Anagrams {
             while(s.hasNext()){
                 String word = s.next();
                 groups.computeIfAbsent(alphabetize(word),
-                    (unused) -> new TreeSet<>()).add(word));
+                    (unused) -> new TreeSet<>()).add(word);
             }
         }
 
         print(groups, minGroupSize); 
-    }
+    } // end of Main
+
+} // end of Class
