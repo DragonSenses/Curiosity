@@ -30,21 +30,28 @@ public class Anagrams {
     /**
      * Iterates through the map's values and prints each lsit whose size meets
      * the user specified threshold
-     * @param groups the Set of Strings of Anagrams
-     * @param minGroupSize the specified threshold for anagram groups 
+     * @param groups the Map that contains the Set of Strings of Anagrams
+     * @param threshold the specified threshold for anagram groups 
      */
-    private static print(Set<String> groups, int minGroupSize){
-
+    private static void print(Map<String, Set<String>> groups, int threshold){
+        for(Set<String> group: groups.values()){
+            if(group.size() >= threshold){
+                System.out.println(group.size() + ": " + group);
+            }
+        }
     }
 
     // Later will update to read words from a file 
     public static void main(String[] args) throws IOException {
         // Create string words from the source
         String[] source = new String[12]; 
+        int minGroupSize = 4; 
 
         // Store anagrams in data structure, in this case a Map
         // Key are the String words, Value is the Set of anagrams formed 
         // since each combination is unique
-        Map<String, Set<String>> groups = new HashMap(); 
+        Map<String, Set<String>> groups = new HashMap<>(); 
+
+        print(groups, minGroupSize); 
     }
 }
