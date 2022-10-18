@@ -11,6 +11,12 @@ import java.util.Set;
  * Class that prints all the anagram groups whose size meets a user-specified
  * minimum. Two words are anagrams if they consist of the same letters in a 
  * different order. 
+ * 
+ * Program reads words from a file and places the words into a Map. 
+ * The Map key is the word with its letters alphabetized. 
+ * Example: key for "staple" is "aelpst" and key for "petals" is also "aelpst",
+ * the two words are anagrams, and all anagrams share the same alphabetized
+ * form (aka alphagram). 
  */
 public class Anagrams {
     // pseudo code 
@@ -18,6 +24,16 @@ public class Anagrams {
     // read from collection of strings
     // make anagrams 
     private static String getAnagram(String s){
+
+    }
+
+    /**
+     * Iterates through the map's values and prints each lsit whose size meets
+     * the user specified threshold
+     * @param groups the Set of Strings of Anagrams
+     * @param minGroupSize the specified threshold for anagram groups 
+     */
+    private static print(Set<String> groups, int minGroupSize){
 
     }
 
