@@ -1,5 +1,8 @@
 package Java.String;
 
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 /**
  * Discovered that Java does not support a char stream. Here we find ways to be
  * able to use the API in spite of this. 
@@ -14,6 +17,11 @@ package Java.String;
  * 
  * Must use mapToObj() to convert the Stream, if using only map() it will return
  * an IntStream, which will print integer values instead of characters.
+ * 
+ * ================================= Summary =================================
+ * (1) Use mapToObj(i -> (char)i) rather than map() to obtain Stream<Character>
+ * (2) Converting String to Stream, and Stream to String
+ * (3) 
  */
 public class WhyNoCharStream {
     
@@ -31,8 +39,17 @@ public class WhyNoCharStream {
 
     private static void printJava8WrongWay(String s){
         s.chars()
-         .map(i -> (char) i)
-         .forEach((s) -> System.out.print(s + " "));
+         .map(i -> (char) i)            // map() will still end off with IntStream       
+         .forEach(System.out::println);
+    }
+
+    private static IntStream stringToIntStream(String string){
+        return  string.chars().mapToObj(i -> (char)i);
+    }
+
+    private static String intStreamToString(Stream<Object> stream){
+        stream.reduce(StringBuilder::new, (sb, c) -> sb.append((char)c)),
+                      StringBuilder::append).toString();
     }
 
     public static void main(String[] args){
@@ -43,5 +60,8 @@ public class WhyNoCharStream {
 
         System.out.printf("\n\t----- Printing %s in Java 8 -----\n", s);
         printJava8Way(s);
+
+        System.out.printf("\n\t----- Printing %s the Wrong Way in Java 8 -----\n", s);
+        printJava8WrongWay(s);
     }
 }
