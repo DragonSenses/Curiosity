@@ -24,6 +24,18 @@ public class Alphabetize {
         return new String(a);
     }
 
+    private static String alphabetizeStreamWay(String s){
+         /* Overuse of Streams */
+         try (Stream<String> words = Files.lines(dictionary)) {
+            words.collect(          // Reduce Stream of words 
+                // Create a Map, with alphabetize Strings as keys
+                groupingBy(word -> word.chars().sorted() // Sort alphabetical
+                    .collect(StringBuilder::new, (sb,c) -> sb.append(c), // Creates a StringBuilder
+                    StringBuilder::append).toString()));
+            
+        }
+    }
+
     /**
      * Demonstrates the hazards of processing char values with streams.
      * 
@@ -52,5 +64,6 @@ public class Alphabetize {
         example();
         System.out.println();
         example2();
+        System.out.println();
     }
 }
