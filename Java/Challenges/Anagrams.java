@@ -71,12 +71,12 @@ public class Anagrams {
 
         try (Stream<String> words = Files.lines(dictionary)) {
             words.collect(          // Reduce Stream of words 
-                groupingBy(word -> word.chars().sorted()) // Sort alphabetical
-                    .collect(StringBuilder::new, (sb,c) -> sb.append(c),
-                    StringBuilder::append).toString())
+                groupingBy(word -> word.chars().sorted() // Sort alphabetical
+                    .collect(StringBuilder::new, (sb,c) -> sb.append(c), // Creates a StringBuilder
+                    StringBuilder::append).toString()))
                 .values().stream()
                     .filter(group -> group.size() >= minGroupSize) // Filter values by threshold
-                    .map(group -> group,size() + ": " + group)
+                    .map(group -> group.size() + ": " + group)
                     .forEach(System.out::println);
             }
     }
