@@ -61,6 +61,9 @@ public class Anagrams {
      * Algorithm - First, from the source get the Stream of Words read from
      * dictionary. Next, Sort each word in its alphabetical order to be used
      * as the key in the Map for anagrams.   
+     * 
+     * Here instead of using Streams to sort a word, we use the private utilty
+     * method alphabetize instead to increase readability
      * @param args - user arguments to run the program
      * @throws IOException 
      */
@@ -69,16 +72,12 @@ public class Anagrams {
         int minGroupSize = Integer.parseInt(args[1]);
         
         /* Tasteful use of Streams */
-        // Here we tryu  
         try (Stream<String> words = Files.lines(dictionary)) {
-            words.collect(          // Reduce Stream of words 
-                groupingBy(word -> word.chars().sorted() // Sort alphabetical
-                    .collect(StringBuilder::new, (sb,c) -> sb.append(c), // Creates a StringBuilder
-                    StringBuilder::append).toString()))
-                .values().stream()                                  
-                    .filter(group -> group.size() >= minGroupSize) // Filter values by threshold
-                    .map(group -> group.size() + ": " + group)
-                    .forEach(System.out::println);
+            words.collect(groupingBy(word -> alphabetize(word))  // Create a Map, with alphabetized Strings as keys    
+                 .values().stream()                                  
+                 .filter(group -> group.size() >= minGroupSize) // Filter values by threshold
+                 .map(group -> group.size() + ": " + group)
+                 .forEach(System.out::println);
         }
     }
 
@@ -89,6 +88,7 @@ public class Anagrams {
         /* Overuse of Streams */
         try (Stream<String> words = Files.lines(dictionary)) {
             words.collect(          // Reduce Stream of words 
+                // Create a Map, with alphabetize Strings as keys
                 groupingBy(word -> word.chars().sorted() // Sort alphabetical
                     .collect(StringBuilder::new, (sb,c) -> sb.append(c), // Creates a StringBuilder
                     StringBuilder::append).toString()))
