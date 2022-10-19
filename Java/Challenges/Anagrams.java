@@ -27,10 +27,22 @@ import static java.util.stream.Collectors.groupingBy;
  * Example: key for "staple" is "aelpst" and key for "petals" is also "aelpst",
  * the two words are anagrams, and all anagrams share the same alphabetized
  * form (aka alphagram). 
+ * 
+ * We have two streamAnagram() methods that showcase how overusing streams makes
+ * programs hard to read and maintain. There is a golden mean in using streams
+ * that solves and reads closer to the problem statement. In the good way, a 
+ * helper method iseven more important for readability in stream pipelines than
+ * in iterative code because pipelines lack explicit type information and 
+ * named temporary variables. 
+ * 
+ * In the absence of explicity types, careful naming of lambda parameters is 
+ * essential to the readability of stream pipelines. 
  */
 public class Anagrams {
+
     /**
-     * Alphabetizes a given String and returns it. 
+     * Alphabetizes a given String and returns it. A private utility method or 
+     * helped method that increases readability, especially in stream pipelines
      * @param s String to alphabetize
      * @return the String sorted in alphabetical order
      */
@@ -56,14 +68,24 @@ public class Anagrams {
 
     /**
      * Creates Anagrams from a source and prints them, a Java 8 way that
-     * uses streams to be more efficient. Essentially the same algorithm.
-     * 
-     * Algorithm - First, from the source get the Stream of Words read from
-     * dictionary. Next, Sort each word in its alphabetical order to be used
-     * as the key in the Map for anagrams.   
-     * 
+     * uses streams to be more efficient.
+     *
      * Here instead of using Streams to sort a word, we use the private utilty
      * method alphabetize instead to increase readability
+     * 
+     * --------------------------- Algorithm ---------------------------------
+     * 1) Opens the dictionary file in a try-with-resources block, obtaining a
+     * stream consisting of all lines in the file. Stream variable is named
+     * words to suggest that each element in the stream is a word.
+     * 2) The pipeline on this stream has no intermediate operations; its
+     * terminal operation collects all the words into a map that groups the
+     * words by their alphabetized form
+     * 3) Then a new Stream<List<String>> is opened on the values() view of the
+     * map. The elements in this stream are the anagram groups.
+     * 4) Stream is filtered so that all groups whose size is less than 
+     * minGroupSize are ignored
+     * 5) Finally the remaining groups are printed by the terminal operation forEach
+     * 
      * @param args - user arguments to run the program
      * @throws IOException 
      */
@@ -71,7 +93,7 @@ public class Anagrams {
         Path dictionary = Paths.get(args[0]);
         int minGroupSize = Integer.parseInt(args[1]);
 
-        /* Tasteful use of Streams */
+        /* Tasteful use of Streams enhances clarity and conciseness */
         try (Stream<String> words = Files.lines(dictionary)) {
             words.collect(groupingBy(word -> alphabetize(word)))   
                  .values().stream()                                  
@@ -80,6 +102,9 @@ public class Anagrams {
         }
     }
 
+    /** Although behaves the same way as above, overuses Streams making it hard
+     * to read and maintain
+     */
     private static void streamAnagramsBad(String[] args) throws IOException {
         Path dictionary = Paths.get(args[0]);
         int minGroupSize = Integer.parseInt(args[1]);
