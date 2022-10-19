@@ -61,24 +61,42 @@ public class Anagrams {
      * Algorithm - First, from the source get the Stream of Words read from
      * dictionary. Next, Sort each word in its alphabetical order to be used
      * as the key in the Map for anagrams.   
-     * @param args
-     * @throws IOException
+     * @param args - user arguments to run the program
+     * @throws IOException 
      */
     private static void streamAnagrams(String[] args) throws IOException{
-        // attempt here TO DO
         Path dictionary = Paths.get(args[0]);
         int minGroupSize = Integer.parseInt(args[1]);
-
+        
+        /* Tasteful use of Streams */
+        // Here we tryu  
         try (Stream<String> words = Files.lines(dictionary)) {
             words.collect(          // Reduce Stream of words 
                 groupingBy(word -> word.chars().sorted() // Sort alphabetical
                     .collect(StringBuilder::new, (sb,c) -> sb.append(c), // Creates a StringBuilder
                     StringBuilder::append).toString()))
-                .values().stream()
+                .values().stream()                                  
                     .filter(group -> group.size() >= minGroupSize) // Filter values by threshold
                     .map(group -> group.size() + ": " + group)
                     .forEach(System.out::println);
-            }
+        }
+    }
+
+    private static void streamAnagramsBad(String[] args) throws IOException {
+        Path dictionary = Paths.get(args[0]);
+        int minGroupSize = Integer.parseInt(args[1]);
+        
+        /* Overuse of Streams */
+        try (Stream<String> words = Files.lines(dictionary)) {
+            words.collect(          // Reduce Stream of words 
+                groupingBy(word -> word.chars().sorted() // Sort alphabetical
+                    .collect(StringBuilder::new, (sb,c) -> sb.append(c), // Creates a StringBuilder
+                    StringBuilder::append).toString()))
+                .values().stream()                                  
+                    .filter(group -> group.size() >= minGroupSize) // Filter values by threshold
+                    .map(group -> group.size() + ": " + group)
+                    .forEach(System.out::println);
+        }
     }
         
     
@@ -111,6 +129,7 @@ public class Anagrams {
         print(groups, minGroupSize); 
 
         System.out.println("--- Angrams using Streams --- ");
+        streamAnagramsBad(args);
         streamAnagrams(args);
     } // end of Main
 
