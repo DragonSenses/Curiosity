@@ -70,14 +70,13 @@ public class Anagrams {
     private static void streamAnagrams(String[] args) throws IOException{
         Path dictionary = Paths.get(args[0]);
         int minGroupSize = Integer.parseInt(args[1]);
-        
+
         /* Tasteful use of Streams */
         try (Stream<String> words = Files.lines(dictionary)) {
-            words.collect(groupingBy(word -> alphabetize(word))  // Create a Map, with alphabetized Strings as keys    
+            words.collect(groupingBy(word -> alphabetize(word)))   
                  .values().stream()                                  
-                 .filter(group -> group.size() >= minGroupSize) // Filter values by threshold
-                 .map(group -> group.size() + ": " + group)
-                 .forEach(System.out::println);
+                 .filter(group -> group.size() >= minGroupSize) 
+                 .forEach(g -> System.out.println(g.size() + ": " + g));
         }
     }
 
