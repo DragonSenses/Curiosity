@@ -24,16 +24,11 @@ public class Alphabetize {
         return new String(a);
     }
 
-    private static String alphabetizeStreamWay(String s){
-         /* Overuse of Streams */
-         try (Stream<String> words = Files.lines(dictionary)) {
-            words.collect(          // Reduce Stream of words 
-                // Create a Map, with alphabetize Strings as keys
-                groupingBy(word -> word.chars().sorted() // Sort alphabetical
-                    .collect(StringBuilder::new, (sb,c) -> sb.append(c), // Creates a StringBuilder
-                    StringBuilder::append).toString()));
-            
-        }
+    /* Alphabetize a String through Streams  */
+    private static void alphabetizeStream(String s){
+         s.toLowerCase().chars().sorted()
+          .collect(StringBuilder::new, (sb,c) -> sb.append(c),
+                   StringBuilder::append).toString();
     }
 
     /**
@@ -58,9 +53,15 @@ public class Alphabetize {
     }
 
     public static void main(String[] args) {
+        System.out.println("------- Alphabetize: Tradtional -------");
         System.out.println(alphabetize("Listen"));
         System.out.println(alphabetize("Silent"));
 
+        System.out.println("\n------- Alphabetize: Streams -------");
+        alphabetizeStream("Listen");
+        alphabetizeStream("Silent");
+
+        
         example();
         System.out.println();
         example2();
