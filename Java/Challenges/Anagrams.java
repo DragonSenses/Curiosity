@@ -44,10 +44,10 @@ public class Anagrams {
      * Alphabetizes a given String and returns it. A private utility method or 
      * helped method that increases readability, especially in stream pipelines
      * @param s String to alphabetize
-     * @return the String sorted in alphabetical order
+     * @return the String sorted in alphabetical order, case-insensitive
      */
     private static String alphabetize(String s){
-        char[] a = s.toCharArray();
+        char[] a = s.toLowerCase().toCharArray();   
         Arrays.sort(a);
         return new String(a);
     }
