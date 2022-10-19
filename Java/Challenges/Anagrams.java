@@ -2,6 +2,7 @@ package Java.Challenges;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Stream;
 
 /**
  * Class that prints all the anagram groups whose size meets a user-specified
@@ -51,13 +53,19 @@ public class Anagrams {
     }
 
     /**
-     * Creates Anagrams from a source and prints them, a Java 8 way to be 
-     * more efficient. Essentially holds the same algorithm below. 
+     * Creates Anagrams from a source and prints them, a Java 8 way that
+     * uses streams to be more efficient. Essentially the same algorithm.  
+     * @param args
+     * @throws IOException
      */
-    private static void streamAnagrams(String[] args){
+    private static void streamAnagrams(String[] args) throws IOException{
         // attempt here TO DO
         Path dictionary = Paths.get(args[0]);
         int minGroupSize = Integer.parseInt(args[1]);
+
+        try (Stream<String> words = Files.lines(dictionary)) {
+            
+        }
         
     }
 
