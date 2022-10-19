@@ -9,7 +9,23 @@ package Java.String;
  */
 public class WhyNoCharStream {
     
+    private static void printJava7Way(String s){
+        for(int i = 0; i < s.length(); i++){
+            System.out.println(s.charAt(i));
+        }
+    }
+
+    private static void printJava8Way(String s){
+
+    }
+
     public static void main(String[] args){
+        String s = "hello";
+
+        System.out.printf("\t----- Printing %s in Java 7 -----\n", s);
+        printJava7Way(s);
         
+        System.out.printf("\n\t----- Printing %s in Java 8 -----\n", s);
+        printJava8Way(s);
     }
 }
