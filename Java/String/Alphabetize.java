@@ -1,4 +1,4 @@
-package Java.Java8.Streams;
+package Java.String;
 
 import java.util.Arrays;
 
@@ -19,7 +19,7 @@ public class Alphabetize {
      * @return the String sorted in alphabetical order
      */
     private static String alphabetize(String s){
-        char[] a = s.toCharArray();
+        char[] a = s.toLowerCase().toCharArray();
         Arrays.sort(a);
         return new String(a);
     }
@@ -46,8 +46,8 @@ public class Alphabetize {
     }
 
     public static void main(String[] args) {
-        System.out.println(alphabetize("listen"));
-        System.out.println(alphabetize("silent"));
+        System.out.println(alphabetize("Listen"));
+        System.out.println(alphabetize("Silent"));
 
         example();
         System.out.println();
