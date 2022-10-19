@@ -25,10 +25,10 @@ public class Alphabetize {
     }
 
     /* Alphabetize a String through Streams  */
-    private static void alphabetizeStream(String s){
-         s.toLowerCase().chars().sorted()
-          .collect(StringBuilder::new, (sb,c) -> sb.append(c),
-                   StringBuilder::append).toString();
+    private static String alphabetizeStream(String s){
+        return s.toLowerCase().chars().sorted()
+                .collect(StringBuilder::new, (sb,c) -> sb.append(c),
+                         StringBuilder::append).toString();
     }
 
     /**
@@ -53,15 +53,17 @@ public class Alphabetize {
     }
 
     public static void main(String[] args) {
-        System.out.println("------- Alphabetize: Tradtional -------");
-        System.out.println(alphabetize("Listen"));
-        System.out.println(alphabetize("Silent"));
+        String s1 = "Listen";
+        String s2 = "Silent";
+        System.out.println("------- Alphabetize: Traditional -------");
+        System.out.printf("%s -> %s\n", s1, alphabetize(s1));
+        System.out.printf("%s -> %s\n", s2, alphabetize(s2));
 
         System.out.println("\n------- Alphabetize: Streams -------");
-        alphabetizeStream("Listen");
-        alphabetizeStream("Silent");
+        System.out.printf("%s -> %s\n", s1, alphabetizeStream(s1));
+        System.out.printf("%s -> %s\n", s2, alphabetizeStream(s2));
 
-        
+        System.out.println("\n------- Processing Char Values with Streams -------");
         example();
         System.out.println();
         example2();
