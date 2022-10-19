@@ -73,11 +73,15 @@ public class Anagrams {
             words.collect(          // Reduce Stream of words 
                 groupingBy(word -> word.chars().sorted()) // Sort alphabetical
                     .collect(StringBuilder::new, (sb,c) -> sb.append(c),
-                    StringBuilder::append).toString()
-            );
-        }
-        
+                    StringBuilder::append).toString())
+                .values().stream()
+                    .filter(group -> group.size() >= minGroupSize) // Filter values by threshold
+                    .map(group -> group,size() + ": " + group)
+                    .forEach(System.out::println);
+            }
     }
+        
+    
 
     // Prints all large anagram groups in a dictionary iteratively
     public static void main(String[] args) throws IOException {
