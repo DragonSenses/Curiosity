@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.groupingBy;
+
 /**
  * Class that prints all the anagram groups whose size meets a user-specified
  * minimum. Two words are anagrams if they consist of the same letters in a 
@@ -54,7 +56,11 @@ public class Anagrams {
 
     /**
      * Creates Anagrams from a source and prints them, a Java 8 way that
-     * uses streams to be more efficient. Essentially the same algorithm.  
+     * uses streams to be more efficient. Essentially the same algorithm.
+     * 
+     * Algorithm - First, from the source get the Stream of Words read from
+     * dictionary. Next, Sort each word in its alphabetical order to be used
+     * as the key in the Map for anagrams.   
      * @param args
      * @throws IOException
      */
@@ -64,7 +70,11 @@ public class Anagrams {
         int minGroupSize = Integer.parseInt(args[1]);
 
         try (Stream<String> words = Files.lines(dictionary)) {
-            
+            words.collect(          // Reduce Stream of words 
+                groupingBy(word -> word.chars().sorted()) // Sort alphabetical
+                    .collect(StringBuilder::new, (sb,c) -> sb.append(c),
+                    StringBuilder::append).toString()
+            );
         }
         
     }
