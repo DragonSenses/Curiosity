@@ -18,6 +18,8 @@
 </html>
 
 <!--  id attribute
+
+--------- Linking to a Specific Part of the Same Page ---------
 The value of the id attribute should start with a letter or an
 underscore (not a number or any other character) and, on a
 single page, no two id attributes should have the same value.
@@ -35,4 +37,20 @@ the # symbol, followed by the value of the id attribute of the
 element you want to link to. In this example, <a href="#top">
 links to the <h1> element at the top of the page whose id
 attribute has a value of top.
+
+--------- Linking to a Specific Part of Another Page ---------
+If you want to link to a specific part of a different page (whether
+on your own site or a different website) you can use a similar
+technique. As long as the page you are linking to has id attributes that
+identify specific parts of the page, you can simply add the
+same syntax to the end of the link for that page.
+
+Therefore, the href attribute will contain the address for the
+page (either an absolute URL or a relative URL), followed by the
+# symbol, followed by the value of the id attribute that is used on
+the element you are linking to.
+
+For example, to link to the bottom of the homepage of the
+website that accompanies this book, you would write:
+<a href="http:/www.htmlandcssbookcom/#bottom">
 -->
