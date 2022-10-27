@@ -105,19 +105,53 @@ public class NewLine {
         return text;
     }
 
+    /**
+     * Create a paragraph using two lines of text, line2 should appear in a
+     * newline after line1
+     */
+    public static void exploreCRLF(){
+        String line1 = "Humpty Dumpty sat on a wall.";
+        String line2 = "Humpty Dumpty had a great fall.";
+        
+        System.out.println("\nLine 1 - \t" + line1 + "\nLine 2 - \t" + line2 + "\n");
+
+        // For a Unix/Linux/New Mac-based OS, we can use "\n"
+        String rhyme = line1 + "\n" + line2;
+        System.out.println("\t[Unix/Linux/Mac]\n");
+        System.out.println(rhyme);
+
+        // For a Windows-based OS, we can use "/r/n"
+        rhyme = line1 + "\r\n" + line2;
+        System.out.println("\n\t[Windows]\n");
+        System.out.println(rhyme);
+
+        // For an old Mac-based OS, we can use "\r"
+        rhyme = line1 + "\r" + line2;
+        System.out.println("\n\t[Old Mac]\n");
+        System.out.println(rhyme);
+
+        System.out.println("\n\t---- Platform Indepedent Line Separator ----");
+        // Using a Platform Independent Line Separator
+        rhyme = line1 + System.lineSeparator() + line2;
+        System.out.println(rhyme);
+        // or use
+        rhyme = line1 + System.getProperty("line.separator") + line2;
+        System.out.println(rhyme);
+    }
+
     enum Flags {
         One, Two, Three, Four, Five, Six
     }
 
     public static void execute(String text, EnumSet<Flags> flags){
         if(flags.contains(Flags.One)) {
-            System.out.println(text.replace("\n", ""));
+            System.out.println(text.replace("\n", " "));
         }
         if(flags.contains(Flags.Two)) {
-            System.out.println(text.replace(System.getProperty("line.separator"), ""));
+            System.out.println(text.replace(System.getProperty("line.separator"), " "));
         }
         if(flags.contains(Flags.Three)) {
-            System.out.println(text.replaceAll("\\r|\\n", ""));
+            System.out.println(text.replaceAll("\\r|\\n", " "));
         }
         if(flags.contains(Flags.Four)) {
             System.out.println(text.replaceAll("\\r\\n|\\r|\\n", " "));
@@ -134,5 +168,7 @@ public class NewLine {
         String text = "Goodbye Cruel\r\nWorld";
         EnumSet<Flags> allOptions = EnumSet.allOf(Flags.class); 
         execute(text, allOptions);
+
+        exploreCRLF();
     }
 }
