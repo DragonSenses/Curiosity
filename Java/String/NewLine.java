@@ -19,12 +19,25 @@ import java.util.EnumSet;
  * To get the newline String for any environment, use
  * System.getProperty("line.separator");
  * 
+ * \r and \n are characters denoted with ASCII values of 13 (CR) and 10 (LF), 
+ * respectively. They both represent a break between two lines, but operating
+ * systems use them differently. 
+ * 
+ * On Windows, a sequence of two characters is used to start a new line, 
+ * CR immediately followed by LF. Conversely, on Unix-like systems, only LF is used.
+ * 
+ * We must pay attention to the line break characters we use because the
+ * applications will behave differently depending on the operating system they will run on.
+ * 
+ * The safest and most cross-compatible option is to use System.lineSeparator(). 
+ * 
+ * 
  * [Goal] Remove Line Breaks from a incoming file of text (String).
  * 
  * ================================= Summary =================================
  * (1) Reading File as a String
  * (2) Replacing Newlines from a String
- * 
+ * (3) Explore Carriage Return and Line Feed (CRLF)
  */
 public class NewLine {
 
