@@ -22,12 +22,9 @@ import java.util.EnumSet;
  * [Goal] Remove Line Breaks from a incoming file of text (String).
  * 
  * ================================= Summary =================================
- * (1) 
- * (2) 
- * (3) 
- * (4) 
- * ================================= Methods ==================================
- * - 
+ * (1) Reading File as a String
+ * (2) Replacing Newlines from a String
+ * 
  */
 public class NewLine {
 
@@ -96,6 +93,7 @@ public class NewLine {
         /* 4. Replaces all Line Terminators with a space  */
         // Notice how the sequence "\r\n" represents a single Windows line terminator 
         // so need to be cautious on not replacing it with two spaces. 
+        // Subtle difference from 3, as \r\n will be counted as two spaces
         text = text.replaceAll("\\r\\n|\\r|\\n", " ");
     
         /* 5. Replaces all Line Terminators with a space - Java 8 Way */
@@ -103,34 +101,38 @@ public class NewLine {
 
         /* 6. Replaces multiple Line Terminator with One Space */
         text = text.replaceAll("\\R+", " ");
-        
+
         return text;
     }
 
     enum Flags {
-        One, Two, Three, Four
+        One, Two, Three, Four, Five, Six
     }
 
-    public static void execute(EnumSet<Flags> flags){
+    public static void execute(String text, EnumSet<Flags> flags){
         if(flags.contains(Flags.One)) {
-            System.out.println("One");
+            System.out.println(text.replace("\n", ""));
         }
         if(flags.contains(Flags.Two)) {
-            System.out.println("Two");
+            System.out.println(text.replace(System.getProperty("line.separator"), ""));
         }
         if(flags.contains(Flags.Three)) {
-            System.out.println("Three");
+            System.out.println(text.replaceAll("\\r|\\n", ""));
         }
         if(flags.contains(Flags.Four)) {
-            System.out.println("Four");
+            System.out.println(text.replaceAll("\\r\\n|\\r|\\n", " "));
+        }
+        if(flags.contains(Flags.Five)) {
+            System.out.println(text.replaceAll("\\R", " "));
+        }
+        if(flags.contains(Flags.Six)) {
+            System.out.println(text.replaceAll("\\R+", " "));
         }
     }
 
     public static void main(String[] args) {
+        String text = "Goodbye Cruel\r\nWorld";
         EnumSet<Flags> allOptions = EnumSet.allOf(Flags.class); 
-        execute(allOptions);
-
-        EnumSet<Flags> currentOpt = EnumSet.of(Flags.Two);
-        execute(currentOpt);
+        execute(text, allOptions);
     }
 }
