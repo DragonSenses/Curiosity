@@ -80,17 +80,30 @@ public class NewLine {
      * Explore various ways to replace newlines from a String
      */
     public static String replaceNewLines(String text){
-        // 1. Simply Removes all newline characters
+        /* 1. Simply Removes all newline characters */
         // But does not cope with Windows or Mac line terminations
         text = text.replace("\n", "");
 
-        // 2. Removes all line terminators for the current platform
+        /* 2. Removes all line terminators for the current platform */
         // Does not cope with the case where you are trying to process 
         // (for example) a UNIX file on Windows, or vice versa
         text = text.replace(System.getProperty("line.separator"), "");
 
+        /* 3. Removes all Windows, Unix, or Mac Line Terminators */
+        // However if the input file is text, this will concatenate words
+        text = text.replaceAll("\\r|\\n", "");
 
+        /* 4. Replaces all Line Terminators with a space  */
+        // Notice how the sequence "\r\n" represents a single Windows line terminator 
+        // so need to be cautious on not replacing it with two spaces. 
+        text = text.replaceAll("\\r\\n|\\r|\\n", " ");
+    
+        /* 5. Replaces all Line Terminators with a space - Java 8 Way */
+        text = text.replaceAll("\\R", " ");
 
+        /* 6. Replaces multiple Line Terminator with One Space */
+        text = text.replaceAll("\\R+", " ");
+        
         return text;
     }
 
