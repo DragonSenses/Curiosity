@@ -38,17 +38,21 @@ public class NewLine {
      * @throws IOException 
      */
     public static String readFileAsString(String filename) throws IOException {
-       // Java 11's use of Files.readString()
+        // Java 11's use of Files.readString()
         try {
             // read file into string
             String contents = Files.readString(Path.of(filename));
         
             // print string
             System.out.println(contents);
-        
+            
+            return contents; 
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        return "";  
     }
 
     // Java 8 way using Streams to read file as String
@@ -72,6 +76,23 @@ public class NewLine {
         return text.replace("\n", "").replace("\r", "");
     }
 
+    /**
+     * Explore various ways to replace newlines from a String
+     */
+    public static String replaceNewLines(String text){
+        // 1. Simply Removes all newline characters
+        // But does not cope with Windows or Mac line terminations
+        text = text.replace("\n", "");
+
+        // 2. Removes all line terminators for the current platform
+        // Does not cope with the case where you are trying to process 
+        // (for example) a UNIX file on Windows, or vice versa
+        text = text.replace(System.getProperty("line.separator"), "");
+
+
+
+        return text;
+    }
 
     enum Flags {
         One, Two, Three, Four
