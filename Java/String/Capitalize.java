@@ -7,6 +7,22 @@ package Java.String;
 public class Capitalize {
 
     /**
+     * Controls which special characters will be used to check against when
+     * Capitalizing a letter. 
+     * 
+     * For example, my@email -> My@email since "@" is not a special character
+     * we would like to check for. 
+     * 
+     * Special Characters List: Whitespace, ".", "\"
+     * @param c character to check
+     * @return True if it is a special character we would like to capitalize after, 
+     * false otherwise
+     */
+    private static boolean isSpecialCharacter(char c){
+
+    }
+
+    /**
      * Converts all the letters into upper/lowercase depending on their
      * position near a space or other special characters
      * 
@@ -30,6 +46,6 @@ public class Capitalize {
 
     public static void main(String[] args) {
         String s = "demon prince goes to academy";
-
+        System.out.println(capitalizeString(s));
     }
 }
