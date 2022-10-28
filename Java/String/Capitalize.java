@@ -17,16 +17,19 @@ import java.util.List;
  */
 public class Capitalize {
 
+    /**
+     * Filters the String by lowercasing certain words. 
+     */
     public static void lowercaseCertainWords(){
-        List<String> words = Arrays.asList("Hello", "World");   // List of words
-        List<String> uniqueCharacters; // the result we want
-        uniqueCharacters = words.stream() 
-                                .map(word -> word.split("")) // each word into array of individual letters
-                                .flatMap(Arrays::stream) // Flattens each generated stream into a single stream
-                                .distinct() 
-                                .collect(toList());
+        List<String> words = Arrays.asList("Demon Prince Goes To Academy");   // List of words
+        List<String> result; // the result we want
+        result = words.stream() 
+                      .map(word -> word.split(" ")) // extract words split by spaces
+                      .flatMap(Arrays::stream) // Flattens each generated stream into a single stream
+                      .distinct() 
+                      .collect(toList());
 
-        System.out.println(uniqueCharacters);
+        System.out.println(result);
     }
 
     /**
@@ -85,5 +88,6 @@ public class Capitalize {
         System.out.println(capitalizeString("old mc.donald"));
         System.out.println(capitalizeString("my@email"));
 
+        lowercaseCertainWords();
     }
 }
