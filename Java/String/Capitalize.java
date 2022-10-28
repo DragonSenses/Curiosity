@@ -13,9 +13,24 @@ import java.util.List;
  * and lowercase certain words except if its the first, such as "the" or "and"
  * ================================= Summary =================================
  * (1) Process a String so that the first character of each word is Capitalized
- * (2) 
+ * (2) Filter String by lowercasing certain common words such as "the" "and" "to"
  */
 public class Capitalize {
+
+    /* Check if the incoming word should be lowercased, such as: "the" "and" "to" */
+    private static boolean shouldBeLowercased(String word){
+        
+        switch(word.toLowerCase()){
+            case "the": return true;
+
+            case "to": return true;
+
+            case "and": return true;
+
+            default: 
+                return false;
+        }
+    }
 
     /**
      * Filters the String by lowercasing certain words. 
@@ -26,8 +41,16 @@ public class Capitalize {
         result = words.stream() 
                       .map(word -> word.split(" ")) // extract words split by spaces
                       .flatMap(Arrays::stream) // Flattens each generated stream into a single stream
-                      .distinct() 
                       .collect(toList());
+
+        System.out.println(result);
+
+        // Filter process
+        for(int i = 0; i < result.size(); i++){
+            if(shouldBeLowercased(result.get(i))) {
+                result.set(i,result.get(i).toLowerCase());
+            }
+        }
 
         System.out.println(result);
     }
