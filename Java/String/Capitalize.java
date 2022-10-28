@@ -1,10 +1,33 @@
 package Java.String;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Goal: Process a String so that the first character of each word
  * is Capitalized.
+ * 
+ * Goal: Process through a String, delimit each word by spaces or special char,
+ * and lowercase certain words except if its the first, such as "the" or "and"
+ * ================================= Summary =================================
+ * (1) Process a String so that the first character of each word is Capitalized
+ * (2) 
  */
 public class Capitalize {
+
+    public static void lowercaseCertainWords(){
+        List<String> words = Arrays.asList("Hello", "World");   // List of words
+        List<String> uniqueCharacters; // the result we want
+        uniqueCharacters = words.stream() 
+                                .map(word -> word.split("")) // each word into array of individual letters
+                                .flatMap(Arrays::stream) // Flattens each generated stream into a single stream
+                                .distinct() 
+                                .collect(toList());
+
+        System.out.println(uniqueCharacters);
+    }
 
     /**
      * Controls which special characters will be used to check against when
