@@ -19,7 +19,19 @@ public class Capitalize {
      * false otherwise
      */
     private static boolean isSpecialCharacter(char c){
+        // Can add other chars here
+        // else if (Character.isWhitespace(chars[i]) || chars[i] == '.' || chars[i] == '\'') 
 
+        if(Character.isWhitespace(c)) { return true; }
+        
+        switch(c){
+            case '.': return true;
+
+            case '\'': return true;
+
+            default: 
+                return false;
+        }
     }
 
     /**
@@ -36,8 +48,7 @@ public class Capitalize {
             if (!previousCharIsLetter && Character.isLetter(chars[i])) {
                 chars[i] = Character.toUpperCase(chars[i]);
                 previousCharIsLetter = true;
-            } else if (Character.isWhitespace(chars[i]) || chars[i] == '.' || chars[i] == '\'') { // Can add other
-                                                                                                  // chars here
+            } else if (isSpecialCharacter(chars[i])) { 
                 previousCharIsLetter = false;
             }
         }
@@ -47,5 +58,9 @@ public class Capitalize {
     public static void main(String[] args) {
         String s = "demon prince goes to academy";
         System.out.println(capitalizeString(s));
+        System.out.println(capitalizeString("harriet de saint'owan"));
+        System.out.println(capitalizeString("old mc.donald"));
+        System.out.println(capitalizeString("my@email"));
+
     }
 }
