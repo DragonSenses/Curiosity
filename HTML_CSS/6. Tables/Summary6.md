@@ -6,6 +6,12 @@ table. For example: sports results, stock reports, train timetables.
 When representing information in a table, you need to think in terms of a 
 grid made up of rows and columns (a bit like a spreadsheet). 
 
+A table represents information in a grid format. 
+    *Grids allow us to understand complex data by referencing
+     information on two axes. 
+    *Each block in the grid is referred to as a table cell. 
+     In HTML a table is written out row by row.
+
 - Use the four key elements for creating tables
 - Represent complex data using tables
 - Add captions to tables
