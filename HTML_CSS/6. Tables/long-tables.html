@@ -201,3 +201,16 @@ styles to change their appearance.
 		</table>
 	</body>
 </html>
+
+<!--  
+	Part of the reason for having separate <thead> and <tfoot> elements is so 
+that, if you have a table that is taller than the screen (or, if printed, 
+longer than one page) then the browser can keep the header and footer
+visible whilst the contents of the table scroll. This is intended to make it
+easier for users to see which column the data is in (however this functionality
+is not implemented by default in any current browser).
+
+Some CSS styles have been added  to this example so that the contents of the 
+<thead> and <tfoot> can be seen being treated differently than the rest of the
+rows.
+-->
