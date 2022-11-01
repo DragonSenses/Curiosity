@@ -18,6 +18,21 @@ action - its value is the URL for the page on the server that will receive the
 	information in the form when it is submitted. 
 
 method - forms can be sent using of two methods: "get" or "post"
+	-get method where the values from the form are added to the end of the URL
+	specified in the "action" attribute. 
+		-short forms (such as search boxes)
+		- when you are just retrieving data from the web server (not sending 
+		information that should be added to or deleted from a database)
 
+	-post method the values are sent in what are known as HTTP headers. If form
+		- Allows Users to Upload a File
+		- Is very long
+		- Contains Sensitive Data (e.g. passwords)
+		- adds information to, or deletes information from, a database
 
+If the method attribute is not used, the form data will be sent using the get method.
+
+id - the value is used to identify the form distinctly from other elements on the 
+page (and is often used by scripts — such as those that check you have
+entered information into fields that require values).
  -->
