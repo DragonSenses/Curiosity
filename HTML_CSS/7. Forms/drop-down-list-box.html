@@ -3,6 +3,43 @@
 		<title>Drop Down List Box</title>
 	</head>
 	<body>
-		<form action="http://www.example.com/profile.php">			<p>What device do you listen to music on?</p>			<select name="devices">				<option value="ipod">iPod</option>				<option value="radio">Radio</option>				<option value="computer">Computer</option>			</select>		</form>
+		<form action="http://www.example.com/profile.php">
+			<p>What device do you listen to music on?</p>
+			<select name="devices">
+				<option value="ipod">iPod</option>
+				<option value="radio">Radio</option>
+				<option value="computer">Computer</option>
+			</select>
+		</form>
 	</body>
 </html>
+
+<!-- Drop Down List Box (a.k.a Select Box)
+	
+	<select> - A drop down list box (select box) allows users to select one option
+		from a drop down list. It contains two or more <option> elements.
+
+		name - attribute indicates the name of the form control being sent to the
+			server, along with the value selected.
+	
+	<option> - element is used to specify the options that the user can select from.
+		The words between the opening <option> and closing </option> tags will
+		be shown to the user in the drop down box. 
+
+		value - attribute to indicate the value that is sent to the server, along
+			with the name of the control if this option is selected.
+
+		selected - attribute can be used to indicate the option that should be
+			selected when the page loads. The value of this attribute should 
+			be select. If this attribute is not used, the first option will be
+			shown when the page loads. If the user does not select an option,
+			then the first item will be sent to the server as the value for
+			this control.
+
+	Function of a drop down list box is similar to that of the radio buttons (in 
+that only one option can be selected). Two key factors in choosing which to use:
+		
+	1. If users need to see all options at a glance -> Radio Buttons
+	2. If there is a very long list of options -> Drop Down List Boxes
+
+-->
