@@ -23,5 +23,15 @@
 			When a question provides users with options for answers in the 
 			form of radio buttons, the value of the name attribute should be
 			the same for all of the radio buttons used to answer that question
-		value - 
+		value - indicates value that is sent to the server for the selected 
+			option. Value of each of the buttons in a group should be different
+			(so that the server knows which option the user has selected)
+		checked - can be used to indicate which value (if any) should be selected
+			when the page loads. Value of this attribute is checked. Only one
+			radio button in a group should use this attribute
+
+	Once a radio button has been selected it cannot be deselected. The user can
+only select a different option. If you are only allowing the user one option 
+and want them to be able to deselect it (for example if they are indicating 
+they agree to terms and conditions), you should use a checkbox instead.
 -->
