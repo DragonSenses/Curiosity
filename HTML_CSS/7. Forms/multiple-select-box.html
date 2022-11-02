@@ -1,1 +1,35 @@
-<html>	<head>		<title>Multiple Select Box</title>	</head>	<body>		<form action="http://www.example.com/profile.php">			<p>Do you play any of the following instruments? (You can select more than one option by holding down control on a PC or command key on a Mac while selecting different options.)</p>			<select name="instruments" size="3" multiple="multiple">				<option value="guitar" selected="selected">Guitar</option>				<option value="drums">Drums</option>				<option value="keyboard" selected="selected">Keyboard</option>				<option value="bass">Bass</option>			</select>		</form>	</body></html>
+<html>
+	<head>
+		<title>Multiple Select Box</title>
+	</head>
+	<body>
+		<form action="http://www.example.com/profile.php">
+			<p>Do you play any of the following instruments? (You can select more than one option by holding down control on a PC or command key on a Mac while selecting different options.)</p>
+			<select name="instruments" size="3" multiple="multiple">
+				<option value="guitar" selected="selected">Guitar</option>
+				<option value="drums">Drums</option>
+				<option value="keyboard" selected="selected">Keyboard</option>
+				<option value="bass">Bass</option>
+			</select>
+		</form>
+	</body>
+</html>
+
+<!-- Multiple Select Box
+	<select> - can turn a Drop Down Select Box into a box that shows more than
+		one option by adding the size attribute.
+		
+	size - attribute turns into a multiple select box. Its value should be the
+		number of options you want to show at once. 
+	Unfortunately, the way browsers have implemented this attribute is not perfect,
+		should be thoroughly tested if used 
+		(in particular in Firefox, & Safari on a Mac)
+
+	multiple - attribute with a value of multiple allows users to select multiple
+		options from this list. 
+
+TIP: It is a good idea to tell users if they can select more than one option at
+a time. It is also helpful to indicate that on a PC they should hold down the 
+control key while selecting multiple options and on a Mac they should use
+the command key while selecting options.
+-->
