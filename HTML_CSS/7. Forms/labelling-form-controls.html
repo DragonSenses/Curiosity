@@ -4,7 +4,26 @@
 	</head>
 	<body>
 		<form action="http://www.example.com/subscribe.php">
-			<label>Age: <input type="text" name="age" /></label>			<br/ >			Gender:
-			<input id="female" type="radio" name="gender" value="f">			<label for="female">Female</label>			<input id="male" type="radio" name="gender" value="m">			<label for="male">Male</label>		</form>
+			<label>Age: <input type="text" name="age" /></label> 		
+			<br/ >
+			Gender:
+			<input id="female" type="radio" name="gender" value="f">
+			<label for="female">Female</label>
+			<input id="male" type="radio" name="gender" value="m">
+			<label for="male">Male</label>
+		</form>
 	</body>
 </html>
+
+<!-- Labelling Form Controls
+
+	<label> - each form control should have its own <label> element as this
+		indicates the purpose of the form control in text. This makes the form
+		accessible to vision-impaired users.
+
+	Used in 2 Ways:
+		1. Wrap around both the text description and the form input (as shown with Age)
+		2. Be kept separate from the form control and use the for attribute to
+		indicate which form control it is a label for (as shown with radio buttons)
+
+-->
