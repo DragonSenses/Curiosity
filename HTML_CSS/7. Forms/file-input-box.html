@@ -3,6 +3,26 @@
 		<title>File Input Box</title>
 	</head>
 	<body>
-		<form action="http://www.example.com/upload.php" method="post">			<p>Upload your song in MP3 format:</p>			<input type="file" name="user-song" /><br />			<input type="submit" value="Upload" />		</form>
+		<form action="http://www.example.com/upload.php" method="post">
+			<p>Upload your song in MP3 format:</p>
+			<input type="file" name="user-song" /><br />
+			<input type="submit" value="Upload" />
+		</form>
 	</body>
 </html>
+
+<!-- File Input Box
+	<input> type="file" 
+		allows users to upload a file, creating a box that looks like a text
+	input followed by a browse button. When user clicks browse, a window opens
+	up that allows them to select a file from their computer to be uploaded to
+	the website.
+
+	When allowing users to upload files, the method attribute on the <form> 
+		element must have a value of post. Cannot send files using the HTTP
+		get method.
+
+	When a user clicks on the browse button, the presentation of the window that
+	allows them to browse for the file they want to upload will match the windows
+	of the user's OS. You cannot control the appearance of these windows. 
+-->
