@@ -1,59 +1,45 @@
-Links are the defining feature of thhe web because they 
-allow you to move from one web page to another - enabling the 
-very idea of browsing or surfing. 
+# Links
 
-Types of Links:
+> Links are the defining feature of the web because they allow you to move from one web page to another - enabling the very idea of browsing or surfing. 
+
+## Types of Links:
 - Links from one website to another
 - Links from one page to another on the same website
 - Links from one part of a web page to another part of the same page
 - Links that open in a new browser window
-- Links that start up your email program and address a new
-email to someone
+- Links that start up your email program and address a new email to someone
 
-             -------- Writing Links  -------- 
-- Links are created using the <a> element. 
-- Users can click on anything between the opening <a> tag and the closing </a> tag.
+
+## -------- Writing Links  -------- 
+- Links are created using the `<a>` element. 
+- Users can click on anything between the opening `<a>` tag and the closing `</a>` tag.
 - You specify which page you want to link to using the href attribute.
+    
+> `<a href="http://www.office.com">Office</a>`
 
-    |---- Opening Link Tag ------|    |--| Closing Link Tag 
-    <a href="http://www.imdb.com">IMDB</a>
-            |-------------------| |--|
-        Page the Link Goes To      Text User Clicks On: "IMDB"
-        "http://www.imdb.com"
+- The text between the opening `<a>` tag and closing `</a>` tag is known as link text. 
+- Where possible, your link text should explain where visitors will be taken if they click on it (rather than just saying "click here").
 
--The text between the opening <a> tag and closing </a> tag
-is known as link text. Where possible, your link text should
-explain where visitors will be taken if they click on it (rather
-than just saying "click here").
+- Many people navigate websites by scanning the text for links. Clear link text can help visitors find what they want. This will give them a more positive impression of your site and may encourage them to visit it for longer. (It also helps people using screen reader software.)
 
--Many people navigate websites by scanning the text for links.
-Clear link text can help visitors find what they want. This
-will give them a more positive impression of your site and may
-encourage them to visit it for longer. (It also helps people
-using screen reader software.)
+- To write good link text, you can think of words people might use when searching for the page that you are linking to.
+(e.g., rather than write "places to stay" you could use something more specific such as "hotels in New York.")
 
-- To write good link text, you can think of words people might
-use when searching for the page that you are linking to.
-(For example, rather than write "places to stay" you could use
-something more specific such as "hotels in New York.")
+---
 
-	-------------------- Absolute URLS --------------------
+## Absolute URLs
 - URL is Uniform Resource Locator
 - Every web page has its own URL.
-- This is the webaddress that you would type into a browser if you wanted
+- This is the web address that you would type into a browser if you wanted
 to visit that specific page 
-- An absolute URL starts with the domain name for that site,
-and can be followed by the path to a specific page. If no page is
-specified, the site will display the homepage.
+>- An absolute URL starts with the domain name for that site, and can be followed by the path to a specific page. 
+>- If no page is specified, the site will display the homepage.
 
-	-------------------- Relative URLS --------------------
-- Relative URLs can be used when linking to pages within your own
-website. They provide a shorthand way of telling the browser where to
+## Relative URLS 
+>- Relative URLs can be used when linking to pages within your own website. They provide a shorthand way of telling the browser where to
 find your files.
 
-- When linking to other pages within the same site, you can
-use relative URLs. These are like a shorthand version of absolute
-URLs because you do not need to specify the domain name.
+- When linking to other pages within the same site, you can use relative URLs. These are like a shorthand version of absolute URLs because you do not need to specify the domain name.
 
 - Relative URLs help when building a site on your computer because
 you can create links between pages without having to set up
@@ -71,7 +57,14 @@ therefore, need to write two different relative URLs.
 
 These links make use of the same terminology (borrowed from that of family trees)
 
----------------------- Directory Structure  ---------------------------
+<br>
+
+***
+
+<br>
+
+## Directory Structure
+
 On larger websites it's a good idea to organize your code by placing the
 pages for each different section of the site into a new folder. Folders on a
 website are sometimes referred to as directories.
