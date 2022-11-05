@@ -1,4 +1,4 @@
-<!-- Images
+# Images
 
     There are many reasons why you might want to add an image to a web page: 
 you might want to include a logo, photograph, illustration, diagram, or chart.
@@ -169,5 +169,3 @@ them on the web page and in the appropriate format.
 
 - Photographs are best saved as JPEGs; illustrations or
 logos that use flat colors are better saved as GIFs.
-
- -->
