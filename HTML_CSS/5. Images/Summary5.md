@@ -80,27 +80,29 @@ It is best to source images that are the correct shape if possible.
 
 # ***Image Resolution***
 
-Images created for the web should be saved at a resolution of 72 ppi. 
-The higher the resolution of the image, the larger the size of the file.
+>Images created for the web should be saved at a resolution of 72 ppi.
+- The higher the resolution of the image, the larger the size of the file.
 
-Bitmap - The type of image format that JPGs, GIFs, & PNGs belong to, they are
-made up of lost of miniature squares. The resolution of an image is the
+>Bitmap - The type of image format that JPGs, GIFs, & PNGs belong to, they are
+made up of lost of miniature squares. 
+
+- The resolution of an image is the
 number of squares that fit within a 1 inch x 1 inch square area.
 
-Images appearing on computer screens are made of tiny squares called pixels.
+- Images appearing on computer screens are made of tiny squares called pixels.
 
-    Pixels Per Inch (PPI) vs Dots Per Inch (DPI)
+---
 
-The web browsers on most desktop computers display images at a
-resolution of 72 pixels per inch (ppi). Images in print materials
+### **Pixels Per Inch (PPI) vs Dots Per Inch (DPI)**
+
+The web browsers on most desktop computers display images at a resolution of 72 pixels per inch (ppi). 
+
+> Images in print materials
 (such as books and magazines) are made up of tiny circles called
 dots. These images are usually printed at a resolution of 300
 dots per inch (dpi).
 
-Due to the fact that computer displays are capped at a resolution of 72 ppi,
-using images on the web with a higher resolution will not result in better
-image quality — only in larger file sizes, which will increase the
-time needed to load them and therefore slow down viewing of
+Due to the fact that computer displays are capped at a resolution of 72 ppi, using images on the web with a higher resolution will not result in better image quality — only in larger file sizes, which will increase the time needed to load them and therefore slow down viewing of
 your web pages.
 
 <br>
@@ -173,14 +175,11 @@ most notably Internet Explorer 6 (IE6).
 
 
 # **Summary: *Images***
-- The <img> element is used to add images to a web page.
+- The `<img>` element is used to add images to a web page.
 
-- You must always specify a src attribute to indicate the
-source of an image and an alt attribute to describe the
+- You must always specify a `src attribute` to indicate the source of an image and an `alt attribute` to describe the
 content of an image.
 
-- You should save images at the size you will be using
-them on the web page and in the appropriate format.
+- You should save images at the size you will be using them on the web page and in the appropriate format.
 
-- Photographs are best saved as JPEGs; illustrations or
-logos that use flat colors are better saved as GIFs.
+- Photographs are best saved as JPEGs; illustrations or logos that use flat colors are better saved as GIFs.
