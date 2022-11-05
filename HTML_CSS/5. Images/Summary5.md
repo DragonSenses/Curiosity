@@ -1,20 +1,13 @@
 # Images
 
-    There are many reasons why you might want to add an image to a web page: 
-you might want to include a logo, photograph, illustration, diagram, or chart.
-
-    There are several things to consider when selecting and preparing images
-for your site, but taking time to get them right will make it look more
-attractive and professional.
-
-Here we:
 - Include an image in your web pages using HTML
 - Pick which image format to use
 - Show an image at the right size
-- Optimize an image for use on the web to make pages
-load faster
+- Optimize an image for use on the web to make pages load faster
 
-Three Rules for Creating Images
+---
+
+## Three Rules for Creating Images
 1) Save Images in the Right Format
 
     Websites mainly use images in jpeg, gif, or png format. If you
