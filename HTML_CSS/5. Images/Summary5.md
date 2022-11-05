@@ -7,7 +7,7 @@
 
 ---
 
-## Three Rules for Creating Images
+## ***Three Rules for Creating Images***
 
 1. **Save Images in the Right Format**
 
@@ -33,7 +33,7 @@
     
     - So saving images at a higher resolution results in images that are larger than necessary and take longer to download.
 
-## -------- Image Formats  -------- 
+## -------- **Image Formats**  -------- 
     JPEG - Whenever you have many different colors in a picture. 
 
 A photograph that features snow or an overcast sky might look like it has large areas that are just white or gray, but the picture is usually made up of many different colors that are subtly different.
@@ -45,10 +45,10 @@ known as flat color.
 - Logos, illustrations, and diagrams often use flat colors.
 (Note that photographs of snow, sky, or grass are not flat colors, they are made up of many subtly different shades of the same color and are not as suited to GIF or PNG format.)
 
-## -------- Image Dimensions  -------- 
+## ---- **Image Dimensions**  ----
     The images you use on your website should be saved at the same width and height that you want them to appear on the page.
 
-## ---- Reducing Image Size  ----
+## ---- **Reducing Image Size**  ----
 You can reduce the size of images to create a smaller version of the image.
 
 Example: If your image is 600 pixels wide and 300 pixels tall,
@@ -56,7 +56,7 @@ you can reduce the size of the image by 50%.
 
 Result: This will create an image that is quicker to download.
 
-## ---- Increasing Image Size ----
+## ---- **Increasing Image Size** ----
 You can't increase the size of photos significantly without
 affecting the image quality.   
 
@@ -65,7 +65,7 @@ increasing the size by 300% would result in poor quality.
 
 Result: The image will look blurry or blocky.
 
-## ---- Changing Shape ----
+## ---- **Changing Shape** ----
 Only some images can be cropped without losing valuable information.
 
 Example: If your image is 300 pixels square, you can remove
@@ -78,7 +78,7 @@ It is best to source images that are the correct shape if possible.
 
 ---
 
-# Image Resolution
+# ***Image Resolution***
 
 Images created for the web should be saved at a resolution of 72 ppi. 
 The higher the resolution of the image, the larger the size of the file.
@@ -107,7 +107,7 @@ your web pages.
 
 ---
 
-## Vector Images 
+## **Vector Images** 
 --- 
 <br>
 
@@ -132,7 +132,12 @@ Scalable Vector Graphics (SVG) are a relatively new format used to display
 vector images directly on the web (eliminating the need to create bitmap
 versions of them), however its use is not yet widespread.
 
-            ---------- Animated Gifs ----------
+---
+
+## **Animated Gifs**
+
+---
+
 Animated GIFs show several frames of an image in sequence and therefore can be
 used to create simple animations.
 
@@ -142,7 +147,12 @@ are really only suitable for simple illustrations.
 Each extra frame of the image increases the size of the file, and
 can therefore add to the time it takes for an image to download
 
-            ---------- Transparency  ----------
+---
+
+## **Transparency** 
+
+---
+
 Creating an image that is partially transparent (or "see-through") for the web
 involves selecting one of two formats: Transparent GIF or PNG
 
@@ -157,7 +167,12 @@ then you will need to save it as a PNG.
 Note: Transparent PNGs are not fully supported in older browsers,
 most notably Internet Explorer 6 (IE6). 
 
-                -------- Summary  -------- 
+<br>
+
+***
+
+
+# **Summary: *Images***
 - The <img> element is used to add images to a web page.
 
 - You must always specify a src attribute to indicate the
