@@ -1,4 +1,4 @@
-<!-- Links are the defining feature of thhe web because they 
+Links are the defining feature of thhe web because they 
 allow you to move from one web page to another - enabling the 
 very idea of browsing or surfing. 
 
@@ -108,5 +108,3 @@ email address in the "to" field.
 
 - You can use the id attribute to target elements within
 a page that can be linked to.
-
--->
