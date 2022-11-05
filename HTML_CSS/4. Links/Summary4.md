@@ -15,7 +15,7 @@
 - Users can click on anything between the opening `<a>` tag and the closing `</a>` tag.
 - You specify which page you want to link to using the href attribute.
     
-> `<a href="http://www.office.com">Office</a>`
+> `<a href="http://www.office.com">Office</a>`  
 
 - The text between the opening `<a>` tag and closing `</a>` tag is known as link text. 
 - Where possible, your link text should explain where visitors will be taken if they click on it (rather than just saying "click here").
@@ -41,21 +41,16 @@ find your files.
 
 - When linking to other pages within the same site, you can use relative URLs. These are like a shorthand version of absolute URLs because you do not need to specify the domain name.
 
-- Relative URLs help when building a site on your computer because
-you can create links between pages without having to set up
+- Relative URLs help when building a site on your computer because you can create links between pages without having to set up
 your domain name or hosting.
-
-    If all of the files in your site are in one folder, you simply use the
-file name for that page.
-
-    If your site is organized into separate folders (or directories),
-you need to tell the browser how to get from the page it is
+    * If all of the files in your site are in one folder, you simply use the file name for that page.
+    
+    * If your site is organized into separate folders (or directories), you need to tell the browser how to get from the page it is
 currently on to the page that you are linking to.
 
-    If you link to the same page from two different pages you might,
-therefore, need to write two different relative URLs.
+    * If you link to the same page from two different pages you might, therefore, need to write two different relative URLs.
 
-These links make use of the same terminology (borrowed from that of family trees)
+    * These links make use of the same terminology (borrowed from that of family trees)
 
 <br>
 
@@ -65,39 +60,35 @@ These links make use of the same terminology (borrowed from that of family trees
 
 ## Directory Structure
 
-On larger websites it's a good idea to organize your code by placing the
-pages for each different section of the site into a new folder. Folders on a
-website are sometimes referred to as directories.
+On larger websites it's a good idea to organize your code by placing the pages for each different section of the site into a new folder. 
+>Folders on a website are sometimes referred to as directories.
 
-Structure
-    The top-level folder is known as the root folder. The root folder
-contains all of the other files and folders for a website. Each section
-of the site is placed in a separate folder; this helps organize the files.
+### Structure
+    The top-level folder is known as the root folder. The root folder contains all of the other files and folders for a website. 
+    
+Each section of the site is placed in a separate folder; this helps organize the files.
 
-Relationships
-    The relationship between files and folders on a website
-is described using the same terminology as a family tree.
+### Relationships
+    The relationship between files and folders on a website is described using the same terminology as a family tree.
 
-Homepages
-    The main homepage of a site written in HTML (and the
-homepages of each section in a child folder) is called index.html.
-Web servers are usually set up to return the index.html file if no
-file name is specified.
-    Every page and every image on a website has a URL (or Uniform
-Resource Locator). The URL is made up of the domain name
-followed by the path to that page or image.
+### Homepages
+    The main homepage of a site written in HTML (and the homepages of each section in a child folder) is called index.html.
 
-                -------- Summary  -------- 
-- Links are created using the <a> element
+- Web servers are usually set up to return the index.html file if no file name is specified.
+    
+- Every page and every image on a website has a URL (or Uniform Resource Locator). 
+- The URL is made up of the domain name followed by the path to that page or image.
 
-- The <a> element uses the href attribute to indicate
-the page you are linking to. 
+***
 
-- If you are linking to a page within your own site, it is
-best to use relative links rather than qualified URLs.
+# Summary: Links
 
-- You can create links to open email programs with an
-email address in the "to" field.
+- Links are created using the `<a>` element
 
-- You can use the id attribute to target elements within
-a page that can be linked to.
+- The `<a>` element uses the `href attribute` to indicate the page you are linking to. 
+
+- If you are linking to a page within your own site, it is best to use relative links rather than qualified URLs.
+
+- You can create links to open email programs with an email address in the "to" field.
+
+- You can use the `id attribute` to target elements within a page that can be linked to.
