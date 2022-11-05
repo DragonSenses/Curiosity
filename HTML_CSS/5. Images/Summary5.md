@@ -8,50 +8,47 @@
 ---
 
 ## Three Rules for Creating Images
-1) Save Images in the Right Format
 
-    Websites mainly use images in jpeg, gif, or png format. If you
-choose the wrong image format then your image might not look as sharp
-as it should and can make the web page slower to load.
+1. **Save Images in the Right Format**
 
-2) Save Images at the Right Size
+> Websites mainly use images in jpeg, gif, or png format. 
 
-    You should save the image at the same width and height it will
-appear on the website. If the image is smaller than the width or 
-height that you have specified, the image can be distorted and stretched.
-If the image is larger than the width and height if you have specified,
-the image will take longer to display on the page.
+- Wrong image format leads to:
+    - Less Sharp Image (how clearly detail is rendered)
+    - Slower Web Page Load times
 
-3) Use the Correct Resolution
+2. **Save Images at the Right Size**
 
-    Computer screens are made up of dots known as pixels. Images
-used on the web are also made up of tiny dots. Resolution refers
-to the number of dots per inch, and most computer screens only
-show web pages at 72 pixels per inch. So saving images at
-a higher resolution results in images that are larger than
-necessary and take longer to download.
+> Save the image at the same width and height it will appear on the website. 
+    
+    If the image is: 
+    - Too small, then the image can be distorted and stretched.
+    - Too large, the image will take longer to display on the page.
 
-            -------- Image Formats  -------- 
+3. **Use the Correct Resolution**
+
+- Computer screens are made up of dots known as pixels. 
+- Images used on the web are also made up of tiny dots. 
+> Resolution refers to the number of dots per inch, and most computer screens only show web pages at 72 pixels per inch. 
+    
+    - So saving images at a higher resolution results in images that are larger than necessary and take longer to download.
+
+## -------- Image Formats  -------- 
     JPEG - Whenever you have many different colors in a picture. 
 
-A photograph that features snow or an overcast sky might look like it has large
-areas that are just white or gray, but the picture is usually made up of many
-different colors that are subtly different.
+A photograph that features snow or an overcast sky might look like it has large areas that are just white or gray, but the picture is usually made up of many different colors that are subtly different.
 
-    GIF/PNG - when saving images with few colors or large
-areas of the same color.
+    GIF/PNG - when saving images with few colors or large areas of the same color.
 
 When a picture has an area that is filled with exactly the same color, it is
-known as flat color. Logos, illustrations, and diagrams often use flat colors.
-(Note that photographs of snow, sky, or grass are not flat colors, they are
-made up of many subtly different shades of the same color and are not as
-suited to GIF or PNG format.)
+known as flat color. 
+- Logos, illustrations, and diagrams often use flat colors.
+(Note that photographs of snow, sky, or grass are not flat colors, they are made up of many subtly different shades of the same color and are not as suited to GIF or PNG format.)
 
-            -------- Image Dimensions  -------- 
-    The images you use on your website should be saved at the same width and
-    height that you want them to appear on the page.
+## -------- Image Dimensions  -------- 
+    The images you use on your website should be saved at the same width and height that you want them to appear on the page.
 
-                ---- Reducing Image Size  ----
+## ---- Reducing Image Size  ----
 You can reduce the size of images to create a smaller version of the image.
 
 Example: If your image is 600 pixels wide and 300 pixels tall,
@@ -59,7 +56,7 @@ you can reduce the size of the image by 50%.
 
 Result: This will create an image that is quicker to download.
 
-                ---- Increasing Image Size ----
+## ---- Increasing Image Size ----
 You can't increase the size of photos significantly without
 affecting the image quality.   
 
@@ -68,7 +65,7 @@ increasing the size by 300% would result in poor quality.
 
 Result: The image will look blurry or blocky.
 
-                ---- Changing Shape ----
+## ---- Changing Shape ----
 Only some images can be cropped without losing valuable information.
 
 Example: If your image is 300 pixels square, you can remove
@@ -79,7 +76,10 @@ Result: Only some images can be cropped and still make sense.
 When cropping images it is important not to lose valuable information. 
 It is best to source images that are the correct shape if possible.
 
-        =========== Image Resolution ===========
+---
+
+# Image Resolution
+
 Images created for the web should be saved at a resolution of 72 ppi. 
 The higher the resolution of the image, the larger the size of the file.
 
@@ -103,7 +103,14 @@ image quality — only in larger file sizes, which will increase the
 time needed to load them and therefore slow down viewing of
 your web pages.
 
-        =============== Vector Images ===============
+<br>
+
+---
+
+## Vector Images 
+--- 
+<br>
+
 Vector images differ from bitmap images and are resolution-independent. 
 Vector images are commonly created in programs such as Adobe Illustrator.
 
