@@ -11,6 +11,37 @@
 
 ---
 
+## Attributes: `id` vs. `class` 
+
+--- 
+### `id`
+>- The `id` attribute is used to specify a unique id for an HTML element
+>- The value of the `id` attribute must be unique within the HTML document
+>- The `id` attribute is used by CSS and JavaScript to style/select a specific element
+>- The value of the `id` attribute is case sensitive
+>- The `id` attribute is also used to create HTML bookmarks
+>- JavaScript can access an element with a specific `id` with the getElementById() method
+
+### `class` 
+>- The HTML `class` attribute specifies one or more class names for an element
+>- Classes are used by CSS and JavaScript to select and access specific elements
+>- The `class` attribute can be used on any HTML element
+>- The class name is case sensitive
+>- Different HTML elements can point to the same class name
+>- JavaScript can access elements with a specific class name with the getElementsByClassName() method
+---
+
+## Display Values: Block vs. Inline
+    Every HTML element has a default display value, depending on what type of element it is.
+
+>- There are two display values: block and inline
+>- A block-level element always starts on a new line and takes up the full width available
+>- An inline element does not start on a new line and it only takes up as much width as necessary
+>- The `<div>` element is a block-level and is often used as a container for other HTML elements
+>- The `<span>` element is an inline container used to mark up a part of a text, or a part of a document
+
+--- 
+
 ## DOCTYPES
 
     Each page begins with a DOCTYPE declaration to tell browser which version of HTML the page is using.
