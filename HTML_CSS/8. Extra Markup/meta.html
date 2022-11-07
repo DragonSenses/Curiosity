@@ -4,9 +4,48 @@
 		<title>Information About Your Pages</title>
 		<meta name="description" content="An Essay on Installation Art" />
 		<meta name="keywords" content="installation, art, opinion" />
-		<meta name="robots" content="nofollow" />		<meta http-equiv="author" content="Jon Duckett" />		<meta http-equiv="pragma" content="no-cache" />		<meta http-equiv="expires" content="Fri, 04 Apr 2014 23:59:59 GMT" />
+		<meta name="robots" content="nofollow" />
+		<meta http-equiv="author" content="Jon Duckett" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta http-equiv="expires" content="Fri, 04 Apr 2014 23:59:59 GMT" />
 	</head>
 	<body>
 		<p>Please view the source of this page to examine the meta data.</p>
 	</body>
 </html>
+
+<!-- Information About Your Pages 
+
+	<meta> contains information about that web page, lives inside the <head>. 
+		An empty element, so does not have a closing tag. Uses attributes to
+		carry information.
+	
+	Invisible to Users but fulfills a number of purposes:
+		- Tell search engines about your page
+		- Who created it
+		- Whether or not it is time sensitive (time sensitive page can be set 
+		to expire)
+	
+	Attributes:
+		name, content - most common attributes, tend to be used together. 
+			- These specify properties of the entire page.
+			- Value of `name` is the property you are setting
+			- Value of `content` is value you want to give this property
+
+		Most commonly defined values for `name` attribute:
+			"description" - contains description of the page, used by search
+				engines to understand what page is about, should be a max of
+				155 characters. Sometimes displayed in search engine results.
+
+			"keywords" - contains a list of comma-separated words that a user
+				may search on to find the page. NOTE: In practice, no longer
+				has any noticeable effect on how search engines index your site.
+
+			"robots" - indicates whether search engines should add this page to
+				their search results or not. 
+			
+				1. Content Value of "noindex" if this page should not be added
+				2. Content Value of "nofollow" if search engines should add this
+				page in their results but not any pages that it links to
+
+-->
