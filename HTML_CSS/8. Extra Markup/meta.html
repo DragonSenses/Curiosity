@@ -58,6 +58,16 @@
 			"expires" - to indicate when the page should expire (and no longer
 			be cached), since browseers often cache the content of a page. 
 			
-			Note: Date must be specified in the format 
-					"Fri, 04 Apr 2014 23:59:59 GMT"
+				Note: Date must be specified in the format 
+						"Fri, 04 Apr 2014 23:59:59 GMT"
+
+			"refresh" - instruction specifies:
+				* the number of seconds until the page should be reloaded - 
+				only if the content attribute contains a non-negative int
+
+				* number of seconds until the page should redirect to another -
+				only if the content attribute contains a non-negative integer
+				followed by the string `;url=`, and a valid URL
+
+			e.g., <meta http-equiv="refresh" content="3;url=https://www.mozilla.org" />
 -->
