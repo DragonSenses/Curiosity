@@ -27,10 +27,10 @@
 		to expire)
 	
 	Attributes:
-		name, content - most common attributes, tend to be used together. 
-			- These specify properties of the entire page.
-			- Value of `name` is the property you are setting
-			- Value of `content` is value you want to give this property
+	`name, content` - most common & tend to be used together. 
+		- These specify properties of the entire page.
+		- Value of `name` is the property you are setting
+		- Value of `content` is value you want to give this property
 
 		Most commonly defined values for `name` attribute:
 			"description" - contains description of the page, used by search
@@ -48,4 +48,16 @@
 				2. Content Value of "nofollow" if search engines should add this
 				page in their results but not any pages that it links to
 
+	`http-equiv, content` - another attribute pairs 
+		Values for http-equiv:
+			"author" - defines the author of the web page
+			
+			"pragma" - prevents the browser from caching the page (i.e. storing
+			it locally to save time downloading it on subsequent visits)
+
+			"expires" - to indicate when the page should expire (and no longer
+			be cached), since browseers often cache the content of a page. 
+			
+			Note: Date must be specified in the format 
+					"Fri, 04 Apr 2014 23:59:59 GMT"
 -->
