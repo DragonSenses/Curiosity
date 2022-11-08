@@ -14,3 +14,38 @@
 		</video>
 	</body>
 </html>
+
+<!-- Adding Video to Your Pages 
+
+	<video> element allow for video playback
+	
+	Attributes:
+		src - specifies path to the video 
+		
+		poster - specifies an image to show while video is downloading, 
+			buffering, or until user plays the video
+		
+		width, height - specify the size of player in pixels
+
+		controls - indicates that the browser should supply its own controls
+			for playback
+
+		autoplay - specifies that the file should play automatically
+
+		loop - indicates that the video should start playing again once it has
+			ended
+
+	preload - tells the browser what to do when the page loads. Has 1 of 3 values:
+		1. none - browser should not load video until the user presses play
+		2. auto - browser should download the video when page loads
+		3. meta - browser should just collect information such as size, first frame,
+				  track list, and duration
+				  
+Notice in HTML5, do not need to supply values for all attributes such as 
+"controls, autoplay, and loop" attributes used with the <video> element. 
+These attributes are like on/off switches (booleans), where if present is on, 
+if omitted, option is turned off. 
+
+If browser does not support <video> element or format of video used, displays
+	whatever is between <video> and closing </video> tags.
+-->
