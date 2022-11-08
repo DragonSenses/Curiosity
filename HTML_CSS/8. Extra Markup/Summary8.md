@@ -42,6 +42,32 @@
 
 --- 
 
+## Meta
+`<meta>` HTML element represents metadata that cannot be represented by other HTML meta-related elements, like `<base>, <link>, <script>, <style> or <title>`
+
+* It is a void element so it does not need closing tag. 
+
+Attributes show what type of metadata it can provide:
+* `name` provides document-level metadata, applying to the whole page
+* `http-equiv` attribute is set, the `<meta> element is a pragma directtive, providing information equivalent to what can be given by a similar-named HTTP header
+* `charset` is a charset declaration, giving the character encoding in which the document is encoded
+
+---
+
+## Escape Characters
+    There are some characters that are used in and reserved by HTML code (e.g, left & right angled brackets). Therefore, to make them appear on page you use "escape characters" (i.e., escape codes or entity references)
+
+> Notice that codes start with `&#`, followed by ASCII code, and appended by semicolon `;`
+
+|Symbol|Code|Alternate Code|
+|------|----|--------------|
+| &lt; |`&lt;`| `&#60;` |
+| &gt; |`&gt;`| `&#62;` |
+| &#36;| `&#36;`| ----- |
+| &quot; |`&quot;`| `&#34;`|    
+
+---
+
 ## DOCTYPES
 
     Each page begins with a DOCTYPE declaration to tell browser which version of HTML the page is using.
