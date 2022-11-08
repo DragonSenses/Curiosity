@@ -1,1 +1,35 @@
-<!DOCTYPE html><html>	<head>		<title>Multiple Video Sources</title>	</head>	<body>		<video poster="images/puppy.jpg" width="400" height="320" preload controls loop>			<source src="video/puppy.mp4" type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' />			<source src="video/puppy.webm" type='video/webm;codecs="vp8, vorbis"' />			<p>A video of a puppy playing in the snow</p>		</video>	</body></html>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Multiple Video Sources</title>
+	</head>
+	<body>
+		<video poster="images/puppy.jpg" width="400" height="320" preload controls loop>
+			<source src="video/puppy.mp4" type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' />
+			<source src="video/puppy.webm" type='video/webm;codecs="vp8, vorbis"' />
+			<p>A video of a puppy playing in the snow</p>
+		</video>
+	</body>
+</html>
+
+<!-- Multiple Video Sources
+	
+	<source> specifies the location of the file to be played. 
+		- This should replace the src attribute on the opening <video> tag
+		- Should be inside the <video> element
+		- Can also use multiple <source> elements to specify that the video is 
+		available in different formats.
+
+	Attributes:
+	○ src - attribute specifies the path to the video
+
+	○ type - tells the browser what format the video is. 
+		Otherwise, it will download some of the video to see if it can play 
+		the file (which will take time and bandwidth)
+
+	○ codecs - the codec that was used to encode the video is supplied within 
+	the type attribute. 
+		Note the use of single quotes, as well as double quotes in the type 
+		attribute, when it is supplied.
+		
+-->
