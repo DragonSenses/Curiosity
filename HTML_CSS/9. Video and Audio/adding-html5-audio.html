@@ -1,1 +1,36 @@
-<!DOCTYPE html><html>	<head>		<title>Adding HTML5 Audio</title>	</head>	<body>		<audio src="audio/test-audio.ogg" controls autoplay>			<p>This browser does not support our audio format.</p>		</audio>	</body></html>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Adding HTML5 Audio</title>
+	</head>
+	<body>
+		<audio src="audio/test-audio.ogg" controls autoplay>
+			<p>This browser does not support our audio format.</p>
+		</audio>
+	</body>
+</html>
+
+<!--  Adding HTML5 Audio to Pages 
+
+	<audio> adds audio files in pages.
+		- Browsers expect different formats for the audio
+
+	Attributes:
+		* src - specifies path of audio file
+
+		* controls - indicates wheter the player should display controls
+					 If not used, no controls will be shown by default.
+					 Can specify own controls using JavaScript. 
+
+		* autoplay - presence of this attribute indicates that the audio should
+					start playing automatically (Best practice to omit)
+
+		* preload - indicates what browser should do if the player is not set
+					to autoplay. Can have values:
+			1. none - browser should not load audio until the user presses play
+			2. auto - browser should download the audio when page loads
+			3. meta - browser should just collect information such as size, first frame,
+				  	  track list, and duration
+
+		* loop - specifies that audio track should play again once it has finished
+-->
