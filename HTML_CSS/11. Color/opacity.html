@@ -29,3 +29,21 @@
 		<div><p class="two"></p></div>
 	</body>
 </html>
+
+<!-- Opacity (RGBA)
+
+	opacity property specifies the opacity of an element and any of its child elements.
+		- Value is a number between 0.0 and 1.0 
+		- i.e. value of 0.5 is 50% opacity and 0.15 is 15% opacity
+	
+	rgba property specifies like any RGB value, but adds a 4th value to indicate opacity
+		- The alpha value is a number between 0.0 and 1.0
+		- The rgba value will only affect the element on which it is applied (not child elements) 
+	
+TIP: When browsers do not recognize RGBA colors, offer a fallback so they display a solid color
+	- If there are two rules that apply to the same element, the latter of the 
+	two will take priority
+	- To create a fallback, specify a color (hex code, color name, or RGB value) 
+	followed by the rule that specifies an RGBA value
+	- If browser understands RGBA it will use that rule, otherwise it will use RGB value
+-->
