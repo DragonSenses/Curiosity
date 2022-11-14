@@ -20,6 +20,6 @@ I'm going through them so I can organize and consolidate my fragmented knowledge
 
 Mastering the basics. In this way I can arrive at that inflection point of growth. 
 
-Lets learn together, whether you are new or not, and find something here that'll help you. 
+Whether you are new or not, lets learn together and find something here that'll help you. 
 
 Feel free to leave feedback (message or issue) if you find any mistakes or errors.
