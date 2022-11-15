@@ -26,3 +26,30 @@ let user = 'user',
 When the name contains multiple words, camelCase is used (i.e., words go one 
 after another, each word except first starting with a capital letter: myVeryLongName)
 */
+
+/**
+ * Constants (unchanging) variable
+ * Use keyword "const" instead of "let" to declare the variable. 
+ * 
+ * Uppercase constants are a practice to use contants for 
+ * difficult-to-remember values that are known prior to execution. They
+ * are named with capital letters and underscores. 
+ * 
+ * Constants that are known prior to execution (like hexadecimal value of red) 
+ * and constants calculated in run-time, during execution, but do not change 
+ * after their initial assignment. 
+ * 
+ * Those calculated in run-time should be named normally (camelCase).
+ * Capital-named constants are only used as aliases for hard-coded values,
+ * such as a hexadecimal constant for colors.  
+ * 
+ */
+
+const goldenRatio = 1.6180; 
+const pi = 3.14; 
+
+// Uppercase Constant, easier to remember COLOR_PURPLE than #A020F0
+const COLOR_PURPLE = "#A020F0";
+
+// Constant calculated in run-time (not an uppercase constant)
+const pageLoadTime = "time taken by a webpage to load";  
