@@ -34,6 +34,22 @@ package Java.Enums;
  * 
  * 9. Enum can override methods. 
  * 
+ * 10. EnumMap and EnumSet are two new collections that support Java Enum. Both
+ * are high-performance implementation of the Map and Set interface in Java. 
+ *      - EnumSet provides factory methods to create instances e.g. EnumSet.of()
+ *      
+ * 11. Can NOT create an instance of enums by using a new operator in Java because
+ * constructor of Enum in Java can only be private and Enums constants can only
+ * be created inside Enums itself
+ * 
+ * 12. An instance of Enum in Java is created when any Enum constants are first 
+ * called or referenced in code
+ * 
+ * 13. Enum in Java implicitly implements btoh Serializable and Comparable. Can
+ * override any method of an interface it implements. 
+ * 
+ * 14. Can define abstract methods inside Enum
+ * 
  * A Java enumeration is a class type. Although we don’t need need to instantiate
  * an enum using new, it has the same capabilities as other classes. Just like 
  * classes, you can: 
@@ -66,7 +82,22 @@ public class EnumIsUseful {
         /* Getter for member field */
         public int getValue(){ return this.value; }
 
-
+        /* (9) Enum can override methods , override toString() to 
+        provide more meaningful descriptions.  */
+        @Override public String toString() { 
+            switch (this) { 
+                case penny: 
+                    return "Penny: " + value; 
+                case nickle: 
+                    return "Nickle: " + value; 
+                case dime: 
+                    return "Dime: " + value; 
+                case quarter: 
+                    return "Quarter: " + value; 
+                default:
+                    return "";
+            }
+        }
     }; // end of enum Coins
 
     public static void main(String[] args){
@@ -99,5 +130,8 @@ public class EnumIsUseful {
         for(Currency c: Currency.values()){
             System.out.println("coin: " + c);
         }
+
+        Coins usCoin = Coins.dime;
+        System.out.println(usCoin); // Output Dime: 10
     }
 }
