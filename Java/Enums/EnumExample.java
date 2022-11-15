@@ -50,6 +50,8 @@ package Java.Enums;
  * 
  * 14. Can define abstract methods inside Enum
  * 
+ * 15. Enum valueOf() method can convert a String to enum in Java
+ * 
  * A Java enumeration is a class type. Although we don’t need need to instantiate
  * an enum using new, it has the same capabilities as other classes. Just like 
  * classes, you can: 
@@ -60,7 +62,7 @@ package Java.Enums;
  * One thing to keep in mind is that, unlike classes, enumerations neither inherit
  * other classes nor can get extended(i.e become superclass). 
  */
-public class EnumIsUseful {
+public class EnumExample {
     
     public enum Currency{
         PENNY, NICKLE, DIME, QUARTER
