@@ -119,7 +119,7 @@ let isGreater = 4 > 1;
 
 alert( isGreater ); // true (the comparison result is "yes")
 
-/* "null" value 
+/* The"null" value 
 The special null value does not belong to any of the types described above. 
 It forms a separate type of its own which contains only the null value
 
@@ -128,3 +128,83 @@ In JavaScript, null is not a "reference to a non-existing object" or a
 "nothing", "empty" or "value unknown". 
 */
 let age = null;     // code states that age is unknown
+
+/* The "undefined" value 
+The special value undefined also stands apart. 
+It makes a type of its own, just like null.
+
+The meaning of undefined is "value is not assigned".
+
+If a variable is declared, but not assigned, then its value is undefined.    
+Technically possible to explicitly assign undefined to a variable, but it is 
+not recommended. Normally, one uses null to assign an "empty" or "unknown"
+value to a variable, while undefined is reserved as a default initial value
+for unassigned things.
+*/
+let empty;
+
+alert(empty); // shows "undefined"
+
+/* Objects
+Object type is special.  
+All other types are called "primitive" because their values can contain only a 
+single thing (be it a string or a number or whatever). In contrast, objects 
+are used to store collections of data and more complex entities.
+
+Being that important, objects deserve a special treatment and will be explored later 
+*/
+
+/* Symbols
+The symbol type is used to create unique identifiers for objects. 
+*/
+
+/* The typeof operator
+Returns the type of the operand. Useful when we want to process values of different
+types differently or just want to do a quick check. 
+
+typeof(x) is the alternative syntax, which is the same. typeof is an operator 
+not a function. The parenthese here aren't part of typeof. It's the kind of 
+parantheses used for mathematical grouping. 
+
+Usually, such parentheses contain a mathematical expression, such as (2 + 2), 
+but here they contain only one argument (x). Syntactically, they allow to avoid 
+a space between the typeof operator and its argument, and some people like it.
+
+Some people prefer typeof(x), although the typeof x syntax is much more common.
+
+A call to typeof x returns a string with the type name:
+*/
+typeof undefined // "undefined"
+
+typeof 0 // "number"
+
+typeof 10n // "bigint"
+
+typeof true // "boolean"
+
+typeof "foo" // "string"
+
+typeof Symbol("id") // "symbol"
+
+typeof Math // "object"  (1)
+
+typeof null // "object"  (2)
+
+typeof alert // "function"  (3)
+
+/* Explanation for last three lines 
+
+1. Math is a built-in object that provides mathematical operations. Here, it 
+serves just as an example of an object.  
+
+2. The result of typeof null is "object". That’s an officially recognized error
+in typeof, coming from very early days of JavaScript and kept for compatibility.
+Definitely, null is not an object. It is a special value with a separate type 
+of its own. The behavior of typeof is wrong here.
+
+3. The result of typeof alert is "function", because alert is a function. 
+Later we’ll also see that there’s no special "function" type in JavaScript. 
+Functions belong to the object type. But typeof treats them differently, 
+returning "function". That also comes from the early days of JavaScript. 
+Technically, such behavior isn’t correct, but can be convenient in practice.
+*/
