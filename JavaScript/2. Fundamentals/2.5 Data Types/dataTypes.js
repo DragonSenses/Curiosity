@@ -48,3 +48,32 @@ alert( Infinity );  // Reference Infinity directly
 // NaN represents a computational error. Result of an incorrect or undefined
 // mathematical operation
 alert( "not a number" / 2); 
+
+// NaN is sticky, i.e. any further mathematical operation on NaN returns NaN
+alert( NaN + 1 ); // NaN
+alert( 3 * NaN ); // NaN
+alert( "not a number" / 2 - 1 ); // NaN
+
+// If there's a NaN in expression, it propagates to the whole result
+// One exception to that is NaN ** 0 is 1
+alert( NaN ** 0 );
+
+/* BigInt value are created by appending n to the end of an integer 
+    Number data type cannot safely represent integer values larger than 2^53-1
+    or 9007199254740991 or less than -(2^53-1) for negatives.
+
+    To be precise, number data type can store large integers (up to 
+    1.7976931348623157 * 10308) but outside of safe integer range +or- 2^53-1
+    there'll be a precision error, because not all digits fit into fixed 64-bit
+    storage. 
+*/
+
+// These two numbers (right above safe range) are the same
+// In other words, all odd integers greater than (2^53-1) can't be stored in number type
+console.log(9007199254740991 + 1); // 9007199254740992
+console.log(9007199254740991 + 2); // 9007199254740992
+
+// the "n" at the end means it's a BigInt
+const bigInt = 1234567890123456789012345678901234567890n;
+
+/* String */
