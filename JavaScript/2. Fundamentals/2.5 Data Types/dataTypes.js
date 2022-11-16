@@ -108,3 +108,23 @@ There is no character type for a single char.
 */
 
 alert( "the result is ${1 + 2}" ); // the result is ${1 + 2} (double quotes do nothing)
+
+/* Boolean (logical type) 
+Only has two values true and false.  */
+let nameFieldChecked = true; // yes, name field is checked
+let ageFieldChecked = false; // no, age field is not checked
+
+// Boolean values also come as a result of comparisons:
+let isGreater = 4 > 1;
+
+alert( isGreater ); // true (the comparison result is "yes")
+
+/* "null" value 
+The special null value does not belong to any of the types described above. 
+It forms a separate type of its own which contains only the null value
+
+In JavaScript, null is not a "reference to a non-existing object" or a 
+"null pointer" like some languages. It's just a special value which represents
+"nothing", "empty" or "value unknown". 
+*/
+let age = null;     // code states that age is unknown
