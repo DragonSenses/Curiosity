@@ -76,4 +76,35 @@ console.log(9007199254740991 + 2); // 9007199254740992
 // the "n" at the end means it's a BigInt
 const bigInt = 1234567890123456789012345678901234567890n;
 
-/* String */
+/* String data type must be surrounded by quotes in JavaScript*/
+let str = "Hello";
+let str2 = 'Single quotes are ok too';
+let phrase = `can embed another ${str}`;
+
+// In JavaScript, there are 3 types of quotes:
+str = "hello";
+str = 'hello';
+str = `hello`;
+
+/* Double and single quotes are "simple" quotes. There’s practically no difference
+between them in JavaScript.
+
+Backticks are "extended functionality" quotes. They allow us to embed variables
+and expressions into a string by wrapping them in ${…}, for example: */
+let name = "John";
+
+// embed a variable
+alert( `Hello, ${name}!` ); // Hello, John!
+
+// embed an expression
+alert( `the result is ${1 + 2}` ); // the result is 3
+
+/* expression inside ${...} is evaluated and the result becomes a part of the
+string. we can put anything in there: a variable or an arithmetical expression 
+
+Only backticks have embedding functionality! 
+
+There is no character type for a single char. 
+*/
+
+alert( "the result is ${1 + 2}" ); // the result is ${1 + 2} (double quotes do nothing)
