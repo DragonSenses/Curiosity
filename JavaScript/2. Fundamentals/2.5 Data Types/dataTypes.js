@@ -1,9 +1,9 @@
 /**
  * Data Types
  * 
- * A value in JavaScript is always of a certain type (e.g., string or number).
- * 
- * There are 8 basic data types in JavaScript.
+ * - A value in JavaScript is always of a certain type (e.g., string or number).
+ * - JavaScript is dynamically typed
+ * - There are 8 basic data types in JavaScript.
  */
 
 /* Seven primitive data types:
@@ -24,3 +24,27 @@ The typeof operator allows us to see which type is stored in a variable.
     - Returns a string with the name of the type, like "string".
     - For null returns "object" – this is an error in the language, it’s not actually an object.
  */
+
+/* JavaScript is Dynamically Typed, meaning that there exist data types, but
+variables are not bound to any of them.
+
+In short, we can put any type in a variable. e.g., a variable can at one moment
+be a string and then store a number. */
+
+let message = "hello";
+message = 142857;   
+
+/* Number type represents both integer and floating point numbers 
+Operations: * / + - 
+Special Numeric Values belong to this data type: Infinity, -Infinity, and NaN
+*/
+let n = 123;
+n = 12.345; 
+
+// Infinity represents mathematical infinity
+alert( 1 / 0 );     // Infinity
+alert( Infinity );  // Reference Infinity directly
+
+// NaN represents a computational error. Result of an incorrect or undefined
+// mathematical operation
+alert( "not a number" / 2); 
