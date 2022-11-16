@@ -52,6 +52,9 @@ package Java.Enums;
  * 
  * 15. Enum valueOf() method can convert a String to enum in Java
  * 
+ * 16. Can also use ordinal() and name() utility methods, returning position it is
+ * defined in enum and String used to create it.
+ * 
  * A Java enumeration is a class type. Although we don’t need need to instantiate
  * an enum using new, it has the same capabilities as other classes. Just like 
  * classes, you can: 
@@ -135,5 +138,22 @@ public class EnumExample {
 
         Coins usCoin = Coins.dime;
         System.out.println(usCoin); // Output Dime: 10
+
+        /* (15) Converting String to Enum using valueOf() */
+        String qtr = "QUARTER"; 
+        // Pass qtr string into Currency.valueOf() 
+        Currency quarter = Currency.valueOf(Currency.class, qtr);
+
+        System.out.println(quarter);
+
+        // Throws IllegalArgumentException since "Dollar" is not a string among enum
+        try{
+            System.out.println(Currency.valueOf("Dollar")); 
+        } catch(IllegalArgumentException e){
+            System.out.println("Dollar is not a currency within enums");
+        }
+
+        /* (16) Using name() and ordinal() */
+        System.out.println(tenCent.name() + " order is: " + tenCent.ordinal());
     }
 }
