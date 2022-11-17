@@ -152,3 +152,68 @@ n = 2;
 n *= 3 + 5; // right part evaluated first, same as n *= 8
 
 alert( n ); // 16
+
+/* Increment ++ and Decrement -- Operators */
+let counter = 2;
+counter++;        // works the same as counter = counter + 1, but is shorter
+alert( counter ); // 3
+
+counter = 2;
+counter--;        // works the same as counter = counter - 1, but is shorter
+alert( counter ); // 1
+
+// Prefix Form (++counter) vs. Postfix Form (counter++)
+
+counter = 1;
+a = ++counter; // prefix form increments counter and returns a NEW VALUE
+alert(a); // 2
+
+counter = 1;
+a = counter++; // postfix form increments counter and returns the OLD VALUE (prior to incremenet)
+alert(a); // 1
+
+/*  If the result of increment/decrement is not used, there is no difference in
+which form to use */
+counter = 0;
+counter++;
+++counter;
+alert( counter ); // 2, the lines above did the same
+
+/* If we’d like to increase a value and immediately use the result of the 
+operator, we need the prefix form: */
+counter = 0;
+alert( ++counter ); // 1
+
+/* If we’d like to increment a value but use its previous value, we need the 
+postfix form: */
+counter = 0;
+alert( counter++ ); // 0
+
+/* ++ and -- have a higher precedence than most arithmetical operations */
+counter = 1;
+alert( 2 * ++counter ); // 4, because ++counter retturns new value
+
+counter = 1;
+alert( 2 * counter++ ); // 2, because counter++ returns the old value
+
+/* Comma Operator allows several expressions to be evaluated but only the result
+of the last one is returned. */
+
+let expression = (1 + 2, 3 + 4);
+
+alert( expression ); // 7 (the result of 3 + 4) 
+
+/* Comma Operator has a very low precedence, lower than "=". So needed parentheses
+in above example. */
+
+// expression = 1 + 2, 3 + 4;  // evaluates "+" first turning into (expression = 3, 7)
+// alert(expression);      // then "=" assignment operator assigns 3, and rest is ignored
+                           // it is like (expression = 1 + 2), 3 + 4
+
+/* Why is comma operator even used? Sometimes seen in more complex constructs
+to put several actions in one line. Used in JavaScript frameworks. */
+
+// three operations in one line
+// for (a = 1, b = 3, c = a * b; a < 10; a++) {
+//     ...
+// }
