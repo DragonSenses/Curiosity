@@ -97,3 +97,58 @@ alert( +apples + +oranges ); // 5
 
 // the longer variant
 // alert( Number(apples) + Number(oranges) ); // 5
+
+/* Operator Precedence
+    - Higher precedence executes first
+    - If same precedence, execution order is from left to right
+Precendence     Name               Sign
+    14	        unary plus	        +
+    14	        unary negation	    -
+    13	        exponentiation	    **
+    12	        multiplication	    *
+    12	        division	        /
+    11	        addition	        +
+    11	        subtraction	        -
+    2	        assignment	        =
+*/
+console.log(3 + 4 * 5); // 3 + 20
+// expected output: 23
+
+console.log(4 * 3 ** 2); // 4 * 9
+// expected output: 36
+
+let a;
+let b;
+
+console.log(a = b = 5);
+// expected output: 5
+
+/* Assignment Operator "=" returns a value */
+// Assignment has low precedence so that calculations are done first, then "="
+// is evaluated, storing the result in x
+x = 2 * 2 + 1;
+alert( x ); // 5
+
+// Another Example
+a = 1;
+b = 2;
+
+let c = 3 - (a = b + 1);    // (a = b + 1) result of expression is 3
+
+alert( a ); // 3
+alert( c ); // 0
+
+/* Modify-In-Place or += , -=, *=, /= apply an operator to a variable and store
+the new result in that same variable */
+let n = 2;
+n += 5; // now n = 7    (same as n = n + 5)
+n *= 2; // now n = 14   (same as n = n * 2)
+
+alert( n ); // 14
+
+// Modify-And-Assign operators has same precedence has assignment "="
+n = 2;
+
+n *= 3 + 5; // right part evaluated first, same as n *= 8
+
+alert( n ); // 16
