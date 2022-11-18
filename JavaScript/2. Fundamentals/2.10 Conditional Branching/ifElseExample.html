@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <script>
+            'use strict'
+            let officialName = prompt("What is the official name of JavaScript?", '');
+
+            if(officialName == "JavaScript"){
+                alert("Right!");
+            } else {
+                alert("It's ECMAScript!");
+            }
+
+        </script>
+    </body>
+</html>
+
+
+<!-- 
+/* Name of JavaScript  
+Use if..else construct, where code asks "What is official name of JavaScript"
+
+If visitor enters "ECMAScript" output "Right!"
+Otherwise, output "It's ECMAScript!"
+*/
+
+NOTE: Equality (loose == vs. strict ===)
+
+Avoid loose == and use strict === when:
+    - If either side of the comparison could be true or false value
+    - If either value in a comparison could be of these specific values:
+        {0, "", or [] an empty array }
+In all other cases, you're safe to use "==" as it simplfieds code in a way
+that improves readability. 
+
+-->
