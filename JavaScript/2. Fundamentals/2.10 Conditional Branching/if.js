@@ -60,3 +60,36 @@ if (year < 2015) {
 } else {
   alert( 'Exactly!' );
 }
+
+/* '?' - Conditonal Operator, Question Mark Operator, Ternary Operator 
+
+Syntax: 
+            let result = (condition) ? value1 : value2;  
+
+if condition is true then value1 is assigned to result
+if condition is false then value2 is assigned to result */
+
+/* Example - using if statement */
+let accessAllowed;
+let age = prompt('How old are you?', '');
+
+if (age > 18) {
+  accessAllowed = true;
+} else {
+  accessAllowed = false;
+}
+
+/* Example - using ? Operator */
+accessAllowed = (age > 18) ? true : false; 
+
+/* Note above is for demonstration purposes. 
+The Example can be simplified: */
+accessAllowed = age > 18;
+
+// It is possible to nest ternary operator statements, or use it non-traditionally
+// but unless its a coding competition or deliberately obfuscating code (e.g., 
+// security or copyright purposes) it is not recommended. 
+
+/* For Cleaner Code, Readability & Maintainability - Eyes naturally scan code 
+vertically such that code blocks that span several lines are easier to understand
+than a long, horizontal instruction set. Avoid abusing the ? operator. */
