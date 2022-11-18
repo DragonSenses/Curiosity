@@ -17,7 +17,7 @@ Recall - Boolean Conversion Rules:
     Non-Empty Values
         "0"             ->  true
         " "             ->  true
-         7              ->  true
+         1              ->  true
         everything else ->  true
 */
 
