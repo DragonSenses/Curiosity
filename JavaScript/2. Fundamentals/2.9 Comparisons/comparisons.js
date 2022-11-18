@@ -9,7 +9,16 @@
     equal any other value.
         - With exception (null >= 0) is true, because of comparison & type conversion 
     - Be careful when using comparisons (i.e. < or >) with variables that can 
-    occassionally be null or undefined. Check for null/undefined separately. 
+    occassionally be null or undefined. Check for null/undefined separately.
+    
+[Extra Tip] from "You Don't Know JS" on Equality (loose == vs. strict ===)
+
+Avoid loose == and use strict === when:
+    - If either side of the comparison could be true or false value
+    - If either value in a comparison could be of these specific values:
+        {0, "", or [] an empty array }
+In all other cases, you're safe to use "==" as it simplifies code in a way
+that improves readability. 
 */
 
 // Comparison Operators {>, <, >=, <=, ==} return a boolean value {true, false}
