@@ -66,8 +66,44 @@ for (let i = 0; i < 5; ++i) console.log( i ); // prefix form
 for (let i = 0; i < 5; i++) console.log( i ); // postfix form
 
 /* Answer
-for (let i = 0; i < 5; ++i) console.log( i ); // prefix form
-    Condition   i   Prints
-    
-for (let i = 0; i < 5; i++) console.log( i ); // postfix form
+1. Begin - Execute once i = 0
+2. Check the condition i < 5
+3. If true - execute loop body, print(i), and then increment
+
+Since increment is separated from the condition check (step 3 is separated from
+    step 2) the value returned by the increment is not used. There is no 
+    difference between i++ and ++i (postfix, prefix forms in for loops)
+
+Both for loops print: 0 to 4. 
+*/
+
+/* Output even numbers (2 to 10) using a for loop.  */
+// Definition of even number E = 2k. Odd number is O = 2k + 1; 
+for(let k = 2; k <= 10; k+=2){  
+    console.log(k);
+}
+
+/* Replace for with while 
+for (let i = 0; i < 3; i++) {
+    console.log( `number ${i}!` );
+}
+Outputs:
+number 0!
+number 1!
+number 2!
+*/
+i = 0;
+while(i < 3) {  
+    console.log( `number ${i++}!` );
+}
+
+/* Repeat until input is correct 
+Write a loop which prompts for a number greater than 100. If the visitor 
+enters another number – ask them to input again.
+
+The loop must ask for a number until either the visitor enters a number 
+greater than 100 or cancels the input/enters an empty line.
+
+Here we can assume that the visitor only inputs numbers. There’s no need to 
+implement a special handling for a non-numeric input in this task.
 */
