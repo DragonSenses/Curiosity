@@ -26,13 +26,13 @@ if(login == "Admin"){   // login is Admin?
 
     if(password == "TheMaster") {   // password is TheMaster?
         console.log("Welcome!");
-    } else if( (login === '') || (login === null)) {
+    } else if( password === '' || password === null) {
         console.log("Canceled"); 
     } else {
-        console.log("I don't know you");
+        console.log("Wrong password");
     }
 
-} else if( (login === '') || (login === null)){ // strictly an empty string or null?
+} else if( login === '' || login === null){ // strictly an empty string or null?
     console.log("Canceled");
 } else {    // login is any other String
     console.log("I don't know you");
