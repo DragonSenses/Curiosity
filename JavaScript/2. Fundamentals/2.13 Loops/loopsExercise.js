@@ -107,3 +107,18 @@ greater than 100 or cancels the input/enters an empty line.
 Here we can assume that the visitor only inputs numbers. There’s no need to 
 implement a special handling for a non-numeric input in this task.
 */
+
+let num;
+
+do {
+  num = prompt("Enter a number greater than 100?", 0);
+} while (num <= 100 && num);
+
+/* do..while first prompts user for a number then repeats while both checks are
+truthy:
+    1. num <= 100   i.e. entered value is not greater than 100
+    2. && num       i.e. false when num is null or empty string, then while loop
+                         stops too. 
+If num is null, then num <= 100 is true, so without the 2nd check the loop would
+not stop if the user clicks CANCEL. Both conditions/checks are required.                          
+*/
