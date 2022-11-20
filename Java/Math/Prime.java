@@ -37,7 +37,7 @@ import java.util.stream.IntStream;
  * other positive integer besides itself and 11, it is composite.
  * 
  * However, it is not necessary to check all numbers from 2 to n-1. Suggest that
- * n is composite, so n = pq for 2 <= p, q <= n-1. We claim thtat at least
+ * n is composite, so n = pq for 2 <= p, q <= n-1. We claim that at least
  * one of p,q is not greater than sqrt(n). If both are greater than sqrt(n), then
  * pq > sq(n) * sq(n) = n, a contradiction. Thus whenever n is composite, one of
  * its factors is not greater than sq(n), so we can modify the range endpoint

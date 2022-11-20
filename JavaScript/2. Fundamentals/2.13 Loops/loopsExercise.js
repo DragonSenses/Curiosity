@@ -122,3 +122,23 @@ truthy:
 If num is null, then num <= 100 is true, so without the 2nd check the loop would
 not stop if the user clicks CANCEL. Both conditions/checks are required.                          
 */
+
+/* Output Prime Numbers 
+    An integer number greater than 1 is called a prime if it cannot be divided
+without a remainder by anything except 1 and itself.
+    In other words, n > 1 is a prime if it can’t be evenly divided by anything
+except 1 and n.
+
+e.g., 5 is a prime, because it cannot be divided without a remainder by 2, 3 and 4
+
+Write the code which outputs prime numbers in the interval from 2 to n.
+    For n = 10 the result will be 2,3,5,7.
+
+The code should work for any n, not be hard-tuned for any fixed value.
+*/
+
+/* It is not necessary to check all numbers from 2 to n-1. Suggest that
+ * n is composite, so n = pq for 2 <= p, q <= n-1. We claim that at least
+ * one of p,q is not greater than sqrt(n). If both are greater than sqrt(n), then
+ * pq > sq(n) * sq(n) = n, a contradiction. Thus whenever n is composite, one of
+ * its factors is not greater than sq(n), so we can modify the range endpoint */
