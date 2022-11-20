@@ -137,8 +137,26 @@ Write the code which outputs prime numbers in the interval from 2 to n.
 The code should work for any n, not be hard-tuned for any fixed value.
 */
 
-/* It is not necessary to check all numbers from 2 to n-1. Suggest that
+/*              Square Root Optimization and Short Proof 
+ * It is not necessary to check all numbers from 2 to n-1. Suggest that
  * n is composite, so n = pq for 2 <= p, q <= n-1. We claim that at least
  * one of p,q is not greater than sqrt(n). If both are greater than sqrt(n), then
  * pq > sq(n) * sq(n) = n, a contradiction. Thus whenever n is composite, one of
- * its factors is not greater than sq(n), so we can modify the range endpoint */
+ * its factors is not greater than sq(n), so we can modify the range endpoint 
+ */
+
+let n = 10; 
+let root;   // sqrt(candidate) optimization
+
+nextPrime:
+for(let i = 2; i <= n; i++){    // loop from [2, n]
+    root = i ** (1/2);          // Only check divisors [2, sqrt(i)] inclusive
+   
+    // Check i for primality
+    for(let j = 2; j <= root ; j++) { // look for divisor 
+        // Skip to outer loop iteration as j divides into i, so i is non-prime
+        if(i % j == 0) { continue nextPrime; }
+    }
+    // Here, passes inner loop where no divisor divides into i (so is prime)
+    console.log(i); 
+}
