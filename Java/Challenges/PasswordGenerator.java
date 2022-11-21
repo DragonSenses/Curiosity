@@ -2,12 +2,11 @@ package Java.Challenges;
 
 // Cryptographically secure random number generator
 import java.security.SecureRandom;
-import java.util.EnumSet;
 import java.util.stream.Collectors;
 
 /**
- * Generates a password with a given length. 
- * Customizable Options for the user:
+ * Generates a password with a given length. Ensures password policies that
+ * - have a minimum length of 8
  * - lowercase
  * - uppercase
  * - numbers
@@ -19,26 +18,6 @@ import java.util.stream.Collectors;
  * symbols such as quotation marks or colons.
  */
 public class PasswordGenerator {
-    enum Flag {
-        LowerCase, UpperCase, Numbers, Symbols;
-
-        public static final EnumSet<Flag> ALL_OPTIONS = EnumSet.allOf(Flag.class);
-    }
-
-    public static void execute(EnumSet<Flag> flags){
-        if(flags.contains(Flag.LowerCase)) {
-            System.out.println("One");
-        }
-        if(flags.contains(Flag.UpperCase)) {
-            System.out.println("Two");
-        }
-        if(flags.contains(Flag.Numbers)) {
-            System.out.println("Three");
-        }
-        if(flags.contains(Flag.Symbols)) {
-            System.out.println("Four");
-        }
-    }
 
     /**
      * Ensures that the any length passed in is greater than the minimum 
@@ -109,12 +88,7 @@ public class PasswordGenerator {
         return password.toString(); 
     }
         
-    
-    
-
     public static void main(String[] args) {
-        // EnumSet<Flag> allOptions = EnumSet.allOf(Flag.class); 
-        // execute(allOptions);
 
         String password = generatePassword(10);
         System.out.printf("%s with length %d\n",password,password.length());
