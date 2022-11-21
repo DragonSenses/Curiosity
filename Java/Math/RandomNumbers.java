@@ -2,6 +2,7 @@ package Java.Math;
 
 import java.util.Random;    // old way to generate random numbers
 import java.util.concurrent.ThreadLocalRandom;  // Finer way to generate random numbers
+import java.security.SecureRandom; // Best way to generate cryptographically strong random numbers
 
 /**
  * Task: Generate random integers between zero and some upper bound, n [0,n)
@@ -18,6 +19,21 @@ import java.util.concurrent.ThreadLocalRandom;  // Finer way to generate random 
  * avoiding any concurrent access to instances of Random. Random number optained
  * by one thread is not affected by the other thread, whereas java.util.Random 
  * provides random numbers globally.
+ * 
+ * Update: SecureRandom is even better as it passed tests that are required for
+ * safety in crytography. Although it may lack in performance, it excels in 
+ * security. Usually when randomness is used, security is no longer just a nice
+ * feature, it's the standard. 
+ * 
+ * See java.security.SecureRandom
+ * https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html
+ * 
+ * As Instances of ThreadLocalRandom are not cryptographically secure. Consider
+ * instead using SecureRandom in security-sensitive applications." according to
+ * the javadoc of ThreadLocalRandom. 
+ * https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html
+ * 
+ * 
  */
 public class RandomNumbers {
     
@@ -70,7 +86,7 @@ public class RandomNumbers {
         System.out.println(lo);
 
         long totalTime = endTime - startTime;
-        System.out.println("Total running time: " + totalTime);
+        System.out.println("Total running time: " + totalTime + " ns");
     }
 
     // How to use the superior RNG 
@@ -88,7 +104,7 @@ public class RandomNumbers {
 
         long startTime = System.nanoTime();
         for(int i = 0; i < 1000000; i++){ // Loop a Million Times
-            if(ThreadLocalRandom.current().nextInt(0,n) < n/2) {
+            if(betterRandom(n) < n/2) {
                 lo++;
             }
         }
@@ -96,17 +112,48 @@ public class RandomNumbers {
         System.out.println(lo);
 
         long totalTime = endTime - startTime;
-        System.out.println("Total running time: " + totalTime);
+        System.out.println("Total running time: " + totalTime + " ns");
     }
 
+    // Update 2022: Strong Random Number Generator -> SecureRandom
+    static SecureRandom random = new SecureRandom();
+
+    static int bestRandom(int n){
+        return random.nextInt(0,n+1);
+    }
+
+    static void displayBestRandom() {
+        int n = 2*(Integer.MAX_VALUE/3) + 1; 
+        int lo = 0;
+
+        long startTime = System.nanoTime();
+        for(int i = 0; i < 1000000; i++){ // Loop a Million Times
+            if(bestRandom(n) < n/2) {
+                lo++;
+            }
+        }
+        long endTime   = System.nanoTime();
+        System.out.println(lo);
+
+        long totalTime = endTime - startTime;
+        System.out.println("Total running time: " + totalTime + " ns");
+    }
+
+
     public static void main(String[] args){
-        System.out.println("======== Generating a Million Random Numbers ... ========");
+        System.out.println("\t[Bad Random]\t  Generating a Million Random Numbers ");
         System.out.println("How many numbers fall in the lower half of the range?");
         System.out.print("Expected: 500,000\tActual: ");
         displayBadRandom();
-        System.out.println("\n======== Generating a Million Random Numbers ========");
+
+        System.out.println("\n\t[Better Random]\t  Generating a Million Random Numbers ");
         System.out.println("How many numbers fall in the lower half of the range?");
         System.out.print("Expected: 500,000\tActual: ");
         displayBetterRandom();
+
+        System.out.println("\n\t[Best Random]\t  Generating a Million Random Numbers ");
+        System.out.println("How many numbers fall in the lower half of the range?");
+        System.out.print("Expected: 500,000\tActual: ");
+        displayBestRandom();
     }
 }
