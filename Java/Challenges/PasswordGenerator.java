@@ -1,6 +1,9 @@
 package Java.Challenges;
 
+// Cryptographically secure random number generator
+import java.security.SecureRandom;
 import java.util.EnumSet;
+import java.util.stream.Collectors;
 
 /**
  * Generates a password with a given length. 
@@ -29,6 +32,39 @@ public class PasswordGenerator {
             System.out.println("Four");
         }
     }
+
+    /**
+     * Generate a String from a random Stream that contains characters
+     * from the ASCII range of 33 to 122 - ['!','z']. 
+     * @param n length of the String to generate
+     * @return random String of length n with ASCII range that contains
+     * special symbols, digits, upper and lowercases.
+     */
+    public String generateStream(int n){
+        return new SecureRandom().ints(10, '!', '{')
+                                 .mapToObj(i -> String.valueOf((char)i))
+                                 .collect(Collectors.joining());
+    }
+
+    /**
+     * Generate a StringBuilder from a random Stream that contains characters
+     * from the ASCII range of 33 to 122 - ['!','z']. 
+     * @param n length of the StringBuilder to generate
+     * @return random StringBuilder of length n with ASCII range that contains
+     * special symbols, digits, upper and lowercases.
+     */
+    public StringBuilder generateStreamSB(int n){
+        return new SecureRandom().ints(10, '!', '{')
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, 
+                    StringBuilder::append);
+        
+    }
+
+
+    
+        
+    
+    
 
     public static void main(String[] args) {
         EnumSet<Flags> allOptions = EnumSet.allOf(Flags.class); 
