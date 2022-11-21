@@ -10,17 +10,17 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * Builds a password with finer control. Can choose how many minimum characters 
- * of each of the set of policies: uppercase, lowercase, numbers, or 
- * symbols/punctuation one would want in their password. e.g., if one wants to
+ * Builds a password with finer control. Can choose how many minimum characters
+ * of each of the set of options: uppercase, lowercase, numbers, or symbols &
+ * punctuation one would want in their password. e.g., if one wants to
  * build a password with 3 uppercase, 2 lowercase, 2 digits, and 0 symbols
  * one can build a password with those minimum characters as parameters.
  * 
  * Example usage: ... put later ...
  * 
- * Ensures password policies are maintained by guaranteeing that it contains: 
- * uppercase/lowercase/numbers/symbols depending on what the user inputs. 
- * Using the Builder pattern allows the user to customize their password by 
+ * Ensures password policies are maintained by guaranteeing that it contains:
+ * uppercase/lowercase/numbers/symbols depending on what the user inputs.
+ * Using the Builder pattern allows the user to customize their password by
  * setting a minimum count of characters of each category. More flexibility and
  * choice.
  * 
@@ -29,40 +29,79 @@ import java.util.stream.IntStream;
  * minimum length (still leaves enough space for available characters, if any).
  * 2. Complete password building with the any available characters with
  * the remaining space (if any)
- * 3. Can use a custom String to build password with using custom() method. 
- * Builder will take random parts of the String passed into custom method and 
- * also how many characters to use from it. 
+ * 3. Can use a custom String to build password with using custom() method.
+ * Builder will take random parts of the String passed into custom method and
+ * also how many characters to use from it.
  * 
  * To Do: Put custom(string) within inner class
- * To Do: Options Flags Rules
  */
 public class PasswordBuilder {
-    // private enum Rule {
-    //     LOWER, UPPER, DIGITS, PUNCTUATION;
+    private final List<Option> options; // List of Options to build password
 
-    //     private final String text;
-    //     private final int minimumCount;
+    // Class Determines the Options to build Password
+    private static class Option {
+        private final String text; // Characters to choose from
+        private final int minimumCount; // Minimum amount to choose from text
 
-    //     private Rule(String text, int minimumCount) {
-    //         this.text = text;
-    //         this.minimumCount = minimumCount;
-    //     }
-    // }
+        public Option(String text, int minimumCount) {
+            this.text = text;
+            this.minimumCount = minimumCount;
+        }
+    }
 
-    private PasswordBuilder(){ 
+    private PasswordBuilder() {
         throw new UnsupportedOperationException("Empty constructor is not supported.");
     }
 
     private PasswordBuilder(Builder builder) {
-        public static class Builder {
-            private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
-            private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            private static final String DIGITS = "0123456789";
-            private static final String PUNCTUATION = "!@#$%&*+-";
+        this.options = builder.options;
+    }
+
+    public static class Builder {
+        private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
+        private static final String DIGITS = "0123456789";
+        private static final String SYMBOLS = "!@#$%&*+-";
+
+        private final List<Option> options = new ArrayList<>();
+
+        public Builder uppercase() { return uppercase(0); } 
+
+        public Builder uppercase(int minimumCount) {
+            return custom(UPPERCASE, minimumCount);
+        }
+
+        public Builder lowercase() { return lowercase(0); } 
+
+        public Builder lowercase(int minimumCount) {
+            return custom(LOWER, minimumCount);
+        }
+
+        public Builder digits() { return digits(0);}
+
+        public Builder digits(int minimumCount) {
+            return custom(DIGITS, minimumCount);
+        }
+
+        public Builder symbols() { return symbols(0); } 
+
+        public Builder symbols(int minimumCount) {
+            return custom(SYMBOLS, minimumCount);
+        }
+
+        // Allows Custom String to be incorporated into password
+        public Builder custom(String text) {
+            return custom(text, 0);
+        }
+
+        public Builder custom(String text, int minimumCount) {
+            options.add(new Option(text, minimumCount));
+            return this;
         }
 
         public PasswordBuilder build() {
-            return new PasswordGenerator(this);
+            return new PasswordBuilder(this);
         }
-    }
+
+    } // end of Builder class
 }
