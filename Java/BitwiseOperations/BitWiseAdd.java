@@ -3,34 +3,53 @@ package Java.BitwiseOperations;
 /**
  * Adds two numbers using bitwise operations. 
  * Time Complexity is O(log y).
- * The iteration runs y = carry << 1. So it shifts the required amount of
- * times.
+ * 
+ * In order to get the sum of two integers, we use an interesting property of
+ * the XOR (^) operator. 
+ * 
+ * An interesting relation is:
+ * a + b = a^b + 2*(a & b)
+ * a ^ b = a+b - 2*(a & b)
+ * when (a&b) = 0, you get a+b = a^b, in other words XOR of two numbers
+ * will lead to a summation. 
+ * But when (a&b) != 0, then you get a difference. 
+ * 
+ * Algorithm: 
+ *      To get a + b, we must have a^b added to 2*(a&b)
+ *      a + b = a^b + (a&b) << 1;
+ * 
+ *  a^b - returns a 1 in each bit position for which the corresponding bits of
+ * either but not both operands are 1s. 
+ *  a&b - Common set bits (a bit where both a and b have 1 as the bit in that 
+ * position). This value is shifted by 1, or multipled by 2. 
+ * 
+ * Just keep in mind that XOR is not always SUM or Difference, look at
+ *  6 = 110
+ *  3 = 011
+ * XOR  101 = 5
+ * SUM = 9
+ * DIF = 3 
  */
 public class BitWiseAdd{
 
 
-    /**
-     * Algorithm. We calculate the carry by AND both x and y. Then XOR x and y
-     * to get set bits. Then assign to y the carry shifted left by 1. Repeat 
-     * till y = 0. 
-     * Let x = 3, y = 4. 
-     * x = 0011
-     * y = 0100
+    /** Recall that: a + b = a^b + 2*(a & b)
+     * Algorithm: Let x = a, and y = b. We have x^y and (x&y) << 1.
      * 
-     * 1. Calculate the carry (or common set bits i.e. bits set to 1)
-     * 0011 
-     * 0100 &
-     * 0111
-     * 2. Sum of bits x and y where at least one of the bits is not set
-     * 0011 
-     * 0100 ^ 
-     * 0110          Then assign the result of (x ^ y) to x = 0110.
-     *       
-     * 3. Assign to y the carry shifted left by 1 (0111 << 1)
-     * x = 0110
-     * y = 1110
+     * 1. Create carry variable that stores the (x & y) expression
+     * 2. Assign x to store the x^y expression
+     * 3. Assign y to store the (x&y) << 1 or (carry) << 1 expression
+     * 4. Repeat steps 1-3 until y == 0, where there is no carry (i.e. the x&y
+     * or x AND y expression yields 0 where no more bits are set)
      * 
-     * 4. Iterate and repeat steps 1-3.
+     * Example: x = 3, y = 4. sum(3,4) will go through this process:
+     * x = 0011 = 3
+     * y = 0100 = 4
+     * x = 0111 = x^y
+     * y = 0000 = x&y << 1 
+     * Condition( y != 0 ) is false, returns x;
+     * x = 0111 = 7
+     * 
      * @return the sum through bitwise operations.
      */
     public static int sum(int x, int y){
