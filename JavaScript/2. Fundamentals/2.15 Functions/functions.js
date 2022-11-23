@@ -10,6 +10,27 @@ Function Declaration:
     The code outside of the function doesn’t see its local variables.
     - A function can return a value. If it doesn’t, then its result is undefined. 
 
+Parameters & Arguments
+    - Can pass arbitrary data to functions using parameters. 
+    - When a value is passed  as a function parameter, its also called an argument. 
+
+The difference between parameters and arguments is timing: 
+    - Parameters are Declaration-Time
+    - Arguments are Call-Time. 
+    
+We declare functions listing their parameters, then call them passing arguments. 
+
+- A parameter is the  variable listed inside the parentheses in the function declaration 
+    - a Declaration Time term
+- An argument is the value that is passed to the function when it is called 
+    - a Call Time term
+
+Pass-By-Value
+    JavaScript is Pass-By-Value i.e., function always gets a copy of the value.
+So any changes made to the arguments inside the function do not reflect the
+passing variables outside of the function. Changes made to the arguments are 
+not reflected outside of the function. The functions work with a local copy.
+
 Readability
     - Mainly use localy variables and parameters in the function, not outer variables
     - Easier to understand a function with parameters, works with them and 
@@ -75,4 +96,47 @@ showName();
 console.log(`After: ${name}`);  // prints "Moon" again
 
 
-/* Parameters */
+/* Parameters, Arguments, and Pass-By-Value
+Can pass arbitrary data to functions using parameters. 
+
+JavaScript is Pass-By-Value i.e., function always gets a copy of the value. 
+So any changes made to the arguments inside the function do not reflect the
+passing variables outside of the function. Changes made to the arguments are 
+not reflected outside of the function. The functions work with a local copy.
+
+When a value is passed  as a function parameter, its also called an argument. 
+The difference between parameters and arguments is timing: 
+parameters are Declaration-Time and arguments are Call-Time. 
+
+We declare functions listing their parameters, then call them passing arguments. 
+
+- A parameter is the  variable listed inside the parentheses in the function declaration 
+    - a Declaration Time term
+- An argument is the value that is passed to the function when it is called 
+    - a Call Time term
+*/
+
+function showMessage(user, text){ // parameters: user, text
+    console.log(user + ': ' + text); // Format: "user: text"
+}
+
+showMessage('Luna', 'Hiya!');       // Luna: Hiya!
+showMessage('Luna', "What's up?");  // Luna: What's up?
+
+// Pass By Value, here the function adds something to the argument passed in
+function showMessageFancy(user, text){
+    user = '*' + user + '*'; // make user look fancier
+    console.log(user + ': ' + text); // Format: "*user*: text"
+}
+
+let myUserName = "Luna";
+
+showMessageFancy(myUserName, "Hey!"); // *Luna*: Hey!
+
+// The value of myUsername is the same, the function modified a local copy
+console.log(myUserName); // "Luna" 
+
+/* Default Values
+    If a function is called, but an argument is not provided, then the corresponding
+value becomes undefined.
+*/
