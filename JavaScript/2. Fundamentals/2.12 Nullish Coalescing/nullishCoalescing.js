@@ -4,6 +4,8 @@
     first defined value from a list.
         - A value is defined when it's neither null nor undefined
 
+    - USE ?? when default values can be {0, "" (empty string), or false}.
+
     -It's used to assign default values to variables
         e.g., // set height=100, if height is null or undefined
         height = height ?? 100;
