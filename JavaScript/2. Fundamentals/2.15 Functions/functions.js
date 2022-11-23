@@ -17,13 +17,25 @@ Parameters & Arguments
 The difference between parameters and arguments is timing: 
     - Parameters are Declaration-Time
     - Arguments are Call-Time. 
-    
+
 We declare functions listing their parameters, then call them passing arguments. 
 
 - A parameter is the  variable listed inside the parentheses in the function declaration 
     - a Declaration Time term
 - An argument is the value that is passed to the function when it is called 
     - a Call Time term
+
+Default Values
+    If a function is called, but an argument is not provided, then the corresponding
+value becomes undefined.
+    We can specify a default value for a parameter in the function declaration.
+Using "=" after the parameter. It can be a String or even a function.
+
+Alternatives to Default Parameters
+    1. Check parameter by comparing it with "undefined"
+    2. Use || opearator to set a default value to parameter
+    3. Use ?? operator to set a default value (best when most falsy values 
+        should be considered normal e.g., 0, empty string, or false) 
 
 Pass-By-Value
     JavaScript is Pass-By-Value i.e., function always gets a copy of the value.
@@ -49,9 +61,9 @@ Function Naming
     3. list of paremeters between parentheses (comma-separated)
     4. function body i.e. code of the function 
 */
-function say(){
+function say() {
     console.log("Freedom is not attained through the satisfaction of desires, "
-     + "but through its suppression. - Epictetus")
+        + "but through its suppression. - Epictetus")
 }
 
 // Calling the function by its name -> say()
@@ -70,8 +82,8 @@ let userName = 'Darkness';
 
 console.log(`userName Before function call: ${userName}`);  // prints "Darkness"
 
-function changeUserName(){
-   userName = 'Lightness';  // changes "userName" to "Lightness"
+function changeUserName() {
+    userName = 'Lightness';  // changes "userName" to "Lightness"
 }
 
 // call function changeUserName();
@@ -86,7 +98,7 @@ other one. Code below users the local name, and the outer one is ignored. */
 let name = 'Moon';
 console.log(`Before: ${name}`);  // prints "Moon"
 
-function showName(){
+function showName() {
     let name = 'Sun'; // Declare a local variable, with same name
     console.log(`During: ${name}`);  // prints "Sun" inside the function 
 }
@@ -116,7 +128,7 @@ We declare functions listing their parameters, then call them passing arguments.
     - a Call Time term
 */
 
-function showMessage(user, text){ // parameters: user, text
+function showMessage(user, text) { // parameters: user, text
     console.log(user + ': ' + text); // Format: "user: text"
 }
 
@@ -124,7 +136,7 @@ showMessage('Luna', 'Hiya!');       // Luna: Hiya!
 showMessage('Luna', "What's up?");  // Luna: What's up?
 
 // Pass By Value, here the function adds something to the argument passed in
-function showMessageFancy(user, text){
+function showMessageFancy(user, text) {
     user = '*' + user + '*'; // make user look fancier
     console.log(user + ': ' + text); // Format: "*user*: text"
 }
@@ -139,4 +151,63 @@ console.log(myUserName); // "Luna"
 /* Default Values
     If a function is called, but an argument is not provided, then the corresponding
 value becomes undefined.
+    We can specify a default value for a parameter in the function declaration.
+Using "=" after the parameter. It can be a String or even a function.
+*/
+
+function showMsg(from, text = "no text given") { // text has a default value
+    console.log(from + ": " + text);
+}
+
+showMsg("Flora"); // Flora: no text given
+
+// When a Default Value is a function
+function anotherFunction() {
+    return "-__-";
+}
+
+function showMsgWithDefault(from, text = anotherFunction()) {
+    // anotherFunction only executed if no text is given
+    // its result becomes the value of the text
+    console.log(from + ": " + text);
+}
+
+showMsgWithDefault("Flora"); // Flora: -__-
+
+
+/* Alternatives to Default Parameters
+    1. Check parameter by comparing it with "undefined"
+    2. Use || opearator to set a default value to parameter
+    3. Use ?? operator to set a default value (best when most falsy values 
+        should be considered normal e.g., 0, empty string, or false) 
+*/
+
+// 1. Compare parameter with undefined
+function show1(text) {
+    if (text === undefined) { // if the parameter is missing
+        text = 'empty message';
+    }
+    console.log(text);
+}
+
+// 2. Use || operator to set default value
+function show2(text){
+    // if text is undefined or otherwise falsy, set it to 'empty'
+    text = text || 'empty';
+}
+
+// 3. Use ?? operator to set default value (if 0, "", false are valid values)
+function show3(text){
+    console.log(text ?? "unknown");
+}
+
+show3(0);       // 0
+show3("");      // ""
+show3(false);   // false
+show3(null);    // unknown
+show3();        // unknown
+
+
+/* Returning a Value
+
 */
