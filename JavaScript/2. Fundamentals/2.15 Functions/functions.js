@@ -43,6 +43,22 @@ So any changes made to the arguments inside the function do not reflect the
 passing variables outside of the function. Changes made to the arguments are 
 not reflected outside of the function. The functions work with a local copy.
 
+Returning a Value
+A function can return a value back into the calling code as the result. 
+The directive "return" can be in any place of the function. 
+    - When execution reaches it, the function ceases, and the value is returned
+    to the calling code 
+    - It's possible to return without a value. Causes the function to exit immediately.
+
+A function returns "undefined" when 
+    - has no "return" directive
+    - has an empty return (i.e. return; )
+
+JavaScript assumes a semicolon after return. So never add a newline between the
+return and the value! 
+    - If return expression wraps across multiple lines, start it as the same 
+    line as return or put it in parentheses
+
 Readability
     - Mainly use localy variables and parameters in the function, not outer variables
     - Easier to understand a function with parameters, works with them and 
@@ -207,7 +223,109 @@ show3(false);   // false
 show3(null);    // unknown
 show3();        // unknown
 
-
 /* Returning a Value
+A function can return a value back into the calling code as the result. 
+The directive "return" can be in any place of the function. 
+    - When execution reaches it, the function ceases, and the value is returned
+    to the calling code 
+    - It's possible to return without a value. Causes the function to exit immediately.
 
+A function returns "undefined" when 
+    - has no "return" directive
+    - has an empty return (i.e. return; )
+
+JavaScript assumes a semicolon after return. So never add a newline between the
+return and the value! 
+    - If return expression wraps across multiple lines, start it as the same 
+    line as return or put it in parentheses
 */
+
+// Returns true if number passed in is even, false otherwise
+function isEvenNumber(i){
+    return (i & 1) == 0;
+}
+
+let i = isEvenNumber(16384);
+console.log(i);
+
+/* return can be placed in any place of the function */
+function checkAge(age) {
+    if (age >= 18) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+let age = prompt('How old are you?', 18);
+  
+if ( checkAge(age) ) {
+    console.log( 'Access granted' );
+} else {
+    console.log( 'Access denied' );
+}
+
+/* Using return to cause function to exit immediately */
+function showMovie(age) {
+    if ( !checkAge(age) ) {
+      return;
+    }
+
+    // Execution won't proceed if checkAge(age) returns false
+    console.log( "Showing you the movie" ); 
+    
+}
+
+function doNothing() { /* empty */ }
+
+console.log( doNothing() === undefined ); // true
+
+function doNothing2() {
+    return;
+}
+  
+console.log( doNothing2() === undefined ); // true
+
+
+/* Function Names should be Self-Describing 
+    - Their names act like comments and improves readability. 
+    - Their names usually have a verbal prefix
+    - Functions should exactly what their names suggest, and nothing more
+    - Functions should have one action
+*/
+
+// Comparing Primes - First Variant
+function showPrimes(n) {
+    nextPrime: for (let i = 2; i < n; i++) {
+  
+      for (let j = 2; j < i; j++) {
+        if (i % j == 0) continue nextPrime;
+      }
+  
+      console.log( i ); // a prime
+    }
+}
+
+// Comparing Primes - Second Variant
+
+function showPrimes(n) {
+
+    for (let i = 2; i < n; i++) {
+      if (!isPrime(i)) continue;
+  
+      console.log(i);  // a prime
+    }
+  }
+  
+  function isPrime(n) {
+    for (let i = 2; i < n; i++) {
+      if ( n % i == 0) return false;
+    }
+    return true;
+}
+
+// Second variant is easier to understand as instead of the code piece we
+//  see a name of the action: isPrime() which is self-describing
+
+// Create functions to structure the code and make it readable. Functions can
+// be created even if we do not inted to reuse them
