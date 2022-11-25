@@ -1,24 +1,10 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <script>
-      /* Write a Function pow(x,n) that returns x in power of n. 
-      Then create a web page that prompts for x and n, then shows the
-      result of pow(x,n) */
-      function pow(x, n) {
-        return x ** n;
-      }
-
-      let x = prompt("x?", "");
-      let n = prompt("n?", "");
-
-      // Supports only natural values of n: integers up from 1
-      if (n < 1) {
-        alert(`Power ${n} is not supported, use a positive integer`);
-      } else {
-        alert(`${x}^${n} is ` + pow(x, n));
-      }
-
-    </script>
+    <script src="power.js" defer></script>
   </body>
 </html>
+
+<!-- A webpage that prompts for x and n, then shows the result of pow(x,n).
+The function pow(x,n) returns x raise to the power of n.
+ -->
