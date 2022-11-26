@@ -122,9 +122,161 @@ ask(
 - We can pass it between variables and run when we want
 */
 
-/* Function Expression vs. Function Declaration 
-I. Syntax
-II. When a function is created by the JavaScript engine
-III. Block Scope
+/* Function Expression vs. Function Declaration
+Key Differences: 
+    I.   Syntax
+    II.  When a function is created by the JavaScript engine
+    III. Block Scope
+*/
 
+/* I.   Syntax 
+Function Declaration: a function, declared as a separate statement */
+function sum(a, b) {
+    return a + b;
+}
+
+/* Function Expression: a function, created inside an expression or inside 
+another syntax construct. Here, the function is created on the right side 
+of the "assignment expression" =: */
+let sum = function(a, b) {
+    return a + b;
+};
+
+/* II.  When a function is created by the JavaScript engine 
+- Function Expression is created when the execution reaches it and is usable only from that moment.     
+- Function Declaration can be called earlier than it is defined.
+
+    Once the execution flow passes to the right side of the assignment 
+let sum = function… – here we go, the function is created and can be used 
+(assigned, called, etc. ) from now on.
+    Function Declarations are different. They can be called earlier than is defined.
+e.g., a global Function Declaration is visible in the whole script, no matter where it is.
+
+That’s due to internal algorithms. When JavaScript prepares to run the script,
+it first looks for global Function Declarations in it and creates the functions. 
+We can think of it as an initialization stage.
+
+And after all Function Declarations are processed, the code is executed. 
+So it has access to these functions.
+*/
+
+// This works because sayHi is created when JavaScript is preparing to start the
+// script and is visible everywhere in it:
+sayHi("John"); // Hello, John
+
+function sayHi(name) {
+  alert( `Hello, ${name}` );
+}
+
+/* But a FunctionExpression would not work since they are created when the
+execution reaches them 
+
+sayHi("John"); // error!
+
+let sayHi = function(name) {  // Execution reaches function expression
+  alert( `Hello, ${name}` );
+};
+
+*/
+
+/* III. Block Scope 
+Another special feature of Function Declarations is their block scope. 
+
+    In strict mode, when a Function Declaration is within a code block, 
+it’s visible everywhere inside that block. But not outside of it.
+
+For instance, lets declare a function welcome() depending on age variable
+that we get during runtime. And then we place to use it some time later. 
+*/
+let age = prompt("What is your age?", 18);
+
+// conditionally declare a function
+if (age < 18) {
+
+  function welcome() {
+    alert("Hello!");
+  }
+
+} else {
+
+  function welcome() {
+    alert("Greetings!");
+  }
+
+}
+
+// ...use it later
+welcome(); // Error: welcome is not defined
+
+// A Function Declaration is only visible inside the code block in which it resides
+// Another Example:
+
+age = 16; // take 16 as an example
+
+if (age < 18) {
+  welcome();               // \   (runs)
+                           //  |
+  function welcome() {     //  |
+    alert("Hello!");       //  |  Function Declaration is available
+  }                        //  |  everywhere in the block where it's declared
+                           //  |
+  welcome();               // /   (runs)
+
+} else {
+
+  function welcome() {
+    alert("Greetings!");
+  }
+}
+
+// Here we're out of curly braces,
+// so we can not see Function Declarations made inside of them.
+
+welcome(); // Error: welcome is not defined
+
+
+/* How to make welcome visible outside of if? 
+    Correct approach is to use a Function Expression and assign welcome to the
+variable that is declared outside of if and has the property visibility. 
+*/
+
+age = prompt("What is your age?", 18);
+
+let welcome;
+
+if (age < 18) {
+
+  welcome = function() {
+    alert("Hello!");
+  };
+
+} else {
+
+  welcome = function() {
+    alert("Greetings!");
+  };
+
+}
+
+welcome(); // ok now
+
+/* Simplify above example further using ternary operator ? */
+age = prompt("What is your age?", 18);
+
+let welcome = (age < 18) ?
+  function() { alert("Hello!"); } :
+  function() { alert("Greetings!"); };
+
+welcome(); // ok now
+
+/* When to choose between Function Declaration vs. Function Expression? 
+
+1. Consider Function Declaration syntax, gives more freedom in how to organize
+code, because it can be called before they are declared.
+2. Function Declarations can be better for readability, easier to look up
+function f(…) {…} in the code than let f = function(…) {…};. 
+Function Declarations are more "eye-catching". 
+
+Use Function Expression when we need a conditional declaration like the above
+example. 
 */
