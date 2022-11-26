@@ -12,4 +12,27 @@
     - Press [F12] 
     - [Ctrl + Shift + I] also works 
     - [Cmd + Opt + I] on Mac
-3. Select the `Sources` Panel
+3. Select the **Sources** Panel
+
+What the `Sources` Panel should look like with the Navigator Button toggled Off (hidden):
+<img src="images/chromeSourcesPanelOff.png" alt="Google Chrome's Sources Panel, Navigator Toggled Off" title="The Sources Panel, Navigator Off."/>
+
+In the Top Left we can see: 
+
+<img src="images/chromeTopLeft.png" alt="Google Chrome's Top Left Developer Tools" title="Google Chrome's Top Left Developer Tools"/>
+
+The Navigator Button is: 
+<img src="images/chromeNavigator.png" alt="Google Chrome's Navigator Button" title="Google Chrome's Navigator Button"/>
+
+What `Sources` Panel looks like when Navigator Button is toggled On:
+
+<img src="images/chromeSourcesPanel.png" alt="Google Chrome's Sources Panel" title="The Sources Panel."/>
+
+### Sources panel has 3 parts:
+
+1. On the left, the **File Navigator** pane lists HTML, JavaScript, CSS and other files, including images that are attached to the page. Chrome extensions may appear here too.
+
+2. In the middle, the **Code Editor** pane shows the source code.
+
+3. On the right, the **JavaScript Debugging pane** is for debugging
+
