@@ -61,7 +61,11 @@ After a statement is executed, its result is shown below. For example, here `1+2
 
 It should look like this (blue is where you should click): 
 
-<img src="images/chromeBreakPoint4and8.png" alt="Google Chrome's Console" title="The Console Panel."/>
+<img src="images/chromeBreakPoint4and8.png" alt="Breakpoints 4 and 8" title="Breakpoints 4 and 8"/>
+
+<img src="images/breakpoints4and8.png">
+
+<img src="images/breakpoints.png">
 
 *Notice*: Line 4 and Line 8 is highlighted blue, and it has been added to the right in the **JavaScript Debugging pane** under breakpoints.
 
@@ -81,4 +85,43 @@ We can always find a list of breakpoints in the right panel. That’s useful whe
 - That's handy when we need to stop only for a certain variable value or for certain function parameters.
 
 ---
+
+## The command "debugger"
+
+We can also pause the code by using the `debugger` command in it, like this: 
+
+<img src="images/debuggerCodeCommand.png" alt="Breakpoints 4 and 8" title="Breakpoints 4 and 8"/>
+
+Such a command works only when the development tools are open, otherwise the browser ignores it.
+
+---
+
+## Pause and Look around
+
+In our example, `hello()` is called during the page load, so the easiest way to activate the debugger (after we’ve set the breakpoints) is to reload the page.
+    - Press `[F5]` on Windows or Linux
+    - Press `[Cmd+R]` on Mac
+
+As the breakpoint is set, the execution pauses at the 4th line:
+
+<img src="images/pausedAtBreakpoint4.png">
+
+In **JavaScript Debugging** pane, the informational dropdowns to the right (labeled with arrows) allow you to examine the current code state:
+
+<img src="images/chromeDebuggingPaneBreakpoint4.png">
+
+1. `Watch` **shows current values for any expressions**
+    - You can click the plus `+` and input an expression. The debugger will show its value, automatically recalculating it in the process of execution.
+
+2. `Call Stack` **shows the nested calls chain**
+    - At the current moment the debugger is inside `hello()` call, called by a script in `index.html` (no function there, so it’s called "anonymous").
+    - If you click on a stack item (e.g. 
+    "anonymous"), the debugger jumps to the corresponding code, and all its variables can be examined as well.
+
+3. `Scope` **current variables**
+    - `Local` **shows local function variables.** You can also see their values highlighted right over the source.
+    - `Global` **has global variables** (out of any functions)
+    - There's also `this` keyword
+
+--- 
 
