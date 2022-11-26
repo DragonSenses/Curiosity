@@ -152,4 +152,84 @@ alert( a ); // 7 (the result of 3 + 4)
 // Without parentheses, a = 1 + 2, 3 + 4 evaluates to a = 3, 7 which assigns 3 to a,
 // the rest is ignored. (a = 1 + 2), 3 + 4, 
 
-/*  */
+/* Loops 
+3 Types:
+// 1. while loop
+while (condition) {
+  ...
+}
+
+// 2. do while loop
+do {
+  ...
+} while (condition);
+
+// 3. for loop
+for(let i = 0; i < 10; i++) {
+  ...
+}
+    The variable declared in for(let...) loop is visible only inside the loop. 
+But we can also omit let and reuse an existing variable.
+
+Directives break/continue allow to exit the whole loop/current iteration. 
+Use labels to break nested loops.
+*/
+
+/* switch construct 
+Replaces multiple if checks, it uses === (strict equality) for comparisons.
+*/
+let age = prompt('Your age?', 18);
+
+switch (age) {
+  case 18:
+    alert("Won't work"); // the result of prompt is a string, not a number
+    break;
+
+  case "18":
+    alert("This works!");
+    break;
+
+  default:
+    alert("Any value not equal to one above");
+}
+
+/* Functions - 3 Ways to create a Function in JavaScript */
+
+/* 1. Function Declaration: the function in the main code flow */
+function sum(a, b) {
+    let result = a + b;
+  
+    return result;
+}
+
+/* 2. Function Expression: the function in the context of an expression */
+let sum = function(a, b) {
+    let result = a + b;
+  
+    return result;
+};
+
+/* 3. Arrow functions: */
+let sum = (a, b) => a + b;      // expression on the right side
+
+// or multi-line syntax with { ... }, need return here:
+let sum = (a, b) => {
+  // ...
+  return a + b;
+}
+
+// without arguments
+let sayHi = () => alert("Hello");
+
+// with a single argument
+let double = n => n * 2;
+
+/* 
+    Functions may have local variables: those declared inside its body or its 
+parameter list. Such variables are only visible inside the function.
+
+    Parameters can have default values: function sum(a = 1, b = 2) {...}.
+
+    Functions always return something. If there’s no return statement, 
+then the result is undefined. 
+*/
