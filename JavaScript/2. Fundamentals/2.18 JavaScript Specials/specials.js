@@ -87,4 +87,69 @@ alert( "Visitor: " + userName ); // Alice
 alert( "Tea wanted: " + isTeaWanted ); // true
 
 
+/* Operators 
+    Arithmetical
+Regular: * + - /, also % for the remainder and ** for power of a number.
+
+The binary plus + concatenates strings. And if any of the operands is a string,
+the other one is converted to string too:
+*/
+alert( '1' + 2 ); // '12', string
+alert( 1 + '2' ); // '12', string
+
+/* 
+Assignments
+There is a simple assignment: a = b and combined ones like a *= 2.
+
+Bitwise
+Bitwise operators work with 32-bit integers at the lowest, bit-level.
+
+Conditional
+The only operator with three parameters: cond ? resultA : resultB. 
+If cond is truthy, returns resultA, otherwise resultB.
+
+Logical operators
+Logical AND && and OR || perform short-circuit evaluation and then return the 
+value where it stopped (not necessary true/false). Logical NOT ! converts the 
+operand to boolean type and returns the inverse value.
+
+Nullish coalescing operator
+The ?? operator provides a way to choose a defined value from a list of 
+variables. The result of a ?? b is a unless it's null/undefined, then b.
+*/
+
+/* Comparisons 
+Equality check == for values of different types converts them to a number 
+(except null and undefined that equal each other and nothing else), 
+so these are equal:
+*/
+alert( 0 == false ); // true
+alert( 0 == '' ); // true
+
+/* Other comparisons convert to a number as well.
+
+    Strict Equality Operator === doesn’t do the conversion: 
+        different types always mean different values for it.
+
+    Values null and undefined are special: 
+        they equal == each other and don't equal anything else.
+
+    Greater/less comparisons compare strings character-by-character, 
+        other types are converted to a number.
+*/
+
+/*  Other Operators:
+    Comma Operator allows evaluating several expressions dividing them with a 
+comma , 
+    Each of them is evaluated but only the result of the last one is returned.
+Has a very low precdence, even lower than "=" assignment
+*/
+
+let a = (1 + 2, 3 + 4); 
+
+alert( a ); // 7 (the result of 3 + 4)
+
+// Without parentheses, a = 1 + 2, 3 + 4 evaluates to a = 3, 7 which assigns 3 to a,
+// the rest is ignored. (a = 1 + 2), 3 + 4, 
+
 /*  */
