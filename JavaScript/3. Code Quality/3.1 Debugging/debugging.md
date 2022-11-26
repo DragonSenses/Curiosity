@@ -53,3 +53,32 @@ After a statement is executed, its result is shown below. For example, here `1+2
 
 ## Breakpoints
 
+- Let's examine the code within the <a href= https://javascript.info/article/debugging-chrome/debugging/index.html > example page </a>
+- In `Sources` panel go the the left on the **File Navigator** pane and click on **hello.js**
+- Go to the middle in the **Code Editor**, and click at line number `4`. 
+    - Yes, right on the ***4*** digit, not on the code.
+- Now click on the number for line `8`.
+
+It should look like this (blue is where you should click): 
+
+<img src="images/chromeBreakPoint4and8.png" alt="Google Chrome's Console" title="The Console Panel."/>
+
+*Notice*: Line 4 and Line 8 is highlighted blue, and it has been added to the right in the **JavaScript Debugging pane** under breakpoints.
+
+A ***breakpoint*** is a point of code where the debugger will automatically pause the JavaScript execution.
+
+While the code is paused, we can examine current variables, execute commands in the console etc. In other words, we can debug it.
+
+We can always find a list of breakpoints in the right panel. That’s useful when we have many breakpoints in various files. It allows us to:
+
+- Quickly jump to the breakpoint in the code (by clicking on it in the right panel).
+- Temporarily disable the breakpoint by unchecking it.
+- Remove the breakpoint by right-clicking and selecting Remove.
+
+> **Conditional Breakpoints** 
+- *Right click* on the line number allows to create a **conditional breakpoint**. 
+- It only triggers when the given expression, that you should provide when you create it, is truthy.
+- That's handy when we need to stop only for a certain variable value or for certain function parameters.
+
+---
+
