@@ -135,4 +135,64 @@ key = "name";
 alert( user.key ) // undefined
 
 
-/* Computed Properties */
+/* Computed Properties 
+When creating an object, we can use square brackets in an object literal called
+computed properties. e.g: 
+*/
+let fruit = prompt("Which fruit to buy?", "apple");
+
+let bag = {
+  [fruit]: 5, // the name of the property is taken from the variable fruit
+};
+
+alert( bag.apple ); // 5 if fruit="apple"
+
+// Essentially, works the same as:
+fruit = prompt("Which fruit to buy?", "apple");
+bag = {};
+
+// take property name from the fruit variable
+bag[fruit] = 5;
+
+/* Using more Complex Expressions inside Square Brackets */
+fruit = 'apple';
+let bag = {
+  [fruit + 'Computers']: 5 // bag.appleComputers = 5
+};
+
+/* Dot Notation vs. Square Bracketts
+- Dot is used when propert names are known and simple
+- Square Brackets used for something more complex, allows any property names
+and variables, but also more cumbersome to write
+*/
+
+/* Property Value shorthand 
+In real code, we often use existing variables as values for property names:
+*/
+function makeUser(name, age) {
+  return {
+    name: name,
+    age: age,
+    // ...other properties
+  };
+}
+
+let user = makeUser("Leo", 20);
+alert(user.name); // Leo
+
+// The use-case of making a property from a variable is so common, that there's
+// a special property value shorthand to make it shorter
+// Instead of "name:name" we can just write "name", like this:
+function makeUser(name, age) {
+  return {
+    name, // same as name: name
+    age,  // same as age: age
+    // ...
+  };
+}
+
+// We can use Both normal properties and shorthands in the same object:
+let user3 = {
+  name, // same as name:name
+  age: 30
+};
