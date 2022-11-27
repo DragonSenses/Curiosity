@@ -125,3 +125,41 @@ In **JavaScript Debugging** pane, the informational dropdowns to the right (labe
 
 --- 
 
+## Tracing the Execution
+
+<img src="images/chromeTopRight.png">
+
+Now it’s time to ***trace*** the script, using the buttons at the top of the right panel. Let’s engage them.
+
+### ***Resume* - continues the execution**
+
+<img src="images/resumeButton.png">
+
+* Hotkeys: `[F8]` or `[Ctrl + \]`
+* Resumes the execution. If there are no additional breakpoints, then the execution just continues and the debugger loses control.
+
+Here’s what we can see after a click on it:
+
+<img src="images/resumeToBreakpoint8.png">
+
+* The execution has resumed, reached another breakpoint inside `say()` and paused there. 
+* Take a look at the **Call Stack** at the right. It has increased by one more call. We're inside `say()` now.
+
+### ***Step* - run the next command**
+<img src="images/stepButton.png">
+
+* Hotkeys: `[F9]`
+* Run the next statement. If we click it now, `alert` will be shown.
+* Clicking this again and again will step through all script statements one by one.
+
+### ***Step Over* - runs the next command, but *don't go into a function***
+<img src="images/stepOverButton.png">
+
+* Hotkeys: `[F10]`
+* Similar to the previous `Step` command, but behaves differently if the next statement is a function call (not a built-in, like `alert`, but a function of our own)
+* "Step" vs. "Step Over" comparison
+    1. `Step` command goes into a nested function call and pauses the execution at its first line, 
+    2. `Step over` executes the nested function call invisibly to us, skipping the function internals.
+- Execution is then paused immediately after that function call
+- That's good if we're not interested to see what happens inside the function call
+
