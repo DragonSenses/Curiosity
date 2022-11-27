@@ -155,11 +155,48 @@ Here’s what we can see after a click on it:
 ### ***Step Over* - runs the next command, but *don't go into a function***
 <img src="images/stepOverButton.png">
 
-* Hotkeys: `[F10]`
+* Hotkeys: `[F10]` or `[Ctrl + ']`
 * Similar to the previous `Step` command, but behaves differently if the next statement is a function call (not a built-in, like `alert`, but a function of our own)
 * "Step" vs. "Step Over" comparison
     1. `Step` command goes into a nested function call and pauses the execution at its first line, 
     2. `Step over` executes the nested function call invisibly to us, skipping the function internals.
 - Execution is then paused immediately after that function call
 - That's good if we're not interested to see what happens inside the function call
+
+### ***Step Into* - runs the next command, but *behaves differently in case of asynchronous function calls***
+<img src="images/stepIntoButton.png">
+
+* Hotkeys: `[F11]` or `[Ctrl + ;]`
+* That’s similar to `Step`, but behaves differently in case of asynchronous function calls.
+* "Step" vs. "Step Into" comparison
+    1. `Step` command ignores async actions, such as `setTimeout` (scheduled function call), that execute later. 
+    2. `Step into` goes into their code, waiting for them if necessary.
+
+### ***Step Out* - continue the execution till the end of the current function**
+<img src="images/stepOutButton.png">
+
+* Hotkeys: `[Shift + F11]` or `[Ctrl + Shift + ;]`
+* Continue the execution and stop it at the very last line of the current function. 
+* That’s handy when we accidentally entered a nested call using `Step` <img src="images/stepButton.png"> , but it does not interest us, and we want to continue to its end as soon as possible.
+
+### **Enable/Disable *all Breakpoints***
+<img src="images/enableDisableAllBreakpoints.png">
+
+* Hotkeys: `[Ctrl + F8]`
+* This button does not move the execution. 
+* Just a mass on/off for breakpoints.
+
+### **Enable/Disable *automatic pause* in case of error**
+<img src="images/enableDisableAutomaticPause.png">
+
+* When enabled, if the developer tools is open, an error during the script execution automatically pauses it.
+* Then we can analyze variables in the debugger to see what went wrong. 
+- So if our script dies with an error, we can open debugger, enable this option and reload the page to see where it dies and what’s the context at that moment.
+
+### **Continue to Here**
+
+* Right Click on a line of code opens the context menu with a great option called *Continue to here*.
+* Handy when we want ot move multiple steps forward to the line, but we're too lazy to set a break point
+
+---
 
