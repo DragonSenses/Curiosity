@@ -52,8 +52,15 @@ let user = {    // an object
 };
 
 // In the user object, there are two properties
-// <name,"Leo"> - first proeprty has the name "name" and value of "Leo"
+// <name,"Leo"> - first property has the name "name" and value of "Leo"
 // <age,20> - second property has name "age" and value of 30
+
+/* Dot Notation allows Accessing, Removing, and Deleting Properties 
+  The dot requires the key to be a valid variable identifier. That implies: 
+  - contains no spaces
+  - doesn’t start with a digit
+  - doesn’t include special characters ($ and _ are allowed).
+*/
 
 /* Access Property values via dot notation: */
 alert( user.name ); // Leo
@@ -72,4 +79,60 @@ user = {
   "likes birds": true,   // multiword property name must be quoted
 }                        // Last property in list may end with a comma ,
 
+/* Multiword Properties must use Square Brackets, not dot notation
+
+// this would give a syntax error
+user.likes birds = true 
+
+  JavaScript thinks we address "user.likes" and then gives a syntax error when
+it comes across unexpected "birds". The dot requires the key to be a valid 
+variable identifier. That implies: contains no spaces, doesn’t start with a 
+digit and doesn’t include special characters ($ and _ are allowed).
+*/
+
 /* Square Brackets */
+let user = {};
+
+// set
+user["likes birds"] = true;
+
+// get
+alert(user["likes birds"]); // true
+
+// delete
+delete user["likes birds"];
+
+/* Note: Square Brackets works with any String, but must be properly quoted.
+
+Square brackets also provide a way to obtain the property name as the result
+of any expression - as opposed to a literal string - like from a variable as
+follows:
+*/
+let key = "likes birds";
+
+// same as user["likes birds"] = true;
+user[key] = true;
+
+/* Flexibility. The variable "key" may be calculated at run-time or depend 
+on the user input. Then we use it to access the property.  e.g., */
+let user = {
+  name: "Luna",
+  age: 20
+};
+
+key = prompt("What do you want to know about the user?", "name");
+
+// access by variable
+alert( user[key] ); // Luna (if enter "name")
+
+/* Dot notation cannot be used in a similar way: */
+let user = {
+  name: "Leo",
+  age: 20
+};
+
+key = "name";
+alert( user.key ) // undefined
+
+
+/* Computed Properties */
