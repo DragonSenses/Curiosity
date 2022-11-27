@@ -41,7 +41,7 @@ What `Sources` Panel looks like when Navigator Button is toggled On:
 
 ***
 
-## Console
+## **Console**
 
 If we press `[Esc]`, then a console opens below. We can type commands there and press `[Enter]` to execute. 
 
@@ -51,7 +51,7 @@ After a statement is executed, its result is shown below. For example, here `1+2
 
 ---
 
-## Breakpoints
+## **Breakpoints**
 
 - Let's examine the code within the <a href= https://javascript.info/article/debugging-chrome/debugging/index.html > example page </a>
 - In `Sources` panel go the the left on the **File Navigator** pane and click on **hello.js**
@@ -86,7 +86,7 @@ We can always find a list of breakpoints in the right panel. That’s useful whe
 
 ---
 
-## The command "debugger"
+## **The command "debugger"**
 
 We can also pause the code by using the `debugger` command in it, like this: 
 
@@ -96,7 +96,7 @@ Such a command works only when the development tools are open, otherwise the bro
 
 ---
 
-## Pause and Look around
+## **Pause and Look Around**
 
 In our example, `hello()` is called during the page load, so the easiest way to activate the debugger (after we’ve set the breakpoints) is to reload the page.
     - Press `[F5]` on Windows or Linux
@@ -125,7 +125,7 @@ In **JavaScript Debugging** pane, the informational dropdowns to the right (labe
 
 --- 
 
-## Tracing the Execution
+## **Tracing the Execution**
 
 <img src="images/chromeTopRight.png">
 
@@ -199,4 +199,37 @@ Here’s what we can see after a click on it:
 * Handy when we want ot move multiple steps forward to the line, but we're too lazy to set a break point
 
 ---
+
+## **Logging**
+
+`console.log` - function outputs something to console from our code. 
+
+For instance, this outputs values from `0` to `7` to console: 
+<img src="images/consoleLog7.png">
+
+Output in Console:
+<img src="images/consoleLogOutput7.png">
+
+Since it is in the console, regular users don't see that output. 
+
+To see it, either open the Console panel of developer tools or press `[Esc]` while in another panel: that opens the console at the bottom.
+
+If we have enough logging in our code, then we can see what’s going on from the records, without the debugger.
+
+---
+
+# Summary
+
+3 main ways to pause a script:
+
+1. A Breakpoint
+2. The `debugger` statements
+3. An error 
+    * If dev tools are open and the button <img src="images/enableDisableAutomaticPause.png"> is turned On. 
+
+When paused, we can debug: examine variables and trace the code to see where the execution goes wrong. 
+
+There are many more options in developer tools than covered here. See the <a href="https://developers.google.com/web/tools/chrome-devtools">full manual for Google Chrome</a>.
+
+Fastest route to learn dev tools is to click various places of dev tools and just see what's showing up. 
 
