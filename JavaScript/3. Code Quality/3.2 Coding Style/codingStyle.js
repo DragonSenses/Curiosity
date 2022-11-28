@@ -26,3 +26,54 @@ between parentheses and the parameter
 - Spaces around a nested call
 - Lines are not very long
 */
+
+/* Curly Braces 
+"Egyptian" style with opening brace on the same line as the corresponding 
+    keyword - not on a new line. Also a space before the opening bracket.
+
+For a single-line construct, such as if (condition) doSomething()
+    - Tip if putting it on one line & its short, omit the curly braces
+    - Otherwise, follow Egyptian style.
+*/
+if (condition) {
+    // do this
+    // ...and that
+    // ...and that
+}
+
+// Tip, this maybe the least readable:
+if (n < 0) {alert(`Power ${n} is not supported`);}
+
+// This makes it easy to make an error when adding new lines:
+if (n < 0)
+  alert(`Power ${n} is not supported`);
+
+// Acceptable
+if (n < 0) alert(`Power ${n} is not supported`);
+
+// Guaranteed Clean
+if (n < 0) {
+    alert(`Power ${n} is not supported`);
+}
+
+/* Line Length */
+/* Best practice to split a long horizontal line of code. 
+- Maximum line length should be agreed upon at the team-level. 
+    It's usually 80 or 120 characters.
+*/
+
+// backtick quotes ` allow to split the string into multiple lines
+let str = `
+  ECMA International's TC39 is a group of JavaScript developers,
+  implementers, academics, and more, collaborating with the community
+  to maintain and evolve the definition of JavaScript.
+`;
+
+// Splitting if statements
+if (
+    id === 123 &&
+    moonPhase === 'Waning Gibbous' &&
+    zodiacSign === 'Libra'
+  ) {
+    letTheSorceryBegin();
+}
