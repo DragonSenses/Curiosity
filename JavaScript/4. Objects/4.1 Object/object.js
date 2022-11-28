@@ -231,4 +231,76 @@ let obj3 = {};
 obj3.__proto__ = 5; // assign a number
 alert(obj3.__proto__); // [object Object] - the value is an object, didn't work as intended
 
-/* Property Existence Test - "in" operator */
+/* Property Existence Test - "in" operator 
+
+Notable feature of objects in JavaScript is that it's possible to access any
+property. There will be no error if the property doesn't exist!
+
+Reading a non-existing property just returns undefined. So we can easily test
+whether the property exists:
+*/
+let user = {};
+
+alert( user.noSuchProperty === undefined ); // true means "no such property"
+
+/* in - special operator to check for non-existing properties.
+Syntax:
+        "key" in object 
+
+Note: left side of "in" there must be a property name. That's usually a quoted
+String. Can omit quotes if a variable contains the actual name to be tested.
+
+*/
+let user = { name: "Luna", age: 20 };
+
+alert( "age" in user ); // true, user.age exists
+alert( "blabla" in user ); // false, user.blabla doesn't exist
+
+// If we omit quotes, that means a variable should contain the actual name to be tested. For instance:
+let user = { age: 30 };
+
+key = "age";
+alert( key in user ); // true, property "age" exists
+
+/* Why use "in" operator over comparing against undefined? 
+- Most cases work, but a special case when comparing fails but "in" works 
+correctly: when an object property exists, but stores undefined 
+*/
+let obj4 = {
+  test: undefined
+};
+
+alert( obj4.test ); // it's undefined, so - no such property?
+
+alert( "test" in obj4 ); // true, the property does exist!
+
+// Technically obj4.test technically exists, so in operator works right
+// Situations like thihs happen rarely, because undefined should not be 
+// explicitly assigned. Mostly use null for "unknown" or "empty" values
+// So the in operator is an exotic guest in the code
+
+
+/* The "for..in" loop 
+Syntax:
+          for(key in object){
+            // executes the body for each key among object properties
+          }
+
+To walk all over keys of an object, there exists a special form of the loop:
+for..in. We can declare the looping variable inside the loop, like "let key".
+Can also use another variable name, e.g. "for (let prop in obj)" also used.
+*/
+
+// Output all properties of user:
+user = {
+  name: "Leo",
+  age: 20,
+  isAdmin: true
+};
+
+for (let key in user) {
+  // keys
+  alert( key );  // name, age, isAdmin
+  // values for the keys
+  alert( user[key] ); // Leo, 20, true
+}
