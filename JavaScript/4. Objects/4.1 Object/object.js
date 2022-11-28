@@ -304,3 +304,66 @@ for (let key in user) {
   // values for the keys
   alert( user[key] ); // Leo, 20, true
 }
+
+/* Ordered like an object 
+When looping over an object, do we get all properties in the same order when 
+they were added?
+
+Answer: "Ordered in a special fashion":
+  - Integer properties are Sorted (ascending sorted order)
+  - Others appear in creation order
+
+Integer properties are a String that can be converted to-and-from an integer
+without a change. So "49" is an integer property name, because when it's 
+transformed to an integer number and back, it's still the same.
+
+But "+49" and "1.2" are not
+*/
+
+// Note on Integer Properties
+// Number(...) explicitly converts to a number
+// Math.trunc is a built-in function that removes the decimal part
+alert( String(Math.trunc(Number("49"))) ); // "49", same, integer property
+alert( String(Math.trunc(Number("+49"))) ); // "49", not same "+49" ⇒ not integer property
+alert( String(Math.trunc(Number("1.2"))) ); // "1", not same "1.2" ⇒ not integer property
+
+// An object with phone codes, has it's integer properties sorted when looped
+let codes = {
+  "49": "Germany",
+  "41": "Switzerland",
+  "44": "Great Britain",
+  // ..,
+  "1": "USA"
+};
+
+for (let code in codes) {
+  alert(code); // 1, 41, 44, 49
+}
+
+/* On the other hand, if keys are non-integer, then they are listed in Creation
+Order, for instance: */
+
+user = {
+  name: "Luna",
+  surname: "Berry"
+};
+user.age = 20; // add one more
+
+// non-integer properties are listed in the creation order
+for (let prop in user) {
+  alert( prop ); // name, surname, age
+}
+
+/* To "fix" the issue with phone codes, we can "cheat" by making the codes 
+non-integer with unary plus opoerator before each code: */
+codes = {
+  "+49": "Germany",
+  "+41": "Switzerland",
+  "+44": "Great Britain",
+  // ..,
+  "+1": "USA"
+};
+
+for (let code in codes) {
+  alert( +code ); // 49, 41, 44, 1
+}
