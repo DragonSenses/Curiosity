@@ -9,6 +9,12 @@ Write the code, one line for each action:
 
 */
 
+// Answer:
+let user = {};
+user.name = "John";
+user.surname = "Smith";
+user.name = "Pete";
+delete user.name;
 
 
 /* Check for emptiness 
@@ -18,14 +24,22 @@ properties, false otherwise.
 
 A test to show how it works is given:
 */
+
+function isEmpty(obj){
+    for(let prop in obj){
+        // If loop has started
+        return false; // immediately if there is at least one property
+    }
+    return true; 
+}
+
 let schedule = {};
 
-alert(isEmpty(schedule)); // true
+console.log(isEmpty(schedule)); // true
 
 schedule["8:30"] = "get up";
 
-alert(isEmpty(schedule)); // false
-
+console.log(isEmpty(schedule)); // false
 
 
 /* Sum Object Properties
@@ -40,6 +54,16 @@ let salaries = {
     Ann: 160,
     Pete: 130
 }
+
+function sum(obj){
+    let sum = 0;
+    for(let key in obj){
+        sum += obj[key];
+    }
+    return sum;
+}
+
+console.log(sum(salaries)); // 390
 
 /* Mutliply numeric property values by 2 
 Create a function multiplyNumeric(obj) that multiplies all numeric property 
