@@ -196,3 +196,39 @@ let user3 = {
   name, // same as name:name
   age: 30
 };
+
+/* Property names limitations 
+  - A variable cannot have a name equal to one of the language-reserved words
+    e.g., for, let, return...
+  - But for an object property, there's no such restriction.
+  - In short, there are no limitations on property names. They can be any 
+  strings or symbols (a special type of identifiers)
+  - Other types are automatically converted to strings.
+  - Minor Exception is special property named __proto__ , cannot be non-obj value
+*/
+
+// these properties are all right, object properties have no restrictions
+let obj = {
+  for: 1,
+  let: 2,
+  return: 3
+};
+
+alert( obj.for + obj.let + obj.return );  // 6
+
+// Other types are automatically converted to strings.
+// Fpr instance, a number 0 becomes a String "0" when used as a property key:
+let obj2 = {
+  0: "test" // same as "0": "test"
+};
+
+// both alerts access the same property (the number 0 is converted to string "0")
+alert( obj2["0"] ); // test
+alert( obj2[0] );   // test (same property)
+
+/* __proto__ can't be set to a non-object value */
+let obj3 = {};
+obj3.__proto__ = 5; // assign a number
+alert(obj3.__proto__); // [object Object] - the value is an object, didn't work as intended
+
+/* Property Existence Test - "in" operator */
