@@ -89,3 +89,16 @@ menu = {
     height: 600,
     title: "My menu"
 };
+
+/**
+ * Checks for each numeric property value in an object and doubles them.
+ * @param {*} obj - an object to multiply its numerics by
+ */
+function multiplyNumeric(obj){
+    for(let prop in obj){
+        // Check the Property Value if its type is a 'number'
+        if(typeof obj[prop] == 'number'){
+            obj[prop] *= 2; 
+        }
+    }
+}
