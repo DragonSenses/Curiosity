@@ -44,6 +44,56 @@ let user = {        // user has a reference to the object
 };
 
 user = null;        // value of user is overwritten, the reference is lost
+
 // {name: "Leo"} becomes unreachable, no way to access it, no references to it
 // Garbage Collector will junk the data and free the memory
 
+/* Two References */
+user = {        // user has a reference to the object
+    name: "Luna"
+};
+
+// Copy the reference from user to admin
+let admin = user;
+
+user = null;    // overwrite value of user
+
+// But object {name: "Luna"} is still reachable via admin global variable, so
+// it must stay in memory. Overwriting admin too, then it can be removed
+
+/* Complex Example: Interlinked Objects */
+function marry(man, woman) {
+    woman.husband = man;
+    man.wife = woman;
+
+    return {
+        father: man,
+        mother: woman
+    }
+}
+
+let family = marry({
+    name: "Leo"
+}, {
+    name: "Luna"
+});
+
+/* The function marry() "marries" two objects by giving them references to each
+other and returns a new object that contains them both. 
+
+family object contains father & mother references to both of them
+family {
+    father: { name: "Leo",
+              wife: "Luna"
+            },       
+    mother: { name: "Luna",
+           husband: "Leo"
+            }
+}
+
+While "Leo" references "Luna" through wife, and "Luna" references "Leo" through husband
+*/
+
+// Remove two references to Leo
+delete family.father;
+delete family.mother.husband;
