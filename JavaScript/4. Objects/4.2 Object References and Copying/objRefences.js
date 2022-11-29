@@ -54,3 +54,54 @@ console.log(user.name); // Luna
 
 /* Comparison by Reference */
 /* Two objects are equal only if they are the same object.  */
+let a = {};
+let b = a; // copy the reference
+
+console.log( a == b );  // true, both variables reference the same object
+console.log( a === b ); // true
+
+/* Two Independent objects are not equal, even though tey look alike 
+(both are empty): */
+let c = {};
+let d = {}; // Two Independent Objects
+
+console.log(c == d); // false
+
+/* Warning! const objects can be modified! A side effect of storing objects as 
+references is that an object declared as const can be modified. */
+const biome = {
+    name: "Rainforest"
+};
+
+biome.name = "Chaparral";
+
+console.log(biome.name); // Chaparral
+/* Value of biome is constant, meaning that it MUST ALWAYS reference the SAME object,
+but properties of that object are free to change. 
+
+"const biome" only gives an error when we try to set "biome=..." as a whole */
+
+/* Cloning and Merging */
+/* We can create a new object and replicating the structure of the existing 
+one, by iterating over its properties and copying them on the primitive level.
+*/
+let person = {      // Create person obj, with properties {name,age}
+    name: "Luna",
+    age: 20
+};
+
+let clone = {}; // the new empty object
+
+// Copy all user properties into it
+for (let prop in person){
+    clone[prop] = person[prop];
+}
+
+// Now clone is a fully independent object with the same content
+clone.name = "Lily"; // changed data, rename clone
+
+console.log( person.name ); // still Luna in the original object
+console.log( clone.name );  // Lily
+console.log( clone.age );   // 20
+
+/* Cloning using "Object.assign" */
