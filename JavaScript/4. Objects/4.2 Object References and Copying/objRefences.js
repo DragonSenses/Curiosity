@@ -143,3 +143,80 @@ let copy = Object.assign({}, student);
 
 console.log(copy.name); // Sophia
 console.log(copy.age);  // 20
+
+/* Nested Cloning */
+/* So far all properties of the objects we had were primitive, but properties
+can be references to other objects. 
+e.g: */
+let box = {
+    name: "Rose",
+    sizes: {
+        height: 182,
+        width: 50
+    }
+};
+
+console.log( box.sizes.height ); // 182
+
+// It is not sufficient to copy clone.sizes = box.sizes, because box.sizes is an obj
+// and will be copied by reference, so clone and user will share the same sizes:
+
+clone = Object({}, box);
+console.log( box.sizes === clone.sizes ); // true, same object
+
+// box and clone share sizes 
+box.sizes.width = 60;             // change a property from one place
+console.log( clone.sizes.width ); // 60, get the result from the other one
+
+// Fix to make box and clone truly separate objects, use a cloning loop that
+// examines each value of box[key] and, if it's an object, then replicate its
+// structure as well
+
+/* Deep Cloning or Structured Cloning (using structuredClone(obj) method) */
+/* structuredClone(object) method clones the object with all nested properties 
+        - can clone most data types, such as objects, arrays, primitive values
+        - supports circular references, when an object property references the
+        object itself (directly or via a chain or referencers)
+*/
+
+let flower = {
+    name: "Orchid",
+    sizes: {
+        height: 182,
+        width: 50
+    }
+};
+
+let flowerClone = structuredClone(flower);
+
+console.log( flower.sizes === flowerClone.sizes );  // false, different objects
+
+// flower and flowerClone are truly separate objects
+flower.sizes.width = 70;                // change a property from one place
+console.log( flowerClone.sizes.width ); // 50, change is unrelated
+
+
+/* structuredClone supports circular references (references to itself) */
+let test = {};
+// Create a circular reference: test.me references the test object itself
+test.me = test;
+
+clone = structuredClone( test );
+console.log( clone.me === clone ); // true
+// clone.me references the clone and not the test! So the circular reference
+// was clone correctly as well
+
+/* Cases where structuredClone fails: 
+    - When an object has a function property
+*/
+
+// error
+structuredClone({
+    f: function() {}
+});
+
+/*
+To handle such complex cases, may need to use a combination of cloning methods,
+write custom code, or take existing implementations such as _.cloneDeep(obj) 
+from JavaScript library lodash.
+*/
