@@ -105,3 +105,41 @@ console.log( clone.name );  // Lily
 console.log( clone.age );   // 20
 
 /* Cloning using "Object.assign" */
+/* Syntax:
+            Object.assign(dest, ...sources)
+
+            - first argument dest is a target object
+            - Further arguments is a list of source objects
+Copies the properties of all source objects into the target dest, and then 
+    returns it as the result.
+*/
+
+let pilot = { name: 'Zoe' };
+
+let permissions1 = { canView: true };
+let permissions2 = { canEdit: true };
+
+// copies all properties from permissions1 and permissions2 into pilot
+Object.assign(pilot, permissions1, permissions2);
+
+// pilot = { name: 'Zoe', canView: true, canEdit: true }
+console.log(pilot.name);    // Zoe
+console.log(pilot.canView); // true
+console.log(pilot.canEdit); // true
+
+// If copied property name already exists, it gets overwritten
+Object.assign(pilot, {name: 'Olivia' });
+console.log(pilot.name);    // now pilot = { name: "Olivia" }
+
+/* Object.assign can perform a simple object cloning.
+Here it copies all properties of student into the empty object and returns it:
+*/
+let student = {
+    name: "Sophia",
+    age: 20
+};
+
+let copy = Object.assign({}, student);
+
+console.log(copy.name); // Sophia
+console.log(copy.age);  // 20
