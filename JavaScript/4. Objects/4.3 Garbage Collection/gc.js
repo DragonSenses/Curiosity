@@ -97,3 +97,48 @@ While "Leo" references "Luna" through wife, and "Luna" references "Leo" through 
 // Remove two references to Leo
 delete family.father;
 delete family.mother.husband;
+
+
+/* Deleting two of these references makes it so that there is no incoming
+reference to Leo anymore. Outgoing references do not matter. Only incoming
+ones can make an object reachable. So Leo is unreachable and will be removed
+from the memory with all its data that also became unaccessible. 
+
+family {
+    mother: { name: "Luna",
+            } 
+            
+*/
+
+/* Unreachable Island 
+It is possible that the whole island of interlinked objects becomes unreachable
+and is removed from the memory.
+
+The source object is the same as above.
+*/
+family = marry({
+    name: "Leo"
+}, {
+    name: "Luna"
+});
+
+// Then we overwrite the value of family reference
+family = null;
+
+// Now Leo and Luna are still linked, both have incoming references, but that's
+// not enough. Since the former "family" object, made through the marry() 
+// function, has been unlinked from the root, there's no reference to it anymore
+// Result: The whole island is unreachable and will be removed
+
+/* Internal Algorithms 
+Basic Garbage Collection Algorithm is called "Mark-and-Sweep".
+    The following "garbage collection" steps are regularly performed:
+
+    - The garbage collector takes roots and "marks" (remembers) them.
+    - Then it visits and “marks” all references from them.
+    - Then it visits marked objects and marks their references. All visited
+    objects are remembered, so as not to visit the same object twice in the future.
+    …And so on until every reachable (from the roots) references are visited.
+    - All objects except marked ones are removed.
+
+*/
