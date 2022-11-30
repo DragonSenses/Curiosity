@@ -100,9 +100,46 @@ user.sayName(); // Luna
 // example is when you null out the user then call its method
 
 /* "this" is not bound 
-In JavaScreipt, keyword this behaves unlike most other programming langauges.
-It can be used in any function, even if it's not a method of an object.
+In JavaScript, keyword this behaves unlike most other programming langauges.
+    - It can be used in any function, even if it's not a method of an object.
+    - Value of this evaluated during run-time, depending on the context.
 
-
+There is no syntax error in the following example:
 */
+function sayHi() {
+    console.log( this.name );
+}
 
+/* The same function is assigned to two different objects and has different 
+"this" in the calls */
+user = { name: "Luna" };
+let admin = { name: "Admin" };
+
+// Use the same function in two objects
+user.f = sayHi;
+admin.f = sayHi;
+
+// these calls have different this
+// "this" inside the function is the object "before the dot"
+user.f();  // Luna  (this == user)
+admin.f(); // Admin  (this == admin)
+
+admin['f'](); // Admin (dot or square brackets access the method – doesn't matter)
+
+// if obj.f() is called, then this is obj during the call of f.
+
+/* Calling without an object: this == undefined 
+When calling a function without an object at all, this is undefined in strict mode.
+In non-strict mode the value of this in such case wiull be the global object
+(window in a browser). This is a historical behavior that "use strict" fixes. 
+
+Usually such a call is a programming error. If there's this inside a function it
+expects to be called in an object context.
+*/
+function callWithoutObject(){
+    alert(this);
+}
+
+callWithoutObject(); // undefined   (in strict mode)
+
+/* Consequences of unbound this */
