@@ -56,5 +56,53 @@ test.sayHi = sayHi;
 test.sayHi(); // Hello!
 
 
-/* Method Shorthand */
+/* Shorter Syntax for methods in an Object Literal */
+// these objects do the same
+
+user = {
+    sayHi: function () {
+        alert("Hello");
+    }
+};
+
+// method shorthand looks better, right?
+user = {
+    sayHi() { // same as "sayHi: function(){...}"
+        alert("Hello");
+    }
+};
+
+// Notations are not fully identical, there are subtle differences related to
+// object inheritance. But for most cases, shorter syntax is preferred
+
+/* "this" in methods */
+/* It is common that an object method needs to access the information stored in
+the object to do its job. To access the object, a method can use "this" keyword
+
+The value of "this" is the object "before dot", the one used to call the method
+*/
+
+user = {
+    name: "Luna",
+    age: 20,
+
+    sayName() {
+        // "this" is the "current object"
+        console.log(this.name);
+    }
+}; 
+
+// During execution of user.sayName() value of "this" will be "user"
+user.sayName(); // Luna
+
+// Note it is possible to reference obj without this, via outer variable
+// such as console.log(user.name) instead of console.log(this.name) but code is unreliable
+// example is when you null out the user then call its method
+
+/* "this" is not bound 
+In JavaScreipt, keyword this behaves unlike most other programming langauges.
+It can be used in any function, even if it's not a method of an object.
+
+
+*/
 
