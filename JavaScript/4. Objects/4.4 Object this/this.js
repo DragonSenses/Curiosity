@@ -90,7 +90,7 @@ user = {
         // "this" is the "current object"
         console.log(this.name);
     }
-}; 
+};
 
 // During execution of user.sayName() value of "this" will be "user"
 user.sayName(); // Luna
@@ -107,7 +107,7 @@ In JavaScript, keyword this behaves unlike most other programming langauges.
 There is no syntax error in the following example:
 */
 function sayHi() {
-    console.log( this.name );
+    console.log(this.name);
 }
 
 /* The same function is assigned to two different objects and has different 
@@ -136,10 +136,38 @@ In non-strict mode the value of this in such case wiull be the global object
 Usually such a call is a programming error. If there's this inside a function it
 expects to be called in an object context.
 */
-function callWithoutObject(){
+function callWithoutObject() {
     alert(this);
 }
 
 callWithoutObject(); // undefined   (in strict mode)
 
-/* Consequences of unbound this */
+/* Consequences of unbound this 
+In JavaScript, "this" is "free", its value is evaluated at call-time and does 
+not depend on where the method was declared, but rather on what object is 
+"before the dot".
+
+The concept of run-time evaluated this has both pluses and minuses. 
+    - On one hand, a function can be reused for different objects.
+    - On the other hand, the greater flexibility creates more possibilities 
+    for mistakes. 
+*/
+
+/* Arrow functions have no "this" 
+Arrow functions are special: they don't have their "own" this. 
+    - If we reference this from such a function, it's taken from the outer
+    "normal" function.
+    - Useful when we actually do not want to have a separate this, but rather
+    to take it from the outer context
+    
+For instance, here arrow() uses "this" from the outer "user.sayHi()" method:
+*/
+user = {
+    firstName: "Luna",
+    sayHi() {
+        let arrow = () => alert(this.firstName);
+        arrow();
+    }
+};
+
+user.sayHi(); // Luna
