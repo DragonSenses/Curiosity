@@ -22,6 +22,12 @@ Avoid comments:
 Comments are also used for auto-documenting tools like JSDoc3: they read them 
 and generate HTML-docs (or docs in another format).
 
+Try factoring out functions or creating functions that are self-descriptive. 
+
+    In reality, we can’t totally avoid "explanatory" comments. There are complex algorithms. 
+And there are smart "tweaks" for purposes of optimization. But generally we 
+should try to keep the code simple and self-descriptive.
+
 These are great tips to follow when first starting out, but others may suggest
 to comment liberally. With practice & experience one will find how to write
 more valuable comments. Too little documentation is worse than too much.
@@ -70,6 +76,9 @@ function isPrime(n) {
 // Function isPrime() is self-descriptive and itself becomes the comment
 
 /* Recipe: Create Functions 
+    When code structure is split, it's clear what every function does, what it
+takes and what it returns. 
+
 If we have a long "code sheet", refactor it into functions. 
 */
 // here we add whiskey
@@ -104,3 +113,58 @@ function addJuice(container) {
     //...
   }
 }
+
+/* Good Comments */
+/* Describe the Architecture
+    Provide a high-level overview of components, how they interact, what's the 
+control flow in various situations. In short – the bird’s eye view of the code.
+    There's a special language UML to build high-level architecture diagrams 
+explaining the code.
+ */
+
+/* Document function parameters and usage
+Special Syntax: JSDoc to document a function: usage, parameters, returned value
+For instance:
+*/
+
+/**
+ * Returns x raised to the n-th power.
+ *
+ * @param {number} x The number to raise.
+ * @param {number} n The power, must be a natural number.
+ * @return {number} x raised to the n-th power.
+ */
+ function pow(x, n) {
+    // ...
+}
+
+/* Function documentation allows us to understand the purpose of the function
+and use it right away without peering into its code. 
+
+Tools like JSDoc 3 can generate HTML-documentation from the comments. Read
+more information about JSDoc at https://jsdoc.app 
+*/
+
+/* Another Good Comment shows "Why is the task solved this way?" 
+    What's written is important. But what’s not written may be even more 
+important to understand what's going on. Why is the task solved exactly this way? 
+The code gives no answer.
+
+If there are many ways to solve the task, why this one? 
+    Especially when it's not the most obvious one.
+
+    * Without such comments, one may have the urge to rewrite code written some 
+time ago. 
+    * In the process of rewriting using the "more obvious & correct" variant,
+one realizes that the solution is lacking. 
+    * One may even dimly remember why the old solution was the correct variant, 
+    but the time was wasted. 
+
+Comments that explain the solution are very important. 
+    They help to continue development the right way.
+*/
+
+/* Comment any subtle features, or where they are used. 
+    If the code has anything subtle and counter-intuitive, 
+it's definitely worth commenting.
+*/
