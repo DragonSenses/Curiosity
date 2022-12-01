@@ -218,4 +218,34 @@ ESLint – probably the newest one.
 Most linters are integrated with many popular editors: just enable the plugin 
 in the editor and configure the style.
 
+Instructions to Install
+  For ESLint, do this:
+  1. Install Node.js
+  2. Install ESLint with the command npm install -g eslint (npm is a JavaScript package installer)
+  3. Create a config file named .eslintrc in the root of your JavaScript project 
+  (in the folder that contains all your files)
+  4. Install/enable the plugin for your editor that integrates with ESLint. 
+  The majority of editors have one.
+
+Example .eslintrc file:
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "no-console": 0,
+    "indent": 2
+  }
+}
+
+The directive "extends" denotes that the configuration is based on the "eslint:recommended" 
+set of settings. After that, we specify our own.
+
+It is also possible to download style rule sets from the web and extend them instead. 
+See https://eslint.org/docs/user-guide/getting-started for more details about installation.
+
+Also certain IDEs have built-in linting, which is convenient but not as customizable as ESLint.
 */
