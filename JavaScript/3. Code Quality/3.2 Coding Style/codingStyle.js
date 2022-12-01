@@ -168,3 +168,54 @@ function pow(x, n) {    // Option 2
 // Second one is more redable because the "special case" of n < 0 is handled
 // very early on. Once the check is done we can move on to the "main" code
 // flow without the need for additional nesting
+
+/* Function Placement
+ If you are writing several helper functions and the code that uses them, there
+ are three ways to organize these functions.
+
+1. Declare the functions above the code that uses them:
+2. Code first, then functions
+3. Mixed: a function is declared where it's first used
+
+  Most of time, the second variant is preferred.
+
+That’s because when reading code, we first want to know what it does. 
+If the code goes first, then it becomes clear from the start. 
+Then, maybe we won’t need to read the functions at all, especially if their 
+names are descriptive of what they actually do.
+*/
+
+// Example of 2) Code first, then functions
+// the code which uses the functions
+let elem = createElement();
+setHandler(elem);
+walkAround();
+
+// --- helper functions ---
+function createElement() {
+}
+
+function setHandler(elem) {
+}
+
+function walkAround() {
+}
+
+/* Automated Linters
+
+Linters are tools that can automatically check the style of your code and make 
+improving suggestions.
+
+The great thing about them is that style-checking can also find some bugs, 
+like typos in variable or function names. Because of this feature, using a 
+linter is recommended even if you don’t want to stick to one particular "code style".
+
+Some well-known linting tools:
+JSLint – one of the first linters.
+JSHint – more settings than JSLint.
+ESLint – probably the newest one.
+
+Most linters are integrated with many popular editors: just enable the plugin 
+in the editor and configure the style.
+
+*/
