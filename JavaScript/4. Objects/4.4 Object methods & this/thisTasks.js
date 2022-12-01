@@ -63,7 +63,15 @@ Create an object calculator with three methods:
  3. mul() multiplies saved values and returns the result.
 */
 let calculator = {
-    // ... your code ...
+    read(){
+
+    },
+    sum(){
+
+    },
+    mul(){
+        
+    }
 };
 
 calculator.read();
