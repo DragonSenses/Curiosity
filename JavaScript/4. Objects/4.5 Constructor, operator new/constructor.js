@@ -9,6 +9,8 @@ We can use constructor functions to make multiple similar objects.
 
 JavaScript provides constructor functions for many built-in language objects: 
 like Date for dates, Set for sets & others 
+
+To create more complex objects, there's more advanced syntax such as classes.
 */
 
 /* Constructor Function */
@@ -143,3 +145,26 @@ function Dog(name) {
 
 let lucky = Dog("Lucky");   // redirects call to new Dog
 console.log(lucky.name);    // Lucky
+
+
+/* Methods in Constructor */
+/* Using constructor functions to create objects gives a great deal of
+flexibility. The constructor function may have parameters that define how
+to construct the object, and what to put in it. 
+
+We can add to this not only properties, but methods as well.
+
+For instance, new Cat(name) below creates an object with the given name and the
+method "sayHi" 
+*/
+function Cat(name){
+    this.name = name;
+
+    this.sayHi = function() {
+        console.log( "Meow, my name is " + this.name 
+            + " ~Nya");
+    }
+}
+
+let coconut = new Cat("Coconut");
+coconut.sayHi();    // Meow, my name is Coconut ~Nya
