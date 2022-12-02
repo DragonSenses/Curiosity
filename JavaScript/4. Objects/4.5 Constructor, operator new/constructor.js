@@ -58,3 +58,53 @@ console.log(person.name);
 /* Main purpose of Constructors is to implement reusable object creation code.
     - Create other users like new User("Ann") or new User("Alice")
 */
+
+/* One-Time construction of a single complex object
+The trick aims to encapsulate the code that constructs the single object, without
+future reuse. The constructor can be wrapped in an immediately called constructor
+function. The constructor can't be called again, because it is not saved anywhere,
+just created and called. 
+*/
+// Create a function and immediately call it with new
+let example = new function () {
+    this.name = "Leo";
+    this.isAdmin = false;
+    // other code for user creation, complex logic, statements, local variables
+};
+console.log(example.name);  // "Leo"
+
+/* [Advanced] Constructor mode test: new.target */
+/* Inside a function, we can check whether it was called with "new" or without it.
+Using a special "new.target" property. It is undefined for regular calls and
+equals the function if called with "new". This allows us to know whether: 
+    * "in Constructor Mode" - function was called with "new"
+    * "in Regular Mode" -   function was called without "new" 
+*/
+function TestMe() {
+    console.log(new.target);
+}
+
+// without "new":
+TestMe(); // undefined
+
+// with "new":
+new TestMe(); // function TestMe { ... // function code }
+
+/* [Advanced]  Make both "new" and regular calls to behave the same. Approach 
+is used in libraries to make syntax more flexible. So people may call function
+with or without new, and it still works. 
+
+HOWEVER, probably not good to use everywhere, because omitting "new" makes it 
+less obvious what's going on. With new we all know that the new object is being
+created. e.g: */
+
+function Dog(name) {
+    if (!new.target) { // if you run me without new
+        return new Dog(name); // ...I will add new for you
+    }
+
+    this.name = name;
+}
+
+let lucky = Dog("Lucky");   // redirects call to new Dog
+console.log(lucky.name);    // Lucky
