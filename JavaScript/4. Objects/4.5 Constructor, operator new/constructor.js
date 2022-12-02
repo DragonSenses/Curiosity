@@ -73,6 +73,41 @@ let example = new function () {
 };
 console.log(example.name);  // "Leo"
 
+/* Special Behavior: Return from Constructors */
+/* Usually, constructors do not have a return statement. 
+
+Their task is to write all necessary stuff into "this" and it automatically
+becomes the result. 
+
+But if there IS a return statement, then the rule is simple, 
+If return is called with:
+    * An object - then the object is returned instead of this
+    * A primitive - it's ignored
+
+i.e., return with an object returns that object, in all other cases "this" is
+returned.
+
+e.g., here return overrides this by returning an object:
+*/
+function BigUser() {
+
+    this.name = "Luna";
+
+    return { name: "Lunabelle" };  // <-- returns this object
+}
+
+console.log(new BigUser().name);  // Lunabelle, got that object
+
+/* e.g. an empty return (or we could place a primitive after it, doesn't matter) */
+function SmallUser() {
+
+    this.name = "Anabelle";
+
+    return; // <-- returns this
+}
+
+console.log(new SmallUser().name);  // Anabelle
+
 /* [Advanced] Constructor mode test: new.target */
 /* Inside a function, we can check whether it was called with "new" or without it.
 Using a special "new.target" property. It is undefined for regular calls and
