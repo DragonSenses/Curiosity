@@ -62,3 +62,26 @@ console.log(user.address ? user.address.street ? user.address.street.name : null
 console.log( user.address && user.address.street && user.address.street.name ); // undefined 
 
 /* Latest Solution: Optional Chaining ?.  */
+/* ?. Optional chaining operater stops evaluation if the value before ?. is 
+undefined or null and returns undefined. 
+
+Something "exists" if it is NOT null and NOT undefined
+
+value?.prop:
+ - works as value.prop, if value exists,
+ - otherwise (when value is undefined/null) it returns undefined
+
+ A safe way to access user.address.street using ?.
+ console.log(user?.address?.street); // undefined (no error)
+
+ Code is short, clean, no duplication. An example with document.querySelector:
+ let html = document.querySelector('.elem')?.innerHTML; // will be undefined, if there's no element
+
+ Reading the address with user?.address works even if user object doesn’t exist:
+ user = null;
+
+alert( user?.address ); // undefined 
+alert( user?.address.street ); // undefined
+
+*/
+
