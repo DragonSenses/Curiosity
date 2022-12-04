@@ -1,3 +1,4 @@
+"use strict";
 /* Optional Chaining '?.' */
 /* The optional chaining ?. is a safe way to access nested object properties, 
 even if an intermediate property doesn't exist. 
@@ -44,7 +45,8 @@ console.log(html);
 is normal, we'd like to avoid the error and just accept html = null as result 
 */
 
-/* Solution One: use if or ? operator, before accessing its property, e.g., */
+/* Solution One: use if or ? ternary operator, before accessing its property, 
+e.g., */
 console.log(user.address ? user.address.street : undefined);
 // Solution with document.querySelector:
 html = document.querySelector('.elem') ? document.querySelector('.elem').innerHTML : null;
@@ -108,4 +110,19 @@ user?.address;
 */
 
 /* Short-Circuiting */
+/* The ?. immediately stops i.e. "short-circuits" the evaluation if the left
+part doesn't exist. SO any further function calls to the right of ?. won't
+be made. e.g., */
+let dog = null;
+let x = 0;
 
+// no "user", so the execution doesn't reach sayHi call and x++
+// dog?.sayHi(x++); 
+
+alert(x); // 0, value not incremented
+console.log(dog);
+
+
+/* Other Variants: ?.() and ?.[] */
+/* ?. is NOT an operator, but a Special Syntax Construct, that also works with
+functions and square brackets. */
