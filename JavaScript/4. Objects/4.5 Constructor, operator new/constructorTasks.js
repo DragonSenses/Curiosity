@@ -31,14 +31,7 @@ Create a constructor function Calculator that creates objects with 3 methods:
           a and b respectively.
 2. sum() returns the sum of these properties.
 3. mul() returns the multiplication product of these properties.
-
-For instance:
 */
-let calculator = new Calculator();
-calculator.read();
-
-alert( "Sum=" + calculator.sum() );
-alert( "Mul=" + calculator.mul() );
 
 // Answer
 function Calculator(){
@@ -47,10 +40,21 @@ function Calculator(){
     this.x = +prompt("x?",0);
     this.y = +prompt("y?",0);
   }
-  this.sum = (x,y) => x + y; 
-  this.mul = (x,y) => x * y;
+
+  this.sum = function(){
+    return this.x + this.y;
+  }
+
+  this.mul = function(){
+    return this.x * this.y;
+  };
 }
 
+let calculator = new Calculator();
+calculator.read();
+
+alert( "Sum=" + calculator.sum() );
+alert( "Mul=" + calculator.mul() );
 
 /* Create new Accumulator */
 /* Create a constructor function Accumulator(startingValue).
@@ -61,9 +65,16 @@ Object that it creates should:
 
 In other words, the value property is the sum of all user-entered values with 
 the initial value startingValue.
-
-Here's the demo of the code:
 */
+// Answer
+function Accumulator(startingValue){
+    this.value = startingValue; // Store current value in this property
+
+    this.read = function(){
+      this.value += +prompt("How much to add?",0);
+    };
+}
+
 let accumulator = new Accumulator(1); // initial value 1
 
 accumulator.read(); // adds the user-entered value
@@ -71,7 +82,3 @@ accumulator.read(); // adds the user-entered value
 
 alert(accumulator.value); // shows the sum of these values
 
-// Answer
-function Accumulator(){
-    
-}
