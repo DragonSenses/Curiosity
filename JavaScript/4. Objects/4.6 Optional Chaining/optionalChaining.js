@@ -166,3 +166,16 @@ let user2 = null;
 alert( user1?.[key] ); // Luna
 alert( user2?.[key] ); // undefined
 
+/* Using delete with ?. */
+delete user?.name; // delete user.name if user exists
+
+/* Note: Can use ?. for safe Reading and Deleting, but not writing 
+
+The optional chaning ?. has no use on the left side of an assignment.
+
+  For example:
+let cat = null;
+
+cat?.name = "Coconut"; // Error, doesn't work
+// because it evaluates to: undefined = "Coconut"
+*/
