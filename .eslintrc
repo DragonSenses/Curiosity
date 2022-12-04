@@ -6,7 +6,12 @@
       "es6": true
     },
     "rules": {
-      "no-console": 0,
-      "indent": 2
-    }
+      "no-console": 0
+      // "indent": 2
+    },
+    // Optional Chaining Support
+    // https://eslint.org/blog/2020/07/eslint-v7.5.0-released/#optional-chaining-support
+    "parserOptions": {
+      "ecmaVersion": 2022
+  }
 }
