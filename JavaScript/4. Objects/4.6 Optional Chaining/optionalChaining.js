@@ -78,10 +78,34 @@ value?.prop:
  let html = document.querySelector('.elem')?.innerHTML; // will be undefined, if there's no element
 
  Reading the address with user?.address works even if user object doesn’t exist:
- user = null;
+
+user = null;
 
 alert( user?.address ); // undefined 
 alert( user?.address.street ); // undefined
 
+Note: the ?. syntax makes optional the value before it, but not any further.
+
+E.g. in user?.address.street.name the ?. allows user to safely be null/undefined 
+(and returns undefined in that case), but that’s only for user. Further properties 
+are accessed in a regular way. If we want some of them to be optional, then we'll 
+need to replace more . with ?..
+
+Don't overuse optional chaining, only use it where it's ok that something does
+not exist. For example, if according to our code logic user object must exist, 
+but address is optional, then we should write user.address?.street, 
+but not user?.address?.street.
+
+Then, if user happens to be undefined, we’ll see a programming error about it 
+and fix it. Otherwise, if we overuse ?., coding errors can be silenced where 
+not appropriate, and become more difficult to debug.
 */
+
+/* Variable before ?. must be declared
+If there's no variable user at all, then user?.anything triggers an error 
+// ReferenceError: user is not defined
+user?.address;
+*/
+
+/* Short-Circuiting */
 
