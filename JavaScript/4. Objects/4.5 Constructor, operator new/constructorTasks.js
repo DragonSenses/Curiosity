@@ -1,13 +1,28 @@
 /* Two functions – one object */
 /* Is it possible to create functions A and B so that new A() == new B()? 
-If it is, then provide an example of code. */
-function A() { /* ... */ }
-function B() { /* ... */ }
+If it is, then provide an example of code. 
+
+function A() { ... }
+function B() { ... }
 
 let a = new A();
 let b = new B();
 
-alert( a == b ); // true
+console.log( a == b ); // true
+
+*/
+
+// Answer: Yes it is possible. 
+/* If a function returns an object then "new" returns it instead of this.
+So they can return the same external defined object "obj". e.g.,
+*/
+let obj = {};
+
+function A() { return obj; }
+function B() { return obj; }
+
+console.log( new A() == new B() ); // true
+
 
 /* Create new Calculator 
 Create a constructor function Calculator that creates objects with 3 methods:
@@ -28,6 +43,12 @@ alert( "Mul=" + calculator.mul() );
 // Answer
 function Calculator(){
 
+  this.read = function() {
+    this.x = +prompt("x?",0);
+    this.y = +prompt("y?",0);
+  }
+  this.sum = (x,y) => x + y; 
+  this.mul = (x,y) => x * y;
 }
 
 
