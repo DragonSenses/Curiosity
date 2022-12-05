@@ -140,5 +140,52 @@ user.id = "Our id value";
 
 // ...Another script also wants "id" for its purposes...
 
-user.id = "Their id value";
-// Boom! overwritten by another script!
+user.id = "Their id value"; //Boom! Overwritten by another script!
+
+/* Symbols in an Object Literal */
+/*  If we want to use a symbol in an object literal {...}, 
+we need square brackets around it. 
+  e.g: 
+*/
+
+// let id = Symbol("id");
+
+user = {
+  name: "Luna",
+  [id]: 123 // not "id": 123
+};
+
+// That's because we need the value from the variable "id" as the key, not the
+// string "id"
+
+/* Symbols are skipped by the for...in loop */
+/* Symbol properties do not participate in the for..in loop
+For instance: */
+
+// let id = Symbol("id");
+user = {
+  name: "Luna",
+  age: 20,
+  [id]: 123 
+};
+
+for (let key in user) console.log(key); // name  age  (no symbols)
+
+// the direct access by the symbol works
+console.log( "Direct: " + user[id] ); // Direct: 123
+
+/* Object.keys(user) also ignores them. 
+  That's a part of the general "hiding symbolic properties" principle. If
+  another script or a library loops over our object, it won't unexpectedly
+  access a symbolic property.
+
+In contrast, Object.assign copies both String and Symbol properties:
+*/
+// let id = Symbol("id");
+let dog = {
+  [id]: 123
+};
+
+let clone = Object.assign({}, dog);
+
+console.log( clone[id] ); // 123
