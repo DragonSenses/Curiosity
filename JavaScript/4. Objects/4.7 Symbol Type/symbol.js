@@ -239,3 +239,27 @@ let sym2 = Symbol.for("id");
 // get name by symbol
 alert( Symbol.keyFor(sym) );  // name
 alert( Symbol.keyFor(sym2) ); // id
+
+/* All Symbols have the description property */
+let globalSymbol = Symbol.for("name");
+let localSymbol = Symbol("name");
+
+alert( Symbol.keyFor(globalSymbol) ); // name, global symbol
+alert( Symbol.keyFor(localSymbol) );  // undefined, not global
+
+alert( localSymbol.description ); // name
+
+/* System Symbols */
+/* There exist many “system” symbols that JavaScript uses internally, 
+and we can use them to fine-tune various aspects of our objects.
+
+They are listed in the specification in the Well-known symbols table:
+  - Symbol.hasInstance
+  - Symbol.isConcatSpreadable
+  - Symbol.iterator
+  - Symbol.toPrimitive
+  - ... and so on.
+
+  For instance, Symbol.toPrimitive allows us to describe object 
+  to primitive conversion. 
+*/
