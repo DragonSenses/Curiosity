@@ -108,3 +108,57 @@ alert(total);
 
 // obj == number uses the "default" hint
 if (user == 1) { /* ... */ }
+
+/* The greater and less comparison operators, such as < >, can work with both 
+strings and numbers too. Still, they use the "number" hint, not "default". 
+That’s for historical reasons. 
+
+In practice though, things are a bit simpler.
+
+All built-in objects except for one case (i.e. Date object) implement "default" 
+conversion the same way as "number". And we probably should do the same.
+
+Still, it’s important to know about all 3 hints, soon we’ll see why.
+
+To do the conversion, JavaScript tries to find and call three object methods:
+  1. Call obj[Symbol.toPrimitive](hint) – the method with the symbolic key 
+  Symbol.toPrimitive (system symbol), if such method exists,
+
+  2. Otherwise if hint is "string"
+    - try calling obj.toString() or obj.valueOf(), whatever exists.
+
+  3. Otherwise if hint is "number" or "default"
+    - try calling obj.valueOf() or obj.toString(), whatever exists.
+
+Recap: Symbol.toPrimitive > obj.toString()/obj.valueOf() whatever exists,
+      the one called first is based on hint whether string or number/default
+*/
+
+/* Symbol.toPrimitive */
+/* Built-in symbol named Symbol.toPrimitive that should be used to name the
+conversion method, like this: 
+
+obj[Symbol.toPrimitive] = function(hint) {
+  // here goes the code to convert this object to a primitive
+  // it must return a primitive value
+  // hint = one of "string", "number", "default"
+};
+
+If the method exists, it's used for all hints, and no more methods are needed.
+
+For instance, here user object implements it:
+*/
+let person = {
+  name: "Luna",
+  money: 1000,
+
+  [Symbol.toPrimitive](hint) {
+    alert(`hint: ${hint}`);
+    return hint == "string" ? `{name: "${this.name}"}` : this.money;
+  }
+};
+
+// conversions demo:
+alert(person); // hint: string -> {name: "Luna"}
+alert(+person); // hint: number -> 1000
+alert(person + 500); // hint: default -> 1500
