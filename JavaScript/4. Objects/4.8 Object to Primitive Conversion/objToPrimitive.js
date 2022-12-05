@@ -228,4 +228,64 @@ alert(+user); // valueOf -> 1000
 alert(user + 500); // valueOf -> 1500
 
 /* Single "Catch-All" place to handle all primitive conversions.
-In this case, we can implement toString only, likee this:  */
+
+In the absence of Symbol.toPrimitive and valueOf,
+  toString will handle all primitive conversions.
+
+In this case, we can implement toString only, like this:  */
+user = {
+  name: "Luna",
+
+  toString() {
+    return this.name;
+  }
+};
+
+alert(user); // toString -> Luna
+alert(user + 500); // toString -> Luna500
+
+/* A conversion can return any primitive type 
+Important! All Primitive-Conversion methods do not necessarily return the "hinted" primitive.
+
+No control whether toString returns exactly a string, or whether Symbol.toPrimitive
+method returns a number for the hint "number".
+
+The only mandatory thing: these methods must return a primitive, not an object.
+
+Historical Notes on toString/valueOf vs. Symbol.toPrimitive
+  For historical reasons, if toString or valueOf returns an object, there’s no error, 
+  but such value is ignored (like if the method didn’t exist). 
+  - That’s because in ancient times there was no good “error” concept in JavaScript.
+
+  In contrast, Symbol.toPrimitive is stricter, it must return a primitive, 
+    otherwise there will be an error.
+*/
+
+/* Further Conversions */
+/* Many operators and functions perform type conversions, 
+    e.g. multiplication * converts operands to numbers.
+
+If we pass an object as an argument, then there are two stages of calculations:
+  1. The object is converted to a primitive (using the rules described above).
+  2. If necessary for further calculations, the resulting primitive is also converted.
+
+For instance: 
+*/
+
+obj = {
+  // toString handles all conversions in the absence of other methods
+  toString() {
+    return "2";
+  }
+};
+
+// Object converted to primitive "2", then multiplication made it a number
+alert(obj * 2); // 4
+
+// 1. The multiplication obj * 2 first converts the object to primitive (that’s a string "2").
+// 2. Then "2" * 2 becomes 2 * 2 (the string is converted to number).
+
+/* Binary plus will concatenate Strings in the same situation: */
+
+// ("2" + 2), conversion to primitive returned a string => concatenation
+alert(obj + 2); // 22 
