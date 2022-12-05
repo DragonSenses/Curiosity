@@ -93,3 +93,52 @@ alert(id5.toString()); // Symbol(id5), now it works
 // Or get "symbol.description" property to show the description only:
 let id6 = Symbol("id6");
 alert(id6.description); // id6
+
+
+/* Hidden Properties */
+/* Symbols allow us to create "hidden" properties of an object, that no other
+part of code can accidentally access or overwrite. For instance, if we're 
+working with "user" objects, that belong to third-party code. We'd liek to add
+identifiers to them. */
+let user = { // belongs to another code
+  name: "Leo"
+};
+
+id = Symbol("id");
+
+user[id] = 1;
+
+alert( user[id] ); // we can access the data using the symbol as the key
+
+/* Question: What's the beenfit of using Symbol("id") over a string "id" ? 
+
+Safety:
+  As a user object belongs to another codebase, it's unsafe to add fields to
+them, since we might affect pre-defined behavior in that other codebase. 
+However, symbols cannot be accessed accidentally. The third-party code won’t 
+be aware of newly defined symbols, so it’s safe to add symbols to the user
+objects.
+
+No Conflicts:
+  Also, imagine that another script wants to have its own identifier inside user,
+for its own purposes.
+
+Then that script can create its own Symbol("id"), like this:
+// ... 
+let id = Symbol("id");
+
+user[id] = "Their id value";
+
+  There will be no conflict between our and their identifiers, because symbols
+are always different, even if they have the same name. But if we used a string
+"id" instead of a symbol for the same purpose, then there would be a conflict:
+*/
+user = { name: "Leo" };
+
+// Our script uses "id" property
+user.id = "Our id value";
+
+// ...Another script also wants "id" for its purposes...
+
+user.id = "Their id value";
+// Boom! overwritten by another script!
