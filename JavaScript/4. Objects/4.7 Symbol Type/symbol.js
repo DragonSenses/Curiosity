@@ -48,9 +48,9 @@ Symbols represents a unique identifier.
     A "primitive unique value" withh an optional description.
     A value of this type can be created using Symbol():
 */
-let sym = Symbol();
+let symbol = Symbol();
 
-console.log(sym); // undefined
+console.log(symbol); // undefined
 
 // Upon creation, we can give symbols a description (aka symbol name), mostly
 // useful for debugging purposes:
@@ -179,8 +179,10 @@ console.log( "Direct: " + user[id] ); // Direct: 123
   another script or a library loops over our object, it won't unexpectedly
   access a symbolic property.
 
-In contrast, Object.assign copies both String and Symbol properties:
-*/
+In contrast, Object.assign copies both String and Symbol properties.
+That's by design. The idea is that when we clone an object or merge objects,
+we usually want all properties to be copied(including symbols like id). 
+  e.g: */
 // let id = Symbol("id");
 let dog = {
   [id]: 123
@@ -189,3 +191,51 @@ let dog = {
 let clone = Object.assign({}, dog);
 
 console.log( clone[id] ); // 123
+
+/* Global Symbols */
+/* Usually all symbols are different, even if they have the same name.
+But sometimes we want same-named symbols to be same entities. For instance,
+different parts of our application want to access symbol "id" meaning exactly
+the same property. 
+
+To achieve that, there exists a Global Symbol Registry. We can create symbols
+in it and access thyem later, and it guarantees that repeated accesses by the
+same name return exactly the same symbol. 
+
+In order to read (create if absent) a symbol from the registry,
+  use Symbol.for(key)
+
+That call checks the global registry, and if there's a symbol described as key,
+then returns it, otherwise creates a new symbol Symbol(key) and stores it in
+the registry by the given key. 
+
+For instance:
+*/
+// read from the global registry
+id = Symbol.for("id"); // if the symbol did not exist, it is created
+
+// read it again (maybe from another part of the code)
+let idAgain = Symbol.for("id");
+
+// the same symbol
+console.log( id === idAgain ); // true
+
+/* Symbols inside the registry are called Global Symbols. If we want an 
+application-wide symbol, accessible everywehre in the code - that's what they
+are for. */
+
+/* Symbol.keyFor */
+/* Symbol.keyFor(sym) - returns a name by global symbol. 
+
+Internally uses the global symbol registry to look up the key for the symbol.
+So it doesn't work for non-global symbols. If the symbol is not global, it 
+won't be able to find it and returns undefined. 
+
+For instance: */
+// get symbol by name
+let sym = Symbol.for("name");
+let sym2 = Symbol.for("id");
+
+// get name by symbol
+alert( Symbol.keyFor(sym) );  // name
+alert( Symbol.keyFor(sym2) ); // id
