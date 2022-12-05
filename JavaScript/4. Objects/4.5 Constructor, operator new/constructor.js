@@ -163,7 +163,7 @@ function Cat(name){
     this.sayHi = function() {
         console.log( "Meow, my name is " + this.name 
             + " ~Nya");
-    }
+    };
 }
 
 let coconut = new Cat("Coconut");
