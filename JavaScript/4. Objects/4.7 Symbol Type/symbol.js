@@ -45,8 +45,51 @@ syntax constructs don’t use these methods.
     - obj[true] is the same as obj["true"] 
     
 Symbols represents a unique identifier. 
+    A "primitive unique value" withh an optional description.
     A value of this type can be created using Symbol():
 */
-let id = Symbol();
+let sym = Symbol();
 
-/* */
+console.log(sym); // undefined
+
+// Upon creation, we can give symbols a description (aka symbol name), mostly
+// useful for debugging purposes:
+
+let id = Symbol("id");
+
+console.log(id);    // undefined
+
+/* Symbols are guaranteed to be unique. Even if we create many symbols with 
+exactly the same description, they are different values. 
+
+The Symbol Name or description is just a label that does not affect anything. 
+
+For instance, here are two symbols with the same description 
+  - they are not equal:
+*/
+let id1 = Symbol("id");
+let id2 = Symbol("id");
+
+alert(id1 == id2); // false
+
+/* Warning: Symbols do not auto-convert to a string 
+Most values JavaScript support implicit conversion to a string. But symbols are
+special, they do NOT auto-convert. 
+
+For instance, we can alert almost any value, and it will work. But this alert
+will show an error:
+*/
+let id4 = Symbol("id4");
+alert(id4); // TypeError: Cannot convert a Symbol value to a string
+
+/* That's a "language guard" against messing up, because strings and symbols
+are fundamentally different and should not accidentally convert one into 
+another. */
+
+/* To really show a symbol, need to explicitly call .toString() on it: */
+let id5 = Symbol("id5");
+alert(id5.toString()); // Symbol(id5), now it works
+
+// Or get "symbol.description" property to show the description only:
+let id6 = Symbol("id6");
+alert(id6.description); // id6
