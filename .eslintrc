@@ -6,8 +6,9 @@
       "es6": true
     },
     "rules": {
-      "no-console": 0
-      // "indent": 2
+      // "indent": 2,
+      "no-console": 0,
+      "semi": ["error", "always"]
     },
     // Optional Chaining Support
     // https://eslint.org/blog/2020/07/eslint-v7.5.0-released/#optional-chaining-support
@@ -15,3 +16,32 @@
       "ecmaVersion": 2022
   }
 }
+
+/* https://eslint.org/docs/latest/user-guide/configuring/configuration-files#extending-configuration-files
+Using "eslint:recommended" in the extends property enables a subset of core rules that 
+report common problems (these rules are identified with a checkmark (recommended) on the rules page).
+
+Here’s an example of extending eslint:recommended and overriding some of the set 
+configuration options:
+
+Example of a configuration file in JavaScript format:
+
+module.exports = {
+    "extends": "eslint:recommended",
+    "rules": {
+        // enable additional rules
+        "indent": ["error", 4],
+        "linebreak-style": ["error", "unix"],
+        "quotes": ["error", "double"],
+        "semi": ["error", "always"],
+
+        // override configuration set by extending "eslint:recommended"
+        "no-empty": "warn",
+        "no-cond-assign": ["error", "always"],
+
+        // disable rules from base configurations
+         "for-direction": "off",
+    }
+}
+
+*/
