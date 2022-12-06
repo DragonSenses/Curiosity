@@ -82,3 +82,39 @@ specification and behave as if it creates one.
 the number to the given precision: */
 let n = 1.23456;
 alert( n.toFixed(2) ); // 1.23
+
+/* Constructors String/Number/Boolean are for internal use only 
+
+  Some languages like Java allow us to explicitly create "wrapper objects"
+for primitives using a syntax like new NumbeR(1) or new Boolean(false).
+
+In JavaScript, that's also possible for historical reasons, but HIGHLY UNCRECOMMENDED.
+Things will go crazy in several places. For instance:
+*/
+alert( typeof 0 ); // "number"
+alert( typeof new Number(0) ); // "object"!
+
+/* Objects are always truthy in if, so here the alert will show up: */
+let zero = new Number(0);
+
+if (zero) { // zero is true, because it's an object
+  alert( "zero is truthy!?!" );
+}
+
+/* On the other hand, using the same functions String/Number/Boolean without 
+new is totally fine and useful thing. They convert a value to the corresponding
+type: to a string, a number, or a boolean (primitive). 
+
+e.g., this is entirely valid:
+*/
+let numb = Number("123"); // convert a string to number
+alert(numb); // 123
+
+/* null/undefined have no methods */
+/* The special primitives null and undefined are exceptions, i.e. they have no
+corresponding "wrapper objects" and provide no methods. In a sense, they are
+"the most primitive". 
+
+An attempt to access a property of such value would give the error:
+*/
+alert(null.test); // error
