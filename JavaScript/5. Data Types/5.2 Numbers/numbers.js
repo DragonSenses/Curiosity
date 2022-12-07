@@ -136,4 +136,92 @@ alert( num.toFixed(5) ); // "12.34000", added zeroes to make exactly 5 digits
 // Can convert it to a number using unary plus or a Number() call 
 // e.g., write +num.toFixed(5);
 
-/*  */
+/* Imprecise Calculations */
+/* Internally, a number is represented in 64-bit format IEEE-754, so there are 
+exactly 64 bits to store a number: 52 of them are used to store the digits, 
+11 of them store the position of the decimal point, and 1 bit is for the sign.
+
+If a number is really huge, it may overflow the 64-bit storage and become a 
+special numeric value Infinity: */
+// eslint-disable-next-line no-loss-of-precision
+alert( 1e500 ); // Infinity 
+
+/* What may be a little less obvious, but happens quite often, is the loss of precision. */
+/* Consider this (falsy!) equality test: */
+alert( 0.1 + 0.2 == 0.3 ); // false
+alert( 0.1 + 0.2 ); // 0.30000000000000004
+
+/* Why? A number is stored in memory in its binary form, a sequence of bits – ones and zeroes.
+ But fractions like 0.1, 0.2 that look simple in the decimal numeric system are 
+ actually unending fractions in their binary form.
+
+What is 0.1? It is one divided by ten 1/10, one-tenth. In decimal numeral system 
+such numbers are easily representable. Compare it to one-third: 1/3. 
+It becomes an endless fraction 0.33333(3).
+
+So, division by powers 10 is guaranteed to work well in the decimal system, 
+but division by 3 is not. For the same reason, in the binary numeral system, 
+the division by powers of 2 is guaranteed to work, but 1/10 becomes an endless 
+binary fraction. 
+
+There’s just no way to store exactly 0.1 or exactly 0.2 using the binary system, 
+just like there is no way to store one-third as a decimal fraction.
+
+The numeric format IEEE-754 solves this by rounding to the nearest possible number. 
+These rounding rules normally don’t allow us to see that “tiny precision loss”, but it exists.
+We can see this in action:
+*/
+alert( 0.1.toFixed(20) ); // 0.10000000000000000555
+
+/* And when we sum two numbers, their “precision losses” add up.
+That’s why 0.1 + 0.2 is not exactly 0.3. */
+
+/* Workarounds to the problem */
+/* The most reliable method is to round the result with the help of a method toFixed(n): */
+let sum = 0.1 + 0.2;
+alert( sum.toFixed(2) ); // "0.30"
+
+/* Note: that toFixed() always returns a string. It ensures that it has 2 digits 
+after the decimal point. That’s actually convenient if we have an e-shopping 
+and need to show $0.30. For other cases, we can use the unary plus to coerce 
+it into a number: */
+
+sum = 0.1 + 0.2;
+alert( +sum.toFixed(2) ); // 0.3
+
+/* Multiply/divide approach reduces the error, but doesn’t remove it totally. */
+/* Can also temporarily multiply the numbers by 100 (or a bigger number) to 
+turn them into integers, do the maths, and then divide back. Then, as we’re 
+doing maths with integers, the error somewhat decreases, but we still get it on division: */
+alert( (0.1 * 10 + 0.2 * 10) / 10 ); // 0.3
+alert( (0.28 * 100 + 0.14 * 100) / 100); // 0.4200000000000001
+
+/* Sometimes we could try to evade fractions at all. Like if we’re dealing with
+a shop, then we can store prices in cents instead of dollars. But what if we 
+apply a discount of 30%? In practice, totally evading fractions is rarely possible.
+Just round them to cut “tails” when needed. */
+
+// Hello! I'm a self-increasing number!
+// eslint-disable-next-line no-loss-of-precision
+alert( 9999999999999999 ); // shows 10000000000000000
+
+/* More Consequences */
+/* This suffers from the same issue: a loss of precision. There are 64 bits for 
+the number, 52 of them can be used to store digits, but that’s not enough. 
+So the least significant digits disappear.
+
+JavaScript doesn’t trigger an error in such events. It does its best to fit the 
+number into the desired format, but unfortunately, this format is not big enough. 
+
+Another funny consequence of the internal representation of numbers is the existence 
+of two zeroes: 0 and -0.
+
+That’s because a sign is represented by a single bit, so it can be set or not set 
+for any number including a zero.
+
+In most cases the distinction is unnoticeable, because operators are suited to 
+treat them as the same.
+*/
+
+
+/* Tests: isFinite and isNaN */
