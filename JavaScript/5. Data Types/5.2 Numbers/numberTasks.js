@@ -108,10 +108,85 @@ alert( random(1, 5) ); // 4.3435234525
  * 1. Multiply a random number from 0...1 by max-min, then the interval of 
  * possible  values increases 0..1 to 0..max-min.
  * 2. Now if we add min, the possible interval becomes from min to max.
- * @param {number} min 
- * @param {number} max 
+ * @param {number} min the minimum range of values inclusive
+ * @param {number} max the maximum range of values exclusive
  * @returns a random floating-point number from min to max exclusive
  */
 function random(min, max){
     return min + Math.random() * (max - min);
 }
+
+/* A random integer from min to max */
+/* Create a function randomInteger(min, max) that generates a random 
+integer number from min to max including both min and max as possible values.
+
+Any number from the interval min..max must appear with the same probability.
+
+Examples of its work: */
+alert( randomInteger(1, 5) ); // 1
+alert( randomInteger(1, 5) ); // 3
+alert( randomInteger(1, 5) ); // 5
+
+/* The simple but wrong solution */
+/* Function works but is incorrect since the edge values min and max is two
+times less than any other. If you run randomIntegerWrong(1,3) many times, you
+would easily see that 2 appears the most often. That happens because Math.round() 
+gets random numbers from the interval 1..3 and rounds them as follows: 
+values from 1    ... to 1.4999999999  become 1
+values from 1.5  ... to 2.4999999999  become 2
+values from 2.5  ... to 2.9999999999  become 3
+
+Now we can clearly see that 1 gets twice less values than 2. And the same with 3.
+*/
+function randomIntegerWrong(min, max) {
+    let rand = min + Math.random() * (max - min);
+    return Math.round(rand);
+  }
+  
+// 2 appears most often
+for(let i = 0; i < 10; i++){
+    console.log( randomIntegerWrong(1, 3) );
+}
+
+
+/* The Correct Solution */
+/**
+ * Generates a random integer from [min,max). 
+ * 
+ * Adjust interval borders to ensure the same intervals, we can generate 
+ * values from 0.5 to 3.5, thus adding the required probabilities to the edges:
+ * 
+ * @param {number} min the minimum range of values inclusive
+ * @param {number} max the maximum range of values exclusive
+ * @returns a random floating-point number from min to max exclusive
+ */
+function randomInteger(min, max){
+  // now rand is from  (min-0.5) to (max+0.5)
+  let rand = min - 0.5 + Math.random() * (max - min + 1);
+  return Math.round(rand);
+}
+
+for(let i = 0; i < 10; i++){
+    console.log( randomInteger(1, 3) );
+}
+
+/* An alternative way is to use Math,floor for a random number from 
+min to max+1. All intervals will have the same length, making the final
+distribution uniform. */
+function randomInt(min, max){
+    // here rand is from min to (max+1)
+    let rand = min + Math.random() * (max + 1 - min);
+    return Math.floor(rand);
+}
+
+for(let i = 0; i < 10; i++){
+    console.log( randomInt(1, 3) );
+}
+
+/* Now all intervals are mapped this way:
+values from 1  ... to 1.9999999999  become 1
+values from 2  ... to 2.9999999999  become 2
+values from 3  ... to 3.9999999999  become 3 
+
+All intervals have the same length, making the final distribution uniform.
+*/
