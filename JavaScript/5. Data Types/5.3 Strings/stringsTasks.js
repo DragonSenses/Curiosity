@@ -37,8 +37,11 @@ function checkSpam(str){
     // validate argument as string
     if(!str) return false;
 
-    // Check if str contains 'viagra' or 'XXX', case-insensitive 
+    // Case-insensitive so normalize the string to lowercase or uppercase
+    let lowerStr = str.toLowerCase();
     
+    // Check for a match {'viagra' or 'XXX'} -> use includes()
+    return lowerStr.includes('viagra') || lowerStr.includes('xxx');
 }
 
 /* Truncate the Text */
@@ -54,7 +57,9 @@ truncate("What I'd like to tell on this topic is:", 20); // "What I'd like to te
 truncate("Hi everyone!", 20); // "Hi everyone!";
 
 function truncate(str, maxlength){
-    // TO DO
+    // Extract length
+    // Compare length with maxlength
+    // If it exceeds maxlength, then replace end of str with "\u2026" or ellipsis char
     return str + maxlength;
 }
 
