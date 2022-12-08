@@ -56,11 +56,18 @@ truncate("What I'd like to tell on this topic is:", 20); // "What I'd like to te
 
 truncate("Hi everyone!", 20); // "Hi everyone!";
 
+/* Answer: Replace the last character of str with ellipsis character when str.length
+exceeds maxlength. Otherwise return the string itself. 
+
+To replace the string's last character with ellipsis, we slice up to maxlength -1 
+to give space for the ellipsis:      str.slice(0, maxlength - 1) + '…'
+*/
+
 function truncate(str, maxlength){
-    // Extract length
-    // Compare length with maxlength
-    // If it exceeds maxlength, then replace end of str with "\u2026" or ellipsis char
-    return str + maxlength;
+    // Extract length & Compare with maxlength 
+    // If it exceeds maxlength, then replace last char with '\u2026' or '…'
+    return (str.length > maxlength) ? 
+        str.slice(0, maxlength - 1) + '\u2026' : str;
 }
 
 
@@ -75,6 +82,14 @@ The example: */
 
 console.log( extractCurrencyValue('$120') === 120 ); // true
 
-function extractCurrencyValue(){
+/* Answer: Assuming all input strings are valid, i.e. are in the form of 
+(Symbol)Number, and that the symbol only takes up one space, then we can
+just slice the string from the first position. 
 
+Edge cases that this does not check for are NaN and (+/-)Infinity.
+
+Then once we have the string number, we convert to Number data type through
+unary operator + */
+function extractCurrencyValue(str){
+    return +str.slice(1);
 }
