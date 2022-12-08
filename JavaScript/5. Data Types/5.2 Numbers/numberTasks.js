@@ -65,3 +65,53 @@ function readNumber(){
 }
 
 console.log(`Read: ${readNumber()}`);
+
+/* An Occasional Infinite Loop */
+/* The following loop is infinite, why?
+let i = 0;
+while (i != 10) {
+  i += 0.2;
+}
+*/
+/* Answer: That’s because i would never equal 10.
+
+Run it to see the real values of i: 
+let i = 0;
+while (i < 11) {
+  i += 0.2;
+  if (i > 9.8 && i < 10.2) alert( i );
+}
+
+None of them is exactly 10.
+
+Such things happen because of the precision losses when adding fractions like 0.2.
+
+Conclusion: evade equality checks when working with decimal fractions.
+*/
+
+
+/* A random number from min to max */
+/* The built-in function Math.random() creates a random value from 0 to 1 (not including 1).
+
+Write the function random(min, max) to generate a random floating-point number 
+from min to max (not including max).
+
+Examples of its work: */
+alert( random(1, 5) ); // 1.2345623452
+alert( random(1, 5) ); // 3.7894332423
+alert( random(1, 5) ); // 4.3435234525
+
+// Answer:
+/**
+ * Generates a random value from [min,max). To map all values from interval 0..1
+ * into values from min to max. In two stages:
+ * 1. Multiply a random number from 0...1 by max-min, then the interval of 
+ * possible  values increases 0..1 to 0..max-min.
+ * 2. Now if we add min, the possible interval becomes from min to max.
+ * @param {number} min 
+ * @param {number} max 
+ * @returns a random floating-point number from min to max exclusive
+ */
+function random(min, max){
+    return min + Math.random() * (max - min);
+}
