@@ -276,3 +276,67 @@ if (str.indexOf("Widget") != -1) {
     alert("We found it"); // works now!
 }
 
+/* includes(), startsWith(), endsWith() */
+/* Use includes() when we want to test for the match, but don't need its position.
+  str.includes(substr,pos) 
+Returns true/false depending on whether str contains substr within */
+alert( "Widget with id".includes("Widget") ); // true
+alert( "Hello".includes("Bye") ); // false
+
+/* Optional second argument of str.includes is the position to start searching from: */
+alert( "Widget".includes("id") ); // true
+alert( "Widget".includes("id", 3) ); // false, from position 3 there is no "id"
+
+/* startsWith() and endsWith() does exactly what they say: */
+alert( "Widget".startsWith("Wid") ); // true, "Widget" starts with "Wid"
+alert( "Widget".endsWith("get") ); // true, "Widget" ends with "get"
+
+/* Getting a Substring */
+/* In JavaScript, there are 3 methods to get a substring: substring, substr, & slice */
+/*      str.slice(start [, end]) 
+Returns the part of the string from start to (but not including) end. */
+str = "stringify";
+alert( str.slice(0, 5) ); // 'strin', the substring from 0 to 5 (not including 5)
+alert( str.slice(0, 1) ); // 's', from 0 to 1, but not including 1, so only character at 0
+
+/* If there is no second argument, then slice goes till the end of the string: */
+alert( str.slice(2) ); // 'ringify', from the 2nd position till the end
+
+/* Negative values for start/end are also possible. They mean the position is 
+counted from the string end: */
+// start at the 4th position from the right, end at the 1st from the right
+alert( str.slice(-4, -1) ); // 'gif'
+
+
+/* str.substring(start [, end]) 
+Returns the part of the string between start and end (not including end).
+- Negative arguments are (unlike slice) not supported, they are treated as 0.
+- This is almost the same as slice, but it allows start to be greater than end
+  (in this case it simply swaps start and end values).
+*/
+str = "stringify";
+
+// these are same for substring
+alert( str.substring(2, 6) ); // "ring"
+alert( str.substring(6, 2) ); // "ring"
+
+// ...but not for slice:
+alert( str.slice(2, 6) ); // "ring" (the same)
+alert( str.slice(6, 2) ); // "" (an empty string)
+
+/* str.substr(start [, length]) 
+Returns the part of the string from start, with the given length.
+
+In contrast with the previous methods, this one allows us to specify the length
+ instead of the ending position:
+*/
+str = "stringify";
+alert( str.substr(2, 4) ); // 'ring', from the 2nd position get 4 characters
+
+/* The first argument may be negative, to count from the end: */
+alert( str.substr(-4, 2) ); // 'gi', from the 4th position get 2 characters
+
+/* This method resides in the Annex B of the language specification. It means that 
+only browser-hosted Javascript engines should support it, and it’s not recommended 
+to use it. In practice, it’s supported everywhere. */
+
