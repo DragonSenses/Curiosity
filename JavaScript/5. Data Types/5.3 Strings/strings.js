@@ -340,3 +340,72 @@ alert( str.substr(-4, 2) ); // 'gi', from the 4th position get 2 characters
 only browser-hosted Javascript engines should support it, and it’s not recommended 
 to use it. In practice, it’s supported everywhere. */
 
+/* Recap for Substrings: 
+
+method	                selects…	                                  negatives
+slice(start, end)	      from start to end (not including end)	      allows negatives
+substring(start, end)	  between start and end (not including end)	  negative values mean 0
+substr(start, length)	  from start get length characters	allows    negative start
+
+Which one to choose?    For practical use it's enough to remember only slice
+Formally, substr has a minor drawback: it is described not in the core JavaScript 
+specification, but in Annex B, which covers browser-only features that exist
+mainly for historical reasons. So, non-browser environments may fail to support it. 
+But in practice it works everywhere.
+
+Of the other two variants, slice is a little bit more flexible, 
+it allows negative arguments and shorter to write.
+*/
+
+/* Comparing Styrings */
+/* Strings are compared character-by-character in Alphabetical Order. 
+
+   1. A lowercase letter is always greater than the uppercase: */
+alert( 'a' > 'Z' ); // true
+
+/* 2. Letters with diacritical marks are “out of order”: */
+alert( 'Österreich' > 'Zealand' ); // true
+
+/* This may lead to strange results if we sort these country names. 
+Usually people would expect Zealand to come after Österreich in the list.
+
+To understand what happens, we should be aware that strings in 
+Javascript are encoded using UTF-16. That is: each character has 
+a corresponding numeric code.
+
+There are special methods that allow to get the character for the code and back: 
+      str.codePointAt(pos) - Returns a decimal number representing the code for 
+      the character at position pos:
+*/
+// different case letters have different codes
+alert( "Z".codePointAt(0) ); // 90
+alert( "z".codePointAt(0) ); // 122
+alert( "z".codePointAt(0).toString(16) ); // 7a (if we need a hexadecimal value)
+
+/* String.fromCodePoint(code) - Creates a character by its numeric code: */
+alert( String.fromCodePoint(90) ); // Z
+alert( String.fromCodePoint(0x5a) ); // Z (we can also use a hex value as an argument)
+
+/* Now let’s see the characters with codes 65..220 (the latin alphabet and a 
+little bit extra) by making a string of them: */
+str = '';
+
+for (let i = 65; i <= 220; i++) {
+  str += String.fromCodePoint(i);
+}
+alert( str );
+// Output:
+// ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+// ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜ
+
+/* The characters are compared by their numeric code. The greater code means that 
+the character is greater. The code for a (97) is greater than the code for Z (90). 
+
+Capital characters go first, then a few special ones, then lowercase characters, 
+and Ö near the end of the output.
+
+Now it becomes obvious why a > Z.
+ - All lowercase letters go after uppercase letters because their codes are greater.
+ - Some letters like Ö stand apart from the main alphabet. 
+   Here, its code is greater than anything from a to z.
+*/
