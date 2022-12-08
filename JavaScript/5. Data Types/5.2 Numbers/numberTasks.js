@@ -33,3 +33,35 @@ That’s because the decimal part 0.5 is actually 1/2.
 Fractions divided by powers of 2 are exactly represented in the binary system, 
 now we can round it: */
 console.log( Math.round(6.35 * 10) / 10 ); // 6.35 -> 63.5 -> 64(rounded) -> 6.4
+
+
+/* Repeat until Input is a Number */
+/* Create a function readNumber which prompts for a number until the visitor 
+enters a valid numeric value.
+
+The resulting value must be returned as a number.
+
+The visitor can also stop the process by entering an empty line or 
+pressing “CANCEL”. In that case, the function should return null. */
+
+
+/* Answer: To find a valid numeric value we use the isFinite(value) which 
+converts its argument to a number and returns true if it's a regular number,
+not NaN/Infinity/-Infinity. Then we have to check for the cases where the
+user enters an empty line or presses cancel. 
+
+Both null (cancel) and empty line numeric forms are 0, so we must treat them
+specially after isFinite() checks for a regular number.  */
+function readNumber(){
+    let num;
+
+    do{
+        num = prompt("Please enter a number:", 0);
+    } while( !isFinite(num) );
+
+    if (num === null || num === '') return null;
+
+    return +num; 
+}
+
+console.log(`Read: ${readNumber()}`);
