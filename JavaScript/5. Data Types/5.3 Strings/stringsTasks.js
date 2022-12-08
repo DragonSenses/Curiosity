@@ -4,9 +4,27 @@ uppercased first character, for instance:
 */
 ucFirst("john") == "John";
 
-function ucFirst(){
-    // TO DO
+/* Answer: Note that strings are immutable, so we can't "replace" the first
+character, but we can make a new string based on the existing one with the
+uppercased first character:
+
+    str[0].toUpperCase() + str.slice(1);
+
+Problem: If str is empty, then str[0] is undefined, and as undefined doesn't
+have the toUpperCase() method we'll get an error. 
+    So we have to test for an empty string, like this:
+*/
+
+function ucFirst(str){
+    // validate argument as string
+    if(!str) return str;    // empty string evaluates to 0, or false
+
+    // uppercase first letter, then concatenate with the remaining substring
+    return str[0].toUpperCase() + str.slice(1);
 }
+
+console.log(ucFirst("luna")); // returns Luna
+
 
 /* Check for Spam */
 /* Write a function checkSpam(str) that returns true if str contains 
@@ -15,8 +33,12 @@ checkSpam('buy ViAgRA now') == true;
 checkSpam('free xxxxx') == true;
 checkSpam("innocent rabbit") == false;
 
-function checkSpam(){
-    // TO DO
+function checkSpam(str){
+    // validate argument as string
+    if(!str) return false;
+
+    // Check if str contains 'viagra' or 'XXX', case-insensitive 
+    
 }
 
 /* Truncate the Text */
