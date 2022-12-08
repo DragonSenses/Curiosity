@@ -38,4 +38,47 @@ and it’s not what we usually want.
 Instead you can use for..of loop to compare arrays item-by-item.
 */
 
+/* Arrays 
+    Objects allow you to store keyed collections of values. That’s fine.
 
+But quite often we find that we need an ordered collection, where we have a 1st, 
+a 2nd, a 3rd element and so on. 
+    e.g, we need that to store a list of something: users, goods, HTML elements etc.
+
+It is not convenient to use an object here, because it provides no methods to 
+manage the order of elements. We can’t insert a new property “between” the 
+existing ones. Objects are just not meant for such use.
+
+There exists a special data structure named Array, to store ordered collections. 
+*/
+
+/* Declaration */
+/* There are two syntaxes for creating an empty array: 
+
+let arr = new Array();
+let arr = [];
+
+Almost all the time, the second syntax is used. We can supply initial elements in the brackets:
+*/
+let fruits = ["Apple", "Orange", "Plum"];
+
+/* Array elements are numbered, starting with zero. We can get an element by 
+its number in square brackets: */
+console.log( fruits[0] ); // Apple
+console.log( fruits[1] ); // Orange
+console.log( fruits[2] ); // Plum
+
+/* We can replace an element: */
+fruits[2] = 'Pear'; // now ["Apple", "Orange", "Pear"]
+
+/* Or add a new element to the array" */
+fruits[3] = 'Lemon'; // now ["Apple", "Orange", "Pear", "Lemon"]
+
+/* The total count of the elements in the array is its length: */
+let fruitBasket = ["Apple", "Orange", "Plum"];
+
+console.log( fruitBasket.length ); // 3
+
+/* We can also use alert to show the whole array */
+alert(fruitBasket); // Apple,Orange,Plum
+alert( fruits );    // Apple,Orange,Pear,Lemon
