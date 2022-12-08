@@ -215,3 +215,64 @@ To look for the next occurrence, let’s start the search from position 2:
 str = 'Widget with id';
 
 alert( str.indexOf('id', 2) ); // 12
+
+/* To find all occurrences, we can run indexOf in a loop. Every new call is made
+the position after the previous match: */
+str = 'As sly as a fox, as strong as an ox';
+
+let target = 'as'; // let's look for it
+
+let pos = 0;
+// eslint-disable-next-line no-constant-condition
+while (true) {
+  let foundPos = str.indexOf(target, pos);
+  if (foundPos == -1) break;
+
+  alert( `Found at ${foundPos}` );
+  pos = foundPos + 1; // continue the search from the next position
+}
+
+/* Same algorithm as above, but shorter: */
+str = "As sly as a fox, as strong as an ox";
+target = "as";
+
+pos = -1;
+while ((pos = str.indexOf(target, pos + 1)) != -1) {
+  console.log( pos );
+} 
+// 7, 17, 27
+
+/* str.lastIndexOf(substr, position) searches from the end of a string to its
+beginning. Lists the occurrences in the reverses order. 
+
+Recall: that if no further matches can be found, or if nothing can be found,
+returns -1. So this should be the escape condition. */
+
+pos = str.len; 
+while ((pos = str.lastIndexOf(target, pos - 1)) != -1) {
+  console.log(pos);
+}
+// 27, 17, 7
+
+/* Using indexOf in the if test, must check when it returns -1,
+can't put it in the if condition as is: */
+
+str = "Widget with id";
+
+if (str.indexOf("Widget")) {
+    alert("We found it"); // doesn't work!
+}
+
+/*
+The alert in the example above doesn’t show because str.indexOf("Widget") 
+returns 0 (meaning that it found the match at the starting position). 
+Right, but if considers 0 to be false.
+
+So, we should actually check for -1, like this:
+*/
+str = "Widget with id";
+
+if (str.indexOf("Widget") != -1) {
+    alert("We found it"); // works now!
+}
+
