@@ -57,7 +57,7 @@ let guestList = `Guests:
  * Clana
 `;
 
-alert(guestList); // a list of guests, multiple lines
+console.log(guestList); // a list of guests, multiple lines
 
 /* Single or Double quotes do not allow the use of multiple lines, there'll be an error:
 let guestList = "Guests: // Error: Unexpected token ILLEGAL
@@ -73,3 +73,64 @@ receives the string and embedded expressions and can process them.
 This feature is called “tagged templates”, it’s rarely seen, 
 but you can read about it in the MDN: Template literals.
 */
+
+/* Special Characters */
+/* It is still possible to create multiline strings with single and double quotes 
+by using a so-called “newline character”, written as \n, which denotes a line break: 
+*/
+guestList = "Guests:\n * Frey\n * Aria\n * Isolet";
+
+console.log(guestList); // a multiline list of guests
+
+// These two lines are equal, just written differently:
+let str1 = "Hello\nWorld"; // two lines using a "newline symbol"
+
+// two lines using a normal newline and backticks
+let str2 = `Hello
+World`;
+
+console.log(str1 == str2); // true
+
+/* List of special characters:
+\n	New line
+
+\r	In Windows text files a combination of two characters \r\n represents a new break, 
+while on non-Windows OS it’s just \n. That’s for historical reasons, 
+most Windows software also understands \n.
+
+\', \", \`	Quotes
+
+\\	Backslash
+
+\t	Tab
+
+\b, \f, \v	Backspace, Form Feed, Vertical Tab – mentioned for completeness, 
+    coming from old times, not used nowadays (you can forget them right now).
+
+
+As you can see, all special characters start with a backslash character \. 
+It is also called an “escape character”.
+
+Because it’s so special, if we need to show an actual backslash \ within 
+the string, we need to double it:
+*/
+console.log( `The backslash: \\` ); // The backslash: \
+
+/* So-called “escaped” quotes \', \", \` are used to insert a quote into 
+the same-quoted string. e.g: */
+alert( 'I\'m the Walrus!' ); // I'm the Walrus!
+
+// Preprended the inner quote by the backslash \', because otherwise it would
+// indicate the string end.
+
+/* Only the quotes that are the same as the enclosing ones need to be escaped.
+So, as a more elegant solution, we could switch to double quotes or backticks
+instead: */
+alert( "I'm the Walrus!" ); // I'm the Walrus!
+
+/* Besides special characters, there's also a special notation for 
+Unicode codes \u...., it’s rarely used and is covered later in Unicode section. */
+
+/* String Length */
+/* The length property has the string length: */
+console.log( `My\n`.length ); // 3
