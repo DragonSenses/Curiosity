@@ -82,3 +82,49 @@ console.log( fruitBasket.length ); // 3
 /* We can also use alert to show the whole array */
 alert(fruitBasket); // Apple,Orange,Plum
 alert( fruits );    // Apple,Orange,Pear,Lemon
+
+/* An array can store elements of any type */
+
+function makeMixedArray(){
+  // mix of values
+  return [ 'Apple', { name: 'Luna' }, true, function() { alert('hello'); } ];
+}
+
+let mixedArray = makeMixedArray();
+
+// get the object at index 1 and then show its name
+console.log( mixedArray[1].name ); // Luna
+
+// get the function at index 3 and run it
+mixedArray[3](); // hello
+
+/* Trailing Comma - an array, just like an object, may end with a comma:
+ let fruits = [
+  "Apple",
+  "Orange",
+  "Plum",
+];
+
+The “trailing comma” style makes it easier to insert/remove items, because all lines become alike.
+*/
+
+/* Get last elements with "at" */
+/* To get last element of the array, some languages allow the use of negative indexes
+for the same purpose, like fruits[-1]. 
+
+In JavaScript, it won't work since the result be undefined, because the index
+in square brackets is treated literally. 
+
+We can explicitly calculate the last element index and then access it: 
+  fruits[fruits.length - 1].
+*/
+fruits = ["Apple", "Orange", "Plum"];
+alert( fruits[fruits.length-1] ); // Plum
+
+/* Shorter Syntax: fruits.at(-1): */
+alert( fruits.at(-1) ); // Plum, same as fruits[fruits.length-1]
+
+/* In other words, arr.at(i) 
+  - is exactly the same as arr[i], if i >= 0 
+  - for negative values of i, it steps back from the end of the array. 
+*/
