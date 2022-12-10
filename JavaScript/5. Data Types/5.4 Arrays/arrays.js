@@ -321,3 +321,52 @@ alert( arr[3] ); // undefined: the values do not return
 
 /* So, the simplest way to clear the array is: arr.length = 0; */
 arr.length = 0; // Simplest way to clear the array
+
+/* new Array() - one more syntax to create an array: */
+let array = new Array("Apple", "Pear", "etc");
+console.log(array);
+
+/* Rarely used because square brackets [] are shorter. Also there's a tricky
+feature with it. If new Array is called with a single argument which is a number, 
+then it creates an array without items, but with the given length. 
+
+Avoid such surprises by using square bracket syntax, unless we know what we're
+doing.
+
+e.g: */
+array = new Array(2); // will it create an array of [2] ?
+console.log( array[0] );     // undefined! no elements.
+console.log( array.length ); // length 2
+
+
+/* Multidimensional arrays */
+/* Arrays can have items that are also arrays. We can use it for multidimensional arrays, 
+for example to store matrices: */
+
+let matrix = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
+];
+
+console.log( matrix[1][1] ); // 5, the central element
+
+/* toString() */
+/* Arrays have their own implementation of toString method that returns a 
+comma-separated list of elements. e.g: */
+arr = [1, 2, 3];
+console.log( arr ); // 1,2,3
+console.log( String(arr) === '1,2,3' ); // true
+
+/* Arrays do not have Symbol.toPrimitive, neither a viable valueOf(), they 
+implement only toString conversion. SO [] becomes an empty string, [1] becomes
+"1" and [1,2] becomes "1,2". */
+console.log( [] + 1 );    // "1"
+console.log( [1] + 1 );   // "11"
+console.log( [1,2] + 1 ); // "1,21"
+
+/* When the binary plus "+" operator adds something to a string, it converts 
+it to a string as well, so the next step looks like this: */
+console.log( "" + 1 );    // "1"
+console.log( "1" + 1 );   // "11"
+console.log( "1,2" + 1 ); // "1,21"
