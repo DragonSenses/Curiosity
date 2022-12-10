@@ -9,8 +9,8 @@ shoppingCart.push("Banana");
 // what's in fruits?
 alert( fruits.length ); // ?
 
-
-
+// Answer: 4. Arrays are objects and copied by reference. 
+// Both shoppingCart and fruits are references to the same array
 
 
 /* Array Operations */
@@ -29,8 +29,16 @@ Jazz, Classics, Rock-n-Roll
 Classics, Rock-n-Roll
 Rap, Reggae, Classics, Rock-n-Roll
 */
+let music = ["Jazz", "Blues"];
+music.push("Rock-n-Roll");
 
+// midPoint = arr.length >>> 1 . Used "">>> 1" over "/ 2" since dividing integers
+// yields a floating point result. 5/2 === 2.5 , 5 >>> 1 === 2. 
+music[music.length >>> 1 ] = "Classics"; 
 
+console.log(music.shift());
+
+music.unshift("Rap", "Reggae");
 
 /* Calling an an array context */
 /* What is the result? Why? */
