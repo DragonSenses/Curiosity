@@ -128,3 +128,47 @@ alert( fruits.at(-1) ); // Plum, same as fruits[fruits.length-1]
   - is exactly the same as arr[i], if i >= 0 
   - for negative values of i, it steps back from the end of the array. 
 */
+
+/* Arrays in JavaScript can work both as a queue and as a stack. They allow you
+to add/remove elements, both to/from the beginning or the end. The data 
+structure that allows this is called deque (i.e. doubly ended queue) */
+
+/* Methods that work with the end of the array: push() and pop() */
+// push() appends the element to the end of the array:
+fruits = ["Apple", "Orange"];
+
+fruits.push("Pear");
+
+alert( fruits ); // Apple, Orange, Pear
+
+// pop() extracts the last element of the array and returns it:
+fruits = ["Apple", "Orange", "Pear"];
+
+alert( fruits.pop() ); // remove "Pear" and alert it
+
+alert( fruits ); // Apple, Orange
+
+/* Methods that work with the beginning of the array: unshift() and shift() */
+// unshift() ADDS the element to the beginning of the array
+fruits = ["Orange", "Pear"];
+
+fruits.unshift('Apple');
+
+alert( fruits ); // Apple, Orange, Pear
+
+// shift() EXTRACTS the first element of the array and returns it:
+fruits = ["Apple", "Orange", "Pear"];
+
+alert( fruits.shift() ); // remove Apple and alert it
+
+alert( fruits ); // Orange, Pear
+
+
+/* Methods push() and unshift() can add multiple elements at once: */
+fruits = ["Apple"];
+
+fruits.push("Orange", "Peach");       // push 2 elements
+fruits.unshift("Pineapple", "Lemon"); // unshift 2 elements
+
+// ["Pineapple", "Lemon", "Apple", "Orange", "Peach"]
+alert( fruits );
