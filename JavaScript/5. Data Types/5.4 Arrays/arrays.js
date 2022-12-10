@@ -229,3 +229,44 @@ They provide special methods for that. Arrays are carefully tuned inside
 JavaScript engines to work with contiguous ordered data, please use them this way. 
 And if you need arbitrary keys, chances are high that you actually require a regular object {}.
 */
+
+/* Performance
+  Fast - pop/push
+  Slow - shift/unshift
+*/
+fruits.shift(); // take 1 element from the start
+
+/* Not enough to take and remove the element with the index 0. Other elements
+need to be renumbered as well. The shift operation must do 3 things:
+  1. Remove the element with the index 0.
+  2. Move all elements to the left, renumber them from the index 1 to 0, 
+     from 2 to 1 and so on.
+  3. Update the length property.
+
+The more elements in the array, the more time to move them, more in-memory operations.
+The similar thing happens with unshift: to add an element to the beginning of the array, 
+we need first to move existing elements to the right, increasing their indexes.
+
+And what’s with push/pop? They do not need to move anything. To extract an element from 
+the end, the pop method cleans the index and shortens length.
+
+The actions for the pop operation:
+*/
+fruits.pop(); // take 1 element from the end
+
+/* The pop method does not need to move anything, because other elements keep their indexes. 
+That’s why it’s blazingly fast. The similar thing with the push method. */
+
+/* Loops - cycling through array items */
+/* One of the oldest ways is the for loop over indexes: */
+arr = ["Apple", "Orange", "Pear"];
+
+for (let i = 0; i < arr.length; i++) {
+  alert( arr[i] );
+}
+
+/* Another form of loop, for..of: */
+// iterates over array elements
+for (let fruit of fruits) {
+  alert( fruit );
+}
