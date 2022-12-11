@@ -29,16 +29,23 @@ Jazz, Classics, Rock-n-Roll
 Classics, Rock-n-Roll
 Rap, Reggae, Classics, Rock-n-Roll
 */
-let music = ["Jazz", "Blues"];
-music.push("Rock-n-Roll");
 
+// Answer:
+let styles = ["Jazz", "Blues"];
+styles.push("Rock-n-Roll");
 // midPoint = arr.length >>> 1 . Used "">>> 1" over "/ 2" since dividing integers
 // yields a floating point result. 5/2 === 2.5 , 5 >>> 1 === 2. 
-music[music.length >>> 1 ] = "Classics"; 
+styles[styles.length >>> 1 ] = "Classics"; 
+console.log(styles.shift());
+styles.unshift("Rap", "Reggae");
 
-console.log(music.shift());
-
-music.unshift("Rap", "Reggae");
+/* Alternative Answer:
+let styles = ["Jazz", "Blues"];
+styles.push("Rock-n-Roll");
+styles[Math.floor((styles.length - 1) / 2)] = "Classics";
+alert( styles.shift() );
+styles.unshift("Rap", "Reggae");
+*/
 
 /* Calling an an array context */
 /* What is the result? Why? */
@@ -49,6 +56,31 @@ arr.push(function() {
 });
 
 arr[2](); // ?
+
+/* Answer: a,b,function(){
+  alert( this );
+}
+  An array named arr is created with ["a","b"] as values. Then we push
+(or add at the end of the array) a function, which alerts("this"). This has no
+value until runtime. So at line arr[2](); It calls the function in spot arr[2]
+which alerts(this), and this at runtime is array. So the arrays contents will 
+be printed.   
+
+The call arr[2]() is syntactically the good old obj[method](), in the role of 
+obj we have arr, and in the role of method we have 2.
+
+So we have a call of the function arr[2] as an object method. Naturally, 
+it receives this referencing the object arr and outputs the array:
+let arr = ["a", "b"];
+
+arr.push(function() {
+  alert( this );
+})
+
+arr[2](); // a,b,function(){...}
+
+The array has 3 values: initially it had two, plus the function.
+*/
 
 
 /* Sum input numbers */
