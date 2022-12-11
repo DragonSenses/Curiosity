@@ -90,9 +90,41 @@ The array has 3 values: initially it had two, plus the function.
     or presses “Cancel”.
   * Calculates and returns the sum of array items.
   
-P.S. A zero 0 is a valid number, please don’t stop the input on zero. */
+P.S. A zero 0 is a valid number, please don't stop the input on zero. */
 
+// Keep prompting user for values to be stored in array
+// Stop when non-numeric value, empty string, or Cancel is entered
+// Calculates and returns sum of array of items
 
+// Keep pushing values to array, if condition fails, pops and sums all and returns
+function sumInput(){
+  let arr = new Array();
+  let num;
+
+  // while num is a valid 
+  do{
+    num = prompt("Number?",0);
+
+    // Both null (cancel) and empty line numeric forms are 0, so we must treat 
+    // them specially after isFinite() checks for a regular number. 
+    if(num === null || num === '') break; 
+
+    arr.push(+num); 
+
+  } while(!isFinite(num));
+  
+
+  let sum = 0;
+
+  // Check for non-empty array
+  if(arr.length != 0){
+    for(let n of arr){
+      sum += n;
+    }
+  }
+
+  return sum;
+}
 
 /* A maximal subarray */
 /* The input is an array of numbers, e.g. arr = [1, -2, 3, 4, -9, 6].
