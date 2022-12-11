@@ -334,3 +334,45 @@ alert(users.findIndex(user => user.name == 'Frey')); // 0
 
 // Find the index of the last Frey
 alert(users.findLastIndex(user => user.name == 'Frey')); // 3
+
+/* filter */
+/* find method looks for a single (first) element that makes the function return
+true. If there may be many, we can use arr.filter(fn). The syntax is similar to
+find, but filter returns an array of all matching elements: 
+
+Syntax:
+        let results = arr.filter(function(item, index, array) {
+          // if true item is pushed to results and the iteration continues
+          // returns empty array if nothing found
+        });
+
+For instance:
+*/
+users = [
+  {id: 1, name: "Frey"},
+  {id: 2, name: "Serena"},
+  {id: 3, name: "Kania"}
+];
+
+// returns array of the first two users
+let someUsers = users.filter(item => item.id < 3);
+
+alert(someUsers.length); // 2
+
+
+/* Transform an array */
+/* map
+The arr.map method calls the function for each element of the array and returns
+the array of results.
+
+Syntax:
+      let result = arr.map(function(item, index, array) {
+        // returns the new value instead of item
+      });
+
+For instance, here we transform each element into its length:
+*/
+let lengths = ["Frey", "Serena", "Kania"].map(item => item.length);
+alert(lengths); // 4,6,5
+
+
