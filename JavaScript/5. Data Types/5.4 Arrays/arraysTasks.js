@@ -96,26 +96,29 @@ P.S. A zero 0 is a valid number, please don't stop the input on zero. */
 // Stop when non-numeric value, empty string, or Cancel is entered
 // Calculates and returns sum of array of items
 
+// Note: do not convert num to number instantly after prompt so that one can
+// discern whether it was an empty string (stop sign) or zero (valid number)
+
 // Keep pushing values to array, if condition fails, pops and sums all and returns
 function sumInput(){
-  let arr = new Array();
+  let arr = [];
   let num;
 
   // while num is a valid 
-  do{
-    num = prompt("Number?",0);
+  // eslint-disable-next-line no-constant-condition
+  while(true) {
+    num = prompt("Number?", 0);
 
     // Both null (cancel) and empty line numeric forms are 0, so we must treat 
-    // them specially after isFinite() checks for a regular number. 
-    if(num === null || num === '') break; 
+    // them specially after isFinite() checks for a regular number.
+
+    // Should we cancel?
+    if(num === null || num === '' || !isFinite(num)) break; 
 
     arr.push(+num); 
-
-  } while(!isFinite(num));
+  }
   
-
   let sum = 0;
-
   // Check for non-empty array
   if(arr.length != 0){
     for(let n of arr){
@@ -124,7 +127,10 @@ function sumInput(){
   }
 
   return sum;
-}
+} 
+
+alert ( sumInput() );
+
 
 /* A maximal subarray */
 /* The input is an array of numbers, e.g. arr = [1, -2, 3, 4, -9, 6].
