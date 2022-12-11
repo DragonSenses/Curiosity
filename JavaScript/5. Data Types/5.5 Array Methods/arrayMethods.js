@@ -63,3 +63,61 @@ alert( arraysEqual([1, 2], [1, 2])); // true
   - arr.flat(depth)/arr.flatMap(fn) create a new flat array from a multidimensional 
     array.
 */
+
+/* Add/Remove items */
+/* We already know methods that add and remove items from the beginning or the end:
+    arr.push(...items) – adds items to the end,
+    arr.pop() – extracts an item from the end,
+    arr.shift() – extracts an item from the beginning,
+    arr.unshift(...items) – adds items to the beginning. 
+
+Here are a few others:
+*/
+/* Consider how to delete an element from the array?
+    The arrays are objects so we can try to use delete:
+*/
+let arr = ["I", "go", "home"];
+
+delete arr[1]; // remove "go"
+
+alert( arr[1] ); // undefined
+
+// now arr = ["I",  , "home"];
+alert( arr.length ); // 3
+
+/* Special methods should be used over delete. 
+The element was removed, but the array still has 3 elements, we can see that
+arr.length == 3. That's natural, because delete obj.key removes a value by the
+key. It's all it does. Fine for objects. But for arrays we usually want the rest
+of elements to shift and occupy the freed place. We expect to have a shorter 
+array now. */
+
+/* splice */
+/* arr.splice method is versatile. It can do everything: insert, remove and
+replace elements. 
+
+Syntax: 
+    arr.splice(start[, deleteCount, elem1, ..., elemN])
+
+Modifies arr starting from the index start: removes deleteCount elements and then
+inserts elem1, ..., elemN at their place. 
+
+Returns the array of removed elements.
+*/
+
+/* Let's start with deletion: */
+arr = ["I", "study", "JavaScript"];
+
+arr.splice(1, 1); // from index 1 remove 1 element
+
+alert( arr ); // ["I", "JavaScript"]
+
+/* Remove 3 elements and Replace them with the other two: */
+arr = ["I", "study", "JavaScript", "right", "now"];
+
+// remove 3 first elements and replace them with another
+arr.splice(0, 3, "Let's", "dance");
+
+alert( arr ); // now ["Let's", "dance", "right", "now"]
+
+/* splice returns the array of removed elements: */
