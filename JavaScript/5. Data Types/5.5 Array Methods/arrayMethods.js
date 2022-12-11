@@ -183,3 +183,59 @@ If an argument argN is an array, then all its elements are copied.
 
 For instance:
 */
+arr = [1, 2];
+
+// create an array from: arr and [3,4]
+alert( arr.concat([3, 4]) ); // 1,2,3,4
+
+// create an array from: arr and [3,4] and [5,6]
+alert( arr.concat([3, 4], [5, 6]) ); // 1,2,3,4,5,6
+
+// create an array from: arr and [3,4], then add values 5 and 6
+alert( arr.concat([3, 4], 5, 6) ); // 1,2,3,4,5,6
+
+/* Normally, it only copies elements from arrays. 
+Other objects, even if they look like arrays, are added as a whole: */
+
+arr = [1, 2];
+
+let arrayLike = {
+    0: "something",
+    length: 1
+};
+
+console.log( arr.concat(arrayLike) ); // 1,2,[object Object]
+
+/* But if an array-like object has a special Symbol.isConcatSpreadable property,
+then it’s treated as an array by concat: its elements are added instead: */
+arr = [1, 2];
+
+arrayLike = {
+  0: "something",
+  1: "else",
+  [Symbol.isConcatSpreadable]: true,
+  length: 2
+};
+
+alert( arr.concat(arrayLike) ); // 1,2,something,else
+
+
+/* Iteratre: forEach */
+/* arr.forEach() allows to run a function for every element of the array.
+The result of the function (if it returns any) is thrown away and ignored.
+
+Syntax:
+        arr.forEach(function(item, index, array) {
+        // ... do something with item
+        });
+
+For instance, this shows each element of the array:
+*/
+// for each element call alert
+["Bilbo", "Gandalf", "Nazgul"].forEach(alert);
+
+/* And this code is more elaborate about their positions in the target array: */
+["Bilbo", "Gandalf", "Nazgul"].forEach((item, index, array) => {
+    alert(`${item} is at index ${index} in ${array}`);
+});
+
