@@ -438,3 +438,54 @@ nothing prevents from alerting them:
 
 /* The algorithm may compare an element with multiple others in the process, 
 but it tries to make as few comparisons as possible. */
+
+/* A comparison function may return any number. 
+A comparison function is only required to return a positive number to say
+"greater" and a negative number to say "less". That allows to write shorter
+functions: */
+arr = [ 1, 2, 15 ];
+
+arr.sort(function(a, b) { return a - b; });
+
+alert(arr);  // 1, 2, 15
+
+/* Arrow Functions for neater sorting: */
+arr.sort( (a, b) => a - b );
+
+/* Use localeCompare for strings
+string comparison compares letters by their codes by default. For many alphabets,
+it's better to use str.localeCompare method to correctly sort letters, such as Ö.
+e.g, let’s sort a few countries in German: */
+let countries = ['Österreich', 'Andorra', 'Vietnam'];
+
+alert( countries.sort( (a, b) => a > b ? 1 : -1) ); // Andorra, Vietnam, Österreich (wrong)
+
+alert( countries.sort( (a, b) => a.localeCompare(b) ) ); // Andorra,Österreich,Vietnam (correct!)
+
+/* reverse */
+/* arr.reverse reverses the order of elements in arr. 
+It also returns the array arr after the reversal.
+e.g., */
+arr = [1, 2, 3, 4, 5];
+arr.reverse();
+
+alert( arr ); // 5,4,3,2,1
+
+/* split and join */
+/* Real life application: We are writing a messaging app, and the person enters 
+the comma-delimited list of receivers: John, Pete, Mary. 
+But for us an array of names would be much more comfortable than a single string. 
+How to get it?  */
+
+/* str.split(delim) 
+    splits the string into an array by the given delimiter delim.
+
+In the example below, we split by a comma followed by space:
+*/
+let names = 'Bilbo, Gandalf, Nazgul';
+
+arr = names.split(', ');
+
+for (let name of arr) {
+  alert( `A message to ${name}.` ); // A message to Bilbo  (and other names)
+}
