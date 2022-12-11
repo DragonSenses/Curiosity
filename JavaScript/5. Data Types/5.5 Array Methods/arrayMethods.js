@@ -121,3 +121,65 @@ arr.splice(0, 3, "Let's", "dance");
 alert( arr ); // now ["Let's", "dance", "right", "now"]
 
 /* splice returns the array of removed elements: */
+arr = ["I", "study", "JavaScript", "right", "now"];
+
+// remove 2 first elements
+let removed = arr.splice(0, 2);
+
+alert( removed ); // "I", "study" <-- array of removed elements
+
+/* splice method is able to insert the elements without any removals. For that
+we need to set deleteCount to 0: */
+arr = ["I", "study", "JavaScript"];
+
+// From index 2, delete 0, then insert "complex" and "language"
+arr.splice(2, 0, "complex", "language");
+
+alert( arr ); // "I", "study", "complex", "language", "JavaScript"
+
+/* Negative indexes allowed - they specify the position from the end of array: */
+arr = [1, 2, 5];
+
+// from index -1 (one step from the end)
+// delete 0 elements,
+// then insert 3 and 4
+arr.splice(-1, 0, 3, 4);
+
+alert( arr ); // 1,2,3,4,5
+
+
+/* slice */
+/* It’s similar to a string method str.slice, but instead of substrings it makes subarrays. 
+syntax:
+        arr.slice([start], [end])
+
+It returns a new array copying to it all items from index start to end (not including end). 
+Both start and end can be negative, in that case position from array end is assumed.
+
+    We can also call it without arguments: arr.slice() creates a copy of arr. 
+That’s often used to obtain a copy for further transformations that should not affect 
+the original array.
+
+For instance:
+*/
+arr = ["t", "e", "s", "t"];
+alert( arr.slice(1, 3) );   // e,s (copy from 1 to 3)
+alert( arr.slice(-2) );     // s,t (copy from -2 till the end)
+
+
+/* concat */
+/* arr.concat creates a new array that includes values from other arrays and 
+additional items. 
+
+Syntax:
+        arr.concat(arg1, arg2...)
+
+It accepts any number of arguments – either arrays or values.
+
+The result is a new array containing items from arr, then arg1, arg2 etc.
+
+If an argument argN is an array, then all its elements are copied. 
+    Otherwise, the argument itself is copied.
+
+For instance:
+*/
