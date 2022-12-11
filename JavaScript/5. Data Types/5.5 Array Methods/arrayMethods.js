@@ -284,5 +284,53 @@ console.log( nanArray.includes(NaN) );    // true (correct)
 /* find, findIndex, findLastIndex */
 /* arr.find(fn) helps find objects with a specific condition:
 Syntax:
-    
+        let result = arr.find(function(item, index, array) {
+        // if true is returned, item is returned and iteration is stopped
+        // for falsy scenario returns undefined
+        });
+
+The function is called for elements of the array, one after another:
+  * item is the element
+  * index is its index
+  * array is the array itself
+If it returns true, the search is stopped, the item is returned. 
+  * If nothing found, undefined is returned.
+
+e.g., we have an array of users, each with the fields id and name. 
+    Let’s find the one with id == 1:
 */
+let users = [
+    {id: 1, name: "Frey"},
+    {id: 2, name: "Serena"},
+    {id: 3, name: "Kania"}
+];
+
+let user = users.find(item => item.id == 1);
+
+alert(user.name); // Frey
+
+/* In real life arrays of objects is a common thing, so the find method is very useful.
+
+Note in the example, to find the function item => item.id == 1 with one argument. 
+That’s typical, other arguments of this function are rarely used. */
+
+/* arr.findIndex() method has the same syntax, but returns the index where the 
+element was found instead of the element itself. The value of -1 is returned 
+if nothing is found. 
+
+arr.findLastIndex() is like findIndex(), but searches from right to left, similar
+to lastIndexOf. 
+
+e.g., */
+users = [
+    {id: 1, name: "Frey"},
+    {id: 2, name: "Serena"},
+    {id: 3, name: "Kania"},
+    {id: 4, name: "Frey"}
+];
+
+// Find the index of the first Frey
+alert(users.findIndex(user => user.name == 'Frey')); // 0
+
+// Find the index of the last Frey
+alert(users.findLastIndex(user => user.name == 'Frey')); // 3
