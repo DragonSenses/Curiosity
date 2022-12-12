@@ -30,9 +30,11 @@ Output: 4
 Explanation: Subarray [3, -1, 2] is the max sum contiguous subarray with sum 4.
  */
 
-/* Answer: 
-Simple Approach is to run two for loops O(n^2), and for every subarray
-check if it is the maximum sum possible. 
+/* Answer: Brute Force - simple approach - O(n^2) 
+run two for loops, and for every subarray check if it is the maximum sum possible. 
+
+1. Check all possible subarrays
+2. Pick one with maximum sum
 
 Pseudo-Code
     * Run a loop for i from 0 to n-1, where n is the size of array
@@ -61,9 +63,46 @@ function getMaxSubSumSimple(arr){
 
 getMaxSubSumSimple([-1, -2, -3]) == 0;
 
-/* Efficient Approach 
-    *
+/* Efficient Approach - Kadane's Algorithm - O(n) linear time
+Idea is that the Local Maximum Subarray is either the
+    1. Current Element
+    2. Current Element combined with previous maximum subarray
+Compare (1) and (2) and ignore all other possible subarrays. Do this for all
+indicies. 
+
+    Proof, why Kadane's Algorithm Work?
+Given an array, we are at nth index, with element x. 
+We also know the subarray ending at the previous index, called M.
+[..[  M  ]|x| ...]
+           n        index
+
+The maximum subarray ending at the nth index is either the current element 
+    1. [x]      // current element x
+Or  2. [M, x]   // current element x combined with M
+
+M could be any number of elements. Let's try proof by contradiction. 
+    Let's assume that maximum subarray ending at this element x, at index n, is
+actually [T,x]. T is a non-empty subarray that may have more elements or less 
+elements than subarray M. 
+So we have:
+    Sum([T,X]) <= Sum[M,x]
+Sum( [T,X] ) = sum(T) + x
+Sum( [M,x] ) = sum(M) + x.
+
+since we know that M is maximum sum ending at the previous index, it's at least
+larger than or equal to sum of T. 
+    Sum(T) <= Sum(M)
+
+Looking at these equations, Sum of [T,x] is less than/equal to Sum of [M,x].
+    Which shows that maximum subarray ending at current index (i.e. nth index)
+    needs to be either x (current element) or [M, x] current element x combined
+    with M (maximum subarray ending at previous index)
 */
+
+/**
+ * Retrives the Maximum Sum Subarray of the passed in array.
+ * @param {*} arr array to retrieve maximum sum subarray from
+ */
 function getMaxSubSum(arr){
     // TODO
     let len = arr.length;
