@@ -594,3 +594,67 @@ arr.reduce((sum, current) => sum + current);
 /* It's Advised to always specify the initial value */
 
 /* arr.reduceRight() does the same, but goes from right to left. */
+
+/* Array.isArray */
+/* Arrays are based on objects, they do not form a separate language type. 
+So typeof does not help to distinguish a plain object from an array: 
+*/
+alert(typeof {}); // object
+alert(typeof []); // object (same)
+
+/* But arrays are used so often that there's a special method:
+Array.isArray(value) - returns true if the value is an array, and false otherwise. 
+*/
+alert(Array.isArray({})); // false
+
+alert(Array.isArray([])); // true
+
+/* Most methods support "thisArg" */
+/* Almost all methods that call functions - i.e. find, filter, map, (with a
+  notable exception of sort), accept an optional additional parameter: thisArg 
+
+It is rarely used, but for completeness, it is covered here:
+The full syntax of these methods:
+    arr.find(func, thisArg);
+    arr.filter(func, thisArg);
+    arr.map(func, thisArg);
+    // ...
+    // thisArg is the optional last argument
+
+The value of thisArg parameter becomes this for func.
+
+For example, here we use a method of army object as a filter, 
+  and thisArg passes the context:
+*/
+let army = {
+  minAge: 18,
+  maxAge: 27,
+  canJoin(user) {
+    return user.age >= this.minAge && user.age < this.maxAge;
+  }
+};
+
+users = [
+  {age: 16},
+  {age: 20},
+  {age: 23},
+  {age: 30}
+];
+
+// find users, for who army.canJoin returns true
+let soldiers = users.filter(army.canJoin, army);
+
+alert(soldiers.length); // 2
+alert(soldiers[0].age); // 20
+alert(soldiers[1].age); // 23
+
+/* If in the example above we used users.filter(army.canJoin), then army.canJoin 
+would be called as a standalone function, with this=undefined, 
+thus leading to an instant error. 
+
+A call to users.filter(army.canJoin, army) can be replaced with 
+          users.filter(user => army.canJoin(user)) 
+
+They do the same thing, but the latter is used more often, 
+as it’s a bit easier to understand for most people.
+*/
