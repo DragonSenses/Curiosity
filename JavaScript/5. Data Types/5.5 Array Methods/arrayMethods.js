@@ -489,3 +489,56 @@ arr = names.split(', ');
 for (let name of arr) {
   alert( `A message to ${name}.` ); // A message to Bilbo  (and other names)
 }
+
+/* The split method has an optional second numeric argument - a limit on the
+array length. If it is provided, then the extra elements are ignored. 
+  - Rarely used in practice. */
+
+arr = 'Bilbo, Gandalf, Nazgul, Saruman'.split(', ', 2);
+
+alert(arr); // Bilbo, Gandalf
+
+/* Split into letters */
+/* split(s) with an empty s would split the string into an array of letters */
+let str = "test";
+alert( str.split('') ); // t,e,s,t
+
+/* arr.join(glue) does the reverse to split. It creates a string of arr items
+joined by glue between them. e.g., */
+arr = ['Bilbo', 'Gandalf', 'Nazgul'];
+
+str = arr.join(';'); // glue the array into a string using ;
+
+alert( str ); // Bilbo;Gandalf;Nazgul
+
+/* reduce/reduceRight */
+/* 
+When we need to iterate over an array – we can use forEach, for or for..of.
+
+When we need to iterate and return the data for each element – we can use map.
+
+The methods arr.reduce and arr.reduceRight also belong to that breed, but are a 
+little bit more intricate. They are used to calculate a single value based on the array. 
+*/
+/* arr.reduce()
+Syntax:
+    let value = arr.reduce(function(accumulator, item, index, array) {
+      // ...
+    }, [initial]);
+
+The function is applied to all array elements one after another and “carries on” 
+its result to the next call.
+
+Arguments:
+  accumulator – is the result of the previous function call, 
+                equals initial the first time (if initial is provided).
+  item – is the current array item.
+  index – is its position.
+  array – is the array.
+
+As function is applied, the result of the previous function call is passed to 
+the next one as the first argument.
+
+So, the first argument is essentially the accumulator that stores the combined
+ result of all previous executions. And at the end it becomes the result of reduce.
+*/
