@@ -31,7 +31,7 @@ Explanation: Subarray [3, -1, 2] is the max sum contiguous subarray with sum 4.
  */
 
 /* Answer: 
-The simple approach is to run two for loops O(n^2), and for every subarray
+Simple Approach is to run two for loops O(n^2), and for every subarray
 check if it is the maximum sum possible. 
 
 Pseudo-Code
@@ -41,6 +41,44 @@ Pseudo-Code
     * For every subarray, check if currentMax is the maximum sum of all 
       contiguous subarrays.
 */
-function getMaxSubSum(){
+function getMaxSubSumSimple(arr){
+    let len = arr.length;
+    let maxSum = Number.MIN_SAFE_INTEGER;
+    let currSum = 0;
 
+    for(let i = 0; i <= len-1; i ++){
+        currSum = 0;
+
+        for(let j = 0; j <= len-1; j++){
+            currSum += arr[j];
+
+            if (currSum > maxSum) {
+                maxSum = currSum;
+            }
+        }
+    }
+}
+
+getMaxSubSumSimple([-1, -2, -3]) == 0;
+
+/* Efficient Approach 
+    *
+*/
+function getMaxSubSum(arr){
+    // TODO
+    let len = arr.length;
+    let maxSum = Number.MIN_SAFE_INTEGER;
+    let currSum = 0;
+
+    for(let i = 0; i <= len-1; i ++){
+        currSum = 0;
+
+        for(let j = 0; j <= len-1; j++){
+            currSum += arr[j];
+
+            if (currSum > maxSum) {
+                maxSum = currSum;
+            }
+        }
+    }
 }
