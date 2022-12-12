@@ -542,3 +542,55 @@ the next one as the first argument.
 So, the first argument is essentially the accumulator that stores the combined
  result of all previous executions. And at the end it becomes the result of reduce.
 */
+
+/* Here we get a sum of an array in one line: */
+arr = [1, 2, 3, 4, 5];
+
+let result = arr.reduce((sum, current) => sum + current, 0);
+
+alert(result); // 15
+
+/* The function passed to reduce uses only 2 arguments, that’s typically enough.
+
+Let’s see the details of what’s going on.
+  1. On the first run, sum is the initial value (the last argument of reduce), 
+  equals 0, and current is the first array element, equals 1. So the function result is 1.
+
+  2. On the second run, sum = 1, we add the second array element (2) to it and return.
+
+  3. On the 3rd run, sum = 3 and we add one more element to it, and so on…
+
+The calculation flow: 
+sum     0     0+1   0+1+2   0+1+2+3   0+1+2+3+4
+current 1      2      3       4           5
+Array  [1]    [2]    [3]     [4]         [5]    ---> 0+1+2+3+4+5 = 15
+
+result  1      3      6      10          15
+
+Each column represents a function call on the next array element, we can see how
+the result of the previous call becomes the first argument of the next one.
+*/
+
+/* We can also omit the intial value: */
+arr = [1, 2, 3, 4, 5];
+
+// removed initial value from reduce (no 0)
+result = arr.reduce((sum, current) => sum + current);
+
+alert( result ); // 15
+
+/* Result is the same because if there's no initial, then reduce takes the first
+element of the array as the initial value and starts the iteration from the 
+2nd element. 
+
+But such use requires extreme care. If the array is empty, then reduce call 
+without initial value gives an error. e.g., */
+arr = [];
+
+// Error: Reduce of empty array with no initial value
+// if the initial value existed, reduce would return it for the empty arr.
+arr.reduce((sum, current) => sum + current);
+
+/* It's Advised to always specify the initial value */
+
+/* arr.reduceRight() does the same, but goes from right to left. */
