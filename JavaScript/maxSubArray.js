@@ -99,12 +99,30 @@ Looking at these equations, Sum of [T,x] is less than/equal to Sum of [M,x].
     with M (maximum subarray ending at previous index)
 */
 
+/* Pseudocode 
+    1. Initialize all variables to first element in array
+        maxCurrent = maxGlobal = A[0]
+        - maxCurrent is sum of current maximum sub array
+        - maxGlobal tracks global maximum sum
+
+    2. For loop from i to length(A) - 1
+    
+    3. Within the Loop
+        maxCurrent = max(A[i], maxCurrent + A[i])
+
+    4. If maxCurrent > maxGlobal
+        maxGlobal = maxCurrent
+
+    5. Return maxGlobal
+*/
+
+// TODO
 /**
  * Retrives the Maximum Sum Subarray of the passed in array.
  * @param {*} arr array to retrieve maximum sum subarray from
  */
 function getMaxSubSum(arr){
-    // TODO
+    
     let len = arr.length;
     let maxSum = Number.MIN_SAFE_INTEGER;
     let currSum = 0;
