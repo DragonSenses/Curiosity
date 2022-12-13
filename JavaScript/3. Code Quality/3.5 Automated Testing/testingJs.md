@@ -126,3 +126,38 @@ The **result** by dragging `testingJS.html` to a new tab in Google Chrome (Versi
 
 
 * Now open up `testingJS.html` in the browser again to see the new result: <img src="images/firstTestPasses.png"> which shows that the first test passed. 
+
+## **Improving the specification**
+
+Tests pass, but the function is erroneous. The spec is imperfect, as it needs more cases to further polish the function. 
+
+The initial implementation of `pow` was a cheat that circumvents the first test. 
+
+The function still does not work because an attempt to calculate `pow(3,4)` would give an incorrect result.
+
+Let's add the test case `pow(3,4) = 81`
+
+### Adding more Tests
+
+We can select one of two ways to organize the test here: 
+
+1. **Add one more `assert` into the same `it`**: <img src="s">
+
+2. **Make another test**:
+<img src="s">
+
+The principal difference is that when `assert` triggers an error, the `it` block immediately terminates. 
+
+> So, in the first variant if the first assert fails, then we’ll never see the result of the second assert.
+
+Making tests separate is useful to get more information about what’s going on, so the second variant is better.
+
+And besides that, there’s one more rule that’s good to follow.
+
+***One test checks one thing.***
+
+If we look at the test and see two independent checks in it, it’s better to split it into two simpler ones.
+
+So let’s continue with the second variant.
+
+The result: <img src="s"> As expected, the second test failed since the function always returns `8`, while the `assert` expects `81`. 
