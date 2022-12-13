@@ -89,3 +89,14 @@ Before making the implementation, let's use a few JavaScript libraries to run th
 * <a href="https://sinonjs.org/">Sinon</a>  – a library to spy over functions, emulate built-in functions and more, we’ll need it much later.
 
 The JavaScript libraries used here are suitable for both in-browser and server-side testing. Here we will consider the browser variant. 
+
+The full HTML page with these frameworks and `pow` spec: <img src="images/testingJS.html.png">
+
+### The page can be divided into 5 parts:
+
+1. The `<head>` – add third-party libraries and styles for tests.
+2. The `<script>` with the function to test, in our case – with the code for `pow`.
+3. The tests – in our case an external script `test.js` that has `describe("pow", ...)` from above.
+4. The HTML element `<div id="mocha">` will be used by Mocha to output results.
+5. The tests are started by the command `mocha.run()`.
+
