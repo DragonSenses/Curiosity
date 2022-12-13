@@ -90,9 +90,17 @@ Before making the implementation, let's use a few JavaScript libraries to run th
 
 The JavaScript libraries used here are suitable for both in-browser and server-side testing. Here we will consider the browser variant. 
 
+### ***Creating the Specification***
+
+* First, create an external script named `test.js`
+
+Inside `test.js` we have our first test from earlier: <img src="images/test.js.png">
+
+* Next, create `testingJS.html` 
+    
 The full HTML page with these frameworks and `pow` spec: <img src="images/testingJS.html.png">
 
-### The page can be divided into 5 parts:
+### The HTML page can be divided into 5 parts:
 
 1. The `<head>` – add third-party libraries and styles for tests.
 2. The `<script>` with the function to test, in our case – with the code for `pow`.
