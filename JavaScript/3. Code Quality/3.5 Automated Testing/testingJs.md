@@ -108,3 +108,12 @@ The full HTML page with these frameworks and `pow` spec: <img src="images/testin
 4. The HTML element `<div id="mocha">` will be used by Mocha to output results.
 5. The tests are started by the command `mocha.run()`.
 
+### Open up the HTML page in a browser
+
+The **result** by dragging `testingJS.html` to a new tab in Google Chrome (Version 108.0.5359.99 (Official Build) (64-bit)): <img src="images/testResult.png">
+
+* Test fails for now, because there's an error. 
+* We have an empty function code in `pow`, so `pow(2,3)` returns `undefined` instead of `8`
+
+> *Side Note*: There are more high-level test runners that make it easy to autorun many different tests. e.g. <a href="https://karma-runner.github.io/">karma</a>
+
