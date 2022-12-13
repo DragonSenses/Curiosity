@@ -117,3 +117,12 @@ The **result** by dragging `testingJS.html` to a new tab in Google Chrome (Versi
 
 > *Side Note*: There are more high-level test runners that make it easy to autorun many different tests. e.g. <a href="https://karma-runner.github.io/">karma</a>
 
+***
+
+## Initial Implementation of `pow`
+
+* In `testingJS.html`, let's provide an initial implementation for `pow` located in the `<script>` right under `<body>` 
+<img src="images/firstPow.png">
+
+
+* Now open up `testingJS.html` in the browser again to see the new result: <img src="images/firstTestPasses.png"> which shows that the first test passed. 
