@@ -82,3 +82,10 @@ Before making the implementation, let's use a few JavaScript libraries to run th
 
 ## **The spec in action**
 
+* <a href="https://mochajs.org/">Mocha</a> – the core framework: it provides common testing functions including `describe` and `it` and the main function that runs tests.
+
+* <a href="https://www.chaijs.com/">Chai</a>  – the library with many assertions. It allows to use a lot of different assertions, for now we need only assert.equal.
+
+* <a href="https://sinonjs.org/">Sinon</a>  – a library to spy over functions, emulate built-in functions and more, we’ll need it much later.
+
+The JavaScript libraries used here are suitable for both in-browser and server-side testing. Here we will consider the browser variant. 
