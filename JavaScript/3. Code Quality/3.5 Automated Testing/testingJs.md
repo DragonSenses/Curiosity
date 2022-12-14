@@ -141,10 +141,10 @@ Let's add the test case `pow(3,4) = 81`
 
 We can select one of two ways to organize the test here: 
 
-1. **Add one more `assert` into the same `it`**: <img src="s">
+1. **Add one more `assert` into the same `it`**: <img src="images/firstVariant.png">
 
 2. **Make another test**:
-<img src="s">
+<img src="images/secondVariant.png">
 
 The principal difference is that when `assert` triggers an error, the `it` block immediately terminates. 
 
@@ -158,6 +158,7 @@ And besides that, there’s one more rule that’s good to follow.
 
 If we look at the test and see two independent checks in it, it’s better to split it into two simpler ones.
 
-So let’s continue with the second variant.
+> So let’s continue with the second variant. Add the code to `test.js`
 
-The result: <img src="s"> As expected, the second test failed since the function always returns `8`, while the `assert` expects `81`. 
+The result: <img src="images/testResult2.png"> As expected, the second test failed since the function always returns `8`, while the `assert` expects `81`. 
+
