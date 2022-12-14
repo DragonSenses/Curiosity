@@ -151,10 +151,20 @@ If we look at the test and see two independent checks in it, it’s better to sp
 
 > So let’s continue with the second variant. Add the code to `test.js`
 
-The result: <img src="images/testResult2.png"> As expected, the second test failed since the function always returns `8`, while the `assert` expects `81`. 
+Result: <img src="images/testResult2.png"> As expected, the second test failed since the function always returns `8`, while the `assert` expects `81`. 
 
 ---
 
 ## **Improving the Implementation**
 
- 
+* Let's improve the function `pow` inside `testingJS.html` so it can pass more tests: <img src="images/betterPow.png">
+
+Testing the function with more values ensures it works well.
+
+* Instead of writing `it` blocks manually, we can generate them in `for`. 
+
+* Add the following to `test.js` 
+
+<img src="images/betterTests.png">
+
+Result of `testingJS.html`: <img src="images/testResult3.png">
