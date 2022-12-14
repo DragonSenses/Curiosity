@@ -20,16 +20,7 @@ That task is just an example: there’s the `**` operator in JavaScript that can
 
 Before creating the code of pow, we can imagine what the function should do and describe it.
 
-Such description is called a *specification* or, in short, a spec, and contains descriptions of use cases together with tests for them, like this:
-
-`describe("pow", function() {`
-
-  &nbsp;&nbsp;`it("raises to n-th power", function() {`
-    &nbsp;&nbsp;&nbsp;&nbsp;`assert.equal(pow(2, 3), 8);`
-
-&nbsp;`});`
-
-`});`
+Such description is called a *specification* or, in short, a spec, and contains descriptions of use cases together with tests for them, like this: <img src="images/firstSpec.png">
 
 A spec has three main building blocks that you can see above:
 
@@ -162,3 +153,8 @@ If we look at the test and see two independent checks in it, it’s better to sp
 
 The result: <img src="images/testResult2.png"> As expected, the second test failed since the function always returns `8`, while the `assert` expects `81`. 
 
+---
+
+## **Improving the Implementation**
+
+ 
