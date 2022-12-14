@@ -168,3 +168,20 @@ Testing the function with more values ensures it works well.
 <img src="images/betterTests.png">
 
 Result of `testingJS.html`: <img src="images/testResult3.png">
+
+---
+
+## **Nested** `describe`
+
+Note that the helper function `makeTest()` and `for` should be grouped together. 
+
+We won't need `makeTest()` in other tests, it's needed only in `for` since their common task is to check how `pow` raises into the given power. 
+
+Grouping is done with a **nested** `describe`. Add the following to `test.js` like so: <img src="images/nestedDescribe.png">
+
+The nested describe defines a new *subgroup* of tests. In the output we can see the titled indentation: <img src="images/testResult4.png">
+
+In the future we can add more `it` and `describe` on the top level with helper functions of their own, they won't see `makeTest`.
+
+---
+
