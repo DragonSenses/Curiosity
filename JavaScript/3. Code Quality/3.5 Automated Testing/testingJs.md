@@ -185,3 +185,18 @@ In the future we can add more `it` and `describe` on the top level with helper f
 
 ---
 
+### `before/after` *and* `beforeEach/afterEach`
+
+* We can setup `before/after` functions that execute before/after running tests
+
+* We can also setup `beforeEach/afterEach` functions that execture before/after ***every*** `it` 
+
+* Usually, `before/after` *and* `beforeEach/afterEach` are used to perform initialization , zero out counters or do something else between the tests (or test groups)
+
+For instance: <img src="images/beforeAfterScript.png">
+
+The running sequence will be: <img src="images/beforeAfterSequence.png">
+
+You can run the example above in `beforeAfter.html` with external script `beforeAfterTest.js` located in the same directory.
+
+---
