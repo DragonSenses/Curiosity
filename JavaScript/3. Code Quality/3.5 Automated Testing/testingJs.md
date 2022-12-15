@@ -200,3 +200,20 @@ The running sequence will be: <img src="images/beforeAfterSequence.png">
 You can run the example above in `beforeAfter.html` with external script `beforeAfterTest.js` located in the same directory.
 
 ---
+
+## **Extending the spec**
+
+The basic functionality of `pow` is complete. The first iteration of the development is done.
+
+The function `pow(x, n)` is meant to work with positive integer values `n`.
+
+To indicate a mathematical error, JavaScript functions usually return `NaN`. Let’s do the same for invalid values of `n`.
+
+* Adding the behavior to the spec: <img src="images/extendSpec.png">
+
+* Result with new tests: <img src="images/testResult5.png"> The newly added tests fail, because our implementation does not support them. 
+
+That’s how BDD is done: first we write failing tests, and then make an implementation for them.
+
+---
+
