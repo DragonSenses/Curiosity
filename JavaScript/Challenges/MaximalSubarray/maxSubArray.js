@@ -59,6 +59,8 @@ function getMaxSubSumSimple(arr){
             }
         }
     }
+
+    return maxSum;
 }
 
 getMaxSubSumSimple([-1, -2, -3]) == 0;
@@ -138,4 +140,6 @@ function getMaxSubSum(arr){
             }
         }
     }
+
+    return maxSum;
 }
