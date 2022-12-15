@@ -213,7 +213,11 @@ To indicate a mathematical error, JavaScript functions usually return `NaN`. Let
 
 * Result with new tests: <img src="images/testResult5.png"> The newly added tests fail, because our implementation does not support them. 
 
-That’s how BDD is done: first we write failing tests, and then make an implementation for them.
+That’s how **BDD** is done: first we write failing tests, and then make an implementation for them.
+
+* Improve the implentation by adding these lines to `pow` in `testingJS.html` <img src="images/bestPow.png">
+
+Now it works, all tests pass: <img src="images/testResult6.png">
 
 ---
 
