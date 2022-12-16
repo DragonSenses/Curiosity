@@ -53,6 +53,52 @@ Let's consider an array, and see how many subarrays we can form:
 For this array, the sub-arrays are:
     For element at      Sub-Arrays
         0th index       {1}, {1,2}, {1,2,3}, {1,2,3,4}, {1,2,3,4,5}
+        1st index       {2}, {2,3}, {2,3,4}, {2,3,4,5}
+        2nd index       {3}, {3,4}, {3,4,5}
+        3rd index       {4}, {4,5}
+        4th index       {5}
+
+So given an array of 5 elements, one can create 15 subarrays. 
+
+What's the correlation between n elements and ? contiguous subarrays?
+    The answer is (n(n+1))/2
+
+    A subarray is completely determined by the index of its first element and 
+    the index of the element that immediately follows its last element.
+
+Discrete Math proof that for N elements there are (N(N+1))/2 subarrays.
+Source: https://math.stackexchange.com/questions/1194584/the-total-number-of-subarrays
+
+    Consider an arbitrary array of N DISTINCT ELEMENTS.
+
+ There exists 1 array consisting of all the elements (indexed from 0 to N-1)
+
+ There exist 2 arrays consisting of N-1 consecutive elements (indexed from 0 to N-2)
+ 
+ and in general there are k arrays consisting of N-k+1 consecutive elements (indexed from 0 to N-k-1)
+
+ We can access elements 0 ... N-k-1 as the first array, then 1 ... N-k+2 is the second array, 
+ and this goes on for all N-k+r until N-k+r = N-1 (ie until we have hit the end). 
+ 
+ The r that does us is can be solved for : N − k + r = N − 1 → r − k = −1 → r = k−1
+ And the list       0...k-1 contains k elements within it
+
+Thus we note that the total count of subarrays is
+1 for N elements
+
+2 for N-1 elements
+
+3 for N-2 elements
+.
+.
+.
+N for 1 element
+And the total sum must be:  1 + 2 + 3 ... N
+    if 1 + 2 + 3...N = (1/2)N(N+1)
+then   1 + 2 + 3...N = (1/2)(N+1)(N+2)
+we verify:
+    (1/2)N(N+1) + N + 1 = (N + 1)(1/2N + 1)
+    = (N+1) (N+2)/2
 */
 
 
