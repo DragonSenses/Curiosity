@@ -125,3 +125,29 @@ let range2 = {
 for (let num of range2) {
     alert(num); // 1, then 2, 3, 4, 5
 }
+
+/* Infinite Iterators are also possible. 
+For instance, the range becomes infinite for range.to = Infinity. 
+Or we can make an iterable object that generates an infinite sequence 
+of pseudorandom numbers. Also can be useful.
+
+There are no limitations on next, it can return more and more values, that’s normal.
+
+Of course, the for..of loop over such an iterable would be endless. 
+But we can always stop it using break.*/
+
+
+/* String is Iterable */
+/* Arrays and strings are most widely used built-in iterables.
+
+For a string, for..of loops over its characters: */
+for (let char of "test") {
+    // triggers 4 times: once for each character
+    alert( char ); // t, then e, then s, then t
+}
+
+/* And it works correctly with surrogate pairs! */
+let str = '𝒳😂';
+for (let char of str) {
+    alert( char ); // 𝒳, and then 😂
+}
