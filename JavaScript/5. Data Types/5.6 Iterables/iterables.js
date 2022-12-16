@@ -186,3 +186,41 @@ known as surrogates.
 The surrogate code units are in two ranges known as "low surrogates" and 
 "high surrogates", depending on whether they are allowed at the start or end 
 of the two code unit sequence. */
+
+/* Calling an Iterator explicitly */
+/* For deeper understanding, let’s see how to use an iterator explicitly.
+
+We’ll iterate over a string in exactly the same way as for..of, but with direct calls. 
+This code creates a string iterator and gets values from it “manually”: */
+str = "Hello";
+
+// does the same as
+// for (let char of str) alert(char);
+
+let iterator = str[Symbol.iterator]();
+
+// eslint-disable-next-line no-constant-condition
+while (true) {
+  let result = iterator.next();
+  if (result.done) break;
+  alert(result.value); // outputs characters one by one
+}
+
+/* That is rarely needed, but gives us more control over the process than for..of. 
+For instance, we can split the iteration process: 
+    iterate a bit, then stop, do something else, and then resume later. 
+*/
+
+/* Iterables and array-likes */
+/* Two official terms look similar, but are very different. 
+Please make sure you understand them well to avoid the confusion.
+
+  - Iterables are objects that implement the Symbol.iterator method, as described above.
+  - Array-likes are objects that have indexes and length, so they look like arrays. 
+  
+When we use JavaScript for practical tasks in a browser or any other environment, 
+we may meet objects that are iterables or array-likes, or both.
+
+For instance, strings are both iterable (for..of works on them) and array-like 
+(they have numeric indexes and length).
+*/
