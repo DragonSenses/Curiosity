@@ -223,4 +223,40 @@ we may meet objects that are iterables or array-likes, or both.
 
 For instance, strings are both iterable (for..of works on them) and array-like 
 (they have numeric indexes and length).
+
+But an iterable may be not array-like. And vice versa an array-like may be not iterable.
+
+For example, the range in the example above is iterable, but not array-like, 
+because it does not have indexed properties and length.
+
+And here’s the object that is array-like, but not iterable:
 */
+let arrayLike = { // has indexes and length => array-like
+    0: "Hello",
+    1: "World",
+    length: 2
+};
+
+// Error (no Symbol.iterator)
+for (let item of arrayLike) { console.log(item); }
+
+/* Both iterables and array-likes are usually not arrays, they don’t have push, pop etc. 
+That’s rather inconvenient if we have such an object and want to work with it as with an array. 
+e.g. we would like to work with range using array methods. How to achieve that? */
+
+/* Array.from */
+/* There’s a universal method Array.from that takes an iterable or array-like value and 
+makes a “real” Array from it. Then we can call array methods on it. 
+
+For instance:
+let arrayLike = {
+    0: "Hello",
+    1: "World",
+    length: 2
+};
+*/
+let arr = Array.from(arrayLike); // (*)
+alert(arr.pop()); // World (method works)
+
+/* Array.from at the line (*) takes the object, examines it for being an iterable or array-like, 
+then makes a new array and copies all items to it. */
