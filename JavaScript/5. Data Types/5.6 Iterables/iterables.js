@@ -82,7 +82,46 @@ range[Symbol.iterator] = function() {
     };
   };
   
-  // now it works!
-  for (let num of range) {
+// now it works!
+for (let num of range) {
     alert(num); // 1, then 2, 3, 4, 5
-  }
+}
+
+/* Please note the core feature of iterables: separation of concerns.
+ - The range itself does not have the next() method.
+ - Instead, another object, a so-called “iterator” is created by the call to 
+ range[Symbol.iterator](), and its next() generates values for the iteration.
+
+So, the iterator object is separate from the object it iterates over.
+*/
+
+/* Technically, we may merge them and use range itself as the iterator to make the code simpler.
+The downside is that now it’s impossible to have two for..of loops running over 
+the object simultaneously: they’ll share the iteration state, because there’s only 
+one iterator – the object itself. But two parallel for-ofs is a rare thing, even in async scenarios.
+
+range2[Symbol.iterator]() returns the range2 object itself: it has the 
+necessary next() method and remembers the current iteration progress 
+in this.current. Shorter? Yes. And sometimes that’s fine too.
+ */
+let range2 = {
+    from: 1,
+    to: 5,
+  
+    [Symbol.iterator]() {
+      this.current = this.from;
+      return this;
+    },
+  
+    next() {
+      if (this.current <= this.to) {
+        return { done: false, value: this.current++ };
+      } else {
+        return { done: true };
+      }
+    }
+};
+  
+for (let num of range2) {
+    alert(num); // 1, then 2, 3, 4, 5
+}
