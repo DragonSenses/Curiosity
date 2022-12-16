@@ -28,7 +28,33 @@ Explanation: Subarray [5, -1, 2, -4, 6] is the max sum contiguous subarray with 
 Input: [-2, 3, -1, 2]
 Output: 4
 Explanation: Subarray [3, -1, 2] is the max sum contiguous subarray with sum 4.
- */
+*/
+
+/* Breakdown of Problem
+
+Let's start with the first step:
+1. Fully Understand the Problem 
+    * Read. Re-read. And read again until the problem statement is understood. 
+    * Breakdown any special terms, and decode key vocabulary words
+    * Be able to explain it differently to someone else
+
+In this case, we can break down the term "contiguous subarray" first. 
+  * Starting with the adjective "contiguous" means together in sequence. 
+  * Now an array is a contiguous memory block, and in JavaScript is a 
+    special kind of object, suited to storing and managing ordered data items.
+  * A "subarray" is a slice of a contiguous array that maintains the order of
+    the elements
+    - A subarray may comprise a single element from the given array or the
+    given array as a whole too
+
+Let's consider an array, and see how many subarrays we can form:
+    arr = [1,2,3,4,5]
+
+For this array, the sub-arrays are:
+    For element at      Sub-Arrays
+        0th index       {1}, {1,2}, {1,2,3}, {1,2,3,4}, {1,2,3,4,5}
+*/
+
 
 /* Answer: Brute Force - simple approach - O(n^2) 
 run two for loops, and for every subarray check if it is the maximum sum possible. 
