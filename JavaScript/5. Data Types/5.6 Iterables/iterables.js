@@ -151,3 +151,38 @@ let str = '𝒳😂';
 for (let char of str) {
     alert( char ); // 𝒳, and then 😂
 }
+
+/* Surrogate Pair refers to a means of encoding Unicode characters with 
+high code-points in the UTF-16 encoding scheme. 
+
+JavaScript is using UTF-16 to encode its strings. This means two bytes (16-bit) 
+are used to represent one Unicode Code Point.
+
+Now there are characters (like the Emojis) in Unicode that have a that 
+high code point so that they cannot be stored in 2 bytes (16bit) so they 
+need to get encoded into two UTF-16 characters (4 bytes). 
+    These are called surrogate pairs.
+*/
+
+// There is an emoji in the string (if you don’t see it)
+let len = "😀".length;  // 2, because the Emoji consists of two 2 UTF-16 characters.
+console.log(len); // 2
+
+// Another Example
+str = "😀";
+let surrogatePairs = str.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g) || [];
+len = str.length - surrogatePairs.length;
+
+console.log(2); // 1
+
+/* In the Unicode character encoding, characters are mapped to values between 0x0 and 0x10FFFF.
+
+Internally, JavaScript uses the UTF-16 encoding scheme to store strings of Unicode text. 
+In UTF-16, 16-bit (two-byte) code units are used. Since 16 bits can only contain the 
+range of characters from 0x0 to 0xFFFF, some additional complexity is used to store 
+values above this range (0x10000 to 0x10FFFF). This is done using pairs of code units 
+known as surrogates.
+
+The surrogate code units are in two ranges known as "low surrogates" and 
+"high surrogates", depending on whether they are allowed at the start or end 
+of the two code unit sequence. */
