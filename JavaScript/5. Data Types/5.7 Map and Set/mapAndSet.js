@@ -108,3 +108,48 @@ alert( visitsCountObj["[object Object]"] ); // 123
 
 /* As visitsCountObj is an object, it converts all Object keys, such as albedo and shalltear above, 
 same string "[object Object]". Definitely not what we want. */
+
+/* How Map compares keys */
+/* To test keys for equivalence, Map uses the algorithm SameValueZero. 
+It is roughly the same as strict equality ===, but the difference is that NaN 
+is considered equal to NaN. So NaN can be used as the key as well.
+
+This algorithm can’t be changed or customized. */
+
+/* Chaining */
+/* Every map.set call returns the map itself, so we can “chain” the calls: */
+map.set('1', 'str1')
+  .set(1, 'num1')
+  .set(true, 'bool1');
+
+
+/* Iteration over Map */
+/* For looping over a map, there are 3 methods:
+1. map.keys() – returns an iterable for keys,
+2. map.values() – returns an iterable for values,
+3. map.entries() – returns an iterable for entries [key, value], 
+                   it’s used by default in for..of.
+
+For instance:
+ */
+let recipeMap = new Map([
+    ['cucumber', 500],
+    ['tomatoes', 350],
+    ['onion',    50]
+  ]);
+  
+  // iterate over keys (vegetables)
+  for (let vegetable of recipeMap.keys()) {
+    alert(vegetable); // cucumber, tomatoes, onion
+  }
+  
+  // iterate over values (amounts)
+  for (let amount of recipeMap.values()) {
+    alert(amount); // 500, 350, 50
+  }
+  
+  // iterate over [key, value] entries
+  for (let entry of recipeMap) { // the same as of recipeMap.entries()
+    alert(entry); // cucumber,500 (and so on)
+}
+
