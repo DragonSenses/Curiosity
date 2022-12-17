@@ -40,3 +40,43 @@ get an element by its number.
     - Arrays are used for storing ordered collections.
 But that’s not enough for real life. That’s why Map and Set also exist. 
 */
+
+/* Map is a collection of keyed data items, just like an Object. 
+But the main difference is that Map allows keys of any type.
+
+Methods and properties are:
+ -new Map([iterable]) – creates the map, with optional iterable (e.g. array) of
+  [key,value] pairs for initialization.
+ -map.set(key, value) – stores the value by the key, returns the map itself.
+ -map.get(key) – returns the value by the key, undefined if key doesn’t exist in map.
+ -map.has(key) – returns true if the key exists, false otherwise.
+ -map.delete(key) – removes the element by the key, returns true if key existed
+  at the moment of the call, otherwise false.
+ -map.clear() – removes everything from the map.
+ -map.size – returns the current element count.
+
+For instance:
+*/
+let map = new Map();
+
+map.set('1', 'str1');   // a string key
+map.set(1, 'num1');     // a numeric key
+map.set(true, 'bool1'); // a boolean key
+
+// remember the regular Object? it would convert keys to string
+// Map keeps the type, so these two are different:
+alert( map.get(1)   ); // 'num1'
+alert( map.get('1') ); // 'str1'
+
+alert( map.size ); // 3
+
+/* As we can see, unlike objects, keys are not converted to strings. 
+Any type of key is possible. */
+
+/* NOTE: map[key] isn’t the right way to use a Map 
+Although map[key] also works, e.g. we can set map[key] = 2, 
+this is treating map as a plain JavaScript object, so it implies all corresponding
+limitations (only string/symbol keys and so on).
+
+So we should use map methods: set, get and so on.
+*/
