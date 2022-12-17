@@ -227,3 +227,39 @@ obj = Object.fromEntries(map.entries()); // make a plain object (*)
 // obj = { banana: 1, orange: 2, meat: 4 }
 
 alert(obj.orange); // 2
+
+/* A call to map.entries() returns an iterable of key/value pairs, 
+exactly in the right format for Object.fromEntries.
+
+We could also make line (*) shorter: */
+obj = Object.fromEntries(map); // omit .entries()
+
+/* That’s the same, because Object.fromEntries expects an iterable object as 
+the argument. Not necessarily an array. And the standard iteration for map 
+returns same key/value pairs as map.entries(). So we get a plain object with 
+same key/values as the map. */
+
+/* Set */
+/* A Set is a special type collection – “set of values” (without keys), 
+where each value may occur only once.
+
+Its main methods are:
+
+ -new Set([iterable]) – creates the set, with optional iterable (e.g. array) 
+  of values for initialization.
+ -set.add(value) – adds a value (does nothing if value exists), returns the set itself.
+ -set.delete(value) – removes the value, returns true if value existed at the 
+  moment of the call, otherwise false.
+ -set.has(value) – returns true if the value exists in the set, otherwise false.
+ -set.clear() – removes everything from the set.
+ -set.size – is the elements count.
+ 
+
+The main feature is that repeated calls of set.add(value) with the same value don’t do anything. 
+That’s the reason why each value appears in a Set only once.
+
+For example, we have visitors coming, and we’d like to remember everyone. 
+But repeated visits should not lead to duplicates. A visitor must be “counted” only once.
+
+Set is just the right thing for that:
+ */
