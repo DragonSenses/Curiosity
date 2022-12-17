@@ -193,3 +193,37 @@ alert( map.get('name') ); // Luna
 
 /* Here, Object.entries returns the array of key/value pairs: 
 [ ["name","Luna"], ["age", 20] ]. That’s what Map needs. */
+
+
+/* Object.fromEntries: Object from Map */
+/* We’ve just seen how to create Map from a plain object with Object.entries(obj).
+
+There’s Object.fromEntries method that does the reverse: given an array of 
+[key, value] pairs, it creates an object from them: */
+let prices = Object.fromEntries([
+    ['banana', 1],
+    ['orange', 2],
+    ['meat', 4]
+]);
+
+// now prices = { banana: 1, orange: 2, meat: 4 }
+
+alert(prices.orange); // 2
+
+/* We can use Object.fromEntries to get a plain object from Map.
+
+E.g. we store the data in a Map, but we need to pass it to a 3rd-party code 
+that expects a plain object.
+
+Here we go: */
+map = new Map();
+map.set('banana', 1);
+map.set('orange', 2);
+map.set('meat', 4);
+
+obj = Object.fromEntries(map.entries()); // make a plain object (*)
+
+// done!
+// obj = { banana: 1, orange: 2, meat: 4 }
+
+alert(obj.orange); // 2
