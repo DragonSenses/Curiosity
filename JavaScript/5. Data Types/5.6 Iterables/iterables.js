@@ -259,4 +259,51 @@ let arr = Array.from(arrayLike); // (*)
 alert(arr.pop()); // World (method works)
 
 /* Array.from at the line (*) takes the object, examines it for being an iterable or array-like, 
-then makes a new array and copies all items to it. */
+then makes a new array and copies all items to it. 
+
+The same happens for an iterable: */
+// assuming that range is taken from the example above
+arr = Array.from(range);
+alert(arr); // 1,2,3,4,5 (array toString conversion works)
+
+/* The full syntax for Array.from also allows us to provide an optional “mapping” function: 
+  Array.from(obj[, mapFn, thisArg])
+
+The optional second argument mapFn can be a function that will be applied to each element 
+before adding it to the array, and thisArg allows us to set this for it.
+
+For instance:
+*/
+// assuming that range is taken from the example above
+
+// square each number
+arr = Array.from(range, num => num * num);
+
+alert(arr); // 1,4,9,16,25
+
+/* Here we use Array.from to turn a string into an array of characters: */
+str = '𝒳😂';
+
+// splits str into array of characters
+let chars = Array.from(str);
+
+alert(chars[0]); // 𝒳
+alert(chars[1]); // 😂
+alert(chars.length); // 2
+
+/* Unlike str.split, it relies on the iterable nature of the string and 
+so, just like for..of, correctly works with surrogate pairs.
+
+Technically here it does the same as: */
+str = '𝒳😂';
+
+chars = []; // Array.from internally does the same loop
+for (let char of str) {
+  chars.push(char);
+}
+
+alert(chars);
+
+/* …But it is shorter.
+
+We can even build surrogate-aware slice on it: */
