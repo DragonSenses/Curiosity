@@ -80,3 +80,31 @@ limitations (only string/symbol keys and so on).
 
 So we should use map methods: set, get and so on.
 */
+
+/* Map can also use objects as keys */
+let luna = { name: "Luna" };
+
+// for every user, let's store their visits count
+let visitsCountMap = new Map();
+
+// luna is the key for the map
+visitsCountMap.set(luna, 123);
+
+alert( visitsCountMap.get(luna) ); // 123
+
+/* Using objects as keys is one of the most notable and important Map features. 
+The same does not count for Object. String as a key in Object is fine, but we 
+can’t use another Object as a key in Object. */
+let albedo = { name: "Albedo" };
+let shalltear = { name: "Shalltear" };
+
+let visitsCountObj = {}; // try to use an object
+
+visitsCountObj[shalltear] = 234; // try to use shalltear object as the key
+visitsCountObj[albedo] = 123; // try to use albedo object as the key, shalltear object will get replaced
+
+// That's what got written!
+alert( visitsCountObj["[object Object]"] ); // 123
+
+/* As visitsCountObj is an object, it converts all Object keys, such as albedo and shalltear above, 
+same string "[object Object]". Definitely not what we want. */
