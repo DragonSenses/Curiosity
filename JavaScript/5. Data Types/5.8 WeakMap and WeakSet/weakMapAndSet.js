@@ -95,4 +95,37 @@ luna = null; // overwrite the reference
 /* Compare it with the regular Map example above. Now if luna only exists as the key of WeakMap – 
 it will be automatically deleted from the map (and memory). */
 
-/*  */
+/* WeakMap does not support iteration and methods keys(), values(), entries(), 
+so there’s no way to get all keys or values from it.
+
+WeakMap has only the following methods: 
+ -weakMap.set(key, value)
+ -weakMap.get(key)
+ -weakMap.delete(key)
+ -weakMap.has(key)
+
+Why such a limitation? That’s for technical reasons. 
+If an object has lost all other references (like luna in the code above), then 
+it is to be garbage-collected automatically. But technically it’s not exactly 
+specified when the cleanup happens.
+
+The JavaScript engine decides that. It may choose to perform the memory cleanup 
+immediately or to wait and do the cleaning later when more deletions happen. 
+So, technically, the current element count of a WeakMap is not known. The engine 
+may have cleaned it up or not, or did it partially. For that reason, methods 
+that access all keys/values are not supported.
+*/
+
+// Where do we need such a data structure?
+/* Use Case: Additional Data */
+/* The main area of application for WeakMap is an additional data storage.
+
+If we’re working with an object that “belongs” to another code, maybe even a third-party library, 
+and would like to store some data associated with it, that should only exist 
+while the object is alive – then WeakMap is exactly what’s needed.
+
+We put the data to a WeakMap, using the object as the key, and when the object 
+is garbage collected, that data will automatically disappear as well. */
+
+weakMap.set(leo, "secret documents");
+// if leo dies, secret documents will be destroyed automatically
