@@ -246,3 +246,42 @@ obj = null;
 // but it's 0 or soon be 0
 // When obj gets garbage collected, cached data will be removed as well
 
+
+/* WeakSet behaves similarly:  
+ - It is analogous to Set, but we may only add objects to WeakSet (not primitives).
+ - An object exists in the set while it is reachable from somewhere else.
+ - Like Set, it supports add, has and delete, but not size, keys() and no iterations.
+ 
+Being "weak", it also serves as additional storage. 
+But not for arbitrary data, rather for “yes/no” facts. 
+A membership in WeakSet may mean something about the object.
+
+For instance, we can add users to WeakSet to keep track of those who visited our site:
+*/
+let visitedSet = new WeakSet();
+
+let frey = { name: "Frey" };
+let kania = { name: "Kania" };
+let irina = { name: "Irina" };
+
+visitedSet.add(frey); // Frey visited us
+visitedSet.add(kania); // Then Kania
+visitedSet.add(frey); // Frey again
+
+// visitedSet has 2 users now
+
+// check if Frey visited?
+alert(visitedSet.has(frey)); // true
+
+// check if Irina visited?
+alert(visitedSet.has(irina)); // false
+
+frey = null;
+
+// visitedSet will be cleaned automatically
+
+/* The most notable limitation of WeakMap and WeakSet is the absence of iterations, 
+and the inability to get all current content. That may appear inconvenient, 
+but does not prevent WeakMap/WeakSet from doing their main job – be an 
+“additional” storage of data for objects which are stored/managed at another place. 
+*/
