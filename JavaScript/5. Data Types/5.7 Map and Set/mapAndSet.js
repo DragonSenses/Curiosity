@@ -158,8 +158,10 @@ let recipeMap = new Map([
 Map preserves this order, unlike a regular Object. */
 
 /* Besides that, Map has a built-in forEach method, similar to Array: */
+
 // runs the function for each (key, value) pair
-recipeMap.forEach( (value, key) => {
+// eslint-disable-next-line no-unused-vars
+recipeMap.forEach( (value, key, map) => {
     alert(`${key}: ${value}`); // cucumber: 500, tomatoes: 350, onion: 50
 });
 
@@ -290,3 +292,27 @@ worse, because this method walks through the whole array checking every element.
 */
 
 /* Iteration over Set */
+/* We can loop over a set either with for..of or using forEach: */
+set = new Set(["oranges", "apples", "bananas"]);
+
+for (let value of set) alert(value);
+
+// the same with forEach:
+// eslint-disable-next-line no-unused-vars
+set.forEach((value, valueAgain, set) => {
+  alert(value);
+});
+
+/* Note the funny thing. The callback function passed in forEach has 
+3 arguments: a value, then the same value valueAgain, and then the target object. 
+Indeed, the same value appears in the arguments twice.
+
+That’s for compatibility with Map where the callback passed forEach has three 
+arguments. Looks a bit strange, for sure. But this may help to replace Map 
+with Set in certain cases with ease, and vice versa. 
+
+The same methods Map has for iterators are also supported:
+ -set.keys() – returns an iterable object for values,
+ -set.values() – same as set.keys(), for compatibility with Map,
+ -set.entries() – returns an iterable object for entries [value, value], exists for compatibility with Map.
+*/
