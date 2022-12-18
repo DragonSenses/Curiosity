@@ -173,3 +173,48 @@ visitsCountMap = new WeakMap(); // weakmap: user => visits count
 /* Now we don’t have to clean visitsCountMap. After luna object becomes unreachable, 
 by all means except as a key of WeakMap, it gets removed from memory, along with 
 the information by that key from WeakMap. */
+
+/* Use Case: Caching */
+/* Another common example is caching. We can store (“cache”) results from a 
+function, so that future calls on the same object can reuse it.
+
+To achieve that, we can use Map (not optimal scenario): */
+// 📁 cache.js
+let cache = new Map();
+
+// calculate and remember the result
+function process(obj) {
+  if (!cache.has(obj)) {
+    let result = /* calculations of the result for */ obj;
+
+    cache.set(obj, result);
+    return result;
+  }
+
+  return cache.get(obj);
+}
+
+// Now we use process() in another file:
+
+// 📁 main.js
+obj = {/* let's say we have an object */};
+
+let result1 = process(obj); // calculated
+
+// ...later, from another place of the code...
+let result2 = process(obj); // remembered result taken from cache
+
+// ...later, when the object is not needed any more:
+obj = null;
+
+console.log(result1 + " " + result2);
+
+console.log(cache.size); // 1 (Ouch! The object is still in cache, taking memory!)
+
+
+/* For multiple calls of process(obj) with the same object, it only calculates 
+the result the first time, and then just takes it from cache. The downside is 
+that we need to clean cache when the object is not needed any more.
+
+If we replace Map with WeakMap, then this problem disappears. The cached result 
+will be removed from memory automatically after the object gets garbage collected. */
