@@ -263,3 +263,30 @@ But repeated visits should not lead to duplicates. A visitor must be â€œcountedâ
 
 Set is just the right thing for that:
  */
+let set = new Set();
+
+let john = { name: "John" };
+let pete = { name: "Pete" };
+let mary = { name: "Mary" };
+
+// visits, some users come multiple times
+set.add(john);
+set.add(pete);
+set.add(mary);
+set.add(john);
+set.add(mary);
+
+// set keeps only unique values
+alert( set.size ); // 3
+
+for (let user of set) {
+  alert(user.name); // John (then Pete and Mary)
+}
+
+/* Set is much better optimized internally for uniqueness checks. */
+/* The alternative to Set could be an array of users, and the code to check for 
+duplicates on every insertion using arr.find. But the performance would be much 
+worse, because this method walks through the whole array checking every element. 
+*/
+
+/* Iteration over Set */
