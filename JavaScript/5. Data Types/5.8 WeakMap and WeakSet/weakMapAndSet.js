@@ -129,3 +129,47 @@ is garbage collected, that data will automatically disappear as well. */
 
 weakMap.set(leo, "secret documents");
 // if leo dies, secret documents will be destroyed automatically
+
+/* Example: For instance, we have code that keeps a visit count for users. 
+The information is stored in a map: a user object is the key and the visit count
+ is the value. When a user leaves (its object gets garbage collected), we don’t 
+ want to store their visit count anymore.
+
+Here’s an example of a counting function with Map: */
+// 📁 visitsCount.js
+let visitsCountMap = new Map(); // map: user => visits count
+
+// increase the visits count
+function countUser(user) {
+  let count = visitsCountMap.get(user) || 0;
+  visitsCountMap.set(user, count + 1);
+}
+
+// And here’s another part of the code, maybe another file using it:
+// 📁 main.js
+luna = { name: "Luna" };
+
+countUser(luna); // count her visits
+
+// later luna leaves us
+luna = null;
+
+/* Now, luna object should be garbage collected, but remains in memory, as it's
+a key in visitsCountMap. 
+
+We need to clean visitsCountMap when we remove users, otherwise it will grow 
+in memory indefinitely. Such cleaning can become a tedious task in complex architectures.
+
+We can avoid it by switching to WeakMap instead: */
+// 📁 visitsCount.js
+visitsCountMap = new WeakMap(); // weakmap: user => visits count
+
+// increase the visits count
+// function countUser(user) {
+//   let count = visitsCountMap.get(user) || 0;
+//   visitsCountMap.set(user, count + 1);
+// }
+
+/* Now we don’t have to clean visitsCountMap. After luna object becomes unreachable, 
+by all means except as a key of WeakMap, it gets removed from memory, along with 
+the information by that key from WeakMap. */
