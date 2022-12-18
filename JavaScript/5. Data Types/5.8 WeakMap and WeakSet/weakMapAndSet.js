@@ -218,3 +218,31 @@ that we need to clean cache when the object is not needed any more.
 
 If we replace Map with WeakMap, then this problem disappears. The cached result 
 will be removed from memory automatically after the object gets garbage collected. */
+// 📁 cache.js
+cache = new WeakMap();
+
+// calculate and remember the result
+// function process(obj) {
+//   if (!cache.has(obj)) {
+//     let result = /* calculate the result for */ obj;
+
+//     cache.set(obj, result);
+//     return result;
+//   }
+
+//   return cache.get(obj);
+// }
+
+// 📁 main.js
+obj = {/* some object */};
+
+result1 = process(obj);
+result2 = process(obj);
+
+// ...later, when the object is not needed any more:
+obj = null;
+
+// Can't get cache.size, as it's a WeakMap,
+// but it's 0 or soon be 0
+// When obj gets garbage collected, cached data will be removed as well
+
