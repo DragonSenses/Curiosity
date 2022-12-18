@@ -67,3 +67,32 @@ leo = null; // overwrite the reference
 
 /* WeakMap is fundamentally different in this aspect. It doesn’t prevent 
 garbage-collection of key objects.*/
+
+/* WeakMap */
+/* The first difference between Map and WeakMap is that keys must be objects, 
+not primitive values: */
+let weakMap = new WeakMap();
+
+let obj = {};
+
+weakMap.set(obj, "ok"); // works fine (object key)
+
+// can't use a string as the key
+weakMap.set("test", "Whoops"); // Error, because "test" is not an object
+
+/* Now, if we use an object as the key in it, and there are no other references 
+to that object – it will be removed from memory (and from the map) automatically. */
+
+luna = { name: "Luna" };
+
+weakMap = new WeakMap();
+weakMap.set(luna, "...");
+
+luna = null; // overwrite the reference
+
+// luna is removed from memory!
+
+/* Compare it with the regular Map example above. Now if luna only exists as the key of WeakMap – 
+it will be automatically deleted from the map (and memory). */
+
+/*  */
