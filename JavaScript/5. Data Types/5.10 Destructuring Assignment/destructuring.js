@@ -118,3 +118,53 @@ user = {
 for (let [key, value] of Object.entries(user)) {
     console.log(`${key}:${value}`); // name:Luna, then age:20
 }
+
+/* Swap Variables Trick */
+/* There’s a well-known trick for swapping values of two variables using a 
+destructuring assignment: */
+let guest = "Frey";
+let admin = "Glare";
+
+console.log(`${guest} ${admin}`); // Frey Glare 
+
+// Let's swap the values: make guest=Glare, admin=Frey
+[guest, admin] = [admin, guest];
+
+console.log(`${guest} ${admin}`); // Glare Frey (successfully swapped!)
+
+
+/* The rest '...' */
+/* Usually, if the array is longer than the list at the left, the “extra” items are omitted.
+
+For example, here only two items are taken, and the rest is just ignored: */
+let [item1, item2] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+
+console.log(item1); // Julius
+console.log(item2); // Caesar
+// Further items aren't assigned anywhere
+
+/* If we’d like also to gather all that follows – we can add one more parameter
+ that gets “the rest” using three dots "...": */
+ let [i1, i2, ...rest] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+ console.log(i1);   // Julius
+ console.log(i2);   // Caesar
+
+ // rest is array of items, startim fron the 3rd one
+ console.log(rest[0]);      // Consul
+ console.log(rest[1]);      // of the Roman Republic
+ console.log(rest.length);  // 2
+
+ /* The value of rest is the array of the remaining array elements.
+
+We can use any other variable name in place of rest, just make sure it 
+has three dots before it and goes last in the destructuring assignment. 
+
+e.g.,
+
+let [name1, name2, ...titles] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+// now titles = ["Consul", "of the Roman Republic"]
+
+*/
+
+/* Default Values */
+/*  */
