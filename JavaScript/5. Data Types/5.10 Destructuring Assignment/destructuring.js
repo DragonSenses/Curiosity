@@ -80,3 +80,41 @@ console.log( name1 ); // Julius
 /* In the code above, the second element of the array is skipped, the third one 
 is assigned to title, and the rest of the array items is also skipped 
 (as there are no variables for them). */
+
+
+/* Works with any iterable on the right-side */
+/* …Actually, we can use it with any iterable, not only arrays: */
+let [a, b, c] = "abc"; // ["a", "b", "c"]
+let [one, two, three] = new Set([1, 2, 3]);
+
+console.log(a, b, c);
+console.log(one, two, three);
+
+/* That works, because internally a destructuring assignment works by iterating 
+over the right value. It’s a kind of syntax sugar for calling for..of over the 
+value to the right of = and assigning the values. */
+
+/* Assign to anything at the left-side */
+/* We can use any “assignables” on the left side.
+
+For instance, an object property: */
+let user = {};
+[user.name, user.surname] = "Luna Berry".split(' ');
+
+console.log(user.name);     // Luna
+console.log(user.surname);  // Berry
+
+
+/* Looping with .entries() */
+/* Previously we saw the Object.entries(obj) method.
+We can use it with destructuring to loop over keys-and-values of an object:
+*/
+user = {
+    name: "Luna",
+    age: 20
+};
+
+// loop over keys-and-values
+for (let [key, value] of Object.entries(user)) {
+    console.log(`${key}:${value}`); // name:Luna, then age:20
+}
