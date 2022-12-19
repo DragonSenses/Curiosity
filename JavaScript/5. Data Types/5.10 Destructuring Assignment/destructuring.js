@@ -47,3 +47,36 @@ let [firstName, surname] = arr;
 
 console.log(firstName); // Luna
 console.log(surname);   // Berry
+
+/* Now we can work with variables instead of array members.
+
+It looks great when combined with split or other array-returning methods: */
+[firstName, surname] = "Luna Berry".split(' ');
+console.log(firstName); // Luna
+console.log(surname);   // Berry
+
+/* As you can see, the syntax is simple. There are several peculiar details though. 
+Let’s see more examples, to better understand it. */
+
+/* “Destructuring” does not mean “destructive”. */
+/* It’s called “destructuring assignment,” because it “destructurizes” by copying 
+items into variables. But the array itself is not modified.
+
+It’s just a shorter way to write: 
+*/
+// let [name, name2] = arr;
+let name = arr[0];
+let name2 = arr[1];
+
+console.log(name + " " + name2);
+
+/* Ignorning elements using commas */
+/* Unwanted elements of the array can also be thrown away via an extra comma: */
+// second element is not needed
+let [name1, , title] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+
+console.log( title ); // Consul
+console.log( name1 ); // Julius
+/* In the code above, the second element of the array is skipped, the third one 
+is assigned to title, and the rest of the array items is also skipped 
+(as there are no variables for them). */
