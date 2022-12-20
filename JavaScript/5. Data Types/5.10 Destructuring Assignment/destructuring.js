@@ -312,4 +312,62 @@ function onlyExtractWhatIsNeeded(){
 onlyExtractWhatIsNeeded();
 
 
-/*  */
+/* The rest pattern "..." */
+/* What if the object has more properties than we have variables? Can we take 
+some and then assign the “rest” somewhere?
+
+We can use the rest pattern, just like we did with arrays. (Works in Modern Browsers). 
+ - It’s not supported by some older browsers (IE, use Babel to polyfill it)
+
+It looks like this: */
+function restWithObjects(){
+    let options = {
+        title: "Menu",
+        height: 200,
+        width: 100
+    };
+    
+    // title = property named title
+    // rest = object with the rest of properties
+    let {title, ...rest} = options;
+    
+    // now title="Menu", rest={height: 200, width: 100}
+    console.log(title);        // Menu
+    console.log(rest.height);  // 200
+    console.log(rest.width);   // 100
+}
+restWithObjects();
+
+/* NOTE: Gotcha if there's no let */
+/* In the examples above variables were declared right in the assignment: let {…} = {…}. 
+Of course, we could use existing variables too, without let. But there’s a catch. 
+
+This won’t work:
+
+let title, width, height;
+
+// error in this line
+{title, width, height} = {title: "Menu", width: 200, height: 100};
+
+
+The problem is that JavaScript treats {...} in the main code flow (not inside 
+another expression) as a code block. Such code blocks can be used to group statements, 
+like this:
+*/
+{
+    // a code block
+    let message = "Hello";
+    // ...
+    alert( message );
+}
+
+/* So here JavaScript assumes that we have a code block, that’s why there’s an error. 
+We want destructuring instead.
+
+To show JavaScript that it’s not a code block, we can wrap the expression in parentheses (...): */
+let title, width, height;
+
+// okay now
+({title, width, height} = {title: "Menu", width: 200, height: 100});
+
+alert( title ); // Menu
