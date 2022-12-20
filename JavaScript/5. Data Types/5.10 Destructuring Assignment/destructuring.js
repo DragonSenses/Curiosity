@@ -421,3 +421,49 @@ Finally, we have width, height, item1, item2 and title from the default value.
 
 Note that there are no variables for size and items, as we take their content instead.
  */
+
+
+/* Smart Function Parameters */
+/* There are times when a function has many parameters, most of which are optional. 
+That’s especially true for user interfaces. 
+
+ - Imagine a function that creates a menu. 
+    - It may have a width, a height, a title, items list and so on. 
+
+Here’s a bad way to write such function:
+*/
+// eslint-disable-next-line no-unused-vars
+function showMenu1(title = "Untitled", width = 200, height = 100, items = []) {
+    // ...
+}
+
+/* In real-life, the problem is how to remember the order of arguments. 
+Usually IDEs try to help us, especially if the code is well-documented, but still… 
+
+Another problem is how to call a function when most parameters are ok by default. 
+
+Like this? */
+// undefined where default values are fine
+showMenu1("My Menu", undefined, undefined, ["Item1", "Item2"]);
+// That’s ugly. And becomes unreadable when we deal with more parameters.
+
+/* Destructuring comes to the rescue! */
+/* We can pass parameters as an object, and the function immediately destructurizes 
+them into variables: */
+// we pass object to function
+options = {
+    title: "My menu",
+    items: ["Item1", "Item2"]
+};
+
+// ...and it immediately expands it to variables
+function showMenu({title = "Untitled", width = 200, height = 100, items = []}) {
+    // title, items – taken from options,
+    // width, height – defaults used
+    console.log( `${title} ${width} ${height}` ); // My Menu 200 100
+    console.log( items ); // Item1, Item2
+}
+
+showMenu(options);
+
+/*  */
