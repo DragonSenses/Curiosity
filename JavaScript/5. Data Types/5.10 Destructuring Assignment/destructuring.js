@@ -167,4 +167,26 @@ let [name1, name2, ...titles] = ["Julius", "Caesar", "Consul", "of the Roman Rep
 */
 
 /* Default Values */
-/*  */
+/* If the array is shorter than the list of variables at the left, there’ll be no errors. 
+Absent values are considered undefined: */
+let [x, y] = [];
+console.log(x); // undefined
+console.log(y); // undefined
+
+/* If we want a Default value to replace the missing one, we can provide it using "=" */
+// default values
+let [hero = "Anyone", villain = "Joker"] = ["Batman"];
+
+console.log(hero);    // Batman (from array)
+console.log(villain); // Joker (default used)
+
+/* Default values can be more complex expressions or even function calls. 
+They are evaluated only if the value is not provided.
+
+For instance, here we use the prompt function for two defaults: */
+
+// prompt will run only for the missing value - codeName
+let [realName = prompt('real name?'), codeName = prompt('code name?')] = ["Julius"];
+
+console.log(realName);  // Julius (from array)
+console.log(codeName);  // (whatever prompt gets)
