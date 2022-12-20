@@ -365,9 +365,59 @@ like this:
 We want destructuring instead.
 
 To show JavaScript that it’s not a code block, we can wrap the expression in parentheses (...): */
-let title, width, height;
+// let title, width, height;
 
 // okay now
 ({title, width, height} = {title: "Menu", width: 200, height: 100});
 
-alert( title ); // Menu
+console.log( title );   // Menu
+console.log( width );   // 100
+console.log( height );  // 200
+
+
+/* Nested Destructuring */
+/* If an object or an array contain other nested objects and arrays, we can use
+more complex left-side patterns to extract deeper portions.
+
+In the code below options has another object in the property size and an array 
+in the property items. The pattern on the left side of the assignment has the 
+same structure to extract values from them: */
+function nestedDestructuring(){
+
+let options = {
+    size: {
+      width: 100,
+      height: 200
+    },
+    items: ["Cake", "Donut"],
+    extra: true
+};
+
+// destructuring assignment split in multiple lines for clarity
+let {
+    size: { // put size here
+        width,
+        height
+    },
+    items: [item1, item2], // assign items here
+    title = "Menu" // not present in the object (default value is used)
+} = options;
+
+console.log(title);  // Menu
+console.log(width);  // 100
+console.log(height); // 200
+console.log(item1);  // Cake
+console.log(item2);  // Donut
+
+}
+nestedDestructuring(); 
+
+/* All properties of options object except extra that is absent in the 
+left part, are assigned to corresponding variables.
+    size -> size
+    items -> items
+
+Finally, we have width, height, item1, item2 and title from the default value.
+
+Note that there are no variables for size and items, as we take their content instead.
+ */
