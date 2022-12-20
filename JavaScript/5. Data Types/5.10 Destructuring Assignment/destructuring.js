@@ -466,4 +466,50 @@ function showMenu({title = "Untitled", width = 200, height = 100, items = []}) {
 
 showMenu(options);
 
-/*  */
+/* Use Complex Destructuring with Nested Objects and Colon Mappings: */
+
+options = { // object to pass to function
+    title: "My menu",
+    items: ["Item1", "Item2"]
+};
+  
+function showMenu2({
+    title = "Untitled",
+    width: w = 100,  // width goes to w
+    height: h = 200, // height goes to h
+    items: [item1, item2] // items first element goes to item1, second to item2
+}) {
+    console.log( `${title} ${w} ${h}` ); // My Menu 100 200
+    console.log( item1 ); // Item1
+    console.log( item2 ); // Item2
+}
+  
+showMenu2(options);
+
+/* The full syntax is the same as for a destructuring assignment: 
+
+function({
+  incomingProperty: varName = defaultValue
+  ...
+})
+
+
+Then, for an object of parameters, there will be a variable varName for property 
+incomingProperty, with defaultValue by default.
+
+Please note that such destructuring assumes that showMenu() does have an argument. 
+If we want all values by default, then we should specify an empty object:
+*/
+showMenu({}); // ok, all values are default
+
+showMenu(); // this would give an error
+
+/* We can fix this by making {} the default value for the whole object of parameters.
+
+In the code below, the whole arguments object is {} by default, so there's always 
+something to destructurize. */
+function showMenuOrDefault({ title = "Menu", width = 100, height = 200 } = {}) {
+    console.log( `${title} ${width} ${height}` );
+}
+  
+showMenuOrDefault(); // Menu 100 200
