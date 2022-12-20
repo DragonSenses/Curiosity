@@ -244,3 +244,72 @@ console.log(optName);   // Menu
 console.log(w);         // 100
 console.log(h);         // 200
 
+/* The colon shows “what : goes where”. In the example above the property 
+width goes to w, property height goes to h, and optName is assigned to the same name. */
+
+/* For potentially missing properties we can set default values using "=", like this:  */
+function setDefaultValuesExample(){
+
+    let options = {
+        title: "Menu"
+    };
+      
+    let {width = 100, height = 200, title} = options;
+    
+    console.log(title);  // Menu
+    console.log(width);  // 100
+    console.log(height); // 200
+}
+setDefaultValuesExample();
+
+/* Just like with arrays or function parameters, default values can be any expressions 
+or even function calls. They will be evaluated if the value is not provided.
+
+In the code below prompt asks for width, but not for title: */
+function setDefaultValuesExample2(){
+
+    let options = {
+        title: "Menu"
+    };
+    
+    let {width = prompt("width?"), title = prompt("title?")} = options;
+    
+    console.log(title);  // Menu
+    console.log(width);  // (whatever the result of prompt is)
+}
+setDefaultValuesExample2();
+
+/* We also can combine both the colon and equality: */
+
+function setDefaultValuesExample3(){
+
+    let options = {
+        title: "Menu"
+    };
+    
+    let {width: w = 100, height: h = 200, title} = options;
+    
+    console.log(title);  // Menu
+    console.log(w);      // 100
+    console.log(h);      // 200
+}
+setDefaultValuesExample3();
+
+/* If we have a complex object with many properties, we can extract only what we need: */
+
+function onlyExtractWhatIsNeeded(){
+    let options = {
+        title: "Menu",
+        width: 100,
+        height: 200
+    };
+    
+    // only extract title as a variable
+    let { title } = options;
+    
+    console.log(title); // Menu
+}
+onlyExtractWhatIsNeeded();
+
+
+/*  */
