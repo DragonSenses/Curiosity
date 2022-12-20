@@ -190,3 +190,57 @@ let [realName = prompt('real name?'), codeName = prompt('code name?')] = ["Juliu
 
 console.log(realName);  // Julius (from array)
 console.log(codeName);  // (whatever prompt gets)
+
+/* Object destructuring */
+/* The destructuring assignment also works with objects.
+Syntax:
+        let {var1, var2} = {var1:…, var2:…}
+
+ - We should have an existing object on the right side, that we want to split into variables.
+ - The left side contains an object-like “pattern” for corresponding properties. 
+   In the simplest case, that’s a list of variable names in {...}.
+
+For instance:
+*/
+let options = {
+    alias: "Menu",
+    width: 100,
+    height: 200
+};
+
+let {alias, width, height} = options;
+
+console.log(alias);  // Menu
+console.log(width);  // 100
+console.log(height); // 200
+
+/* Properties options.title, options.width and options.height are assigned to 
+the corresponding variables.
+
+The order does not matter. This works too: */
+// changed the order in let {...}
+// let {height, width, alias} = { alias: "Menu", height: 200, width: 100 };
+
+/* The pattern on the left side may be more complex and specify the mapping between properties and variables.
+
+If we want to assign a property to a variable with another name, for instance, 
+ make options.width go into the variable named w, 
+ then we can set the variable name using a colon: */
+
+options = {
+    optName: "Menu",
+    width: 100,
+    height: 200
+};
+  
+// { sourceProperty: targetVariable }
+let {width: w, height: h, optName} = options;
+
+// width -> w
+// height -> h
+// optName -> optName
+
+console.log(optName);   // Menu
+console.log(w);         // 100
+console.log(h);         // 200
+
