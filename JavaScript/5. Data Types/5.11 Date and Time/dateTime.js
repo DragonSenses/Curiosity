@@ -353,3 +353,25 @@ for (let i = 0; i < 10; i++) {
 console.log( 'Total time for diffSubtract: ' + time1 );   // 121
 console.log( 'Total time for diffGetTime: ' + time2 );    // 7
 
+/* Modern JavaScript engines start applying advanced optimizations only to 
+“hot code” that executes many times (no need to optimize rarely executed things). 
+So, in the example above, first executions are not well-optimized. 
+We may want to add a heat-up run: */
+
+time1 = 0;
+time2 = 0;
+
+// added for "heating up" prior to the main loop
+bench(diffSubtract);
+bench(diffGetTime);
+
+// now benchmark
+for (let i = 0; i < 10; i++) {
+  time1 += bench(diffSubtract);
+  time2 += bench(diffGetTime);
+}
+
+console.log( 'Total time for diffSubtract: ' + time1 );   // 118
+console.log( 'Total time for diffGetTime: ' + time2 );    // 8
+
+
