@@ -148,3 +148,44 @@ console.log( date.getHours() );
 // the hour in UTC+0 time zone (London time without daylight savings)
 console.log( date.getUTCHours() );
 
+/* Besides the given methods, there are two special ones that do not have a UTC-variant: 
+  - getTime()
+    * Returns the timestamp for the date – a number of milliseconds passed from 
+  the January 1st of 1970 UTC+0.
+
+  - getTimezoneOffset()
+    * Returns the difference between UTC and the local time zone, in minutes:
+*/
+// if you are in timezone UTC-1, outputs 60
+// if you are in timezone UTC+3, outputs -180
+console.log( new Date().getTimezoneOffset() );
+
+/* Setting date components */
+/* The following methods allow to set date/time components:
+ - setFullYear(year, [month], [date])
+ - setMonth(month, [date])
+ - setDate(date)
+ - setHours(hour, [min], [sec], [ms])
+ - setMinutes(min, [sec], [ms])
+ - setSeconds(sec, [ms])
+ - setMilliseconds(ms)
+ - setTime(milliseconds) (sets the whole date by milliseconds since 01.01.1970 UTC)
+
+Every one of them except setTime() has a UTC-variant, for instance: setUTCHours().
+
+
+As we can see, some methods can set multiple components at once, for example setHours. 
+The components that are not mentioned are not modified.
+
+For instance:
+*/
+let today = new Date();
+
+today.setHours(0);
+alert(today); // still today, but the hour is changed to 0
+
+today.setHours(0, 0, 0, 0);
+alert(today); // still today, now 00:00:00 sharp.
+
+
+/*  */
