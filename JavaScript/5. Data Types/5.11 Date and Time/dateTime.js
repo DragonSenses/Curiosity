@@ -108,3 +108,43 @@ new Date(2011, 0, 1); // the same, hours etc are 0 by default
 /* The maximal precision is 1 ms (1/1000 sec): */
 date = new Date(2011, 0, 1, 2, 3, 4, 567);
 console.log(date); // 1.01.2011, 02:03:04.567
+
+
+/* Access Date Components */
+/* There are methods to access the year, month and so on from the Date object: 
+  - getFullYear() 
+    * Get the year (4 digits)
+    * NOTE: NOT "getYear()" as it returns 2-digit year sometimes, it is deprecated.
+
+  - getMonth() 
+    * Get the month, from 0 to 11.
+
+  - getDate()
+    * Get the day of month, from 1 to 31 
+    * the name of the method does look a little bit strange.
+
+  - getHours(), getMinutes(), getSeconds(), getMilliseconds()
+    * Get the corresponding time components.
+
+Additionally, we can get a day of week:
+  - getDay()
+    * Get the day of week, from 0 (Sunday) to 6 (Saturday). 
+    * The first day is always Sunday, in some countries that’s not so, but can’t be changed.
+    
+All the methods above return the components relative to the local time zone.
+
+There are also their UTC-counterparts, that return day, month, year and 
+so on for the time zone UTC+0: getUTCFullYear(), getUTCMonth(), getUTCDay(). 
+Just insert the "UTC" right after "get".
+
+If your local time zone is shifted relative to UTC, then the code below shows different hours:
+*/
+// current date
+date = new Date();
+
+// the hour in your current time zone
+console.log( date.getHours() );
+
+// the hour in UTC+0 time zone (London time without daylight savings)
+console.log( date.getUTCHours() );
+
