@@ -241,3 +241,115 @@ for (let i = 0; i < 100000; i++) {
 let end = new Date(); // end measuring time
 
 console.log( `The loop took ${end - start} ms` );
+
+/* Date.now() */
+/* If we only want to measure time, we don’t need the Date object.
+
+There’s a special method Date.now() that returns the current timestamp.
+
+It is semantically equivalent to new Date().getTime(), but it doesn’t create an 
+intermediate Date object. So it’s faster and doesn’t put pressure on garbage collection.
+
+It is used mostly for convenience or when performance matters, like in games 
+in JavaScript or other specialized applications.
+
+So this is probably better: */
+start = Date.now(); // milliseconds count from 1 Jan 1970
+
+// do the job
+for (let i = 0; i < 100000; i++) {
+  // let doSomething = i * i * i;
+}
+
+end = Date.now(); // done
+
+console.log( `The loop took ${end - start} ms` ); // subtract numbers, not dates
+
+
+/* Benchmarking */
+/* If we want a reliable benchmark of CPU-hungry function, we should be careful.
+
+For instance, let’s measure two functions that calculate the difference between 
+two dates: which one is faster?
+
+Such performance measurements are often called “benchmarks”. */
+// we have date1 and date2, which function faster returns their difference in ms?
+function diffSubtract(date1, date2) {
+  return date2 - date1;
+}
+
+// or
+function diffGetTime(date1, date2) {
+  return date2.getTime() - date1.getTime();
+}
+
+/* These two do exactly the same thing, but one of them uses an explicit 
+date.getTime() to get the date in ms, and the other one relies on a 
+date-to-number transform. Their result is always the same.
+
+So, which one is faster?
+
+The first idea may be to run them many times in a row and measure the 
+time difference. For our case, functions are very simple, so we have to 
+do it at least 100000 times.
+
+Let’s measure: */
+function bench(f) {
+  let date1 = new Date(0);
+  let date2 = new Date();
+
+  let start = Date.now();
+  for (let i = 0; i < 100000; i++) f(date1, date2);
+  return Date.now() - start;
+}
+
+console.log( 'Time of diffSubtract: ' + bench(diffSubtract) + 'ms' ); // 14ms
+console.log( 'Time of diffGetTime: ' + bench(diffGetTime) + 'ms' );   // 2ms
+
+/* Wow! Using getTime() is so much faster! That’s because there’s no type conversion, 
+  it is much easier for engines to optimize.
+
+Okay, we have something. But that’s not a good benchmark yet. 
+
+Imagine that at the time of running bench(diffSubtract) CPU was doing something 
+in parallel, and it was taking resources. And by the time of running 
+bench(diffGetTime) that work has finished.
+
+A pretty real scenario for a modern multi-process OS.
+
+As a result, the first benchmark will have less CPU resources than the second. 
+That may lead to wrong results.
+*/
+
+/* For more reliable benchmarking, the whole pack of benchmarks should be rerun multiple times.
+
+For example, like this: */
+// function diffSubtract(date1, date2) {
+//   return date2 - date1;
+// }
+
+// function diffGetTime(date1, date2) {
+//   return date2.getTime() - date1.getTime();
+// }
+
+// function bench(f) {
+//   let date1 = new Date(0);
+//   let date2 = new Date();
+
+//   let start = Date.now();
+//   for (let i = 0; i < 100000; i++) f(date1, date2);
+//   return Date.now() - start;
+// }
+
+let time1 = 0;
+let time2 = 0;
+
+// run bench(diffSubtract) and bench(diffGetTime) each 10 times alternating
+for (let i = 0; i < 10; i++) {
+  time1 += bench(diffSubtract);
+  time2 += bench(diffGetTime);
+}
+
+console.log( 'Total time for diffSubtract: ' + time1 );   // 121
+console.log( 'Total time for diffGetTime: ' + time2 );    // 7
+
