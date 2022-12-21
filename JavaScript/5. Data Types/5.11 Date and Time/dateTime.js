@@ -188,4 +188,36 @@ today.setHours(0, 0, 0, 0);
 alert(today); // still today, now 00:00:00 sharp.
 
 
-/*  */
+/* Autocorrection */
+/* The autocorrection is a very handy feature of Date objects. 
+We can set out-of-range values, and it will auto-adjust itself.
+
+For instance: */
+date = new Date(2013, 0, 32); // 32 Jan 2013 ?!?
+console.log(date); // ...is 1st Feb 2013!
+
+/* Out-of-range date components are distributed automatically.
+  Let’s say we need to increase the date “28 Feb 2016” by 2 days. 
+It may be “2 Mar” or “1 Mar” in case of a leap-year. 
+  We don’t need to think about it. Just add 2 days. 
+The Date object will do the rest: */
+date = new Date(2016, 1, 28);
+date.setDate(date.getDate() + 2);
+
+console.log( date ); // 1 Mar 2016
+
+/* That feature is often used to get the date after the given period of time. 
+For instance, let’s get the date for “70 seconds after now”: */
+date = new Date();
+date.setSeconds(date.getSeconds() + 70);
+
+console.log( date ); // shows the correct date
+
+/* We can also set zero or even negative values. For example: */
+date = new Date(2016, 0, 2); // 2 Jan 2016
+
+date.setDate(1); // set day 1 of month
+console.log( date );
+
+date.setDate(0); // min day is 1, so the last day of the previous month is assumed
+console.log( date ); // 31 Dec 2015
