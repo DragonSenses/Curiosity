@@ -121,3 +121,51 @@ JavaScript-specific object properties are skipped by JSON.stringify.
  - Symbolic keys and values.
  - Properties that store undefined.
 */
+user = {
+    sayHi() { // ignored
+      alert("Hello");
+    },
+    [Symbol("id")]: 123, // ignored
+    something: undefined // ignored
+};
+
+
+console.log( JSON.stringify(user) ); // {} (empty object)
+
+/* Usually that’s fine. If that’s not what we want, then soon we’ll see 
+how to customize the process.
+
+The great thing is that nested objects are supported and converted automatically.
+
+For instance: */
+let meetup = {
+    title: "Conference",
+    room: {
+      number: 23,
+      participants: ["john", "ann"]
+    }
+};
+
+console.log( JSON.stringify(meetup) );
+/* The whole structure is stringified:
+{
+    "title":"Conference",
+    "room":{"number":23,"participants":["john","ann"]},
+}
+*/
+
+/* The important limitation: there must be no circular references. */
+// For instance:
+let room = {
+    number: 23
+};
+  
+meetup = {
+    title: "Conference",
+    participants: ["john", "ann"]
+};
+
+meetup.place = room;       // meetup references room
+room.occupiedBy = meetup;  // room references meetup
+
+JSON.stringify(meetup); // Error: Converting circular structure to JSON
