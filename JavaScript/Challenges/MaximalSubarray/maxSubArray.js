@@ -226,10 +226,12 @@ function getMaxSubSum(arr){
 /**
  * Prints all possible subarrays of an array. For debugging purposes.
  * 
- * Uses 3 for loops.
+ * Uses 3 for loops. The first for loop tracks the start element, the
+ * second for loop tracks the ending element of the subarray, the third
+ * for loop builds the subarray using the starting and ending index.
  * 
  * Let's consider an array, and see how many subarrays we can form:
- *   arr = [1,2,3,4,5]
+ *      arr = [1,2,3,4,5]
  * 
  * For this array, the sub-arrays are:
  *  For element at      Sub-Arrays
@@ -244,28 +246,46 @@ function getMaxSubSum(arr){
 function printAllSubArrays(arr){
     let n = arr.length;
 
-    for(let i = 0; i < n; i++){
-        console.log(`index: ${i}`);
-        let str = '{';
-        for (let j = i; j < n; j++){
+    for(let i = 0; i < n; i++){ // Start Element
+        let str = '';
 
-            // console.log(`elements: ${arr[j]}`);
-            str += arr[j];
-            
-            // add comma for every element except the last
-            if(j != n-1){
-                str += ', ';
-            }
+        for (let j = i; j < n; j++){    // End element
+
+            for (let k = i; k <= j; k++) {   // Prints every element from start to end
+                str += arr[k];
+            } // by the end of this loop, the subarray is formed
+            str += '\n';
+
         }
-        str += '}';
-        console.log(str);
+        
+        console.log(str);   // print every subarray created at index i
     }
 }
 
 let arr = [1,2,3,4,5];
 printAllSubArrays(arr);
 
-/*  attempt 1
+/*  Final Attempt successfuly prints all subarrays, kept here for documentation
+with comments and debugging print statements
+function printAllSubArrays(arr){
+    let n = arr.length;
+
+    for(let i = 0; i < n; i++){ // Start Element
+        // console.log(`index: ${i} the starting element: ${arr[i]}`);
+        let str = '';
+        for (let j = i; j < n; j++){    // End element
+            // console.log(`index: ${i} the ending element: ${arr[j]}`);
+            for (let k = i; k <= j; k++) {   // Prints every element from start to end
+                // console.log(arr[k]);
+                str += arr[k];
+            } // by the end of this loop, the subarray is formed
+            str += '\n';
+        }
+        console.log(str);   // print every subarray created at index i
+    }
+}
+
+attempt 1
 Only prints {1,2,3,4,5}  at index 0
             {2,3,4,5}    at index 1
             {3,4,5}      at index 2
