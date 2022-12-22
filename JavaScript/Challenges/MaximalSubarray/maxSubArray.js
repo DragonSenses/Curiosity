@@ -114,16 +114,21 @@ Pseudo-Code
       at index j to a variable currentMax
     * For every subarray, check if currentMax is the maximum sum of all 
       contiguous subarrays.
+
+The issue with this current implementation is that not all possible subarrays
+are summed, only the subarrays at the end. 
+    e.g, arr = [1,2,3,4] only gets subarrays: {1,2,3,4}, {2,3,4}, {3,4}, {4}
 */
 function getMaxSubSumSimple(arr){
     let len = arr.length;
-    let maxSum = Number.MIN_SAFE_INTEGER;
+    let maxSum = 0;     // Instead of Number.MIN_SAFE_INTEGER; 
     let currSum = 0;
 
-    for(let i = 0; i <= len-1; i ++){
+    // For every element at each index
+    for(let i = 0; i < len; i ++){
         currSum = 0;
-
-        for(let j = 0; j <= len-1; j++){
+        // Create all possible subarrays for element at index i
+        for(let j = i; j < len; j++){  
             currSum += arr[j];
 
             if (currSum > maxSum) {
@@ -198,13 +203,14 @@ Looking at these equations, Sum of [T,x] is less than/equal to Sum of [M,x].
 function getMaxSubSum(arr){
     
     let len = arr.length;
-    let maxSum = Number.MIN_SAFE_INTEGER;
+    let maxSum = 0;     // Instead of Number.MIN_SAFE_INTEGER;
     let currSum = 0;
 
-    for(let i = 0; i <= len-1; i ++){
+    // For every element at each index
+    for(let i = 0; i < len; i ++){
         currSum = 0;
-
-        for(let j = 0; j <= len-1; j++){
+        // Create all possible subarrays for element at index i
+        for(let j = i; j < len; j++){  
             currSum += arr[j];
 
             if (currSum > maxSum) {
@@ -215,3 +221,53 @@ function getMaxSubSum(arr){
 
     return maxSum;
 }
+
+
+/**
+ * Prints all possible subarrays of an array. For debugging purposes.
+ * 
+ * Let's consider an array, and see how many subarrays we can form:
+ *   arr = [1,2,3,4,5]
+ * 
+ * For this array, the sub-arrays are:
+ *  For element at      Sub-Arrays
+ *      0th index       {1}, {1,2}, {1,2,3}, {1,2,3,4}, {1,2,3,4,5}
+ *      1st index       {2}, {2,3}, {2,3,4}, {2,3,4,5}
+ *      2nd index       {3}, {3,4}, {3,4,5}
+ *      3rd index       {4}, {4,5}
+ *      4th index       {5}
+ * 
+ * @param {array} arr to extract all sub arrays from
+ */
+function printAllSubArrays(arr){
+    let n = arr.length;
+
+    for(let i = 0; i < n; i++){
+        console.log(`index: ${i}`);
+        for (let j = i; j < n; j++){
+            console.log(`elements: ${arr[j]}`);
+        }
+    }
+}
+
+let arr = [1,2,3,4,5];
+printAllSubArrays(arr);
+
+/*  attempt 1
+function printAllSubArrays(arr){
+    let n = arr.length;
+
+    for(let i = 0; i < n; i++){
+        console.log(`index: ${i}`);
+        for (let j = i; j < n; j++){
+            console.log(`elements: ${arr[j]}`);
+        }
+    }
+}
+
+Only prints {1,2,3,4,5}  at index 0
+            {2,3,4,5}    at index 1
+            {3,4,5}      at index 2
+            {4,5}        at index 3
+            {5}          at index 4
+*/
