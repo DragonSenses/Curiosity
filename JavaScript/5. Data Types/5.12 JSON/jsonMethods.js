@@ -208,5 +208,51 @@ meetup = {
 
 room.occupiedBy = meetup; // room references meetup
 
-alert( JSON.stringify(meetup, ['title', 'participants']) );
+console.log( JSON.stringify(meetup, ['title', 'participants']) );
 // {"title":"Conference","participants":[{},{}]}
+
+/* Here we are probably too strict. The property list is applied to the 
+whole object structure. So the objects in participants are empty, 
+because name is not in the list.
+
+Let’s include in the list every property except room.occupiedBy that would 
+cause the circular reference: */
+
+console.log( JSON.stringify(meetup, ['title', 'participants', 'place', 'name', 'number']) );
+/*
+{
+"title":"Conference",
+"participants":[{"name":"John"},{"name":"Alice"}],
+"place":{"number":23}
+}
+*/
+
+/* Now everything except occupiedBy is serialized. 
+But the list of properties is quite long.
+
+Fortunately, we can use a function instead of an array as the replacer.
+
+The function will be called for every (key, value) pair and should return 
+the “replaced” value, which will be used instead of the original one. 
+Or undefined if the value is to be skipped.
+
+In our case, we can return value “as is” for everything except occupiedBy. 
+To ignore occupiedBy, the code below returns undefined: */
+
+console.log( JSON.stringify(meetup, function replacer(key, value) {
+    alert(`${key}: ${value}`);
+    return (key == 'occupiedBy') ? undefined : value;
+}));
+
+/* key:value pairs that come to replacer:
+:             [object Object]
+title:        Conference
+participants: [object Object],[object Object]
+0:            [object Object]
+name:         John
+1:            [object Object]
+name:         Alice
+place:        [object Object]
+number:       23
+occupiedBy: [object Object]
+*/
