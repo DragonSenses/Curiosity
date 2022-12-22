@@ -1,4 +1,44 @@
 /* A maximal subarray */
+
+/* Pseudocode 
+    1. Initialize all variables to first element in array
+        maxCurrent = maxGlobal = 0
+        - maxCurrent is sum of current maximum sub array
+        - maxGlobal tracks global maximum sum
+
+    2. For loop from i to length(A) - 1
+    
+    3. Within the Loop
+        maxCurrent = max(A[i], maxCurrent + A[i])
+
+    4. If maxCurrent > maxGlobal
+        maxGlobal = maxCurrent
+
+    5. Return maxGlobal
+*/
+
+/**
+ * Acquires the Maximum Sum Subarray of the passed in array using 
+ * Kadane's Algorithm with a runtime of O(n).
+ * @param {number[]} arr array to retrieve maximum sum subarray from
+ */
+function getMaxSubSum(arr){
+    let n = arr.length;
+    let maxGlobal = 0;      // Instead of Number.MIN_SAFE_INTEGER;
+    let maxCurrent = 0;     
+
+    for(let i = 0; i < n; i++){
+        maxCurrent = Math.max(arr[i], arr[i] + maxCurrent);
+
+        if (maxCurrent > maxGlobal) {
+            maxGlobal = maxCurrent;
+        }
+    }
+
+    return maxGlobal;
+}
+ 
+
 /* The input is an array of numbers, e.g. arr = [1, -2, 3, 4, -9, 6].
 
 The task is: find the contiguous subarray of arr with the maximal sum of items.
@@ -211,44 +251,7 @@ Looking at these equations, Sum of [T,x] is less than/equal to Sum of [M,x].
     with M (maximum subarray ending at previous index)
 */
 
-/* Pseudocode 
-    1. Initialize all variables to first element in array
-        maxCurrent = maxGlobal = A[0]
-        - maxCurrent is sum of current maximum sub array
-        - maxGlobal tracks global maximum sum
 
-    2. For loop from i to length(A) - 1
-    
-    3. Within the Loop
-        maxCurrent = max(A[i], maxCurrent + A[i])
-
-    4. If maxCurrent > maxGlobal
-        maxGlobal = maxCurrent
-
-    5. Return maxGlobal
-*/
-
-/**
- * Retrives the Maximum Sum Subarray of the passed in array.
- * @param {*} arr array to retrieve maximum sum subarray from
- */
-function getMaxSubSum(arr){
-    let n = arr.length;
-    let maxGlobal = 0;     // Instead of Number.MIN_SAFE_INTEGER;
-    let maxCurrent = arr[0];
-
-    for(let i = 0; i < n; i++){
-        maxCurrent = (arr[i] > maxCurrent ) ? 
-            arr[i] : arr[i] + maxCurrent;        
-
-        if (maxCurrent > maxGlobal) {
-            maxGlobal = maxCurrent;
-        }
-    }
-
-    return maxGlobal;
-}
- 
 
 /**
  * Prints all possible subarrays of an array. For debugging purposes.
