@@ -34,6 +34,24 @@ describe("getMaxSubSum(arr)", function() {
 
     });
 
+    describe(`One element array`, function(){
+        it("[1] == 1", function() {
+            assert.equal(getMaxSubSum([1]), 1);
+        });
+    });
+
+    describe(`Entire subarray but negative element in middle`, function(){
+        it("[5,4,-1,7,8] == 23", function() {
+            assert.equal(getMaxSubSum([5,4,-1,7,8]), 23);
+        });
+    });
+
+    describe(`Test Case 3: max sum in middle subarray`, function(){
+        it("[-2,1,-3,4,-1,2,1,-5,4] == 6", function() {
+            assert.equal(getMaxSubSum([-2,1,-3,4,-1,2,1,-5,4]), 6);
+        });
+    });
+
     // describe("raises x to power 3", function() {
   
     //     function makeTest(x) {
