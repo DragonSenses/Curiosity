@@ -228,33 +228,27 @@ Looking at these equations, Sum of [T,x] is less than/equal to Sum of [M,x].
     5. Return maxGlobal
 */
 
-// TODO
 /**
  * Retrives the Maximum Sum Subarray of the passed in array.
  * @param {*} arr array to retrieve maximum sum subarray from
  */
 function getMaxSubSum(arr){
-    
-    let len = arr.length;
-    let maxSum = 0;     // Instead of Number.MIN_SAFE_INTEGER;
-    let currSum = 0;
+    let n = arr.length;
+    let maxGlobal = 0;     // Instead of Number.MIN_SAFE_INTEGER;
+    let maxCurrent = arr[0];
 
-    // For every element at each index
-    for(let i = 0; i < len; i ++){
-        currSum = 0;
-        // Create all possible subarrays for element at index i
-        for(let j = i; j < len; j++){  
-            currSum += arr[j];
+    for(let i = 0; i < n; i++){
+        maxCurrent = (arr[i] > maxCurrent ) ? 
+            arr[i] : arr[i] + maxCurrent;        
 
-            if (currSum > maxSum) {
-                maxSum = currSum;
-            }
+        if (maxCurrent > maxGlobal) {
+            maxGlobal = maxCurrent;
         }
     }
 
-    return maxSum;
+    return maxGlobal;
 }
-
+ 
 
 /**
  * Prints all possible subarrays of an array. For debugging purposes.
