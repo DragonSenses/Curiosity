@@ -25,6 +25,32 @@ describe("getMaxSubSum(arr)", function() {
     assert.equal(getMaxSubSum([1, 2, 3]), 6);
     });
 
+/* 
+Input: [-3, -4, 5, -1, 2, -4, 6, -1]
+Output: 8
+Explanation: Subarray [5, -1, 2, -4, 6] is the max sum contiguous subarray with sum 8. 
+*/
+    it("[-3, -4, 5, -1, 2, -4, 6, -1] == 8", function() {
+        assert.equal(getMaxSubSum([-3, -4, 5, -1, 2, -4, 6, -1]), 8);
+    });
+
+/* 
+Input: [-2, 3, -1, 2]
+Output: 4
+Explanation: Subarray [3, -1, 2] is the max sum contiguous subarray with sum 4. 
+*/
+    it("[-2, 3, -1, 2] == 4", function() {
+        assert.equal(getMaxSubSum([-2, 3, -1, 2]), 4);
+    });
+
+/* 
+Input: [1, 3, 8, -2, 6, -8, 5]
+Output: 16
+*/
+    it("[1, 3, 8, -2, 6, -8, 5] == 16", function() {
+        assert.equal(getMaxSubSum([1, 3, 8, -2, 6, -8, 5]), 16);
+    });
+
     describe(`If all items are negative, it means that we take none
     (the subarray is empty), so the sum is zero`, function() {
         
