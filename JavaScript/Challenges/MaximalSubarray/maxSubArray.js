@@ -142,6 +142,39 @@ function getMaxSubSumSimple(arr){
 
 getMaxSubSumSimple([-1, -2, -3]) == 0;
 
+/**
+ * Proper Brute Force gets maximum sum of every subarray within an array.
+ * @param {*} arr 
+ */
+function getMaxSubSumBruteForce(arr){
+    let n = arr.length;
+    let maxCurrent = 0; 
+    let maxGlobal = 0;
+
+    for(let i = 0; i < n; i++){ // Start Element
+
+        for (let j = i; j < n; j++){    // End element
+
+            for (let k = i; k <= j; k++) {  
+                maxCurrent += arr[k];
+            } // by the end of this loop, the subarray is formed
+            
+            // Check if the sum of the subarray is greater than maxGlobal
+            if (maxCurrent > maxGlobal) {
+                maxGlobal = maxCurrent;
+            }
+
+            // Reset maxCurrent;
+            maxCurrent = 0;
+        }
+        
+    }
+
+    return maxGlobal;
+}
+
+console.log( getMaxSubSumBruteForce([-1, 2, 3, -9, 11]) );
+
 /* Efficient Approach - Kadane's Algorithm - O(n) linear time
 Idea is that the Local Maximum Subarray is either the
     1. Current Element
@@ -257,7 +290,7 @@ function printAllSubArrays(arr){
             str += '\n';
 
         }
-        
+
         console.log(str);   // print every subarray created at index i
     }
 }
