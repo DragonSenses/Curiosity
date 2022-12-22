@@ -226,6 +226,8 @@ function getMaxSubSum(arr){
 /**
  * Prints all possible subarrays of an array. For debugging purposes.
  * 
+ * Uses 3 for loops.
+ * 
  * Let's consider an array, and see how many subarrays we can form:
  *   arr = [1,2,3,4,5]
  * 
@@ -244,9 +246,19 @@ function printAllSubArrays(arr){
 
     for(let i = 0; i < n; i++){
         console.log(`index: ${i}`);
+        let str = '{';
         for (let j = i; j < n; j++){
-            console.log(`elements: ${arr[j]}`);
+
+            // console.log(`elements: ${arr[j]}`);
+            str += arr[j];
+            
+            // add comma for every element except the last
+            if(j != n-1){
+                str += ', ';
+            }
         }
+        str += '}';
+        console.log(str);
     }
 }
 
@@ -254,6 +266,12 @@ let arr = [1,2,3,4,5];
 printAllSubArrays(arr);
 
 /*  attempt 1
+Only prints {1,2,3,4,5}  at index 0
+            {2,3,4,5}    at index 1
+            {3,4,5}      at index 2
+            {4,5}        at index 3
+            {5}          at index 4
+
 function printAllSubArrays(arr){
     let n = arr.length;
 
@@ -265,9 +283,24 @@ function printAllSubArrays(arr){
     }
 }
 
-Only prints {1,2,3,4,5}  at index 0
-            {2,3,4,5}    at index 1
-            {3,4,5}      at index 2
-            {4,5}        at index 3
-            {5}          at index 4
+attempt 1 - prettier output
+function printAllSubArrays(arr){
+    let n = arr.length;
+
+    for(let i = 0; i < n; i++){
+        console.log(`index: ${i}`);
+        let str = '{';
+        for (let j = i; j < n; j++){
+            // console.log(`elements: ${arr[j]}`);
+            str += arr[j];
+            
+            // add comma for every element except the last
+            if(j != n-1){
+                str += ', ';
+            }
+        }
+        str += '}';
+        console.log(str);
+    }
+}
 */
