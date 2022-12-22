@@ -321,3 +321,66 @@ console.log(JSON.stringify(user, null, 2));
     }
 }
 */
+
+/* The third argument can also be a string. 
+In this case, the string is used for indentation instead of a number of spaces.
+
+The space parameter is used solely for logging and nice-output purposes. */
+
+/* Custom “toJSON” */
+/* Like toString for string conversion, an object may provide method 
+toJSON for to-JSON conversion. 
+
+JSON.stringify automatically calls it if available. 
+
+For instance:*/
+
+room = {
+    number: 23
+};
+  
+meetup = {
+    title: "Conference",
+    date: new Date(Date.UTC(2017, 0, 1)),
+    room
+};
+
+console.log( JSON.stringify(meetup) );
+/*
+{
+    "title":"Conference",
+    "date":"2017-01-01T00:00:00.000Z",  // (1)
+    "room": {"number":23}               // (2)
+}
+*/
+
+/* Here we can see that date (1) became a string. 
+That’s because all dates have a built-in toJSON method which returns 
+such kind of string.
+
+Now let’s add a custom toJSON for our object room (2): */
+
+room = {
+    number: 23,
+    toJSON() {
+      return this.number;
+    }
+};
+  
+meetup = {
+    title: "Conference",
+    room
+};
+
+alert( JSON.stringify(room) ); // 23
+
+alert( JSON.stringify(meetup) );
+/*
+{
+    "title":"Conference",
+    "room": 23
+}
+*/
+
+/* As we can see, toJSON is used both for the direct call JSON.stringify(room) 
+and when room is nested in another encoded object. */
