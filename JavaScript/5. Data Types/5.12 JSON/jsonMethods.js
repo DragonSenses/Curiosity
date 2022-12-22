@@ -169,3 +169,44 @@ meetup.place = room;       // meetup references room
 room.occupiedBy = meetup;  // room references meetup
 
 JSON.stringify(meetup); // Error: Converting circular structure to JSON
+
+/* Here, the conversion fails, because of circular reference: room.occupiedBy 
+references meetup, and meetup.place references room. 
+
+        room.occupiedBy
+[number: 23] ----> [title: "Conference"]
+[number: 23] <---- [title: "Conference"]
+        meetup.place
+*/
+
+/* Excluding and Transforming: replacer */
+/* The full syntax of JSON.stringify is:
+    let json = JSON.stringify(value[, replacer, space])
+
+value - A value to encode.
+replacer - Array of properties to encode or a mapping function function(key, value).
+space - Amount of space to use for formatting
+
+Most of the time, JSON.stringify is used with the first argument only. 
+But if we need to fine-tune the replacement process, like to filter out 
+circular references, we can use the second argument of JSON.stringify.
+
+If we pass an array of properties to it, only these properties will be encoded.
+
+For instance:
+*/
+
+room = {
+    number: 23
+};
+  
+meetup = {
+    title: "Conference",
+    participants: [{name: "John"}, {name: "Alice"}],
+    place: room // meetup references room
+};
+
+room.occupiedBy = meetup; // room references meetup
+
+alert( JSON.stringify(meetup, ['title', 'participants']) );
+// {"title":"Conference","participants":[{},{}]}
