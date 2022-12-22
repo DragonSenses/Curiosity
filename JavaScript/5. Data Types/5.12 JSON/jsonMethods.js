@@ -238,9 +238,20 @@ Or undefined if the value is to be skipped.
 
 In our case, we can return value “as is” for everything except occupiedBy. 
 To ignore occupiedBy, the code below returns undefined: */
+room = {
+    number: 23
+};
+  
+meetup = {
+    title: "Conference",
+    participants: [{name: "John"}, {name: "Alice"}],
+    place: room // meetup references room
+};
+
+room.occupiedBy = meetup; // room references meetup
 
 console.log( JSON.stringify(meetup, function replacer(key, value) {
-    alert(`${key}: ${value}`);
+    console.log(`${key}: ${value}`);
     return (key == 'occupiedBy') ? undefined : value;
 }));
 
@@ -255,4 +266,58 @@ name:         Alice
 place:        [object Object]
 number:       23
 occupiedBy: [object Object]
+*/
+
+/* Please note that replacer function gets every key/value pair including nested 
+objects and array items. It is applied recursively. The value of this inside 
+replacer is the object that contains the current property.
+
+The first call is special. It is made using a special “wrapper object”: {"": meetup}. 
+In other words, the first (key, value) pair has an empty key, and the value 
+is the target object as a whole. That’s why the first line is ":[object Object]" 
+in the example above.
+
+The idea is to provide as much power for replacer as possible: it has a chance to 
+analyze and replace/skip even the whole object if necessary. */
+
+/* Formatting: space */
+/* The third argument of JSON.stringify(value, replacer, space) is the number 
+of spaces to use for pretty formatting.
+
+Previously, all stringified objects had no indents and extra spaces. 
+That’s fine if we want to send an object over a network. The space argument 
+is used exclusively for a nice output.
+
+Here space = 2 tells JavaScript to show nested objects on multiple lines, 
+with indentation of 2 spaces inside an object: */
+user = {
+  name: "Luna",
+  age: 25,
+  roles: {
+    isAdmin: false,
+    isEditor: true
+  }
+};
+
+console.log(JSON.stringify(user, null, 2));
+/* two-space indents:
+{
+  "name": "Luna",
+  "age": 25,
+  "roles": {
+    "isAdmin": false,
+    "isEditor": true
+  }
+}
+*/
+
+/* for JSON.stringify(user, null, 4) the result would be more indented:
+{
+    "name": "Luna",
+    "age": 25,
+    "roles": {
+        "isAdmin": false,
+        "isEditor": true
+    }
+}
 */
