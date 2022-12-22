@@ -155,6 +155,93 @@ so the sum is zero: */
 getMaxSubSum([-1, -2, -3]) == 0;
 
 // Answer:
-function getMaxSubSum(){
+function getMaxSubSum(arr){
+  let n = arr.length;
+  let maxGlobal = 0;      // Instead of Number.MIN_SAFE_INTEGER;
+  let maxCurrent = 0;     
 
+  for(let i = 0; i < n; i++){
+      maxCurrent = Math.max(arr[i], arr[i] + maxCurrent);
+
+      if (maxCurrent > maxGlobal) {
+          maxGlobal = maxCurrent;
+      }
+  }
+
+  return maxGlobal;
 }
+
+/* Fast Solution 
+Walk the array and keep the current partial sum of elements in the variable s. 
+ If s becomes negative at some point, then assign s=0. 
+ The maximum of all such s will be the answer.
+
+The algorithm requires exactly 1 array pass, so the time complexity is O(n).
+
+function getMaxSubSum(arr) {
+  let maxSum = 0;
+  let partialSum = 0;
+
+  for (let item of arr) { // for each item of arr
+    partialSum += item; // add it to partialSum
+    maxSum = Math.max(maxSum, partialSum); // remember the maximum
+    if (partialSum < 0) partialSum = 0; // zero if negative
+  }
+
+  return maxSum;
+}
+
+*/
+
+
+/* Solution: Brute Force
+Calculate all possible subsums. Take every element and calculate sums of all subarrays
+starting form it.  For instance, for [-1, 2, 3, -9, 11]:
+// Starting from -1:
+-1
+-1 + 2
+-1 + 2 + 3
+-1 + 2 + 3 + (-9)
+-1 + 2 + 3 + (-9) + 11
+
+// Starting from 2:
+2
+2 + 3
+2 + 3 + (-9)
+2 + 3 + (-9) + 11
+
+// Starting from 3:
+3
+3 + (-9)
+3 + (-9) + 11
+
+// Starting from -9
+-9
+-9 + 11
+
+// Starting from 11
+11
+
+The code is actually a nested loop: the external loop over array elements, and the 
+internal counts subsums starting with the current element.
+
+function getMaxSubSum(arr) {
+  let maxSum = 0; // if we take no elements, zero will be returned
+
+  for (let i = 0; i < arr.length; i++) {
+    let sumFixedStart = 0;
+    for (let j = i; j < arr.length; j++) {
+      sumFixedStart += arr[j];
+      maxSum = Math.max(maxSum, sumFixedStart);
+    }
+  }
+
+  return maxSum;
+}
+
+The solution has a time complexity of O(n2). In other words, if we increase 
+the array size 2 times, the algorithm will work 4 times longer.
+
+For big arrays (1000, 10000 or more items) such algorithms can lead to serious sluggishness.
+
+*/
