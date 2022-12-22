@@ -11,8 +11,22 @@ camelize("background-color") == 'backgroundColor';
 camelize("list-style-image") == 'listStyleImage';
 camelize("-webkit-transition") == 'WebkitTransition';
 
-function camelize(){
+function camelize(str){
     //TODO
+    let index = 0;
+    do{
+        // indexOf('-') to search for dash in string. 
+        index = str.indexOf('-');
+        // Remove it 
+        // str = 
+        // Capitalize (uppercase) the character at the index
+
+        
+    } while( index != -1);
+    
+
+    // Keep doing this until -1 is returned
+
 }
 
 /* Filter range */
