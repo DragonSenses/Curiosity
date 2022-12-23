@@ -12,22 +12,54 @@ camelize("list-style-image") == 'listStyleImage';
 camelize("-webkit-transition") == 'WebkitTransition';
 
 function camelize(str){
-    //TODO
     let index = 0;
     do{
-        // indexOf('-') to search for dash in string. 
+        // 1. Find dash using indexOf('-')
         index = str.indexOf('-');
-        // Remove it 
-        // str = 
-        // Capitalize (uppercase) the character at the index
-
         
-    } while( index != -1);
+        // 2. Create new string with dash removed
+        if(index === 0) {
+            str = str.slice(1); // slice string till end
+        } else {
+            str = str.slice(0,index) + str.slice(index+1);
+        }
+
+        // 3. Create a new string with the char at index capitalized
+        // Capitalize (uppercase) the character at the index
+        str = str.slice(0, index) + str[index].toUpperCase() + str.slice(index+1);
+        
+    } while( str.includes('-'));
     
-
     // Keep doing this until -1 is returned
-
+    return str;
 }
+
+/* camelize attempt 1:
+function camelize(str){
+    let index = 0;
+    do{
+        // 1. Find dash using indexOf('-')
+        index = str.indexOf('-');
+        
+        // 2. Create new string with dash removed
+        if(index === 0) {
+            str = str.slice(1); // slice string till end
+        } else {
+            str = str.slice(0,index) + str.slice(index+1);
+        }
+
+        // 3. Create a new string with the char at index capitalized
+        // Capitalize (uppercase) the character at the index
+        str = str.slice(0, index) + str[index].toUpperCase() + str.slice(index+1);
+        
+    } while( str.includes('-'));
+    
+    // Keep doing this until -1 is returned
+    return str;
+// s.slice(0,10) + s[10].toUpperCase() + s.slice(11);
+// console.log(camelize("background-color"));
+
+} */
 
 /* Filter range */
 /* Write a function filterRange(arr, a, b) that gets an array arr, looks for 
