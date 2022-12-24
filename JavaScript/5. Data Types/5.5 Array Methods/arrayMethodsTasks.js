@@ -49,7 +49,7 @@ function camelize(str){
     // Keep doing this until -1 is returned
     return str;
 // s.slice(0,10) + s[10].toUpperCase() + s.slice(11);
-// console.log(camelize("background-color"));
+console.log(camelize("background-color"));
 
 } */
 
@@ -59,21 +59,19 @@ elements with values higher or equal to a and lower or equal to b and
 return a result as an array.
 
 The function should not modify the array. It should return the new array.
+*/
+function filterRange(arr, a, b) {
+    // added brackets around the expression for better readability
+    return arr.filter(item => (a <= item && item <= b));
+}
 
-For instance: */
 let arr = [5, 3, 8, 1];
 
 let filtered = filterRange(arr, 1, 4);
 
-alert( filtered ); // 3,1 (matching values)
+console.log( filtered ); // 3,1 (matching values)
 
-alert( arr ); // 5,3,8,1 (not modified)
-
-
-function filterRange(arr, a, b) {
-    //TODO
-    return arr + a + b;
-}
+console.log( arr ); // 5,3,8,1 (not modified)
 
 /* Filter range "in place" */
 /* Write a function filterRangeInPlace(arr, a, b) that gets an array arr and removes from it all values except those that are between a and b. The test is: a ≤ arr[i] ≤ b.
