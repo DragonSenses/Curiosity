@@ -121,16 +121,38 @@ console.log( `Array after sort:\t ${arr}` ); // 8, 5, 2, 1, -10
 but keep arr unmodified.
 
 Create a function copySorted(arr) that returns such a copy. */
+
+/**
+ * Returns a new sorted copy of the array. 
+ * @param {string[]} arr array of strings to sort
+ * @returns a new sorted copy of the array
+ */
+function copySorted(arr){
+    // Use slice() to make a copy and run the sort on it.
+    return arr.slice().sort();
+}
+
 arr = ["HTML", "JavaScript", "CSS"];
+console.log( `Array before sort:\t ${arr}` ); // HTML, JavaScript, CSS
 
 let sorted = copySorted(arr);
 
-alert( sorted ); // CSS, HTML, JavaScript
-alert( arr ); // HTML, JavaScript, CSS (no changes)
+console.log( sorted ); // CSS, HTML, JavaScript
+console.log( arr ); // HTML, JavaScript, CSS (no changes)
 
+/* attempt 1 - copySorted(arr)
 function copySorted(arr){
-    return arr;
+    let aux = new Array(arr.length); 
+
+    for(let i=0; i < arr.length; i++){
+        aux[i] = arr[i];
+    }
+
+    return aux.sort();
 }
+*/
+
+
 
 /* Create an extendable calculator */
 /* Create a constructor function Calculator that creates “extendable” calculator objects. 
