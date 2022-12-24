@@ -241,6 +241,7 @@ console.log( usersMapped[0].fullName ); // John Smith
 /* Write the function sortByAge(users) that gets an array of objects with the 
 age property and sorts them by age. */
 function sortByAge(){
+    // TODO
     return 1;
 }
 
@@ -257,4 +258,54 @@ sortByAge(arr);
 console.log(arr[0].name); // John
 console.log(arr[1].name); // Mary
 console.log(arr[2].name); // Pete
+}
+
+
+/* Shuffle an array */
+/* Write the function shuffle(array) that shuffles (randomly reorders) elements of the array.
+
+Multiple runs of shuffle may lead to different orders of elements. 
+
+All element orders should have an equal probability. For instance, [1,2,3] 
+can be reordered as [1,2,3] or [1,3,2] or [3,1,2] etc, 
+with equal probability of each case.
+*/
+function shuffle(){
+    // TODO
+    return 4;
+}
+
+{ // For instance: 
+let arr = [1, 2, 3];
+
+shuffle(arr);
+// arr = [3, 2, 1]
+
+shuffle(arr);
+// arr = [2, 1, 3]
+
+shuffle(arr);
+// arr = [3, 1, 2]
+// ...
+}
+
+
+/* Get average age */
+/* Write the function getAverageAge(users) that gets an array of objects with 
+property age and returns the average age.
+
+The formula for the average is (age1 + age2 + ... + ageN) / N. */
+
+function getAverageAge(arr){
+    return arr;
+}
+
+{ // For instance:
+let john = { name: "John", age: 25 };
+let pete = { name: "Pete", age: 30 };
+let mary = { name: "Mary", age: 29 };
+
+let arr = [ john, pete, mary ];
+
+console.log( getAverageAge(arr) ); // (25 + 30 + 29) / 3 = 28
 }
