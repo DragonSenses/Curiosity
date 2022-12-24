@@ -12,30 +12,19 @@ camelize("list-style-image") == 'listStyleImage';
 camelize("-webkit-transition") == 'WebkitTransition';
 
 function camelize(str){
-    let arr = str.split('');    // split string into an array
-    let char;
-    for (let i=0; i < arr.length; i++){
-        char = arr[i];  
-        if(char === '-') {
-            // Capitalize the next character
-            if(arr[i+1] !== undefined) {
-                arr[i] = char.toUpperCase();
-            }
-            
-            arr.splice(i,1); // Remove the dash 
-        }
-
-        console.log(char);
-    }
-
-
-    str = arr.join('');         // join the array back into a string
-    return str;
+    return str
+    .split('-') // splits 'my-long-word' into array ['my', 'long', 'word']
+    .map(
+      // capitalizes first letters of all array items except the first one
+      // converts ['my', 'long', 'word'] into ['my', 'Long', 'Word']
+      (word, index) => index == 0 ? word : word[0].toUpperCase() + word.slice(1)
+    )
+    .join(''); // joins ['my', 'Long', 'Word'] into 'myLongWord'
 }
 
-// console.log(camelize("background-color"));
-// console.log(camelize("list-style-image"));
-// console.log(camelize("-webkit-transition"));
+console.log(camelize("background-color"));
+console.log(camelize("list-style-image"));
+console.log(camelize("-webkit-transition"));
 
 /* camelize attempt 1:
 function camelize(str){
