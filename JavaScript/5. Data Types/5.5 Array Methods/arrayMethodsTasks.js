@@ -187,6 +187,24 @@ alert( result ); // 8
 * There may be error handling if you’d like to add it.
 */
 
+function Calculator(str){
+    // Assuming string argument is in form of "NUMBER operator NUMBER"
+    // delimit string in format number operator number
+    this.arr = str.split(' ');
+
+    this.op = arr[1];
+
+    // calculate method
+    this.calculate = function() {
+        
+    };
+}
+
+let calc = new Calculator;
+
+console.log( calc.calculate("3 + 7") ); // 10
+
+
 /* Map to names */
 /* You have an array of user objects, each one has user.name. 
 Write the code that converts it into an array of names.
