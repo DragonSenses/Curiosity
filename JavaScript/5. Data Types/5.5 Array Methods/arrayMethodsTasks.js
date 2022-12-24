@@ -101,16 +101,19 @@ console.log( filtered ); // 3,1 (matching values)
 
 console.log( arr ); // 5,3,8,1 (not modified)
 
+
+
 /* Sort in decreasing order */
-function sortInDecreasingOrder(){
-    let arr = [5, 2, 1, -10, 8];
-
+function sortInDecreasingOrder(arr){
     // ... your code to sort it in decreasing order
-
-    alert( arr ); // 8, 5, 2, 1, -10
+    return arr.sort((a,b) =>  b - a );
 }
 
-sortInDecreasingOrder();
+arr = [5, 2, 1, -10, 8];
+console.log( `Array before sort:\t ${arr}` ); // 5, 2, 1, -10, 8
+
+sortInDecreasingOrder(arr);
+console.log( `Array after sort:\t ${arr}` ); // 8, 5, 2, 1, -10
 
 
 /* Copy and sort array */
