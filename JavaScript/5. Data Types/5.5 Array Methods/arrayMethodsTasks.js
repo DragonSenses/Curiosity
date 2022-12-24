@@ -12,27 +12,30 @@ camelize("list-style-image") == 'listStyleImage';
 camelize("-webkit-transition") == 'WebkitTransition';
 
 function camelize(str){
-    let index = 0;
-    do{
-        // 1. Find dash using indexOf('-')
-        index = str.indexOf('-');
-        
-        // 2. Create new string with dash removed
-        if(index === 0) {
-            str = str.slice(1); // slice string till end
-        } else {
-            str = str.slice(0,index) + str.slice(index+1);
+    let arr = str.split('');    // split string into an array
+    let char;
+    for (let i=0; i < arr.length; i++){
+        char = arr[i];  
+        if(char === '-') {
+            // Capitalize the next character
+            if(arr[i+1] !== undefined) {
+                arr[i] = char.toUpperCase();
+            }
+            
+            arr.splice(i,1); // Remove the dash 
         }
 
-        // 3. Create a new string with the char at index capitalized
-        // Capitalize (uppercase) the character at the index
-        str = str.slice(0, index) + str[index].toUpperCase() + str.slice(index+1);
-        
-    } while( str.includes('-'));
-    
-    // Keep doing this until -1 is returned
+        console.log(char);
+    }
+
+
+    str = arr.join('');         // join the array back into a string
     return str;
 }
+
+// console.log(camelize("background-color"));
+// console.log(camelize("list-style-image"));
+// console.log(camelize("-webkit-transition"));
 
 /* camelize attempt 1:
 function camelize(str){
