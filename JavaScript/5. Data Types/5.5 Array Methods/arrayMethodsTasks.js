@@ -153,7 +153,6 @@ function copySorted(arr){
 */
 
 
-
 /* Create an extendable calculator */
 /* Create a constructor function Calculator that creates “extendable” calculator objects. 
 The task consists of two parts.
@@ -199,10 +198,63 @@ let mary = { name: "Mary", age: 28 };
 
 let users = [ john, pete, mary ];
 
-let names = /* ... your code */
+let names = users.map( (obj) => obj.name );
 
-console.log( users);
+console.log( users ); 
 console.log( names ); // John, Pete, Mary
 
 
 /* Map to objects */
+/* You have an array of user objects, each one has name, surname and id.
+
+Write the code to create another array from it, of objects with id and fullName, 
+where fullName is generated from name and surname.
+
+So, actually you need to map one array of objects to another. 
+
+Try using => here. There’s a small catch.
+
+For instance: */
+{ 
+let john = { name: "John", surname: "Smith", id: 1 };
+let pete = { name: "Pete", surname: "Hunt", id: 2 };
+let mary = { name: "Mary", surname: "Key", id: 3 };
+
+let users = [ john, pete, mary ];
+
+let usersMapped = users.map();
+
+/*
+usersMapped = [
+  { fullName: "John Smith", id: 1 },
+  { fullName: "Pete Hunt", id: 2 },
+  { fullName: "Mary Key", id: 3 }
+]
+*/
+
+console.log( usersMapped[0].id ); // 1
+console.log( usersMapped[0].fullName ); // John Smith
+}
+
+
+/* Sort users by age */
+/* Write the function sortByAge(users) that gets an array of objects with the 
+age property and sorts them by age. */
+function sortByAge(){
+    return 1;
+}
+
+{ // Sort users by age, For instance: 
+let john = { name: "John", age: 25 };
+let pete = { name: "Pete", age: 30 };
+let mary = { name: "Mary", age: 28 };
+
+let arr = [ pete, john, mary ];
+
+sortByAge(arr);
+
+// now: [john, mary, pete]
+console.log(arr[0].name); // John
+console.log(arr[1].name); // Mary
+console.log(arr[2].name); // Pete
+}
