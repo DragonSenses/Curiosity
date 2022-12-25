@@ -558,6 +558,27 @@ let strings = ["Hare", "Krishna", "Hare", "Krishna",
   
 console.log( unique(strings) ); // Hare, Krishna, :-O
 
+{ // Another Solution to filtering Unique Array Members
+/* Psuedo Code
+ - For each item we’ll check if the resulting array already has that item.
+ - If it is so, then ignore, otherwise add to results.
+ */
+
+let uniqueArray = function(arr) {
+    let result = [];
+
+    for (let str of arr) {
+      if (!result.includes(str)) {
+        result.push(str);
+      }
+    }
+  
+    return result;   
+};
+
+uniqueArray(strings).forEach( s => console.log(s)); // Hare, Krishna, :-O
+}
+
 
 /* Create keyed object from array */
 /* Let’s say we received an array of users in the form {id:..., name:..., age:... }.
