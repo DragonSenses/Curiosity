@@ -331,12 +331,13 @@ age property and sorts them by age. */
  * @returns sorts the array of users by age
  */
 function sortByAge(users){
-    return users.sort( compareByAge );
+    return users.sort( (a, b) => a.age - b.age );
 }
 
-function compareByAge(a, b){
-    return a.age - b.age;
-}
+// return users.sort(compareByAge);
+// function compareByAge(a, b){
+//     return a.age - b.age;
+// }
 
 { // Sort users by age, For instance: 
 let john = { name: "John", age: 25 };
@@ -351,6 +352,8 @@ sortByAge(arr);
 console.log(arr[0].name); // John
 console.log(arr[1].name); // Mary
 console.log(arr[2].name); // Pete
+
+arr.forEach( user => console.log( user ) );
 }
 
 
@@ -362,24 +365,138 @@ Multiple runs of shuffle may lead to different orders of elements.
 All element orders should have an equal probability. For instance, [1,2,3] 
 can be reordered as [1,2,3] or [1,3,2] or [3,1,2] etc, 
 with equal probability of each case.
-*/
-function shuffle(){
-    // TODO
-    return 4;
-}
 
-{ // For instance: 
+// For instance: 
 let arr = [1, 2, 3];
 
-shuffle(arr);
-// arr = [3, 2, 1]
+shuffle(arr); // arr = [3, 2, 1]
 
-shuffle(arr);
-// arr = [2, 1, 3]
+shuffle(arr); // arr = [2, 1, 3]
 
-shuffle(arr);
-// arr = [3, 1, 2]
-// ...
+shuffle(arr); // arr = [3, 1, 2]
+*/
+
+/**
+ * Shuffles the array of numbers. Employs the Fisher-Yates shuffle algorithm.
+ * Walks the array in reverse order and swap each element with a random one
+ * before it. Modifies the array itself.
+ */
+function shuffle(array){
+    // walk the array in reverse order
+    for (let i = array.length -1; i > 0; i--){
+         // Get a random index from 0 to i
+        let j = Math.floor(Math.random() * (i + 1));
+
+        // swap elements array[i] and array[j]
+        // we use "destructuring assignment" syntax to achieve that
+        [array[i], array[j]] = [array[j], array[i]]; 
+    }
+}
+
+{ 
+/* Test Code runs shuffle() 1,000,000 times and counts appearances of all
+possible results */
+
+// counts of appearances for all possible permutations
+let count = {
+    '123': 0,
+    '132': 0,
+    '213': 0,
+    '231': 0,
+    '321': 0,
+    '312': 0
+};
+
+for (let i = 0; i < 1000000; i++) {
+    let array = [1, 2, 3];
+    shuffle(array);
+    count[array.join('')]++;
+}
+
+// show counts of all possible permutations
+for (let key in count) {
+    console.log(`${key}: ${count[key]}`);
+}
+/* Example Output 
+123: 166159
+132: 166400
+213: 166889
+231: 166832
+312: 167124
+321: 166596
+
+123: 166693
+132: 166647
+213: 166628
+231: 167517
+312: 166199
+321: 166316
+
+Looks good, all permutations appear with roughly the same probability.
+Also, performance-wise the Fisher-Yates algorithm is much better, 
+there’s no “sorting” overhead.
+*/
+
+/* Here is a simple but substandard solution for shuffle: */
+let shuffleSimple = function(array) {
+    array.sort(() => Math.random() - 0.5);
+};
+/* It somewhat works, because Math.random() - 0.5 is a random number that may 
+be positive or negative, so the sorting function reorders elements randomly.
+
+But because the sorting function is not meant to be used this way, not all 
+permutations have the same probability. Let's test it. */
+
+// counts of appearances for all possible permutations
+count = {
+    '123': 0,
+    '132': 0,
+    '213': 0,
+    '231': 0,
+    '321': 0,
+    '312': 0
+};
+
+// Populate count array
+for (let i = 0; i < 1000000; i++) {
+    let array = [1, 2, 3];
+    shuffleSimple(array);
+    count[array.join('')]++;
+}
+
+// show counts of all possible permutations
+for (let key in count) {
+    console.log(`${key}: ${count[key]}`);
+}
+
+/* Example Output (depends on JS engine): 
+123: 250706
+132: 124425
+213: 249618
+231: 124880
+312: 125148
+321: 125223
+// We can see the bias clearly: 123 and 213 appear much more often than others.
+
+// In Google Chrome's V8 engine
+123: 374674
+132: 62370
+213: 125181
+231: 62552
+312: 62800
+321: 312423
+
+// Here the bias is 123, 213, and 321. 
+The result of the code may vary between JavaScript engines, but we can already 
+see that the approach is unreliable.
+
+Why it doesn’t work? Generally speaking, sort is a “black box”: we throw an array 
+and a comparison function into it and expect the array to be sorted. 
+
+But due to the utter randomness of the comparison the black box goes mad, and 
+how exactly it goes mad depends on the concrete implementation that differs between engines.
+*/
+
 }
 
 
