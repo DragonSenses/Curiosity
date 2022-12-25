@@ -615,18 +615,10 @@ For example: */
  * array items as values
  */
 function groupById(arr){
-    // Create array of obj
-    // Use .reduce() 
-    // let usersMapped = users.map( user => ({
-    //     fullName: `${user.name} ${user.surname}`,
-    //     id: user.id
-    // }));
-    arr.reduce( (obj) => obj:obj.id, arr.map( user => ({
-        id: `${user.id}`
-        name: `${user.name}`
-        age: `${user.age}`
-    })));
-    return arr;
+    return arr.reduce((obj,value) => {
+        obj[value.id] = value;
+        return obj;
+    }, {});
 }
 
 {
@@ -638,7 +630,13 @@ let users = [
 
 let usersById = groupById(users);
 
+// Print out usersById object
+for(let user in usersById){
+    console.log( `${user}: ${usersById[user]}`);
+}
+
 console.log(usersById);
+
 /*
 // after the call we should have:
 
