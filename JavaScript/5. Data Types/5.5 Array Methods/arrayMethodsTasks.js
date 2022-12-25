@@ -577,6 +577,20 @@ let uniqueArray = function(arr) {
 };
 
 uniqueArray(strings).forEach( s => console.log(s)); // Hare, Krishna, :-O
+
+/* The code works, but there’s a potential performance problem in it.
+
+The method result.includes(str) internally walks the array result and compares 
+each element against str to find the match.
+
+So if there are 100 elements in result and no one matches str, then it will 
+walk the whole result and do exactly 100 comparisons. And if result is 
+large, like 10000, then there would be 10000 comparisons.  
+
+So the solution is only good for small arrays.
+
+INSTEAD use Set.
+*/
 }
 
 
@@ -594,7 +608,15 @@ Please use array .reduce method in the solution.
 
 For example: */
 
+/**
+ * 
+ * @param {object[]} arr array of users in the form {id:..., name:..., age:... }
+ * @returns Creates an object that stores each user in array with id as key and
+ * array items as values
+ */
 function groupById(arr){
+    // Create array of obj
+    // Use .reduce() 
     return arr;
 }
 
