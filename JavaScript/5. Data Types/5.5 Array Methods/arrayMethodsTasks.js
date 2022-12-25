@@ -188,11 +188,6 @@ alert( result ); // 8
 */
 
 function Calculator(){
-    // The instance variables
-    this.a;
-    this.op;
-    this.b;
-    this.split = new Array(3);
 
     /* Please note how methods are stored. They are simply added to 
     this.methods property. */
@@ -208,12 +203,15 @@ function Calculator(){
     /* All tests and numeric conversions are done in the calculate method. 
     In future it may be extended to support more complex expressions. */
     this.calculate = function(str) {
-        this.split = str.split(' '),
-            this.a = +split[0],
-            this.op = split[1],
-            this.b = +split[2];
-            // this.op = arr[1];
+        let split = str.split(' ');
+        let a = +split[0];
+        let op = split[1];
+        let b = +split[2];
 
+        /* Check if any part of the string is invalid. 
+            - Operands are NaN 
+            - Operator is not supported
+        */
         if (!this.methods[op] || isNaN(a) || isNaN(b)) {
             return NaN;
         }
@@ -236,8 +234,15 @@ function Calculator(){
 }
 
 let calc = new Calculator;
-
 console.log( calc.calculate("3 + 7") ); // 10
+
+let powerCalc = new Calculator;
+powerCalc.addMethod("*", (a, b) => a * b);
+powerCalc.addMethod("/", (a, b) => a / b);
+powerCalc.addMethod("**", (a, b) => a ** b);
+
+let result = powerCalc.calculate("2 ** 3");
+console.log( result ); // 8
 
 
 /* Map to names */
