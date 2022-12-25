@@ -506,8 +506,12 @@ property age and returns the average age.
 
 The formula for the average is (age1 + age2 + ... + ageN) / N. */
 
-function getAverageAge(arr){
-    return arr;
+/**
+ * @param {objects[]} users array of user objects with age property
+ * @returns average age of the objects
+ */
+function getAverageAge(users){
+    return users.reduce((sum, current) => sum + current.age, 0)/arr.length;
 }
 
 { // For instance:
@@ -529,8 +533,23 @@ Create a function unique(arr) that should return an array with unique items of a
 For instance:
 */
 
+/**
+ * indexOf will always only return the index of the first occurrence of 
+ * "item" (the string) in the array and then you are comparing it with "index" 
+ * (the index of the current item being iterated over).
+ * 
+ * if the index of the first occurrence of the string === the index of the 
+ * current item being compared, this means that the current item being 
+ * iterated over is its own first occurrence in the array.
+ * 
+ * and subsequent comparisons for the same item will always be false as duplicate 
+ * values will not have the same index as the first occurrence of the item.
+ * 
+ * @param {*[]} arr array of items. 
+ * @returns array of unique items 
+ */
 function unique(arr) {
-    return arr;    /* your code */
+    return arr.filter( (item, index) => arr.indexOf(item) === index);   
 }
 
 let strings = ["Hare", "Krishna", "Hare", "Krishna",
