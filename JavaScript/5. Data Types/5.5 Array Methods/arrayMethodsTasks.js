@@ -609,7 +609,7 @@ Please use array .reduce method in the solution.
 For example: */
 
 /**
- * 
+ * Creates an object from an array of users in the form {id:..., name:..., age:... }.
  * @param {object[]} arr array of users in the form {id:..., name:..., age:... }
  * @returns Creates an object that stores each user in array with id as key and
  * array items as values
@@ -617,6 +617,15 @@ For example: */
 function groupById(arr){
     // Create array of obj
     // Use .reduce() 
+    // let usersMapped = users.map( user => ({
+    //     fullName: `${user.name} ${user.surname}`,
+    //     id: user.id
+    // }));
+    arr.reduce( (obj) => obj:obj.id, arr.map( user => ({
+        id: `${user.id}`
+        name: `${user.name}`
+        age: `${user.age}`
+    })));
     return arr;
 }
 
