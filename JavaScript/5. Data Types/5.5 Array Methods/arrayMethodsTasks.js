@@ -105,7 +105,6 @@ console.log( arr ); // 5,3,8,1 (not modified)
 
 /* Sort in decreasing order */
 function sortInDecreasingOrder(arr){
-    // ... your code to sort it in decreasing order
     return arr.sort((a,b) =>  b - a );
 }
 
@@ -128,7 +127,6 @@ Create a function copySorted(arr) that returns such a copy. */
  * @returns a new sorted copy of the array
  */
 function copySorted(arr){
-    // Use slice() to make a copy and run the sort on it.
     return arr.slice().sort();
 }
 
@@ -137,8 +135,8 @@ console.log( `Array before sort:\t ${arr}` ); // HTML, JavaScript, CSS
 
 let sorted = copySorted(arr);
 
-console.log( sorted ); // CSS, HTML, JavaScript
-console.log( arr ); // HTML, JavaScript, CSS (no changes)
+console.log( sorted );  // CSS, HTML, JavaScript
+console.log( arr );     // HTML, JavaScript, CSS (no changes)
 
 /* attempt 1 - copySorted(arr)
 function copySorted(arr){
@@ -164,8 +162,7 @@ Usage example:
 
 let calc = new Calculator;
 
-alert( calc.calculate("3 + 7") ); // 10
-
+console.log( calc.calculate("3 + 7") ); // 10
 
 2. Then add the method addMethod(name, func) that teaches the calculator a new 
 operation. It takes the operator name and the two-argument function func(a,b) 
@@ -179,8 +176,7 @@ powerCalc.addMethod("/", (a, b) => a / b);
 powerCalc.addMethod("**", (a, b) => a ** b);
 
 let result = powerCalc.calculate("2 ** 3");
-alert( result ); // 8
-
+console.log( result ); // 8
 
 * No parentheses or complex expressions in this task.
 * The numbers and the operator are delimited with exactly one space.
@@ -190,15 +186,15 @@ alert( result ); // 8
 function Calculator(){
 
     /* Please note how methods are stored. They are simply added to 
-    this.methods property. */
+    this.methods property. Methods is an object literal with the string
+    operation name as "key" and the function as "value". */
     this.methods = {
         "-": (a,b) => a-b,
         "+": (a,b) => a+b
     };
 
     // Assuming string argument is in form of "NUMBER operator NUMBER"
-    // delimit string in format number operator number
-
+    // partition string in into an array called "split"
 
     /* All tests and numeric conversions are done in the calculate method. 
     In future it may be extended to support more complex expressions. */
@@ -216,6 +212,8 @@ function Calculator(){
             return NaN;
         }
         
+        /* Call methods via Computed Properties "[]" and pass in numbers a and b
+        to the function returned by [op] property. */
         return this.methods[op](a, b);
     };
 
@@ -496,7 +494,6 @@ and a comparison function into it and expect the array to be sorted.
 But due to the utter randomness of the comparison the black box goes mad, and 
 how exactly it goes mad depends on the concrete implementation that differs between engines.
 */
-
 }
 
 
@@ -604,7 +601,7 @@ Such function is really handy when working with server data.
 
 In this task we assume that id is unique. There may be no two array items with the same id.
 
-Please use array .reduce method in the solution.
+Please use array.reduce method in the solution.
 
 For example: */
 
@@ -615,7 +612,26 @@ For example: */
  * array items as values
  */
 function groupById(arr){
-    return arr.reduce((obj,value) => {
+    /* We reduce an array into a single result (here that is an object that
+        groups all the array elements by Id). The initialiValue is an empty
+        object literal to be populated. Therefore the callbackFn starts 
+        executing with the first value in the array. callbackFn is executed
+        for each element in the array, which takes the accumulator "obj"
+        set its property "value.id" (which is name of user) to "value". 
+        "value" is the object literal. Then returns the accumulator "obj" so
+        the next invocation of callbackFn can populate it with the next 
+        element in the array. Notice how we specify initialValue as an empty
+        object literal as the second parameter to reduce(). 
+
+    Syntax:
+        reduce(function (accumulator, currentValue) { ... }, initialValue)
+
+        This is so the empty object literal is the accumulator on the first call,
+        without initialValue, accumulator will just be the value of array[0], 
+        which is a different obj. This will simply add the properties to the obj
+        in array[0] instead.
+    */
+    return arr.reduce( (obj, value) => {
         obj[value.id] = value;
         return obj;
     }, {});
