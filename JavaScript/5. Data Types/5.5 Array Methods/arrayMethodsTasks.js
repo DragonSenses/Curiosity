@@ -187,16 +187,51 @@ alert( result ); // 8
 * There may be error handling if you’d like to add it.
 */
 
-function Calculator(str){
+function Calculator(){
+    // The instance variables
+    this.a;
+    this.op;
+    this.b;
+    this.split = new Array(3);
+
+    /* Please note how methods are stored. They are simply added to 
+    this.methods property. */
+    this.methods = {
+        "-": (a,b) => a-b,
+        "+": (a,b) => a+b
+    };
+
     // Assuming string argument is in form of "NUMBER operator NUMBER"
     // delimit string in format number operator number
-    this.arr = str.split(' ');
 
-    this.op = arr[1];
 
-    // calculate method
-    this.calculate = function() {
+    /* All tests and numeric conversions are done in the calculate method. 
+    In future it may be extended to support more complex expressions. */
+    this.calculate = function(str) {
+        this.split = str.split(' '),
+            this.a = +split[0],
+            this.op = split[1],
+            this.b = +split[2];
+            // this.op = arr[1];
+
+        if (!this.methods[op] || isNaN(a) || isNaN(b)) {
+            return NaN;
+        }
         
+        return this.methods[op](a, b);
+    };
+
+    /**
+     * Teaches the calculator a new operation. It takes the operator name and 
+     * the two-argument function func(a,b) that implements it.
+     * 
+     * usage: addMethod("**", (a, b) => a ** b);
+     * 
+     * @param {string} name operation name (e.g. "*" or "/" or "**")
+     * @param {function} func implements how the operation is done
+     */
+    this.addMethod = function(name, func) {
+        this.methods[name] = func;
     };
 }
 
