@@ -280,7 +280,10 @@ let mary = { name: "Mary", surname: "Key", id: 3 };
 
 let users = [ john, pete, mary ];
 
-let usersMapped = users.map();
+let usersMapped = users.map( user => ({
+    fullName: `${user.name} ${user.surname}`,
+    id: user.id
+}));
 
 /*
 usersMapped = [
@@ -292,15 +295,47 @@ usersMapped = [
 
 console.log( usersMapped[0].id ); // 1
 console.log( usersMapped[0].fullName ); // John Smith
+
+// Print contents of array
+users.forEach( user => console.log(user) );
+usersMapped.forEach( user => console.log(user) );
+
+/* Note that in the arrow functions we need to use additional brackets.  
+Cannot be written like this:
+let usersMapped = users.map(user => {
+  fullName: `${user.name} ${user.surname}`,
+  id: user.id
+});
+
+As we remember, there are two arrow functions: 
+    without body value => expr and with body value => {...}.
+
+Here JavaScript would treat { as the start of function body, not the start of 
+    the object. 
+    
+The workaround is to wrap them in the “normal” brackets:
+let usersMapped = users.map(user => ({
+  fullName: `${user.name} ${user.surname}`,
+  id: user.id
+}));
+*/
 }
 
 
 /* Sort users by age */
 /* Write the function sortByAge(users) that gets an array of objects with the 
 age property and sorts them by age. */
-function sortByAge(){
-    // TODO
-    return 1;
+
+/**
+ * @param {object[]} users an array of users 
+ * @returns sorts the array of users by age
+ */
+function sortByAge(users){
+    return users.sort( compareByAge );
+}
+
+function compareByAge(a, b){
+    return a.age - b.age;
 }
 
 { // Sort users by age, For instance: 
