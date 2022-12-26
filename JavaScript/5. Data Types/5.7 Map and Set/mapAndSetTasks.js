@@ -30,14 +30,27 @@ cheaters - hectares - teachers
 Write a function aclean(arr) that returns an array cleaned from anagrams.
 
 From every anagram group should remain only one word, no matter which one.
+*/
 
-For instance:
+/* Answer: To find all anagrams, let’s split every word to letters and sort them. 
+When letter-sorted, all anagrams are same. e.g.,
+    nap, pan -> anp
+    ear, era, are -> aer
+    cheaters, hectares, teachers -> aceehrst
+
+Then, we'll use the letter-sorted variants as map keys to store only one value 
+per each key:
 */
 function aclean(arr){
-    // sort the string or item in arr
-    // map it
-    // if map (!has(key) then add)
-    // return Array.from(map)
+    let map = new Map();
+
+    for (let word of arr){
+        // split the word by letters, sort them and join back
+        let sorted = word.toLowerCase().split('').sort().join(''); // (*)
+        map.set(sorted, word);
+    }
+    
+    return Array.from(map.values());
 }
 
 let arr = ["nap", "teachers", "cheaters", "PAN", "ear", "era", "hectares"];
