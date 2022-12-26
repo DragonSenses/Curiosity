@@ -8,7 +8,7 @@ P.P.S. Use Set to store unique values.
 
 For instance: */
 function unique(arr) {
-
+  return Array.from(new Set(arr));
 }
 
 let values = ["Hare", "Krishna", "Hare", "Krishna",
@@ -34,7 +34,10 @@ From every anagram group should remain only one word, no matter which one.
 For instance:
 */
 function aclean(arr){
-
+    // sort the string or item in arr
+    // map it
+    // if map (!has(key) then add)
+    // return Array.from(map)
 }
 
 let arr = ["nap", "teachers", "cheaters", "PAN", "ear", "era", "hectares"];
