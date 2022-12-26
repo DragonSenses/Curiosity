@@ -84,6 +84,18 @@ store the date, and it should only remain in memory until the message is garbage
 P.S. Dates can be stored as objects of built-in Date class
 */
 
+/* Answer: To store a date, we can use WeakMap: */
+let readMap = new WeakMap();
+
+readMap.set(messages[0], new Date(2017, 1, 1));
+
+// When was the first message read?     // Date (Year, Month, Day) 
+console.log(readMap.get(messages[0]));  // Wed Feb 01 2017
+                                        // Months start at 0 (Jan) to 11 (Dec)
+
+readMap.set(messages[1], new Date()); // 2nd message read right now!
+
+console.log(readMap.get(messages[1])); 
 
 
 /* 
@@ -101,5 +113,5 @@ single value is all we need (i.e., messages[index])
     readability
 
 In Q2, we store the message itself, in addition to the time it was read at, so
-2 pieces of info are required here, that's why we wnet wiht the WeakMap. 
+2 pieces of info are required here, that's why we wnet with the WeakMap. 
 */
