@@ -35,3 +35,23 @@ store the date, and it should only remain in memory until the message is garbage
 
 P.S. Dates can be stored as objects of built-in Date class
 */
+
+
+
+/* 
+WeakSet: for Yes/No facts
+WeakMap: for storing information
+
+The requirements determine whether WeakSet or WeakMap is used. 
+
+In Q1 all that is needed is a piece of info to check if a message is read or not, so
+WeakSet is used. That is because you can store only values in Set/WeakSet, and a 
+single value is all we need (i.e., messages[index]) 
+    - Could have used WeakMap, e.g., storing the message as the key, and a boolean
+    as the value. e.g., readMessages.set(messages[0], true). 
+    - But WeakSet and .has() is easier and achieves the same behavior with better
+    readability
+
+In Q2, we store the message itself, in addition to the time it was read at, so
+2 pieces of info are required here, that's why we wnet wiht the WeakMap. 
+*/
