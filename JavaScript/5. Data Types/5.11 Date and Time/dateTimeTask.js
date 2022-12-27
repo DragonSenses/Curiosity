@@ -126,21 +126,58 @@ console.log( getDateAgo(date, 365) );   // 2,  (2 Jan 2014)
 day of month. Sometimes it is 30th, 31st or even 28/29th for Feb.
 
 Parameters:
-
-year – four-digits year, for instance 2012.
-month – month, from 0 to 11.
+* year – four-digits year, for instance 2012.
+* month – month, from 0 to 11.
 For instance, getLastDayOfMonth(2012, 1) = 29 (leap year, Feb). */
 
+/* Answer: Normally, dates start from 1, but technically we can pass any number, 
+the date will autoadjust itself. So when we pass 0, then it means “one day 
+before 1st day of the month”, in other words: “the last day of the previous month”. 
+*/
+function getLastDayOfMonth(year, month){
+    // Add a month, then get the previous day (passing in 0)
+    let date = new Date(year, month + 1, 0);
+    return date.getDate();  
+}
+
+console.log(getLastDayOfMonth(2012, 1));    // 29 (leap year, Feb.)
 
 
 /* How many seconds have passed today? */
 /* Write a function getSecondsToday() that returns the number of seconds 
 from the beginning of today.
-The function should work in any day. That is, it should not have a hard-coded value of “today”.
+The function should work in any day. That is, it should not have a hard-coded 
+value of “today”.
 
-For instance, if now were 10:00 am, and there was no daylight savings shift, then: 
-getSecondsToday() == 36000 // (3600 * 10)
+For instance, if now were 10:00 am, and there was no daylight savings shift, 
+then:   getSecondsToday() == 36000 // (3600 * 10)
 */
+
+/**
+ * @returns {number} seconds that passed from the beginning of today
+ */
+function getSecondsToday(){
+    /* To get the number of seconds, we can generate a date using the current 
+    day and time 00:00:00, then substract it from now */
+    let now = new Date();
+
+     // create an object using the current day/month/year
+    let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    /* The difference is the number of milliseconds from the beginning of the 
+    day, that we should divide by 1000 to get seconds: */
+    let diff = now - today; // ms difference
+    return Math.round(diff / 1000); // make seconds
+}
+
+console.log( getSecondsToday() ); // getSecondsToday() == 36000 (3600 * 10)  10AM, no DST
+
+/* Alternative Solution is get Hours/Minutes/Seconds and cocnvert to seconds */
+function getSecondsToday2(){
+    let d = new Date();
+    return d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds();
+}
+console.log( getSecondsToday2() );
 
 
 /* How many seconds till tomorrow? */
