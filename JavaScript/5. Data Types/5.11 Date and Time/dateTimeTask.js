@@ -38,6 +38,7 @@ its number: */
 function getWeekDay(date) {
     let days = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
   
+    /* 0 for Sunday, 1 for Monday, 2 for Tuesday, and so on. */
     return days[date.getDay()];
 }
 
@@ -51,7 +52,6 @@ console.log( getWeekDay(date) );  // FR
 
 
 
-
 /* European weekday */
 /* European countries have days of week starting with Monday (number 1), then 
 Tuesday (number 2) and till Sunday (number 7). 
@@ -62,6 +62,25 @@ let date = new Date(2012, 0, 3);  // 3 Jan 2012
 console.log( getLocalDay(date) );       // tuesday, should show 2
 */
 
+function getLocalDay(date) {
+    /* 0 for Sunday, 1 for Monday, 2 for Tuesday, and so on. */
+    let day = date.getDay();
+
+    // since getDay() returns 0 for Sunday, change it to 7
+    if (day == 0) { // weekday 0 (sunday) is 7 in european
+        day = 7;
+    }
+
+    return day;
+}
+
+{
+let date = new Date(2012, 0, 3);        // 3 Jan 2012
+console.log( getLocalDay(date) );       // Tuesday, should show 2
+
+date = new Date(2022, 11, 25);          // 25 Dec 2022
+console.log( getLocalDay(date) );       // Sunday, should show 7    
+}
 
 /* Which day of month was many days ago? */
 /* Create a function getDateAgo(date, days) to return the day of month days 
@@ -79,6 +98,27 @@ console.log( getDateAgo(date, 1) ); // 1, (1 Jan 2015)
 console.log( getDateAgo(date, 2) ); // 31, (31 Dec 2014)
 console.log( getDateAgo(date, 365) ); // 2, (2 Jan 2014)
 */
+
+/**
+ * Returns the day of month days ago from the date.
+ * @param {Date} date The date to determine from
+ * @param {number} days how many days ago from the given date
+ */
+function getDateAgo(date, days){
+    // Subtract given number of days from date
+    // But do not modify the passed in object date
+    // So clone the date, then subtract
+    let dateCopy = new Date(date);
+    dateCopy.setDate(date.getDate() - days);
+    return dateCopy.getDate();
+}
+
+{
+let date = new Date(2015, 0, 2);        //     (2 Jan 2015)
+console.log( getDateAgo(date, 1) );     // 1,  (1 Jan 2015)
+console.log( getDateAgo(date, 2) );     // 31, (31 Dec 2014)
+console.log( getDateAgo(date, 365) );   // 2,  (2 Jan 2014)
+}
 
 
 /* Last day of month? */
