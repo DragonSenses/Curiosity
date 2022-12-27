@@ -2,7 +2,23 @@
 /* Create a Date object for the date: Feb 20, 2012, 3:12am. 
 The time zone is local.
 
-Show it using alert. */
+Show it using console.log. */
+
+// Answer:
+/* The new Date constructor uses the local time zone. 
+So the only important thing to remember is that months start from zero.
+
+So February has number 1. */
+{
+// Example with numbers as date components:
+//new Date(year, month, date, hour, minute, second, millisecond)
+let d1 = new Date(2012, 1, 20, 3, 12);
+console.log(d1);
+
+/* We could also create a date from a string, like this: */
+let d2 = new Date("2012-02-20T03:12");
+console.log( d2 );
+}
 
 
 /* Show a weekday */
@@ -11,8 +27,29 @@ short format: ‘MO’, ‘TU’, ‘WE’, ‘TH’, ‘FR’, ‘SA’, ‘SU�
 
 For instance: 
 let date = new Date(2012, 0, 3);  // 3 Jan 2012
-alert( getWeekDay(date) );        // should output "TU"
+console.log( getWeekDay(date) );        // should output "TU"
 */
+
+// Answer:
+/* The method date.getDay() returns the number of the weekday, starting from sunday.
+
+Let’s make an array of weekdays, so that we can get the proper day name by 
+its number: */
+function getWeekDay(date) {
+    let days = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+  
+    return days[date.getDay()];
+}
+
+{
+let date = new Date(2012, 0, 3);  // 3 Jan 2012
+console.log( getWeekDay(date) );  // should output "TU"
+
+date = new Date(2014, 0, 3);      // 3 Jan 2014
+console.log( getWeekDay(date) );  // FR
+}
+
+
 
 
 /* European weekday */
@@ -22,7 +59,7 @@ Tuesday (number 2) and till Sunday (number 7).
 Write a function getLocalDay(date) that returns the “European” day of week for date.
 
 let date = new Date(2012, 0, 3);  // 3 Jan 2012
-alert( getLocalDay(date) );       // tuesday, should show 2
+console.log( getLocalDay(date) );       // tuesday, should show 2
 */
 
 
@@ -38,9 +75,9 @@ P.S. The function should not modify the given date.
 Should work reliably for days=365 or more: 
 let date = new Date(2015, 0, 2);
 
-alert( getDateAgo(date, 1) ); // 1, (1 Jan 2015)
-alert( getDateAgo(date, 2) ); // 31, (31 Dec 2014)
-alert( getDateAgo(date, 365) ); // 2, (2 Jan 2014)
+console.log( getDateAgo(date, 1) ); // 1, (1 Jan 2015)
+console.log( getDateAgo(date, 2) ); // 31, (31 Dec 2014)
+console.log( getDateAgo(date, 365) ); // 2, (2 Jan 2014)
 */
 
 
