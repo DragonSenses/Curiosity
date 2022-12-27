@@ -185,9 +185,22 @@ console.log( getSecondsToday2() );
 
 P.S. The function should work at any day, the “today” is not hardcoded.
 
-For instance, if now is 23:00, then: 
-getSecondsToTomorrow() == 3600*/
+For instance, if now is 23:00, then: getSecondsToTomorrow() == 3600 */
 
+
+function getSecondsToTomorrow(){
+    /* To get the number of milliseconds till tomorrow, we can from 
+    “tomorrow 00:00:00” substract the current date. */
+    let now = new Date();
+
+    // create tommorow date object using the current day/month/year, adding 1 day
+    let tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1);
+  
+    let diff = tomorrow - now;      // ms difference
+    return Math.round(diff / 1000); // convert to seconds
+}
+
+console.log(getSecondsToTomorrow());
 
 /* Format the relative date */
 /* Write a function formatDate(date) that should format date as follows:
@@ -208,3 +221,59 @@ alert( formatDate(new Date(new Date - 5 * 60 * 1000)) ); // "5 min. ago"
 // yesterday's date like 31.12.16 20:00
 alert( formatDate(new Date(new Date - 86400 * 1000)) );
 */
+
+/**
+ * Formats date as follows:
+ * - If since date passed less than 1 second, then "right now".
+ * - Otherwise, if since date passed less than 1 minute, then "n sec. ago".
+ * - Otherwise, if less than an hour, then "m min. ago".
+ * - Otherwise, the full date in the format "DD.MM.YY HH:mm". That is: 
+ * "day.month.year hours:minutes", all in 2-digit format, e.g. 31.12.16 10:00.
+ * 
+ * @param {Date} date object that will be formatted
+ */
+function formatDate(date){
+    let diff = new Date() - date;
+    // Case 1: Less than 1 second
+    if (diff < 1000) { 
+        return 'right now';
+    }
+    
+    let sec = Math.floor(diff / 1000); // convert diff to seconds
+    
+    // Case 2: Less than 1 minute
+    if (sec < 60) {
+        return sec + ' sec. ago';
+    }
+    
+    let min = Math.floor(diff / 60000); // convert diff to minutes
+
+    // Case 3: Less than 1 hour
+    if (min < 60) {
+        return min + ' min. ago';
+    }
+    
+    // Case 4: Full Date in format "DD.MM.YY HH:mm"
+    // format the date
+    // add leading zeroes to single-digit day/month/hours/minutes
+    let d = date;
+    d = [
+        '0' + d.getDate(),
+        '0' + (d.getMonth() + 1),
+        '' + d.getFullYear(),
+        '0' + d.getHours(),
+        '0' + d.getMinutes()
+    ].map(component => component.slice(-2)); // take last 2 digits of every component
+    
+    // join the components into date
+    return d.slice(0, 3).join('.') + ' ' + d.slice(3).join(':');
+}
+
+console.log( formatDate(new Date(new Date - 1)) );  // "right now"
+
+console.log( formatDate(new Date(new Date - 30 * 1000)) );  // "30 sec. ago"
+
+console.log( formatDate(new Date(new Date - 5 * 60 * 1000)) ); // "5 min. ago"
+
+// yesterday's date like 31.12.16 20:00
+console.log( formatDate(new Date(new Date - 86400 * 1000)) );
