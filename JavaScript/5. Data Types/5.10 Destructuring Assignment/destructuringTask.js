@@ -75,6 +75,17 @@ function topSalary(salaries){
     return null;
   }
 
+  let maxSalary = 0;
+  let maxName = null;
+
+  for(const [name, salary] of Object.entries(salaries)){
+    if (salary > maxSalary){
+      maxSalary = salary;
+      maxName = name;
+    }
+  }
+
+  return maxName;
 }
 
-topSalary();
+topSalary(salaries);
