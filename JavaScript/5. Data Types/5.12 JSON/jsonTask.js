@@ -42,6 +42,14 @@ meetup.self = meetup;
 console.log( JSON.stringify(meetup, function replacer(key, value) {
     return (key != "" && value == meetup) ? undefined : value;
 }));
+/* result:
+{
+    "title":"Conference",
+    "occupiedBy":[{"name":"John"},{"name":"Alice"}],
+    "place":{"number":23}
+}
+*/
+
 /* Here we also need to test key == "" to exclude the first call where it is 
 normal that value is meetup. 
 
@@ -54,16 +62,40 @@ In other words, the first (key, value) pair has an empty key, and the value
 is the target object as a whole. That’s why the first line is ":[object Object]" 
 in the example shown in jsonMethods.js
 
+Shown again here for clarity:
+let room = {
+  number: 23
+};
+
+let meetup = {
+  title: "Conference",
+  participants: [{name: "John"}, {name: "Alice"}],
+  place: room // meetup references room
+};
+
+room.occupiedBy = meetup; // room references meetup
+
+alert( JSON.stringify(meetup, function replacer(key, value) {
+  alert(`${key}: ${value}`);
+  return (key == 'occupiedBy') ? undefined : value;
+}));
+
+/* key:value pairs that come to replacer:
+:             [object Object]
+title:        Conference
+participants: [object Object],[object Object]
+0:            [object Object]
+name:         John
+1:            [object Object]
+name:         Alice
+place:        [object Object]
+number:       23
+occupiedBy: [object Object]
+
 The idea is to provide as much power for replacer as possible: it has a chance 
 to analyze and replace/skip even the whole object if necessary. */
   
-/* result:
-{
-    "title":"Conference",
-    "occupiedBy":[{"name":"John"},{"name":"Alice"}],
-    "place":{"number":23}
-}
-*/
+
 
 /* Another Solution to Exclude backreferences is to use WeakSet to keep track
 of the references of an object that has been visited before (serialized before) */
