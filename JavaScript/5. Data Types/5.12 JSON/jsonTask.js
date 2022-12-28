@@ -43,7 +43,19 @@ console.log( JSON.stringify(meetup, function replacer(key, value) {
     return (key != "" && value == meetup) ? undefined : value;
 }));
 /* Here we also need to test key == "" to exclude the first call where it is 
-normal that value is meetup. */
+normal that value is meetup. 
+
+Recall: replacer function gets every key/value pair including nested objects 
+and array items. It is applied recursively. The value of this inside replacer 
+is the object that contains the current property.
+
+The first call is special. It is made using a special “wrapper object”: {"": meetup}. 
+In other words, the first (key, value) pair has an empty key, and the value 
+is the target object as a whole. That’s why the first line is ":[object Object]" 
+in the example shown in jsonMethods.js
+
+The idea is to provide as much power for replacer as possible: it has a chance 
+to analyze and replace/skip even the whole object if necessary. */
   
 /* result:
 {
@@ -52,3 +64,23 @@ normal that value is meetup. */
     "place":{"number":23}
 }
 */
+
+/* Another Solution to Exclude backreferences is to use WeakSet to keep track
+of the references of an object that has been visited before (serialized before) */
+const visited = new WeakSet();
+
+let jsonStr = JSON.stringify(meetup, function replacer(key, value){
+    // primitive value, as WeakSet only stores objects
+    if(typeof(value) != "object") return value;
+    
+    // circular reference, do not try to serialize this object again
+    if(visited.has(value)) return undefined;
+
+    // First time visiting object, so mark it as visited
+    visited.add(value);
+
+    return value;
+});
+
+console.log(jsonStr); 
+// {"title":"Conference","occupiedBy":[{"name":"John"},{"name":"Alice"}],"place":{"number":23}}
