@@ -1,13 +1,18 @@
 /* Turn the object into JSON and back */
-/* Turn the user into JSON and then read it back into another variable. 
-
+/* Turn the user into JSON and then read it back into another variable. */
 let user = {
-  name: "John Smith",
-  age: 35
+    name: "Luna Berry",
+    age: 20
 };
+  
+let json = JSON.stringify(user);
 
-*/
+console.log(json); // {"name":"Luna Berry","age":20}
 
+let user2 = JSON.parse(json);
+
+console.log(user);  // {name: 'Luna Berry', age: 20}
+console.log(user2); // {name: 'Luna Berry', age: 20}
 
 
 
@@ -35,10 +40,12 @@ room.occupiedBy = meetup;
 meetup.self = meetup;
 
 console.log( JSON.stringify(meetup, function replacer(key, value) {
-    console.log(key, value);
+    return (key != "" && value == meetup) ? undefined : value;
 }));
+/* Here we also need to test key == "" to exclude the first call where it is 
+normal that value is meetup. */
   
-/* result should be:
+/* result:
 {
     "title":"Conference",
     "occupiedBy":[{"name":"John"},{"name":"Alice"}],
