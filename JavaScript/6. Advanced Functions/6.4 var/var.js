@@ -1,3 +1,5 @@
+/* eslint-disable no-redeclare */
+/* eslint-disable no-constant-condition */
 /* The old "var" */
 /* Summary 
 There are two main differences of var compared to let/const:
@@ -28,7 +30,6 @@ scripts from var to let, to avoid odd errors.*/
 /* "var" has no block scope */
 /* Variables, declared with var, are either function-scoped or global-scoped. 
 They are visible through blocks. For instance: */
-// eslint-disable-next-line no-constant-condition
 if (true) {
     var test = true; // use "var" instead of "let"
 }
@@ -59,7 +60,6 @@ console.log(one); // 1, "one" is visible after loop, it's a global variable
 
 /* If a code block is inside a function, then var becomes a function-level variable: */
 function sayHi() {
-    // eslint-disable-next-line no-constant-condition
     if (true) {
       var phrase = "Hello";
     }
@@ -86,7 +86,107 @@ With var, we can redeclare a variable any number of times.
 If we use var with an already-declared variable, it’s just ignored: */
 var user = "Pete";
 
-// eslint-disable-next-line no-redeclare
 var user = "John"; // this "var" is already declared, but doesn't trigger an error
 
 console.log(user); // John
+
+
+/* "var" variables can be declared below their use */
+/* var declarations are processed when the function starts (or script starts for globals).
+
+In other words, var variables are defined from the beginning of the function, 
+no matter where the definition is (assuming that the definition is not in the 
+nested function). 
+
+So this code:
+*/
+function sayHi() {
+    phrase = "Hello";
+  
+    console.log(phrase);
+  
+    var phrase;
+}
+sayHi();
+
+/* …Is technically the same as this (moved var phrase above): */
+function sayHi() {
+    var phrase;
+  
+    phrase = "Hello";
+  
+    console.log(phrase);
+}
+sayHi();
+
+/* …Or even as this (remember, code blocks are ignored): */
+function sayHi() {
+    phrase = "Hello"; // (*) var phrase exists as here
+  
+    if (false) {    // var inside is processed in beginning of function
+      var phrase;   // regardless if (false) branch never executes
+    }             
+  
+    console.log(phrase);
+}
+sayHi();
+
+/* Hoisting */
+/* People also call such behavior “hoisting” (raising), because all var are 
+“hoisted” (raised) to the top of the function. 
+
+So in the example above, if (false) branch never executes, but that doesn’t matter. 
+The var inside it is processed in the beginning of the function, so at the 
+moment of (*) the variable exists. */
+
+
+/* Declarations are hoisted, but assignments are not. 
+That’s best demonstrated with an example: */
+function sayHi() {
+    console.log(phrase);
+  
+    var phrase = "Hello";
+}
+  
+sayHi();
+
+/* The line var phrase = "Hello" has two actions in it: 
+    1. Variable declaration var
+    2. Variable assignment =.
+    
+The declaration is processed at the start of function execution (“hoisted”), 
+but the assignment always works at the place where it appears. 
+
+So the code works essentially like this:*/
+function sayHi() {
+    var phrase; // declaration works at the start...
+  
+    console.log(phrase); // undefined
+  
+    phrase = "Hello"; // ...assignment - when the execution reaches it.
+}
+  
+sayHi();
+
+/* Because all var declarations are processed at the function start,
+we can reference them at any place. But variables are undefined until the assignments.
+
+In both examples above, console.log runs without an error, because the variable 
+phrase exists. But its value is not yet assigned, so it shows undefined. */
+
+
+
+/* IIFE */
+/* Immediately-Invoked Function Expressions. In the past, as there was only var, 
+and it has no block-level visibility, programmers invented a way to emulate it.
+
+That’s not something we should use nowadays, but you can find them in old scripts.
+
+An IIFE looks like this: */
+(function() {
+
+    var message = "Hello";
+  
+    console.log(message); // Hello
+  
+})();
