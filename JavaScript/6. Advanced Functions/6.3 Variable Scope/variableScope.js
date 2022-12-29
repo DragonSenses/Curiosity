@@ -257,5 +257,119 @@ function say(name){                    Lexical Environment of the call        ou
 
 say("Luna"));   // Hello, Luna 
 
+During the function call we have two Lexical Environments: 
+ - the inner one (for the function call) 
+ - and the outer one (global):
 
+ - The inner Lexical Environment corresponds to the current execution of say. 
+ It has a single property: name, the function argument. We called say("Luna"), 
+ so the value of the name is "Luna".
+
+ - The outer Lexical Environment is the global Lexical Environment. 
+ It has the phrase variable and the function itself.
+
+ The inner Lexical Environment has a reference to the outer one.
+
+ When the code wants to access a variable – the inner Lexical Environment is 
+ searched first, then the outer one, then the more outer one and so on until 
+ the global one.
+
+ If a variable is not found anywhere, that’s an error in strict mode (without 
+use strict, an assignment to a non-existing variable creates a new global 
+variable, for compatibility with old code).
+
+In this example the search proceeds as follows:
+ - For the name variable, the alert inside say finds it immediately in the 
+ inner Lexical Environment.
+ - When it wants to access phrase, then there is no phrase locally, so it 
+ follows the reference to the outer Lexical Environment and finds it there.
+*/
+
+/* Step 4. Returning a Function */
+/* Let’s return to the makeCounter example. 
+
+function makeCounter() {
+    let count = 0;
+  
+    return function() {
+      return count++;
+    };
+}
+
+*/
+counter = makeCounter();
+
+/* At the beginning of each makeCounter() call, a new Lexical Environment 
+object is created, to store variables for this makeCounter run.
+
+So we have two nested Lexical Environments, just like in the example above: 
+
+function makeCounter() {       LexicalEnvironment   |    global LexicalEnvironment
+    let count = 0;      \     of makeCounter() call |
+                         \                  outer   |   [ make Counter: function ]-------> null
+    return function() {   > --- [count: 0]   --->   |   [ counter:  undefined    ] outer
+      return count++;    /                          |
+    };                  /                           |
+}                      /                            |
+                                                    |
+let counter = makeCounter();                        |
+
+
+What’s different is that, during the execution of makeCounter(), a tiny nested 
+function is created of only one line: return count++. We don’t run it yet, only create.
+
+All functions remember the Lexical Environment in which they were made. 
+Technically, there’s no magic here: 
+    all functions have the hidden property named [[Environment]], that keeps 
+    the reference to the Lexical Environment where the function was created:
+
+function makeCounter() {                                 
+    let count = 0;                                        |                              outer
+                                       outer              |   [ make Counter: function ]-------> null
+    return function() { [[Environment]] ->  [count: 0] -->|   [ counter:  undefined    ] 
+      return count++;                                     |
+    };                                                    |
+}                                                         |
+                                                          
+let counter = makeCounter();     
+
+So, counter.[[Environment]] has the reference to {count: 0} Lexical Environment. 
+That’s how the function remembers where it was created, no matter where it’s called. 
+The [[Environment]] reference is set once and forever at function creation time.
+
+Later, when counter() is called, a new Lexical Environment is created for the 
+call, and its outer Lexical Environment reference is taken from 
+    counter.[[Environment]]:
+
+function makeCounter() {                                 
+  let count = 0;                     |               |                              outer
+                                outer|          outer|   [ make Counter: function ]-------> null
+  return function() { \[<empty>] ->  | [count: 0] -->|   [ counter:  function     ] 
+      return count++; /              |               |
+  };                                 |               |
+}                                                    |
+                                                     |     
+let counter = makeCounter();                         |
+console.log( counter() );
+
+Now when the code inside counter() looks for count variable, it first searches 
+its own Lexical Environment (empty, as there are no local variables there), 
+then the Lexical Environment of the outer makeCounter() call, where it finds and changes it.
+
+A variable is updated in the Lexical Environment where it lives.
+
+Here’s the state after the execution:
+function makeCounter() {                                 
+  let count = 0;                     | modified      |                              outer
+                                outer|   here   outer| [ make Counter: function ]-------> null
+  return function() { \[<empty>] ->  | [count: 1] -->| [ counter:  function     ] 
+      return count++; /              |               |
+  };                                 |               |
+}                                                    |
+                                                     |     
+let counter = makeCounter();                         |
+console.log( counter() ); // 0
+
+If we call counter() multiple times, the count variable will be increased to 2,
+ 3 and so on, at the same place.
 */
