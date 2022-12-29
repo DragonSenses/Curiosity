@@ -213,7 +213,7 @@ For instance, here we use the spread syntax to turn the string into array of
 characters: */
 let str = "Hello";
 
-alert( [...str] ); // H,e,l,l,o
+console.log( [...str] ); // H,e,l,l,o
 
 /* The spread syntax internally uses iterators to gather elements, the same way 
 as for..of does.
@@ -229,7 +229,7 @@ iterable (like a string) into an array: */
 let str = "Hello";
 
 // Array.from converts an iterable into an array
-alert( Array.from(str) ); // H,e,l,l,o
+console.log( Array.from(str) ); // H,e,l,l,o
 }
 
 /* The result is the same as [...str].
@@ -242,3 +242,51 @@ But there’s a subtle difference between Array.from(obj) and [...obj]:
 So, for the task of turning something into an array, 
     Array.from tends to be more universal.
 */
+
+/* Copy an array/object */
+/* Remember when we talked about Object.assign() in the past? 
+(See 4.2 Object References and Copying) 
+
+It is possible to do the same thing with the spread syntax. */
+arr = [1, 2, 3];
+
+let arrCopy = [...arr]; // spread the array into a list of parameters
+                        // then put the result into a new array
+
+// do the arrays have the same contents?
+console.log(JSON.stringify(arr) === JSON.stringify(arrCopy)); // true
+
+// are the arrays equal?
+console.log(arr === arrCopy); // false (not same reference)
+
+// modifying our initial array does not modify the copy:
+arr.push(4);
+console.log(arr); // 1, 2, 3, 4
+console.log(arrCopy); // 1, 2, 3
+
+/* Note that it is possible to do the same thing to make a copy of an object: */
+let obj = { a: 1, b: 2, c: 3 };
+
+let objCopy = { ...obj }; // spread the object into a list of parameters
+                          // then return the result in a new object
+
+// do the objects have the same contents?
+console.log(JSON.stringify(obj) === JSON.stringify(objCopy)); // true
+
+// are the objects equal?
+console.log(obj === objCopy); // false (not same reference)
+
+// modifying our initial object does not modify the copy:
+obj.d = 4;
+console.log(JSON.stringify(obj)); // {"a":1,"b":2,"c":3,"d":4}
+console.log(JSON.stringify(objCopy)); // {"a":1,"b":2,"c":3}
+
+/* This way of copying an object is much shorter than 
+
+    let objCopy = Object.assign({}, obj) 
+
+or for an array 
+
+    let arrCopy = Object.assign([], arr) 
+
+so we prefer to use it whenever we can. */
