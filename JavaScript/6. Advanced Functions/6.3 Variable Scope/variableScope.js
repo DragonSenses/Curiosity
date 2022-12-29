@@ -113,3 +113,38 @@ What’s much more interesting, a nested function can be returned: either as
     
 It can then be used somewhere else. No matter where, it still has access 
 to the same outer variables. */
+
+
+/* Below, makeCounter creates the “counter” function that returns the next 
+number on each invocation: */
+function makeCounter() {
+    let count = 0;
+  
+    return function() {
+      return count++;
+    };
+}
+  
+let counter = makeCounter();
+
+console.log( counter() ); // 0
+console.log( counter() ); // 1
+console.log( counter() ); // 2
+
+/* Despite being simple, slightly modified variants of that code have practical uses, 
+for instance, as a random number generator to generate random values for automated tests.
+
+How does this work? If we create multiple counters, will they be independent? 
+What’s going on with the variables here?
+
+Understanding such things is great for the overall knowledge of JavaScript and 
+beneficial for more complex scenarios. So let’s go a bit in-depth. */
+
+
+/* Lexical Environment */
+/* Any understanding without low-level language details would be lacking 
+and incomplete, so get ready.
+
+For clarity, the explanation is split into multiple steps. */
+
+/* Step 1. Variables */
