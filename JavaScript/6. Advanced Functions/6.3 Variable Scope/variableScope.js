@@ -22,3 +22,30 @@ The old var has some notable differences and will be covered later.
 */
 
 /* Code Blocks */
+/* If a variable is declared inside a code block {...}, 
+it’s only visible inside that block.
+
+For example: */
+{
+    // do some job with local variables that should not be seen outside
+  
+    let message = "Hello"; // only visible in this block
+  
+    console.log(message); // Hello
+}
+
+// console.log(message); // Error: message is not defined
+
+/* We can use this to isolate a piece of code that does its own task, 
+with variables that only belong to it: */
+{
+    // show message
+    let message = "Hello";
+    console.log(message);
+}
+  
+{
+    // show another message
+    let message = "Goodbye";
+    console.log(message);
+}
