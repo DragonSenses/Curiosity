@@ -373,3 +373,81 @@ console.log( counter() ); // 0
 If we call counter() multiple times, the count variable will be increased to 2,
  3 and so on, at the same place.
 */
+
+/* Closure */
+/* There is a general programming term “closure”, that developers generally 
+should know. 
+
+A closure is a function that remembers its outer variables and can access them.
+In JavaScript, all functions are naturally closures (there is only one exception, 
+to be covered in The "new Function" syntax). 
+
+That is: they automatically remember where they were created using 
+a hidden [[Environment]] property, and then their code can access 
+outer variables.
+
+When on an interview, a frontend developer gets a question about “what’s a closure?”
+a valid answer would be a definition of the closure and an explanation that 
+all functions in JavaScript are closures, and maybe a few more words about technical 
+details: the [[Environment]] property and how Lexical Environments work.
+*/
+
+/* Garbage Collection */
+/* Usually, a Lexical Environment is removed from memory with all the variables 
+after the function call finishes. That’s because there are no references to it. 
+As any JavaScript object, it’s only kept in memory while it’s reachable.
+
+However, if there’s a nested function that is still reachable after the end 
+of a function, then it has [[Environment]] property that references the lexical environment.
+
+In that case the Lexical Environment is still reachable even after the 
+completion of the function, so it stays alive. 
+
+For example: */
+function f() {
+    let value = 123;
+  
+    return function() {
+      console.log(value);
+    };
+}
+
+let g = f();    // g.[[Environment]] stores a reference to the Lexical Environment
+console.log(g); // of the corresponding f() call
+g(); // 123
+
+/* Please note that if fun() is called many times, and resulting functions are 
+saved, then all corresponding Lexical Environment objects will also be 
+retained in memory. In the code below, all 3 of them: */
+function fun() {
+    let value = Math.random();
+  
+    return function() { console.log(value); };
+}
+
+// 3 functions in array, every one of them links to Lexical Environment
+// from the corresponding fun() run
+let arr = [fun(), fun(), fun()];
+console.log(arr);
+
+/* A Lexical Environment object dies when it becomes unreachable (just like any other object). 
+In other words, it exists only while there’s at least one nested function referencing it. 
+
+In the code below, after the nested function is removed, its enclosing 
+Lexical Environment (and hence the value) is cleaned from memory: */
+function h() {
+    let value = 123;
+
+    return function(){
+        console.log(value);
+    };
+}
+
+let i = h();    // while i function exists, the value stays in memory
+
+i();            // 123
+
+i = null;       // and now the memory is cleaned up
+
+
+/* Real-Life Optimizations */
