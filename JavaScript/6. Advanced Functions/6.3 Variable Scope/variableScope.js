@@ -213,3 +213,49 @@ JavaScript engines also may optimize it, discard variables that are unused to
 save memory and perform other internal tricks, as long as the visible behavior 
 remains as described.
 */
+
+/* Step 2. Function Delcarations
+A function is also a value, like a variable.
+
+The difference is that a Function Declaration is instantly fully initialized.
+
+When a Lexical Environment is created, a Function Declaration immediately 
+becomes a ready-to-use function (unlike let, that is unusable till the declaration).
+
+That’s why we can use a function, declared as Function Declaration, 
+even before the declaration itself.
+
+For example, here’s the initial state of the global Lexical Environment 
+when we add a function:
+
+                                                       outer
+execution start     -------- [phrase: <uninitialized>] ---> null
+                             [say: function          ]
+let phrase = "Hello" ; ---   [           ...         ]
+
+function say(name){
+    console.log( ${phrase}, ${name} );
+}
+
+Naturally, this behavior only applies to Function Declarations, not 
+Function Expressions where we assign a function to a variable, 
+such as let say = function(name)....
+ */
+
+/* Step 3. Inner and Outer Lexical Environment */
+/* When a function runs, at the beginning of the call, a new Lexical Environment 
+is created automatically to store local variables and parameters of the call.
+
+For instance, for say("John"), it looks like this (the execution is at the line, 
+labelled with an arrow):
+
+let phrase = "Hello";
+
+function say(name){                    Lexical Environment of the call        outer
+>   console.log( ${phrase}, ${name} );   [name: "Luna"]  ->  [say: function]   -> null
+}                                                       outer[phrase: "Hello"]
+
+say("Luna"));   // Hello, Luna 
+
+
+*/
