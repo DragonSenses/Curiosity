@@ -451,3 +451,65 @@ i = null;       // and now the memory is cleaned up
 
 
 /* Real-Life Optimizations */
+/* As we’ve seen, in theory while a function is alive, all outer variables are also retained.
+
+But in practice, JavaScript engines try to optimize that. They analyze variable usage 
+and if it’s obvious from the code that an outer variable is not used – it is removed. 
+
+An important side effect in V8 (Chrome, Edge, Opera) is that such 
+variable will become unavailable in debugging.
+
+Try running the example below in Chrome with the Developer Tools open.
+
+When it pauses, in the console type console.log(value).
+*/
+{
+// eslint-disable-next-line no-inner-declarations
+function f() {
+    // eslint-disable-next-line no-unused-vars
+    let value = Math.random();
+  
+    function g() {
+      // eslint-disable-next-line no-debugger
+      debugger; // in console: type alert(value); No such variable!
+    }
+  
+    return g;
+}
+  
+let g = f();
+g();
+}
+
+/* As you could see – there is no such variable! In theory, it should be 
+accessible, but the engine optimized it out.
+
+That may lead to funny (if not such time-consuming) debugging issues. 
+One of them – we can see a same-named outer variable instead of the expected one: */
+{
+// eslint-disable-next-line no-unused-vars
+let value = "Surprise!";
+
+// eslint-disable-next-line no-inner-declarations
+function f() {
+  // eslint-disable-next-line no-unused-vars
+  let value = "the closest value";
+
+  function g() {
+    // eslint-disable-next-line no-debugger
+    debugger; // in console: type console.log(value); Surprise!
+  }
+
+  return g;
+}
+
+let g = f();
+g();
+}
+
+/* This feature of V8 is good to know. 
+    If you are debugging with Chrome/Edge/Opera, sooner or later you will meet it.
+
+That is not a bug in the debugger, but rather a special feature of V8. 
+    Perhaps it will be changed sometime. 
+*/
