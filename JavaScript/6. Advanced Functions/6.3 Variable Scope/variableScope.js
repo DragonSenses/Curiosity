@@ -148,3 +148,68 @@ and incomplete, so get ready.
 For clarity, the explanation is split into multiple steps. */
 
 /* Step 1. Variables */
+/* In JavaScript, every running function, code block {...}, and the script as 
+a whole have an internal (hidden) associated object known as the Lexical Environment.
+
+The Lexical Environment object consists of two parts:
+ 1. Environment Record – an object that stores all local variables as its 
+ properties (and some other information like the value of this).
+ 2. A reference to the outer lexical environment, the one associated with the outer code.
+
+A 'variable' is just a property of the special internal object, Environment Record. 
+ - "To get or change a variable" means "to get or change a property of that object".
+
+In this simple code without functions, there is only one Lexical Environment: 
+                             Lexical Environment    outer
+let phrase = "Hello";   ----- [phrase: "Hello"]     ->  null
+alert(phrase);
+
+This is the so-called global Lexical Environment, associated with the whole script.
+
+On the picture above, the rectangle means Environment Record (variable store) 
+and the arrow means the outer reference. 
+
+The global Lexical Environment has no outer reference, that’s why the arrow points to null.
+
+As the code starts executing and goes on, the Lexical Environment changes.*/
+
+/* Here’s a little bit longer code: 
+                                                       outer
+execution start     -------- [phrase: <uninitialized>] ---> null
+let phrase;         -------- [phrase: undefined      ]
+phrase = "Hello";   -------- [phrase: "Hello"        ]
+phrase = "Bye";     -------- [phrase: "Bye"          ]
+
+
+Rectangles on the right-hand side demonstrate how the 
+global Lexical Environment changes during the execution:
+
+1. When the script starts, the Lexical Environment is pre-populated with all declared variables.
+  * Initially, they are in the "Uninitialized" state. 
+  * That’s a special internal state, it means that the engine knows about the variable, 
+   but it cannot be referenced until it has been declared with let. 
+  * It’s almost the same as if the variable didn’t exist.
+
+2. Then let phrase definition appears. There’s no assignment yet, so its value is undefined. 
+We can use the variable from this point forward.
+
+3. phrase is assigned a value.
+
+4. phrase changes the value.
+
+Everything looks simple for now, right?
+ - A variable is a property of a special internal object, associated with the 
+ currently executing block/function/script.
+ - Working with variables is actually working with the properties of that object.
+
+
+Lexical Environment is a specification object
+“Lexical Environment” is a specification object: it only exists “theoretically” 
+in the language specification to describe how things work. 
+
+We can’t get this object in our code and manipulate it directly.
+
+JavaScript engines also may optimize it, discard variables that are unused to 
+save memory and perform other internal tricks, as long as the visible behavior 
+remains as described.
+*/
