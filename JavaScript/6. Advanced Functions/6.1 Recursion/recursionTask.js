@@ -124,3 +124,55 @@ function factorial(n) {
 }
 
 */
+
+
+/* Fibonacci Numbers */
+/* The sequence of Fibonacci numbers has the formula Fn = Fn-1 + Fn-2. 
+In other words, the next number is a sum of the two preceding ones.
+
+First two numbers are 1, then 2(1+1), then 3(1+2), 5(2+3) and so on: 1, 1, 2, 3, 5, 8, 13, 21....
+
+Fibonacci numbers are related to the Golden ratio and many natural phenomena around us.
+
+Write a function fib(n) that returns the n-th Fibonacci number.
+
+P.S. The function should be fast. The call to fib(77) should take no more than 
+a fraction of a second.
+
+An example of work: */
+
+/**
+ * Recursive fibonacci 
+ * @param {number} n the nth fibonnaci number to attain from the sequence
+ */
+function fibr(n) { 
+    // Basis of Recursion is when n is 0 or 1
+    return (n <= 1) ? n : fibr(n-1) + fibr(n-2);
+}
+
+console.log(fibr(3)); // 2
+console.log(fibr(7)); // 13
+// console.log(fibr(77)); // 5527939700884757  --> Slow
+/* Big Values of n it is very slow, may hang up the engine for time eating all CPU 
+resources because the function fibr() makes too many subcalls. 
+
+For the call: fibr(5) where fibr(5) = fibr(4) + fibr(3) and fibr(4) = fibr(3) + fibr(2) ... 
+
+fibr(3) is evaluated twice, while fibr(2) is evaluated 3 times. The total computations
+continues to grow faster than n. 
+
+We can optimize by remembering already-evaluated values: if a value of say fib(3) is
+calculated once, then just reuse it in future computations
+*/                                        
+
+/* Dynamic Programming Bottom-Up Approach 
+
+
+*/
+function fib(n) { 
+    // Dynamic Programming -> Store already calculated results 
+}
+
+console.log(fib(3)); // 2
+console.log(fib(7)); // 13
+console.log(fib(77)); // 5527939700884757
