@@ -167,12 +167,71 @@ calculated once, then just reuse it in future computations
 
 /* Dynamic Programming Bottom-Up Approach 
 
+Use a loop, instead of going from n down to lower values, make a loop that 
+starts from 1 and 2, then gets fib(3) as their sum, then fib(4) as the sum of
+the previous two values.
 
+On each step, only need to remember two previous values. 
+
+Note: The loop starts with i=3, because the first and the second sequence 
+values are hard-coded into variables a=1, b=1.
 */
-function fib(n) { 
-    // Dynamic Programming -> Store already calculated results 
+function fib(n) {
+    // Initialize the first two numbers in fibonnaci sequence 
+    let a = 1;
+    let b = 1; 
+    let c;  // c will store the sum
+
+    for(let i = 3; i <= n; i++){
+        c = a + b;
+        a = b;
+        b = c;
+    }
+
+    return b;
 }
 
 console.log(fib(3)); // 2
 console.log(fib(7)); // 13
 console.log(fib(77)); // 5527939700884757
+
+/* Breakdown of the fib(n) algorithm */
+
+// Starting off we call fib(5)
+// a = fib(1), b = fib(2), these values are by definition 1
+let a = 1, b = 1;
+
+// get c = fib(3) as their sum
+let c = a + b;
+
+/* we now have fib(1), fib(2), fib(3)
+a  b  c
+1, 1, 2
+*/
+
+/* Now we want to get fib(4) = fib(2) + fib(3).
+
+Let’s shift the variables: a,b will get fib(2),fib(3), and c will get their sum: 
+*/
+a = b; // now a = fib(2)
+b = c; // now b = fib(3)
+c = a + b; // c = fib(4)
+
+/* now we have the sequence:
+   a  b  c
+1, 1, 2, 3
+*/
+
+/* The next step gives another sequence number: */
+a = b; // now a = fib(3)
+b = c; // now b = fib(4)
+c = a + b; // c = fib(5)
+
+/* now the sequence is (one more number):
+      a  b  c
+1, 1, 2, 3, 5
+*/
+
+/* …And so on until we get the needed value. 
+    That’s much faster than recursion and involves no duplicate computations! 
+*/
