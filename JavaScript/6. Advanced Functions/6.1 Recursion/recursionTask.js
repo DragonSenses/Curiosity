@@ -235,3 +235,81 @@ c = a + b; // c = fib(5)
 /* …And so on until we get the needed value. 
     That’s much faster than recursion and involves no duplicate computations! 
 */
+
+
+
+/* Output a single-linked list */
+/* Let’s say we have a single-linked list */
+let list = {
+  value: 1,
+  next: {
+    value: 2,
+    next: {
+      value: 3,
+      next: {
+        value: 4,
+        next: null
+      }
+    }
+  }
+};
+
+/* Write a function printList(list) that outputs list items one-by-one.
+
+Make two variants of the solution: using a loop and using recursion.
+
+What’s better: with recursion or without it? */
+
+/**
+ * Loop-based variant that prints out the contents of the list one-by-one.
+ * 
+ * ote that we use a temporary variable tmp to walk over the list. 
+ * Technically, we could use a function parameter list instead:
+ * 
+ *  while(list) { ... }
+ * 
+ * …But that would be unwise. In the future we may need to extend a function, 
+ * do something else with the list. If we change list, then we lose such ability.
+ * 
+ * Talking about good variable names, list here is the list itself. 
+ * The first element of it. And it should remain like that. That’s clear and reliable.
+ * 
+ * From the other side, the role of tmp is exclusively a list traversal, 
+ * like i in the for loop.
+ * 
+ * @param {object LinkedList} list 
+ */
+function printList(list){
+    let tmp = list;
+
+    while(tmp){
+        console.log(tmp.value);
+        tmp = tmp.next;
+    }
+}
+
+printList(list);
+
+
+/**
+ * Recursive variant of printing the contents of the linked list.
+ * @param {object LinkedList} list 
+ */
+function printListRecursive(list){
+  console.log(list.value); // output the current item
+
+  if (list.next) {
+    printListRecursive(list.next); // do the same for the rest of the list
+  }
+}
+
+printListRecursive(list);
+
+/* Iterative vs Recursive. Which is better? 
+Technically, the loop is more effective. These two variants do the same, but the 
+loop does not spend resources for nested function calls.
+
+From the other side, the recursive variant is shorter and sometimes easier to 
+understand. 
+
+I prefer iterative because of resource efficiency. */
