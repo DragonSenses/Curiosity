@@ -313,3 +313,68 @@ From the other side, the recursive variant is shorter and sometimes easier to
 understand. 
 
 I prefer iterative because of resource efficiency. */
+
+
+
+/* Output a single-linked list in the reverse order */
+/* Make two solutions: using a loop and using a recursion. */
+
+/**
+ * Recursively print the single linked list in reverse order. 
+ * @param {LinkedList object} list 
+ */
+function printReverseListRecursive(list) {
+    
+    if(list.next){
+        printReverseListRecursive(list.next);
+    }
+
+    console.log(list.value);
+}
+
+printReverseListRecursive(list);
+
+/**
+ * Loop variant that prints single linked list in reverse order.
+ * @param {LinkedList object} list 
+ */
+function printReverseList(list){
+    let stack = [];
+    let tmp = list;
+
+    // Populate the stack with linked list contents
+    while(tmp) {
+        stack.push(tmp.value);
+        tmp = tmp.next;
+    }
+
+    // Pop off each element off the stack 
+    for(let i = 0; stack.length; i++){
+        console.log( stack.pop() );
+    }
+}
+
+printReverseList(list);
+
+
+/* Alternative solution with array arr
+
+function printReverseList(list) {
+  let arr = [];
+  let tmp = list;
+
+  while (tmp) {
+    arr.push(tmp.value);
+    tmp = tmp.next;
+  }
+
+  for (let i = arr.length - 1; i >= 0; i--) {
+    console.log( arr[i] );
+  }
+}
+
+*/
+
+/* Note: Please note that the recursive solution actually does exactly the 
+same: it follows the list, remembers the items in the chain of nested calls 
+(in the execution context stack), and then outputs them. */
