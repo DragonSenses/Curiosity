@@ -44,7 +44,7 @@ function sayHi1() {
     console.log("Hi1");
 }
 
-console.log(sayHi1.name); // sayHi
+console.log(sayHi1.name); // sayHi1
 
 /* The name-assigning logic is smart. It also assigns the correct name to a 
 function even if it’s created without one, and then immediately assigned: */
@@ -203,6 +203,7 @@ then external code is unable to access it. Only nested functions may modify it.
 
 And if it’s bound to a function, then such a thing is possible: 
 
+// Same code above
 function makeCounter() {
 
     function counter() {
@@ -255,7 +256,6 @@ sayHelloTo("Luna");
  1. It allows the function to reference itself internally.
  2. It is not visible outside of the function.
  
-
  For instance, the function sayHiTo below calls itself again with "Guest" if no who is 
  provided:
  */
@@ -288,23 +288,23 @@ let sayHi2 = function(who) {
 /* If the function gets assigned to another variable instead, the code will 
 start to give errors: 
 
-let sayHi = function(who) {
+let sayHi2 = function(who) {
   if (who) {
     console.log(`Hello, ${who}`);
   } else {
-    sayHi("Guest"); // Error: sayHi is not a function
+    sayHi2("Guest"); // Error: sayHi2 is not a function
   }
 };
 
-let welcome = sayHi;
-sayHi = null;
+let welcome = sayHi2;
+sayHi2 = null;
 
-welcome(); // Error, the nested sayHi call doesn't work any more!
+welcome(); // Error, the nested sayHi2 call doesn't work any more!
 
 
-That happens because the function takes sayHi from its outer lexical environment.
-There’s no local sayHi, so the outer variable is used. And at the moment of the 
-call that outer sayHi is null.
+That happens because the function takes sayHi2 from its outer lexical environment.
+There’s no local sayHi2, so the outer variable is used. And at the moment of the 
+call that outer sayHi2 is null.
 
 The optional name which we can put into the Function Expression is meant to solve 
 exactly these kinds of problems.
