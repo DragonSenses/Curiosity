@@ -183,3 +183,77 @@ function sum(a){
 
 console.log( sum(1)(2) ); // 3
 console.log( sum(5)(-1) ); // 4
+
+
+/* Is variable visible? */
+/* What will be the result of this code? */
+// eslint-disable-next-line no-unused-vars
+let x = 1;
+
+function func() {
+  console.log(x); // ?
+
+  let x = 2;
+}
+
+func();
+
+/* Answer: Result is an error.
+"Uncaught ReferenceError: Cannot access 'x' before initialization"
+
+In this example we can observe the peculiar difference between a 
+    “non-existing” and “uninitialized” variable.
+
+A variable starts in the “uninitialized” state from the moment when 
+the execution enters a code block (or a function). And it stays uninitalized 
+until the corresponding let statement.
+
+In other words, a variable technically exists, but can’t be used before let.
+
+This zone of temporary unusability of a variable (from the beginning of the 
+    code block till let) is sometimes called the “dead zone”.
+
+function func() {
+    // the local variable x is known to the engine from the beginning of the function,
+    // but "uninitialized" (unusable) until let ("dead zone")
+    // hence the error
+    
+    console.log(x); // ReferenceError: Cannot access 'x' before initialization
+    
+    let x = 2;
+}
+
+*/
+
+
+/* Filter through function */
+/* We have a built-in method arr.filter(f) for arrays. It filters all elements 
+through the function f. If it returns true, then that element is returned in 
+the resulting array.
+
+Make a set of “ready to use” filters: 
+ - inBetween(a, b) – between a and b or equal to them (inclusively).
+ - inArray([...]) – in the given array.
+ 
+The usage must be like this:
+ - arr.filter(inBetween(3,6)) – selects only values between 3 and 6.
+ - arr.filter(inArray([1,2,3])) – selects only elements matching with one of 
+   the members of [1,2,3].
+
+For instance:
+*/
+let arr = [1, 2, 3, 4, 5, 6, 7];
+
+console.log( arr.filter(inBetween(3, 6)) ); // 3,4,5,6
+
+console.log( arr.filter(inArray([1, 2, 10])) ); // 1,2
+
+
+/* .. your code for inBetween and inArray */
+function inBetween(){
+
+}
+
+function inArray(){
+
+}
