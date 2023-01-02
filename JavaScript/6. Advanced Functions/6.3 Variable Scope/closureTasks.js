@@ -249,11 +249,50 @@ console.log( arr.filter(inBetween(3, 6)) ); // 3,4,5,6
 console.log( arr.filter(inArray([1, 2, 10])) ); // 1,2
 
 
-/* .. your code for inBetween and inArray */
-function inBetween(){
-
+/**
+ * Filters the array between a and b or equal to them (inclusively)
+ */
+function inBetween(a, b){
+    return function(x) {
+        return x >= a && x <= b;
+    };
 }
 
-function inArray(){
+function inArray(arr){
+    return function(x) {
+        return arr.includes(x);
+    };
+}
 
+
+/* Sort by field */
+/* We’ve got an array of objects to sort: */
+let users = [
+    { name: "John", age: 20, surname: "Johnson" },
+    { name: "Pete", age: 18, surname: "Peterson" },
+    { name: "Ann", age: 19, surname: "Hathaway" }
+];
+
+/* The usual way to do that would be: */
+// by name (Ann, John, Pete)
+users.sort((a, b) => a.name > b.name ? 1 : -1);
+
+// by age (Pete, Ann, John)
+users.sort((a, b) => a.age > b.age ? 1 : -1);
+
+/* Can we make it even less verbose, like this? */
+users.sort(byField('name'));
+users.sort(byField('age'));
+
+/* So, instead of writing a function, just put byField(fieldName).
+
+Write the function byField that can be used for that. */
+
+/* Answer: Given the example usage of 
+users.sort( (x,y) => x.FIELD > y.FIELD ? 1 : -1 )); 
+
+We can access the objects field via Computed properties, or
+square brackets in object literal */
+function byField(fieldName){
+    return (x, y) => x[fieldName] > y[fieldName] ? 1 : -1;
 }
