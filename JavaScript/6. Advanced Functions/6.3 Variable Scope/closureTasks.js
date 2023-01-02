@@ -109,3 +109,26 @@ console.log( counter2() ); // 1
 This is because they have independent outer Lexical Environments, each one has
 its own count. 
 */
+
+
+
+/* Counter object */
+/* Here a counter object is made with the help of the constructor function.
+
+Will it work? What will it show? */
+function Counter() {
+    let count = 0;
+  
+    this.up = function() {
+      return ++count;
+    };
+    this.down = function() {
+      return --count;
+    };
+  }
+
+counter = new Counter();
+
+console.log( counter.up() ); // ?
+console.log( counter.up() ); // ?
+console.log( counter.down() ); // ?
