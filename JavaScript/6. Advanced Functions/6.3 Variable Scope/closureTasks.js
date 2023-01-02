@@ -64,4 +64,48 @@ function makeWorker() {                                                      |
 let workerName = "John";                                                     |
 let work = makeWorker();                                                     |
 work(); // Pete                                                              |
+
+The result is Pete since it first searches its own Lexical Environment <empty>,
+then the Lexical Environment of the outer function and sees workerName: "Pete",
+then search ends. 
+
+If there were no let workName in makeWorker(), then the search would go 
+outside and take the global variable as we can see from the chain above. 
+In that case the result would be "John".
+*/
+
+
+
+/* Are counters independent? */
+/* Here we make two counters: counter and counter2 using the same makeCounter 
+function.
+
+Are they independent? What is the second counter going to show? 0,1 or 2,3 or 
+something else? */
+function makeCounter() {
+    let count = 0;
+  
+    return function() {
+      return count++;
+    };
+}
+
+let counter = makeCounter();
+let counter2 = makeCounter();
+
+console.log( counter() ); // 0
+console.log( counter() ); // 1
+
+console.log( counter2() ); // ?
+console.log( counter2() ); // ?
+
+
+/* Answer: Yes counters are independent. 
+The second counter will output 0,1 in these lines:
+
+console.log( counter2() ); // 0
+console.log( counter2() ); // 1
+
+This is because they have independent outer Lexical Environments, each one has
+its own count. 
 */
