@@ -115,7 +115,13 @@ its own count.
 /* Counter object */
 /* Here a counter object is made with the help of the constructor function.
 
-Will it work? What will it show? */
+Will it work? What will it show? 
+
+console.log( counter.up() ); // ?
+console.log( counter.up() ); // ?
+console.log( counter.down() ); // ?
+
+*/
 function Counter() {
     let count = 0;
   
@@ -129,6 +135,51 @@ function Counter() {
 
 counter = new Counter();
 
-console.log( counter.up() ); // ?
-console.log( counter.up() ); // ?
-console.log( counter.down() ); // ?
+/* Answer:  1, 2, 1. 
+It will work since both nested functions are created within the same outer
+Lexical Environment, so they share access to the same count variable. */
+console.log( counter.up() ); // 1
+console.log( counter.up() ); // 2
+console.log( counter.down() ); // 1
+
+/* Function in if */
+/* Look at the code. What will be the result of the call at the last line? */
+let phrase = "Hello";
+
+// eslint-disable-next-line no-constant-condition
+if (true) {
+  let user = "John";
+
+  // eslint-disable-next-line no-inner-declarations, no-unused-vars
+  function sayHi() {
+    console.log(`${phrase}, ${user}`);
+  }
+}
+
+sayHi();
+
+/* Answer: Result is an error.
+The function sayHi is declared inside the if, so it only lives inside it. 
+There is no sayHi outside. */
+
+/* Sum with closures */
+/* Write function sum that works like this: sum(a)(b) = a+b.
+
+Yes, exactly this way, using double parentheses (not a mistype).
+
+For instance: 
+sum(1)(2) = 3
+sum(5)(-1) = 4
+*/
+
+/* Answer: For the second parentheses to work, the first ones must return 
+a function. */
+function sum(a){
+
+    return function(b){
+        return a + b; // takes "a" from the outer lexical environment
+    };
+}
+
+console.log( sum(1)(2) ); // 3
+console.log( sum(5)(-1) ); // 4
