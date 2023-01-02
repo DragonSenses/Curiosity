@@ -308,7 +308,7 @@ function makeArmy() {
     let i = 0;
     while (i < 10) {
       let shooter = function() { // create a shooter function,
-        alert( i ); // that should show its number
+        console.log( i ); // that should show its number
       };
       shooters.push(shooter); // and add it to the array
       i++;
@@ -335,5 +335,151 @@ Fix the code so that they work as intended. */
 1. Creates an empty array named "shooters"
     let shooters = [];
     
-2. 
+2. Fills it with functions via shooters.push(function) in the loop.
+
+Every element is a function, so the resulting array looks like this:
+
+shooters = [
+  function () { console.log(i); },
+  function () { console.log(i); },
+  function () { console.log(i); },
+  function () { console.log(i); },
+  function () { console.log(i); },
+  function () { console.log(i); },
+  function () { console.log(i); },
+  function () { console.log(i); },
+  function () { console.log(i); },
+  function () { console.log(i); }
+];
+
+The array is returned from the function.
+
+Then, later, the call to any member, e.g. army[5]() will get the element 
+army[5] from the array (which is a function) and calls it.
+
+
+Now why do all such functions show the same value, 10?
+
+That’s because there’s no local variable i inside shooter functions. 
+When such a function is called, it takes i from its outer lexical environment.
+
+Then, what will be the value of i?
+
+If we look at the source:
+function makeArmy() {
+  ...
+  let i = 0;
+  while (i < 10) {
+    let shooter = function() { // shooter function
+      console.log( i ); // should show its number
+    };
+    shooters.push(shooter); // add function to the array
+    i++;
+  }
+  ...
+}
+
+We can see that all shooter functions are created in the lexical environment 
+of makeArmy() function. But when army[5]() is called, makeArmy has already 
+finished its job, and the final value of i is 10 (while stops at i=10).
+
+As the result, all shooter functions get the same value from the outer 
+lexical environment and that is, the last value, i=10.
+
+                                       while iteration
+shooters = [                           LexicalEnvironment
+    function () { console.log(i); } -> [<empty>]             makeArmy()
+    function () { console.log(i); } -> [<empty>]    outer    LexicalEnvironment
+    function () { console.log(i); } -> [<empty>]   ------>   [i: 10]
+    ...
+    function () { console.log(i); } -> [<empty>]
+];
+
+As you can see above, on each iteration of a while {...} block, a new 
+lexical environment is created. So, to fix this, we can copy the value 
+of i into a variable within the while {...} block, like this:
+
+function makeArmy() {
+  let shooters = [];
+
+  let i = 0;
+  while (i < 10) {
+      let j = i;         // Copy Value of i to j
+      let shooter = function() { // shooter function
+        console.log( j ); // should show its number
+      };
+    shooters.push(shooter);
+    i++;
+  }
+
+  return shooters;
+}
+
+Here let j = i declares an “iteration-local” variable j and copies i into it. 
+Primitives are copied “by value”, so we actually get an independent copy of i, 
+belonging to the current loop iteration.
+
+The shooters work correctly, because the value of i now lives a little bit 
+closer. Not in makeArmy() Lexical Environment, but in the Lexical Environment 
+that corresponds to the current loop iteration:
+
+                                       while iteration
+shooters = [                           LexicalEnvironment
+    function () { console.log(i); } -> [j: 0 ]             makeArmy()
+    function () { console.log(i); } -> [j: 1 ]    outer    LexicalEnvironment
+    function () { console.log(i); } -> [j: 2 ]   ------>   ...
+    ...
+    function () { console.log(i); } -> [j: 10]
+];
 */
+
+/* Such a problem could also be avoided if we used for in the beginning, like this:
+function makeArmy() {
+
+  let shooters = [];
+
+  for(let i = 0; i < 10; i++) {
+    let shooter = function() { // shooter function
+      console.log( i ); // should show its number
+    };
+    shooters.push(shooter);
+  }
+
+  return shooters;
+}
+
+let army = makeArmy();
+
+army[0](); // 0
+army[5](); // 5
+
+
+That’s essentially the same, because for on each iteration generates a 
+new lexical environment, with its own variable i. So shooter generated in 
+every iteration references its own i, from that very iteration.
+
+                                       for iteration
+shooters = [                           LexicalEnvironment
+    function () { console.log(i); } -> [i: 0 ]             makeArmy()
+    function () { console.log(i); } -> [i: 1 ]    outer    LexicalEnvironment
+    function () { console.log(i); } -> [i: 2 ]   ------>   ...
+    ...
+    function () { console.log(i); } -> [i: 10]
+];
+*/
+
+
+/* Recap of Key Points
+
+All functions “on birth” receive a hidden property [[Environment]] with a 
+reference to the Lexical Environment of their creation.
+
+During the execution of makeCounter(), a tiny nested function is created.
+
+It doesn’t matter whether the function is created using Function Declaration 
+or Function Expression. All functions get the [[Environment]] property that 
+references the Lexical Environment in which they were made. So our new tiny 
+nested function gets it as well.
+
+For our new nested function the value of [[Environment]] is the current 
+Lexical Environment of makeCounter() (where it was born). */
