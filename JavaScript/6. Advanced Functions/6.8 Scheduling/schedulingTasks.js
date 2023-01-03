@@ -7,7 +7,44 @@ Make two variants of the solution.
     2. Using nested setTimeout.
 */
 
+/** 
+ * Outputs a number every second, starting from from and ending with to.
+ * @param {number} from start time
+ * @param {number} to end time
+ */
+function printNumbers(from, to){
+    let current = from; // Store the current time
 
+    let timerId = setInterval(function() {
+      console.log(current); // print current time
+      if (current == to) {  // stop further calls when end time is reached
+        clearInterval(timerId);
+      }
+      current++;
+    }, 1000);
+
+}
+
+printNumbers(5, 10);
+
+/**
+ * Outputs a number every second, starting from from and ending with to.
+ * @param {number} from start time
+ * @param {number} to end time
+ */
+function printNumbers2(from, to){
+    let current = from;
+    
+    setTimeout(function go() {
+      console.log(current);
+      if (current < to) {
+        setTimeout(go, 1000);
+      }
+      current++;
+    }, 1000);
+}
+
+printNumbers2(5, 10);
 
 
 
