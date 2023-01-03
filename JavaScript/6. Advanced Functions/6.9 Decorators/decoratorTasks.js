@@ -41,3 +41,39 @@ function spy(func) {
 
   return wrapper;
 }
+
+
+/* Delaying Decorator */
+/* Create a decorator delay(f, ms) that delays each call of f by ms milliseconds.
+
+In other words, delay(f, ms) returns a "delayed by ms" variant of f.
+
+In the code above, f is a function of a single argument, but your solution should 
+pass all arguments and the context this.
+
+For instance: */
+function f(x) {
+  console.log(x);
+}
+
+// create wrappers
+let f1000 = delay(f, 1000);
+let f1500 = delay(f, 1500);
+
+f1000("test"); // shows "test" after 1000ms
+f1500("test"); // shows "test" after 1500ms
+
+
+/**
+ * Decorator that returns the function delayed by ms
+ * @param {function} func function to decorate with a delay
+ * @param {number} ms the amount of milliseconds to delay func by
+ * @returns returns a function that is "delayed by ms" variant of func
+ */
+function delay(func, ms){
+
+  return function(){
+    setTimeout( () => f.apply(this, arguments), ms);
+  };
+
+}
