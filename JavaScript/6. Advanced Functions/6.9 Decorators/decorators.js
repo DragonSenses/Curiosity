@@ -6,6 +6,12 @@ Decorator is a wrapper around a function that alters its behavior.
 Decorators can be seen as “features” or “aspects” that can be added to a function. 
 We can add one or add many. And all this without changing its code!
 
+- func.call(context, args...) runs the function providing the first argument as
+  "this", and the next as arguments. It allows to call a function explicitly
+  setting this
+
+- fun.apply(context, args)  // TODO
+
 To implement cachingDecorator, we studied methods:
  - func.call(context, arg1, arg2…) – calls func with given context and arguments.
  - func.apply(context, args) – calls func passing context as this and array-like 
@@ -194,3 +200,104 @@ let admin = { name: "Admin" };
 // use call to pass different objects as "this"
 sayHi.call( user );   // Luna
 sayHi.call( admin );  // Admin
+
+
+/* And here we use call to call say with the given context and phrase: */
+function say(phrase) {
+  console.log(this.name + ': ' + phrase);
+}
+
+/* let user = { name: "Luna" }; */
+
+// user becomes this, and "Hello" becomes the first argument
+say.call( user, "Hello" ); // Luna: Hello
+
+
+/* In our case, we can use call in the wrapper to pass the context to the 
+original function: */
+worker = {
+  someMethod() {
+    return 1;
+  },
+
+  slow(x) {
+    console.log("Called with " + x);
+    return x * this.someMethod(); // (*)
+  }
+};
+
+function cachingDecoratorFixed(func) {
+  let cache = new Map();
+  return function(x) {
+    if (cache.has(x)) {
+      return cache.get(x);
+    }
+    // let result = func(x); // wrong way
+    let result = func.call(this, x); // "this" is passed correctly now
+    cache.set(x, result);
+    return result;
+  };
+}
+
+worker.slow = cachingDecoratorFixed(worker.slow); // now make it caching
+
+console.log( worker.slow(2) ); // works
+console.log( worker.slow(2) ); // works, doesn't call the original (cached)
+
+
+/* Now everything is fine.
+
+To make it all clear, let’s see more deeply how this is passed along: 
+
+1. After the decoration worker.slow is now the wrapper function (x) { ... }.
+
+2. So when worker.slow(2) is executed, the wrapper gets 2 as an argument and 
+  this=worker (it’s the object before dot).
+  
+3. Inside the wrapper, assuming the result is not yet cached, func.call(this, x) 
+passes the current this (=worker) and the current argument (=2) 
+to the original method. */
+
+
+
+/* Going multi-argument */
+/* Now let’s make cachingDecorator even more universal. Till now it was working 
+only with single-argument functions.
+
+Now how to cache the multi-argument worker.slow method? */
+worker = {
+  slow(min, max) {
+    return min + max; // scary CPU-hogger is assumed
+  }
+};
+
+// should remember same-argument calls
+worker.slow = cachingDecorator(worker.slow);
+
+/* Previously, for a single argument x we could just cache.set(x, result) to 
+save the result and cache.get(x) to retrieve it. But now we need to remember 
+the result for a combination of arguments (min,max). The native Map takes 
+single value only as the key. 
+
+There are many solutions possible:
+  1. Implement a new (or use a third-party) map-like data structure that is 
+  more versatile and allows multi-keys.
+
+  2. Use nested maps: cache.set(min) will be a Map that stores the pair (max, result). 
+  So we can get result as cache.get(min).get(max).
+
+  3. Join two values into one. In our particular case we can just use a 
+  string "min,max" as the Map key. For flexibility, we can allow to provide a 
+  hashing function for the decorator, that knows how to make one value from many.
+
+For many practical applications, the 3rd variant is good enough, so we’ll stick to it.
+
+Also we need to pass not just x, but all arguments in func.call. 
+
+Let’s recall that in a function() we can get a pseudo-array of its arguments as 
+arguments, 
+  so func.call(this, x) should be replaced with func.call(this, ...arguments).
+*/
+
+/* Here's a more powerful cachingDecorator */
+// TODO multiargument, hashing, cachingDecorator. Use func.call(this, ...args)
