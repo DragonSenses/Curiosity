@@ -77,3 +77,37 @@ function delay(func, ms){
   };
 
 }
+
+/* Note: How the arrow function is used here. As we know, arrow functions do 
+not have own this and arguments, so f.apply(this, arguments) takes this and 
+arguments from the wrapper.
+
+If we pass a regular function, setTimeout would call it without arguments and 
+this=window (assuming we’re in the browser).
+
+We still can pass the right this by using an intermediate variable, but that’s 
+a little bit more cumbersome: */
+
+/**
+ * Decorator that returns the function delayed by ms
+ * @param {function} func function to decorate with a delay
+ * @param {number} ms the amount of milliseconds to delay func by
+ * @returns returns a function that is "delayed by ms" variant of func
+ */
+function delay2(f, ms) {
+
+  return function(...args) {
+    let savedThis = this; // store this into an intermediate variable
+    setTimeout(function() {
+      f.apply(savedThis, args); // use it here
+    }, ms);
+  };
+
+}
+
+// create wrappers
+let f500 = delay2(f, 500);
+let f2500 = delay2(f, 2500);
+
+f500("test"); // shows "test" after 500ms
+f2500("test"); // shows "test" after 2500ms
