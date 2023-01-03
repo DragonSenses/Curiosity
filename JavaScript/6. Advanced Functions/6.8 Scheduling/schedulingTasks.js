@@ -46,7 +46,28 @@ function printNumbers2(from, to){
 
 printNumbers2(5, 10);
 
+/* Note that in both solutions, there is an initial delay before the first output.
+The function is called after 1000ms the first time. 
 
+If we also want the function to run immediately, then we can add an 
+additional call on a separate line, like this: 
+*/
+function printNumbersImmediately(from, to) {
+    let current = from;
+  
+    function go() {
+      console.log(current);
+      if (current == to) {
+        clearInterval(timerId);
+      }
+      current++;
+    }
+            // Note: works if current != to, so need to bounds check arguments
+    go();   // Added additional call that only outputs current and increments
+    let timerId = setInterval(go, 1000);
+}
+  
+printNumbersImmediately(5, 10);
 
 
 /* What will setTimeout show? */
@@ -68,3 +89,12 @@ setTimeout(() => console.log(i), 100); // ?
 for(let j = 0; j < 100000000; j++) {
   i++;
 }
+
+
+/* Answer: setTimeout will output 100000000
+
+Any setTimeout will run only after the current code has finished.
+
+The i will be the last one: 100_000_000.
+    Or 100_000_000 (100,000,000) for readability
+*/
