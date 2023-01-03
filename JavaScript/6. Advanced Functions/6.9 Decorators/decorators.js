@@ -9,8 +9,22 @@ We can add one or add many. And all this without changing its code!
 - func.call(context, args...) runs the function providing the first argument as
   "this", and the next as arguments. It allows to call a function explicitly
   setting this
+    * call expects a list of arguments
+    * allows to pass iterable args as the list to call through spread syntax ...
+  
+- func.apply(context, args) runs the func setting this=context and using an 
+array-like object args as the list of arguments.
+  * apply takes an array-like object with them.
+  * only accepts array-like args
+  
+They perform the same call of func with given context and arguments.
+So these two calls are almost equivalent:
+  * func.call(context, ...args);
+  * func.apply(context, args);
 
-- fun.apply(context, args)  // TODO
+…And for objects that are both iterable and array-like, such as a real array, 
+we can use any of them, but apply will probably be faster, because most 
+JavaScript engines internally optimize it better.
 
 To implement cachingDecorator, we studied methods:
  - func.call(context, arg1, arg2…) – calls func with given context and arguments.
@@ -300,4 +314,86 @@ arguments,
 */
 
 /* Here's a more powerful cachingDecorator */
-// TODO multiargument, hashing, cachingDecorator. Use func.call(this, ...args)
+// multiargument, hashing, cachingDecorator that uses func.call(this, ...args)
+worker = {
+  slow(min, max) {
+    console.log(`Called with ${min},${max}`);
+    return min + max;
+  }
+};
+
+function cachingDecoratorPowerful(func, hash) {
+  let cache = new Map();
+  return function() {
+    let key = hash(arguments); // (*)
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+
+    let result = func.call(this, ...arguments); // (**)
+
+    cache.set(key, result);
+    return result;
+  };
+}
+
+function hash(args) {
+  return args[0] + ',' + args[1];
+}
+
+worker.slow = cachingDecoratorPowerful(worker.slow, hash);
+
+console.log( worker.slow(3, 5) ); // works
+console.log( "Again " + worker.slow(3, 5) ); // same (cached)
+
+/* Now it works with any number of arguments (though the hash function would 
+also need to be adjusted to allow any number of arguments. An interesting way 
+to handle this will be covered below). 
+
+There are two changes:
+ 1) In the line (*) it calls hash to create a single key from arguments. Here 
+ we use a simple “joining” function that turns arguments (3, 5) into the key 
+ "3,5". More complex cases may require other hashing functions.
+
+ 2) Then (**) uses func.call(this, ...arguments) to pass both the context and 
+ all arguments the wrapper got (not just the first one) to the original function. 
+*/
+
+
+/* func.apply() */
+/* Syntax:
+      func.apply(context, args)
+
+It runs the func setting this=context and using an array-like object args as 
+the list of arguments.
+
+The only syntax difference between call and apply is that call expects a list 
+of arguments, while apply takes an array-like object with them.
+
+So these two calls are almost equivalent:
+  * func.call(context, ...args);
+  * func.apply(context, args);
+
+They perform the same call of func with given context and arguments.
+
+There’s only a subtle difference regarding args:
+  -The spread syntax ... allows to pass iterable args as the list to call.
+  -The apply accepts only array-like args.
+
+…And for objects that are both iterable and array-like, such as a real array, 
+we can use any of them, but apply will probably be faster, because most 
+JavaScript engines internally optimize it better.
+*/
+
+/* Call Forwarding */
+/* Passing all arguments along with the context to another function is called 
+call forwarding. 
+
+That’s the simplest form of it:
+
+let wrapper = function() {
+  return func.apply(this, arguments);
+};
+
+When an external code calls such wrapper, it is indistinguishable from the 
+call of the original function func. */
