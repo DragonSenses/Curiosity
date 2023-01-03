@@ -397,3 +397,81 @@ let wrapper = function() {
 
 When an external code calls such wrapper, it is indistinguishable from the 
 call of the original function func. */
+
+/* Borrowing a method */
+/* Now let’s make one more minor improvement in the hashing function: 
+
+function hash(args) {
+  return args[0] + ',' + args[1];
+}
+
+As of now, it works only on two arguments. It would be better if it could 
+glue any number of args.
+
+The natural solution would be to use arr.join method:
+
+function hash(args) {
+  return args.join();
+}
+
+…Unfortunately, that won’t work. Because we are calling hash(arguments), 
+and arguments object is both iterable and array-like, but not a real array.
+
+So calling join on it would fail, as we can see below:
+
+function hash() {
+  console.log( arguments.join() ); // Error: arguments.join is not a function
+}
+
+hash(1, 2);
+*/
+
+/* Still, there’s an easy way to use array join: */
+function hashMultiArg() {
+  console.log( [].join.call(arguments) ); // 1,2
+}
+
+hashMultiArg(1, 2);
+
+/* The trick is called method borrowing.
+
+We take (borrow) a join method from a regular array ([].join) and use 
+[].join.call to run it in the context of arguments. 
+
+Why does it work?
+
+That’s because the internal algorithm of the native method arr.join(glue) 
+is very simple. Taken from the specification almost “as-is”: 
+
+  1. Let glue be the first argument or, if no arguments, then a comma ",".
+  2. Let result be an empty string.
+  3. Append this[0] to result.
+  4. Append glue and this[1].
+  5. Append glue and this[2].
+  6. …Do so until this.length items are glued.
+  7. Return result.
+
+So, technically it takes this and joins this[0], this[1] …etc together. 
+It’s intentionally written in a way that allows any array-like this (not a 
+coincidence, many methods follow this practice). That’s why it also works 
+with this=arguments.*/
+
+
+/* Decorators and function properties */
+/* It is generally safe to replace a function or a method with a decorated one,
+except for one little thing. If the original function had properties on it, 
+like func.calledCount, then the decorated one will not provide them. 
+
+Because that is a wrapper. So one needs to be careful if one uses them.
+
+E.g. in the example above if slow function had any properties on it, then 
+  cachingDecorator(slow) is a wrapper without them.
+
+Some decorators may provide their own properties. 
+  E.g. a decorator may count how many times a function was invoked and how 
+  much time it took, and expose this information via wrapper properties.
+
+There exists a way to create decorators that keep access to function properties, 
+but this requires using a special Proxy object to wrap a function. 
+
+We’ll discuss it later in the article Proxy and Reflect. */
