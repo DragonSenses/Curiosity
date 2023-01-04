@@ -111,3 +111,60 @@ let f2500 = delay2(f, 2500);
 
 f500("test"); // shows "test" after 500ms
 f2500("test"); // shows "test" after 2500ms
+
+
+/* Debounce Decorator */
+/* The result of debounce(f, ms) decorator is a wrapper that suspends calls to 
+f until there’s ms milliseconds of inactivity (no calls, “cooldown period”), 
+then invokes f once with the latest arguments.
+
+In other words, debounce is like a secretary that accepts “phone calls”, and 
+waits until there’s ms milliseconds of being quiet. And only then it transfers 
+the latest call information to “the boss” (calls the actual f).
+
+For instance, we had a function f and replaced it with f = debounce(f, 1000).
+
+Then if the wrapped function is called at 0ms, 200ms and 500ms, and then there 
+are no calls, then the actual f will be only called once, at 1500ms. That is: 
+after the cooldown period of 1000ms from the last call. 
+
+Diagram:                            After 1000ms
+                                         c
+                        <-----1000ms----->
+  ------|------|--------|----------------|-------->
+        0     200ms   500ms            1500ms    time
+calls: f(a)   f(b)    f(c)
+
+…And it will get the arguments of the very last call, other calls are ignored.
+
+Here’s the code for it (uses the debounce decorator from the Lodash library):
+let f = _.debounce(console.log, 1000);
+
+f("a");
+setTimeout( () => f("b"), 200);
+setTimeout( () => f("c"), 500);
+// debounced function waits 1000ms after the last call and then runs: console.log("c")
+*/
+
+/* Practical Example: 
+Let’s say, the user types something, and we’d like to send a request to the 
+server when the input is finished.
+
+There’s no point in sending the request for every character typed. Instead 
+we’d like to wait, and then process the whole result.
+
+In a web-browser, we can setup an event handler – a function that’s called on 
+every change of an input field.
+Normally, an event handler is called very often, for every typed key. But if 
+we debounce it by 1000ms, then it will be only called once, after 1000ms 
+after the last input.
+
+debounce is a great way to process a sequence of events: be it a sequence of 
+key presses, mouse movements or something else.
+
+It waits the given time after the last call, and then runs its function, 
+that can process the result.
+
+The task is to implement debounce decorator.
+*/
+
