@@ -168,3 +168,30 @@ that can process the result.
 The task is to implement debounce decorator.
 */
 
+/* 
+function f(x) {
+  console.log(x);
+} 
+*/
+
+/**
+ * A decorator that returns a wrapper that suspends calls to f until there’s 
+ * ms milliseconds of inactivity (no calls, “cooldown period”), then invokes 
+ * f once with the latest arguments.
+ * @param {function} func function to decorate
+ * @param {number} ms cooldown period, how many milliseconds of inactivity
+ */
+function debounce(func, ms){
+  let timeout;
+  return function(){
+    clearTimeout(timeout);
+    timeout = setTimeout( () => func.apply(this, arguments), ms);
+  };
+}
+
+/* A call to debounce returns a wrapper. When called, it schedules the original 
+function call after given ms and cancels the previous such timeout. */
+
+let wrapped = debounce(f, 1000);
+wrapped("1"); // 1 after 1 second
+
