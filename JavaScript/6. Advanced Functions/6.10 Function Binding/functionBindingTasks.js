@@ -98,3 +98,37 @@ askPassword(() => user.loginOk(), () => user.loginFail());
 It’s a bit less reliable though in more complex situations where user variable 
 might change after askPassword is called, but before the visitor answers and 
 calls () => user.loginOk(). */
+
+
+/* Partial Application for login */
+/* The task is a little more complex variant of Fix a function that loses "this".
+
+The user object was modified. Now instead of two functions loginOk/loginFail, 
+it has a single function user.login(true/false).
+
+What should we pass promptPassword in the code below, so that it calls 
+user.login(true) as ok and user.login(false) as fail? */
+function promptPassword(ok, fail) {
+  let password = prompt("Password?", '');
+  if (password == "rockstar") ok();
+  else fail();
+}
+
+user = {
+  name: 'John',
+
+  login(result) {
+    console.log( this.name + (result ? ' logged in' : ' failed to log in') );
+  }
+};
+
+// promptPassword(?, ?); // ?, only change this line
+
+
+/* Solution 1: Use a Wrapper Function, with arrows to be concise: */
+promptPassword(() => user.login(true), () => user.login(false));
+/* Now it gets user from outer variables and runs it the normal way. */
+
+/* Solution 2: Create a partial function from user.login that uses user as the 
+context and has the correct first argument: */
+promptPassword(user.login.bind(user, true), user.login.bind(user, false));
