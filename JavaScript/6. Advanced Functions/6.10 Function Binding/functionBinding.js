@@ -81,3 +81,61 @@ user = {
 
 // Another user in setTimeout!
 /* The next solution guarantees that such thing won’t happen. */
+
+
+/* Solution 2: Bind */
+/* Functions provide a built-in method bind that allows to fix this.
+
+The basic syntax is: 
+    let boundFunc = func.bind(context);
+
+The result of func.bind(context) is a special function-like “exotic object”, 
+that is callable as function and transparently passes the call to func setting 
+this=context.
+
+In other words, calling boundFunc is like func with fixed this.
+
+For instance, here funcUser passes a call to func with this=user:
+*/
+user = { firstName: "Luna" };
+
+function func() {
+  console.log(this.firstName);
+}
+
+let funcUser = func.bind(user);
+funcUser(); // Luna
+
+/* Here func.bind(user) as a “bound variant” of func, with fixed this=user. 
+
+All arguments are passed to the original func “as is”, for instance: */
+function funcWithPhrase(phrase) {
+  console.log(phrase + ', ' + this.firstName);
+}
+
+// bind this to user
+funcUser = funcWithPhrase.bind(user);
+
+funcUser("Hello"); // Hello, Luna (argument "Hello" is passed, and this=user)
+
+
+/* Now let’s try with an object method: */
+user = {
+  firstName: "Luna",
+  sayHi() {
+    console.log(`Hello, ${this.firstName}!`);
+  }
+};
+
+let sayHi = user.sayHi.bind(user); // (*)
+
+// can run it without an object
+sayHi(); // Hello, Luna!
+
+setTimeout(sayHi, 1000); // Hello, Luna!
+
+// even if the value of user changes within 1 second
+// sayHi uses the pre-bound value which is reference to the old user object
+user = {
+  sayHi() { console.log("Another user in setTimeout!"); }
+};
