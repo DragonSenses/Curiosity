@@ -25,7 +25,7 @@ Here’s how it may happen with setTimeout: */
 let user = {
   firstName: "Luna",
   sayHi() {
-    alert(`Hello, ${this.firstName}!`);
+    console.log(`Hello, ${this.firstName}!`);
   }
 };
 
@@ -41,10 +41,43 @@ setTimeout(f, 1000); // lost user context
 
 /* The method setTimeout in-browser is a little special: it sets this=window 
 for the function call (for Node.js, this becomes the timer object, but 
-  doesn’t really matter here). So for this.firstName it tries to get 
-  window.firstName, which does not exist. In other similar cases, usually 
-  this just becomes undefined.
+doesn’t really matter here). So for this.firstName it tries to get 
+window.firstName, which does not exist. In other similar cases, usually 
+this just becomes undefined.
 
 The task is quite typical – we want to pass an object method somewhere else 
 (here – to the scheduler) where it will be called. How to make sure that it 
 will be called in the right context? */
+
+/* Solution 1: A Wrapper */
+/* The simplest solution is to use a wrapping function: */
+user = {
+  firstName: "Luna",
+  sayHi() {
+    console.log(`Hello, ${this.firstName}!`);
+  }
+};
+
+setTimeout(function() {
+  user.sayHi(); // Hello, Luna!
+}, 1000);
+
+/* Now it works, because it receives user from the outer lexical environment, 
+and then calls the method normally.
+
+The same, but shorter: */
+setTimeout(() => user.sayHi(), 1000); // Hello, Luna!
+
+/* Looks fine, but a slight vulnerability appears in our code structure.
+
+What if before setTimeout triggers (there’s one second delay!) user changes value? 
+Then, suddenly, it will call the wrong object! */
+setTimeout(() => user.sayHi(), 1000);
+
+// ...the value of user changes within 1 second
+user = {
+  sayHi() { console.log("Another user in setTimeout!"); }
+};
+
+// Another user in setTimeout!
+/* The next solution guarantees that such thing won’t happen. */
