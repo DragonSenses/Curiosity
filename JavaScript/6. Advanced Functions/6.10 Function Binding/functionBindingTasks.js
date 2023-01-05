@@ -81,5 +81,20 @@ user = {
 
 };
 
-/* askPassword(user.loginOk, user.loginFail);  // Line to Fix */
-askPassword(user.loginOk, user.loginFail); 
+// askPassword(user.loginOk, user.loginFail);   // Line to Fix
+
+/* The error occurs because ask gets functions loginOk/loginFail without the
+object. When it calls them, they naturally assume this=undefined. 
+
+Let's bind the context:
+
+*/
+askPassword(user.loginOk.bind(user), user.loginFail.bind(user)); 
+
+/* Now it works. Alternate solution: */
+askPassword(() => user.loginOk(), () => user.loginFail());
+/* Usually that also works and looks good.
+
+It’s a bit less reliable though in more complex situations where user variable 
+might change after askPassword is called, but before the visitor answers and 
+calls () => user.loginOk(). */
