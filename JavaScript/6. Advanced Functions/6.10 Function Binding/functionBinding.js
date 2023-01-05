@@ -6,6 +6,9 @@ that fixes the context this and first arguments if given.
 Usually we apply bind to fix this for an object method, so that we can pass it 
 somewhere. For example, to setTimeout.
 
+Basic Syntax:   let boundFunc = func.bind(context);
+Full Syntax:    let bound = func.bind(context, [arg1], [arg2], ...);
+
 When we fix some arguments of an existing function, the resulting (less 
 universal) function is called partially applied or partial.
 
@@ -139,3 +142,79 @@ setTimeout(sayHi, 1000); // Hello, Luna!
 user = {
   sayHi() { console.log("Another user in setTimeout!"); }
 };
+
+/* In the line (*) we take the method user.sayHi and bind it to user. 
+The sayHi is a “bound” function, that can be called alone or passed to 
+setTimeout – doesn’t matter, the context will be right. 
+*/
+
+/* Here we can see that arguments are passed “as is”, only this is fixed by 
+bind: */
+user = {
+  firstName: "Luna",
+  sayHi() {
+    console.log(`Hello, ${this.firstName}!`);
+  }
+};
+
+let say = user.say.bind(user);
+
+say("Hello"); // Hello, Luna! ("Hello" argument is passed to say)
+say("Bye"); // Bye, Luna! ("Bye" is passed to say)
+
+
+/* Convenience method: bindAll */
+/* If an object has many methods and we plan to actively pass it around, 
+then we could bind them all in a loop: 
+
+for (let key in user) {
+  if (typeof user[key] == 'function') {
+    user[key] = user[key].bind(user);
+  }
+}
+
+JavaScript libraries also provide functions for convenient mass binding,
+ e.g. _.bindAll(object, methodNames) in lodash. */
+
+
+/* Partial functions */
+/* Until now we have only been talking about binding this. 
+Let’s take it a step further.
+
+We can bind not only this, but also arguments. That’s rarely done, but 
+sometimes can be handy. 
+
+The full syntax of bind:
+
+  let bound = func.bind(context, [arg1], [arg2], ...);
+
+It allows to bind context as this and starting arguments of the function. */
+
+/* Example: For instance, we have a multiplication function mul(a, b): */
+function mul(a, b) {
+  return a * b;
+}
+
+/* Let’s use bind to create a function double on its base: */
+let double = mul.bind(null, 2);
+
+console.log( double(3) ); // = mul(2, 3) = 6
+console.log( double(4) ); // = mul(2, 4) = 8
+console.log( double(5) ); // = mul(2, 5) = 10
+
+/* The call to mul.bind(null, 2) creates a new function double that passes 
+calls to mul, fixing null as the context and 2 as the first argument. 
+Further arguments are passed “as is”.
+
+That’s called partial function application – we create a new function by fixing 
+some parameters of the existing one.
+
+Please note that we actually don’t use this here. But bind requires it, so we 
+must put in something like null. */
+
+/* The function triple in the code below triples the value: */
+let triple = mul.bind(null, 3);
+
+console.log( triple(3) ); // = mul(3, 3) = 9
+console.log( triple(4) ); // = mul(3, 4) = 12
+console.log( triple(5) ); // = mul(3, 5) = 15
