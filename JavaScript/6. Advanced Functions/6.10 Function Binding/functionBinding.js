@@ -218,3 +218,57 @@ let triple = mul.bind(null, 3);
 console.log( triple(3) ); // = mul(3, 3) = 9
 console.log( triple(4) ); // = mul(3, 4) = 12
 console.log( triple(5) ); // = mul(3, 5) = 15
+
+/* Why do we usually make a partial function?
+
+The benefit is that we can create an independent function with a readable 
+name (double, triple). We can use it and not provide the first argument every 
+time as it’s fixed with bind.
+
+In other cases, partial application is useful when we have a very generic 
+function and want a less universal variant of it for convenience.
+
+For instance, we have a function send(from, to, text). Then, inside a user 
+object we may want to use a partial variant of it: sendTo(to, text) that 
+sends from the current user. */
+
+
+/* Going Partial without context */
+/* What if we’d like to fix some arguments, but not the context this? 
+For example, for an object method.
+
+The native bind does not allow that. We can’t just omit the context and 
+jump to arguments.
+
+Fortunately, a function partial for binding only arguments can be easily 
+implemented. Like this: */
+function partial(func, ...argsBound) {
+  return function(...args) { // (*)
+    return func.call(this, ...argsBound, ...args);
+  };
+}
+
+// Usage:
+user = {
+  firstName: "Luna",
+  say(time, phrase) {
+    console.log(`[${time}] ${this.firstName}: ${phrase}!`);
+  }
+};
+
+// add a partial method with fixed time
+user.sayNow = partial(user.say, new Date().getHours() + ':' + new Date().getMinutes());
+
+user.sayNow("Hello"); // [10:00] Luna: Hello!
+
+/* The result of partial(func[, arg1, arg2...]) call is a wrapper (*) 
+that calls func with: 
+  * Same this as it gets (for user.sayNow call it’s user)
+  * Then gives it ...argsBound – arguments from the partial call ("10:00")
+  * Then gives it ...args – arguments given to the wrapper ("Hello")
+  
+So easy to do it with the spread syntax, right?
+
+Also there’s a ready _.partial implementation from lodash library.
+
+*/
