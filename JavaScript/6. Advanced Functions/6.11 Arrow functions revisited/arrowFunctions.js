@@ -92,3 +92,56 @@ so the attempt to access undefined.title is made.
 
 That doesn’t affect arrow functions, because they just don’t have this.
 */
+
+/* Arrow Functions can't run with new */
+/* Not having this naturally means another limitation: arrow functions can’t be 
+used as constructors. They can’t be called with new. */
+
+/* Arrow Functions VS bind */
+/* There’s a subtle difference between an arrow function => and a regular 
+function called with .bind(this):
+
+  .bind(this)  creates a “bound version” of the function.
+  
+  The arrow => doesn’t create any binding. The function simply doesn’t have 
+  this. The lookup of this is made exactly the same way as a regular variable 
+  search: in the outer lexical environment. 
+*/
+
+
+/* Arrows have no "arguments" */
+/* Arrow functions also have no arguments variable.
+
+That’s great for decorators, when we need to forward a call with the current 
+this and arguments.
+
+For instance, defer(f, ms) gets a function and returns a wrapper around 
+it that delays the call by ms milliseconds: */
+function defer(f, ms) {
+  return function() {
+    setTimeout(() => f.apply(this, arguments), ms);
+  };
+}
+
+function sayHi(who) {
+  alert('Hello, ' + who);
+}
+
+let sayHiDeferred = defer(sayHi, 2000);
+sayHiDeferred("Luna"); // Hello, Luna after 2 seconds
+
+/* The same without an arrow function would look like: */
+function defer2(f, ms) {
+  return function(...args) {
+    let ctx = this;
+    setTimeout(function() {
+      return f.apply(ctx, args);
+    }, ms);
+  };
+}
+
+let sayHiDeferred2 = defer2(sayHi, 2000);
+sayHiDeferred2("Luna"); // Hello, Luna after 2 seconds
+
+/* Here we had to create additional variables args and ctx so that the 
+function inside setTimeout could take them. */
