@@ -23,4 +23,36 @@ First, let’s see how to get those flags.
 The method Object.getOwnPropertyDescriptor allows to query the full information 
 about a property.
 
-The syntax is: */
+The syntax is: 
+  let descriptor = Object.getOwnPropertyDescriptor(obj, propertyName);
+  
+  - obj: The object to get information from.
+  - propertyName: The name of the property.
+
+The returned value is a so-called “property descriptor” object: it contains the
+value and all the flags.
+
+For instance:
+*/
+let user = {
+  name: "John"
+};
+
+let descriptor = Object.getOwnPropertyDescriptor(user, 'name');
+
+alert( JSON.stringify(descriptor, null, 2 ) );
+/* property descriptor:
+{
+  "value": "John",
+  "writable": true,
+  "enumerable": true,
+  "configurable": true
+}
+*/
+
+/* To change the flags, we can use Object.defineProperty.
+
+The syntax is: 
+  Object.defineProperty(obj, propertyName, descriptor)
+  
+*/
