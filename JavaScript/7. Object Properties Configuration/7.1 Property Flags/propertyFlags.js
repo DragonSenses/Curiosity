@@ -35,15 +35,15 @@ value and all the flags.
 For instance:
 */
 let user = {
-  name: "John"
+  name: "Luna"
 };
 
 let descriptor = Object.getOwnPropertyDescriptor(user, 'name');
 
-alert( JSON.stringify(descriptor, null, 2 ) );
+console.log( JSON.stringify(descriptor, null, 2 ) );
 /* property descriptor:
 {
-  "value": "John",
+  "value": "Luna",
   "writable": true,
   "enumerable": true,
   "configurable": true
@@ -69,15 +69,15 @@ let user = {};
 user = {};
 
 Object.defineProperty(user, "name", {
-  value: "John"
+  value: "Luna"
 });
 
 descriptor = Object.getOwnPropertyDescriptor(user, 'name');
 
-alert( JSON.stringify(descriptor, null, 2 ) );
+console.log( JSON.stringify(descriptor, null, 2 ) );
 /*
 {
-  "value": "John",
+  "value": "Luna",
   "writable": false,
   "enumerable": false,
   "configurable": false
@@ -88,3 +88,39 @@ alert( JSON.stringify(descriptor, null, 2 ) );
 If that’s not what we want then we’d better set them to true in descriptor.
 
 Now let’s see effects of the flags by example. */
+
+
+/* Non-writable */
+/* Let’s make user.name non-writable (can’t be reassigned) by changing writable 
+flag: */
+user = {
+  name: "Luna"
+};
+
+Object.defineProperty(user, "name", {
+  writable: false
+});
+
+user.name = "Berry"; // Error: Cannot assign to read only property 'name'
+
+/* Now no one can change the name of our user, unless they apply their own 
+defineProperty to override ours. */
+
+/* Errors appear only in strict mode */
+/* In non-strict mode, no errors occur when writing to non-writable properties 
+and such. But the operation still won’t succeed. Flag-violating actions are 
+just silently ignored in non-strict. */
+
+/* Here’s the same example, but the property is created from scratch: */
+
+user = { };
+
+Object.defineProperty(user, "name", {
+  value: "Luna",
+  // for new properties we need to explicitly list what's true
+  enumerable: true,
+  configurable: true
+});
+
+console.log(user.name); // Luna
+user.name = "Berry"; // Error
