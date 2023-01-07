@@ -227,3 +227,72 @@ We can change writable: true to false for a non-configurable property, thus
 preventing its value modification (to add another layer of protection). 
 Not the other way around though. */
 
+/* Object.defineProperties */
+/* There’s a method Object.defineProperties(obj, descriptors) that allows to 
+define many properties at once.
+
+The syntax is: 
+
+Object.defineProperties(obj, {
+  prop1: descriptor1,
+  prop2: descriptor2
+  // ...
+});
+
+For instance:
+
+Object.defineProperties(user, {
+  name: { value: "John", writable: false },
+  surname: { value: "Smith", writable: false },
+  // ...
+});
+
+So, we can set many properties at once.
+*/
+
+
+/* Object.getOwnPropertyDescriptors() */
+/* To get all property descriptors at once, we can use the method 
+  Object.getOwnPropertyDescriptors(obj).
+
+Together with Object.defineProperties it can be used as a “flags-aware” way 
+of cloning an object: 
+
+let clone = Object.defineProperties({}, Object.getOwnPropertyDescriptors(obj));
+
+Normally when we clone an object, we use an assignment to copy properties, like this:
+
+for (let key in user) {
+  clone[key] = user[key]
+}
+
+…But that does not copy flags. So if we want a “better” clone then 
+Object.defineProperties is preferred.
+
+Another difference is that for..in ignores symbolic and non-enumerable 
+properties, but Object.getOwnPropertyDescriptors returns all property 
+descriptors including symbolic and non-enumerable ones.
+*/
+
+/* Sealing an object globally */
+/* Property descriptors work at the level of individual properties.
+
+There are also methods that limit access to the whole object: 
+
+  * Object.preventExtensions(obj) - Forbids the addition of new properties to the object.
+  * Object.seal(obj) - Forbids adding/removing of properties. 
+                       Sets configurable: false for all existing properties.
+  * Object.freeze(obj) - Forbids adding/removing/changing of properties. 
+                       Sets configurable: false, writable: false for all existing properties.
+
+And also there are tests for them:
+  * Object.isExtensible(obj) - Returns false if adding properties is forbidden, 
+                               otherwise true.
+  * Object.isSealed(obj) - Returns true if adding/removing properties is 
+                           forbidden, and all existing properties have configurable: false.
+  * Object.isFrozen(obj) - Returns true if adding/removing/changing properties 
+                           is forbidden, and all current properties are 
+                           configurable: false, writable: false.
+
+Note: These methods are rarely used in practice.
+*/
