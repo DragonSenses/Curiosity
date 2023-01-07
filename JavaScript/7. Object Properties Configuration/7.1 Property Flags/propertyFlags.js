@@ -124,3 +124,106 @@ Object.defineProperty(user, "name", {
 
 console.log(user.name); // Luna
 user.name = "Berry"; // Error
+
+
+/* Non-enumerable */
+/* Now let’s add a custom toString to user.
+
+Normally, a built-in toString for objects is non-enumerable, it does not show 
+up in for..in. But if we add a toString of our own, then by default it shows 
+up in for..in, like this: */
+user = {
+  name: "Luna",
+  toString() {
+    return this.name;
+  }
+};
+
+// By default, both our properties are listed:
+for (let key in user) console.log(key); // name, toString
+
+/* If we don’t like it, then we can set enumerable:false. Then it won’t appear 
+in a for..in loop, just like the built-in one: */
+Object.defineProperty(user, "toString", {
+  enumerable: false
+});
+
+// Now our toString disappears:
+for (let key in user) console.log(key); // name
+
+/* Non-enumerable properties are also excluded from Object.keys: */
+console.log(Object.keys(user)); // name
+
+
+/* Non-configurable */
+/* The non-configurable flag (configurable:false) is sometimes preset for 
+built-in objects and properties.
+
+A non-configurable property can’t be deleted, its attributes can’t be modified.
+
+For instance, Math.PI is non-writable, non-enumerable and non-configurable: */
+let mathPiDescriptor = Object.getOwnPropertyDescriptor(Math, 'PI');
+
+console.log( JSON.stringify(mathPiDescriptor, null, 2 ) );
+/*
+{
+  "value": 3.141592653589793,
+  "writable": false,
+  "enumerable": false,
+  "configurable": false
+}
+*/
+
+/* So, a programmer is unable to change the value of Math.PI or overwrite it. */
+Math.PI = 3; // Error, because it has writable: false
+
+// delete Math.PI won't work either
+
+/* We also can’t change Math.PI to be writable again: */
+// Error, because of configurable: false
+Object.defineProperty(Math, "PI", { writable: true });
+
+/* There’s absolutely nothing we can do with Math.PI.
+
+Making a property non-configurable is a one-way road. 
+We cannot change it back with defineProperty. */
+
+/* Please note: configurable: false prevents changes of property flags and its
+deletion, while allowing to change its value. */
+
+/* Here user.name is non-configurable, but we can still change it (as it’s writable): */
+user = { 
+  name: "Luna"
+};
+
+Object.defineProperty(user, "name", {
+  configurable: false
+});
+
+user.name = "Leo"; // works fine
+delete user.name; // Error
+
+/* And here we make user.name a “forever sealed” constant, just like the 
+built-in Math.PI: */
+user = { 
+  name: "Luna"
+};
+
+Object.defineProperty(user, "name", {
+  writable: false,
+  configurable: false
+});
+
+// won't be able to change user.name or its flags
+// all this won't work:
+user.name = "Leo";
+delete user.name;
+Object.defineProperty(user, "name", { value: "Leo" });
+
+
+/* The only attribute change possible: writable true -> false */
+/* There’s a minor exception about changing flags.
+We can change writable: true to false for a non-configurable property, thus 
+preventing its value modification (to add another layer of protection). 
+Not the other way around though. */
+
