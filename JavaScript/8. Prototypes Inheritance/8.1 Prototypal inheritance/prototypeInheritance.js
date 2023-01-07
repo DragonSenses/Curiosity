@@ -329,3 +329,76 @@ As a result, methods are shared, but the object state is not. */
 
 
 /* for...in loop */
+/* The for..in loop iterates over inherited properties too.
+
+For instance: */
+{
+
+let animal = {
+  eats: true
+};
+
+let rabbit = {
+  jumps: true,
+  __proto__: animal
+};
+
+// Object.keys only returns own keys
+console.log(Object.keys(rabbit)); // jumps
+
+// for..in loops over both own and inherited keys
+for(let prop in rabbit) console.log(prop); // jumps, then eats
+
+}
+
+/* If that’s not what we want, and we’d like to exclude inherited properties, 
+there’s a built-in method obj.hasOwnProperty(key): it returns true if obj has 
+its own (not inherited) property named key.
+
+So we can filter out inherited properties (or do something else with them): */
+{
+
+let animal = {
+  eats: true
+};
+
+let rabbit = {
+  jumps: true,
+  __proto__: animal
+};
+
+for(let prop in rabbit) {
+  // eslint-disable-next-line no-prototype-builtins
+  let isOwn = rabbit.hasOwnProperty(prop);
+
+  if (isOwn) {
+    console.log(`Our: ${prop}`); // Our: jumps
+  } else {
+    console.log(`Inherited: ${prop}`); // Inherited: eats
+  }
+}
+
+}
+/* Here we have the following inheritance chain: rabbit inherits from animal, 
+that inherits from Object.prototype (because animal is a literal object {...}, 
+so it’s by default), and then null above it: 
+       
+       null
+       /\
+        | [[Prototype]]
+        | 
+Object.prototype 
+  [toString:       function]
+  [hasOwnProperty: function]
+  [...                     ]
+       /\
+        | [[Prototype]]
+        | 
+animal  |
+  [eats: true ]
+       /\
+        | [[Prototype]]
+rabbit  |        
+  [jumps: true]
+
+*/
