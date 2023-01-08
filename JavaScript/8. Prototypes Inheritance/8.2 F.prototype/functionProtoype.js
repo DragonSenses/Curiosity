@@ -87,3 +87,37 @@ If, after the creation, F.prototype property changes
 (F.prototype = <another object>), then new objects created by new F will have 
 another object as [[Prototype]], but already existing objects keep the old one. 
 */
+
+
+/* Default F.prototype, constructor property */
+/* Every function has the "prototype" property even if we don’t supply it.
+
+The default "prototype" is an object with the only property constructor that 
+points back to the function itself.
+
+Like this: */
+function Bunny() {}
+
+/* default prototype
+Bunny.prototype = { constructor: Bunny };
+*/
+
+/* 
+Bunny           default "prototype"
+[prototype]<----->[constructor] 
+
+We can check it: */
+// Bunny.prototype = { constructor: Bunny }
+
+alert( Bunny.prototype.constructor == Bunny ); // true
+
+/* Naturally, if we do nothing, the constructor property is available to 
+all bunnies through [[Prototype]]: */
+
+// function Bunny() {}
+// by default:
+// Bunny.prototype = { constructor: Bunny }
+
+let bunny = new Bunny(); // inherits from {constructor: Bunny}
+
+console.log(bunny.constructor == Bunny);  // true (from prototype)
