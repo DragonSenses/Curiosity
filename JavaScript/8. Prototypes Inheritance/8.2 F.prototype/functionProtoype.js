@@ -121,3 +121,70 @@ all bunnies through [[Prototype]]: */
 let bunny = new Bunny(); // inherits from {constructor: Bunny}
 
 console.log(bunny.constructor == Bunny);  // true (from prototype)
+
+/* Bunny    prototype   default "prototype"
+[        ]  <-------->  [eats: true]
+          constructor /\
+                       | [[Prototype]]
+                       |
+                bunny  |
+                [         ]
+*/
+
+/* We can use constructor property to create a new object using the 
+same constructor as the existing one. Like here: */
+
+function Hare(name){
+  this.name = name;
+  console.log(name);
+}
+
+let hare = new Hare("White Hare");  // White Hare
+
+let hare2 = new hare.constructor("Black Hare"); // Black Hare
+
+console.log(hare);  // Hare {name: 'White Hare'}
+console.log(hare2); // Hare {name: 'Black Hare'}
+
+/* That’s handy when we have an object, don’t know which constructor was 
+used for it (e.g. it comes from a 3rd party library), and we need to 
+create another one of the same kind.
+
+But probably the most important thing about "constructor" is that…
+
+…JavaScript itself does not ensure the right "constructor" value.
+
+Yes, it exists in the default "prototype" for functions, but that’s all. 
+What happens with it later – is totally on us.
+
+In particular, if we replace the default prototype as a whole, then there
+will be no "constructor" in it. */
+
+/* For instance: */
+function Kangaroo() {}
+Kangaroo.prototype = {
+  jumps: true
+};
+
+let kangaroo = new Kangaroo();
+console.log(kangaroo.constructor === Kangaroo); // false;
+
+/* So, to keep the right "constructor" we can choose to add/remove properties 
+to the default "prototype" instead of overwriting it as a whole: */
+
+function Frog() {}
+
+// Not overwrite Frog.prototype totally
+// just add to it
+Frog.prototype.jumps = true;
+// the default Frog.prototype.constructor is preserved
+
+/* Or, alternatively, recreate the constructor property manually: */
+function Bullfrog() {}
+
+Bullfrog.prototype = {
+  jumps: true,
+  constructor: Bullfrog
+};
+
+// now constructor is also correct, because we added it
