@@ -70,3 +70,49 @@ Object.prototype: */
 
 console.log(Object.prototype.__proto__); // null
 }
+
+
+/* Other built-in prototypes */
+/* Other built-in objects such as Array, Date, Function and others also keep 
+methods in prototypes.
+
+For instance, when we create an array [1, 2, 3], the default new Array() 
+constructor is used internally. So Array.prototype becomes its prototype and 
+provides methods. That’s very memory-efficient.
+
+By specification, all of the built-in prototypes have Object.prototype on the 
+top. That’s why some people say that “everything inherits from objects”.
+
+Here’s the overall picture (for 3 built-ins to fit): 
+
+                            null
+                            /\
+                            | [[Prototype]]
+              Object.prototype
+              [toString: function                     ]
+              [other object methods                   ]
+               /\          /\                       /\
+ [[Prototype]] /           | [[Prototype]]           \
+              /            |                          \
+Array.prototype         Function.prototype         Number.prototype
+[slice: function    ]   [call: function        ]   [toFixed: function   ]
+[other array methods]   [other function methods]   [other number methods]
+     /\                      /\                        /\
+      | [[Prototype]]         | [[Prototype]]           | [[Prototype]]
+  [1, 2, 3]            [function f(args) { ... }]      [5]
+*/
+
+/* Let's check the prototypes manually: */
+{
+  let arr = [1, 2, 3];
+
+  // it inherits from Array.prototype?
+  console.log( arr.__proto__ === Array.prototype ); // true
+  
+  // then from Object.prototype?
+  console.log( arr.__proto__.__proto__ === Object.prototype ); // true
+  
+  // and null on the top.
+  console.log( arr.__proto__.__proto__.__proto__ ); // null
+}
+
