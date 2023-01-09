@@ -116,3 +116,41 @@ Array.prototype         Function.prototype         Number.prototype
   console.log( arr.__proto__.__proto__.__proto__ ); // null
 }
 
+/* Some methods in prototypes may overlap, for instance, Array.prototype 
+has its own toString that lists comma-delimited elements: */
+{
+let arr = [1, 2, 3];
+console.log(arr); // 1,2,3 <-- the result of Array.prototype.toString
+}
+
+/* As we’ve seen before, Object.prototype has toString as well, 
+but Array.prototype is closer in the chain, so the array variant is used. 
+
+Object.prototype
+[toString: function]
+[ ...              ] 
+      /\
+       | [[Prototype]]
+       |
+Array.prototype
+[toString: function]
+[ ...              ]
+      /\
+       | [[Prototype]]
+       |
+    [1,2,3]
+
+In-browser tools like Chrome developer console also show inheritance 
+(console.dir may need to be used for built-in objects).
+
+Other built-in objects also work the same way. 
+Even functions – they are objects of a built-in Function constructor, 
+and their methods (call/apply and others) are taken from Function.prototype. 
+Functions have their own toString too.*/
+function f() {}
+
+console.log(f.__proto__ == Function.prototype); // true
+console.log(f.__proto__.__proto__ == Object.prototype); // true, inherit from objects
+
+
+/*  */
