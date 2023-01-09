@@ -200,3 +200,54 @@ JavaScript specification, but is not yet supported by a particular JavaScript en
 We may then implement it manually and populate the built-in prototype with it.
 
 For instance: */
+if (!String.prototype.repeat) { // if there's no such method
+  // add it to the prototype
+
+  String.prototype.repeat = function(n) {
+    // repeat the string n times
+
+    // actually, the code should be a little bit more complex than that
+    // (the full algorithm is in the specification)
+    // but even an imperfect polyfill is often considered good enough
+    return new Array(n + 1).join(this);
+  };
+}
+
+console.log( "La".repeat(3) ); // LaLaLa
+
+
+/* Borrowing from prototypes */
+/* In the chapter Decorators and forwarding, call/apply we talked about 
+method borrowing.
+
+That’s when we take a method from one object and copy it into another.
+
+Some methods of native prototypes are often borrowed.
+
+For instance, if we’re making an array-like object, we may want to copy some 
+Array methods to it. 
+
+e.g., */
+{
+let obj = {
+  0: "Hello",
+  1: "world!",
+  length: 2,
+};
+
+obj.join = Array.prototype.join;
+
+console.log( obj.join(',') ); // Hello,world!
+}
+/* It works because the internal algorithm of the built-in join method only 
+cares about the correct indexes and the length property. It doesn’t check if 
+the object is indeed an array. Many built-in methods are like that.
+
+Another possibility is to inherit by setting obj.__proto__ to Array.prototype, 
+so all Array methods are automatically available in obj.
+
+But that’s impossible if obj already inherits from another object. Remember, 
+we only can inherit from one object at a time.
+
+Borrowing methods is flexible, it allows to mix functionalities from different 
+objects if needed. */
