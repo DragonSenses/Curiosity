@@ -142,3 +142,41 @@ And JavaScript engines are highly optimized for this. Changing a prototype
 operation as it breaks internal optimizations for object property access 
 operations. So avoid it unless you know what you’re doing, or JavaScript speed 
 totally doesn’t matter for you. */
+
+
+/* "Very plain" objects */
+/* As we know, objects can be used as associative arrays to store key/value pairs.
+
+…But if we try to store user-provided keys in it (for instance, a user-entered 
+dictionary), we can see an interesting glitch: all keys work fine except "__proto__".
+
+Check out the example: */
+{
+let obj = {};
+
+let key = prompt("What's the key?", "__proto__");
+obj[key] = "some value";
+
+console.log(obj[key]); // [object Object], not "some value"!
+}
+
+/* Here, if the user types in __proto__, the assignment in line 4 is ignored!
+
+That could surely be surprising for a non-developer, but pretty understandable 
+for us. The __proto__ property is special: it must be either an object or null. 
+A string can not become a prototype. That’s why an assignment a string to 
+__proto__ is ignored.
+
+But we didn’t intend to implement such behavior, right? We want to store 
+key/value pairs, and the key named "__proto__" was not properly saved. So that’s a bug!
+
+Here the consequences are not terrible. But in other cases we may be storing 
+objects instead of strings in obj, and then the prototype will indeed be changed. 
+As a result, the execution will go wrong in totally unexpected ways.
+
+What’s worse – usually developers do not think about such possibility at all. 
+That makes such bugs hard to notice and even turn them into vulnerabilities, 
+especially when JavaScript is used on server-side.
+
+Unexpected things also may happen when assigning to obj.toString, as it’s a 
+built-in object method. */
