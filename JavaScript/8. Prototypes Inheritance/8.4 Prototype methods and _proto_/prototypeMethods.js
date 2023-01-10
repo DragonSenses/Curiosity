@@ -152,12 +152,12 @@ dictionary), we can see an interesting glitch: all keys work fine except "__prot
 
 Check out the example: */
 {
-let obj = {};
+  let obj = {};
 
-let key = prompt("What's the key?", "__proto__");
-obj[key] = "some value";
+  let key = prompt("What's the key?", "__proto__");
+  obj[key] = "some value";
 
-console.log(obj[key]); // [object Object], not "some value"!
+  console.log(obj[key]); // [object Object], not "some value"!
 }
 
 /* Here, if the user types in __proto__, the assignment in line 4 is ignored!
@@ -185,12 +185,12 @@ built-in object method. */
 /* First, we can just switch to using Map for storage instead of plain objects,
 then everything’s fine: */
 {
-let map = new Map();
+  let map = new Map();
 
-let key = prompt("What's the key?", "__proto__");
-map.set(key, "some value");
+  let key = prompt("What's the key?", "__proto__");
+  map.set(key, "some value");
 
-console.log(map.get(key)); // "some value" (as intended)
+  console.log(map.get(key)); // "some value" (as intended)
 }
 /* …But Object syntax is often more appealing, as it’s more concise.
 
@@ -218,13 +218,13 @@ access [[Prototype]], it is not [[Prototype]] itself.*/
 /* Now, if we intend to use an object as an associative array and be free of 
 such problems, we can do it with a little trick: */
 {
-let obj = Object.create(null);
-// or: obj = { __proto__: null }
+  let obj = Object.create(null);
+  // or: obj = { __proto__: null }
 
-let key = prompt("What's the key?", "__proto__");
-obj[key] = "some value";
+  let key = prompt("What's the key?", "__proto__");
+  obj[key] = "some value";
 
-console.log(obj[key]); // "some value"
+  console.log(obj[key]); // "some value"
 }
 /* Object.create(null) creates an empty object without a 
 prototype ([[Prototype]] is null): 
@@ -241,3 +241,23 @@ a regular data property, so the example above works right.
 We can call such objects “very plain” or “pure dictionary” objects, because 
 they are even simpler than the regular plain object {...}.
 */
+
+/* A downside is that such objects lack any built-in object methods, 
+  e.g. toString: */
+{
+  let obj = Object.create(null);
+
+  console.log(obj); // Error (no toString)
+}
+/* …But that’s usually fine for associative arrays.
+
+Note that most object-related methods are Object.something(...), 
+like Object.keys(obj) – they are not in the prototype, so they will keep 
+working on such objects: */
+{
+  let chineseDictionary = Object.create(null);
+  chineseDictionary.hello = "你好";
+  chineseDictionary.bye = "再见";
+  
+  console.log(Object.keys(chineseDictionary)); // hello,bye
+}
