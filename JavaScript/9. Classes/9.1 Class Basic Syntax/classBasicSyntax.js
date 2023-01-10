@@ -32,7 +32,7 @@ or goods or whatever.
 As we already know from the chapter Constructor, operator "new", new function can 
 help with that.
 
-But in the modern JavaScript, there’s a more advanced “class” construct, that 
+But in the modern JavaScript, there’s a more advanced "class" construct, that 
 introduces great new features which are useful for object-oriented programming.
 */
 
@@ -102,3 +102,114 @@ Here, take a look: */
   // proof: User is a function
   console.log(typeof User); // function
 }
+
+/* What class User {...} construct really does is: 
+  1. Creates a function named User, that becomes the result of the class declaration. 
+  The function code is taken from the constructor method (assumed empty if we don’t 
+  write such method).
+
+  2. Stores class methods, such as sayHi, in User.prototype.
+
+After new User object is created, when we call its method, it’s taken from the 
+prototype, just as described in the chapter F.prototype. So the object has 
+access to class methods.
+
+We can illustrate the result of class User declaration as:
+
+User                  prototype   User.prototype
+constructor(name) {   -------->   [sayHi: function  ]
+  this.name = name;               [constructor: User]
+}
+
+
+Here’s the code to introspect it: */
+{
+  class User {
+    constructor(name) { this.name = name; }
+    sayHi() { console.log(this.name); }
+  }
+  
+  // class is a function
+  console.log(typeof User); // function
+  
+  // ...or, more precisely, the constructor method
+  console.log(User === User.prototype.constructor); // true
+  
+  // The methods are in User.prototype, e.g:
+  console.log(User.prototype.sayHi); // the code of the sayHi method
+  
+  // there are exactly two methods in the prototype
+  console.log(Object.getOwnPropertyNames(User.prototype)); // constructor, sayHi
+}
+
+
+/* Not just a syntactic sugar */
+/* Sometimes people say that class is a "syntactic sugar" (syntax that is 
+designed to make things easier to read, but doesn’t introduce anything new), 
+because we could actually declare the same thing without using the class keyword 
+at all: */
+
+{
+  // rewriting class User in pure functions
+
+  // 1. Create constructor function
+  // eslint-disable-next-line no-inner-declarations
+  function User(name) {
+    this.name = name;
+  }
+  // a function prototype has "constructor" property by default,
+  // so we don't need to create it
+
+  // 2. Add the method to prototype
+  User.prototype.sayHi = function() {
+    console.log(this.name);
+  };
+
+  // Usage:
+  let user = new User("John");
+  user.sayHi();
+}
+
+/* The result of this definition is about the same. So, there are indeed 
+reasons why class can be considered a syntactic sugar to define a constructor 
+together with its prototype methods.
+
+Still, there are important differences. 
+
+1. First, a function created by class is labelled by a special internal 
+property [[IsClassConstructor]]: true. So it’s not entirely the same as 
+creating it manually.
+
+The language checks for that property in a variety of places. 
+For example, unlike a regular function, it must be called with new:
+*/
+{
+  class User {
+    constructor() {}
+  }
+  
+  console.log(typeof User); // function
+  User(); // Error: Class constructor User cannot be invoked without 'new'
+}
+
+/* Also, a string representation of a class constructor in most JavaScript 
+engines starts with the "class…" */
+{
+  class User {
+    constructor() {}
+  }
+  
+  console.log(User); // class User { ... }
+}
+
+/* There are other differences.
+2. Class methods are non-enumerable. A class definition sets enumerable flag 
+to false for all methods in the "prototype".
+
+That’s good, because if we for..in over an object, we usually don’t want 
+its class methods.
+
+3. Classes always use strict. All code inside the class construct is 
+automatically in strict mode.
+
+Besides, class syntax brings many other features that we’ll explore later. */
