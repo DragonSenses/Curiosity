@@ -213,3 +213,61 @@ its class methods.
 automatically in strict mode.
 
 Besides, class syntax brings many other features that we’ll explore later. */
+
+
+/* Class Expression */
+/* Just like functions, classes can be defined inside another expression, 
+passed around, returned, assigned, etc.
+
+Here’s an example of a class expression: */
+{
+  let User = class {
+    sayHi() {
+      alert("Hello");
+    }
+  };
+
+  console.log(User);
+}
+
+/* Similar to Named Function Expressions, class expressions may have a name.
+
+If a class expression has a name, it’s visible inside the class only: */
+{
+  // "Named Class Expression"
+  // (no such term in the spec, but that's similar to Named Function Expression)
+  let User = class MyClass {
+    sayHi() {
+      alert(MyClass); // MyClass name is visible only inside the class
+    }
+  };
+
+  new User().sayHi(); // works, shows MyClass definition
+
+  //console.log(MyClass); // error, MyClass name isn't visible outside of the class
+}
+
+/* We can even make classes dynamically “on-demand”, like this: */
+{
+  // eslint-disable-next-line no-inner-declarations
+  function makeClass(phrase) {
+    // declare a class and return it
+    return class {
+      sayHi() {
+        alert(phrase);
+      }
+    };
+  }
+  
+  // Create a new class
+  let User = makeClass("Hello");
+  
+  new User().sayHi(); // Hello
+}
+
+
+/* Getters/Setters */
+/* Just like literal objects, classes may include getters/setters, computed 
+properties etc.
+
+Here’s an example for user.name implemented using get/set: */
