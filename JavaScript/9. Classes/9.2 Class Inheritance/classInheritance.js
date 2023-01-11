@@ -20,7 +20,7 @@
 
 So we can create new functionality on top of the existing. */
 
-/* The “extends” keyword */
+/* The "extends" keyword */
 /* Let’s say we have class Animal: */
 
   class Animal {
@@ -58,7 +58,7 @@ Animal  prototype Animal.prototype
 …And we would like to create another class Rabbit.
 
 As rabbits are animals, Rabbit class should be based on Animal, have access 
-to animal methods, so that rabbits can do what “generic” animals can do.
+to animal methods, so that rabbits can do what "generic" animals can do.
 
 The syntax to extend another class is: class Child extends Parent.
 
@@ -136,7 +136,7 @@ to generate classes depending on many conditions and can inherit from them. */
 
 /* Overriding a method */
 /* Now let’s move forward and override a method. By default, all methods that
- are not specified in class Rabbit are taken directly “as is” from class Animal.
+ are not specified in class Rabbit are taken directly "as is" from class Animal.
 
 But if we specify our own method in Rabbit, such as stop() then it will be 
 used instead: */
@@ -214,7 +214,7 @@ If accessed, it’s taken from the outer function. For instance: */
   console.log(Rabbit);
 
 /* The super in the arrow function is the same as in stop(), so it works as 
-intended. If we specified a “regular” function here, there would be an error: */
+intended. If we specified a "regular" function here, there would be an error: */
 
   // Unexpected super
   // setTimeout(function() { super.stop() }, 1000);
@@ -227,7 +227,7 @@ intended. If we specified a “regular” function here, there would be an error
 Until now, Rabbit did not have its own constructor.
 
 According to the specification, if a class extends another class and has no 
-constructor, then the following “empty” constructor is generated: */
+constructor, then the following "empty" constructor is generated: */
 {
   class Rabbit extends Animal {
     // generated for extending classes without own constructors
@@ -281,7 +281,7 @@ Of course, there’s an explanation. Let’s get into details, so you’ll reall
 understand what’s going on.
 
 In JavaScript, there’s a distinction between a constructor function of an 
-inheriting class (so-called “derived constructor”) and other functions. 
+inheriting class (so-called "derived constructor") and other functions. 
 A derived constructor has a special internal property [[ConstructorKind]]:"derived". 
 That’s a special internal label.
 
@@ -442,7 +442,7 @@ But how?
 
 The task may seem simple, but it isn’t. The engine knows the current object this, 
 so it could get the parent method as this.__proto__.method. Unfortunately, such 
-a “naive” solution won’t work.
+a "naive" solution won’t work.
 
 Let’s demonstrate the problem. Without classes, using plain objects for the sake 
 of simplicity.
@@ -556,7 +556,7 @@ Let’s see how it works, first with plain objects: */
   let animal = {
     name: "Animal",
     eat() {         // animal.eat.[[HomeObject]] == animal
-      alert(`${this.name} eats.`);
+      console.log(`${this.name} eats.`);
     }
   };
   
@@ -584,8 +584,8 @@ longEar.eat, knows its [[HomeObject]] and takes the parent method from its
 prototype. Without any use of this. */
 
 
-/* Methods are not “free” */
-/* As we’ve known before, generally functions are “free”, not bound to objects 
+/* Methods are not "free" */
+/* As we’ve known before, generally functions are "free", not bound to objects 
 in JavaScript. So they can be copied between objects and called with another this.
 
 The very existence of [[HomeObject]] violates that principle, because methods 
@@ -596,3 +596,79 @@ a method does not use super, then we can still consider it free and copy
 between objects. But with super things may go wrong.
 
 Here’s the demo of a wrong super result after copying: */
+{
+  let animal = {
+    sayHi() {
+      console.log(`I'm an animal`);
+    }
+  };
+  
+  // rabbit inherits from animal
+  let rabbit = {
+    __proto__: animal,
+    sayHi() {
+      super.sayHi();
+    }
+  };
+  
+  let plant = {
+    sayHi() {
+      console.log("I'm a plant");
+    }
+  };
+  
+  // tree inherits from plant
+  let tree = {
+    __proto__: plant,
+    sayHi: rabbit.sayHi // (*)
+  };
+  
+  tree.sayHi();  // I'm an animal (?!?)
+}
+
+/* A call to tree.sayHi() shows "I’m an animal". Definitely wrong. 
+
+The reason is simple:
+  - In the line (*), the method tree.sayHi was copied from rabbit. 
+  Maybe we just wanted to avoid code duplication?
+  - Its [[HomeObject]] is rabbit, as it was created in rabbit. 
+  There’s no way to change [[HomeObject]].
+  - The code of tree.sayHi() has super.sayHi() inside. It goes up from 
+  rabbit and takes the method from animal.
+
+Here’s the diagram of what happens:
+
+animal                  plant
+[sayHi  ]               [sayHi]
+  /\                       /\
+  |                         |
+rabbit  [[HomeObject]] tree
+[sayHi]<-------------- [sayHi]
+*/
+
+/* Methods, not function properties */
+/* [[HomeObject]] is defined for methods both in classes and in plain objects. 
+But for objects, methods must be specified exactly as method(), not as 
+"method: function()".
+
+The difference may be non-essential for us, but it’s important for JavaScript.
+
+In the example below a non-method syntax is used for comparison. 
+[[HomeObject]] property is not set and the inheritance doesn’t work: 
+
+let animal = {
+  eat: function() { // intentionally writing like this instead of eat() {...
+    // ...
+  }
+};
+  
+let rabbit = {
+  __proto__: animal,
+  eat: function() {
+    super.eat();
+  }
+};
+
+rabbit.eat();  // Error calling super (because there's no [[HomeObject]])
+
+*/
