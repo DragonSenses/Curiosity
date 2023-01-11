@@ -223,7 +223,7 @@ Here’s an example of a class expression: */
 {
   let User = class {
     sayHi() {
-      alert("Hello");
+      console.log("Hello");
     }
   };
 
@@ -238,7 +238,7 @@ If a class expression has a name, it’s visible inside the class only: */
   // (no such term in the spec, but that's similar to Named Function Expression)
   let User = class MyClass {
     sayHi() {
-      alert(MyClass); // MyClass name is visible only inside the class
+      console.log(MyClass); // MyClass name is visible only inside the class
     }
   };
 
@@ -254,7 +254,7 @@ If a class expression has a name, it’s visible inside the class only: */
     // declare a class and return it
     return class {
       sayHi() {
-        alert(phrase);
+        console.log(phrase);
       }
     };
   }
@@ -271,3 +271,70 @@ If a class expression has a name, it’s visible inside the class only: */
 properties etc.
 
 Here’s an example for user.name implemented using get/set: */
+{
+  class User {
+
+    constructor(name) {
+      // invokes the setter
+      this.name = name;
+    }
+  
+    get name() {
+      return this._name;
+    }
+  
+    set name(value) {
+      if (value.length < 4) {
+        console.log("Name is too short.");
+        return;
+      }
+      this._name = value;
+    }
+  
+  }
+  
+  let user = new User("John");
+  console.log(user.name); // John
+  
+  user = new User(""); // Name is too short.
+}
+/* Technically, such class declaration works by creating getters and setters 
+in User.prototype. */
+
+
+/* Computed names […] */
+/* Here’s an example with a computed method name using brackets [...]: */
+{
+  class User {
+
+    ['say' + 'Hi']() {
+      console.log("Hello");
+    }
+  
+  }
+  
+  new User().sayHi();
+}
+/* Such features are easy to remember, as they resemble that of literal objects. */
+
+
+/* Class fields */
+/* Previously, our classes only had methods.
+
+“Class fields” is a syntax that allows to add any properties.
+
+Note: Old browsers may need a polyfill
+Class fields are a recent addition to the language. 
+
+For instance, let’s add name property to class User: */
+{
+  class User {
+    name = "John";
+  
+    sayHi() {
+      console.log(`Hello, ${this.name}!`);
+    }
+  }
+  
+  new User().sayHi(); // Hello, John!
+}
