@@ -1,7 +1,7 @@
 /* Static Properties and Methods */
 /* Summary 
 Static methods are used for the functionality that belongs to the class 
-“as a whole”. It doesn’t relate to a concrete class instance.
+"as a whole". It doesn’t relate to a concrete class instance.
 
 For example, a method for comparison Article.compare(article1, article2) or a 
 factory method Article.createTodays().
@@ -57,14 +57,14 @@ User.staticMethod(); // true
 
 
 /* The value of this in User.staticMethod() call is the class constructor User 
-itself (the “object before dot” rule).
+itself (the "object before dot" rule).
 
 Usually, static methods are used to implement functions that belong to the 
 class as a whole, but not to any particular object of it.
 
 For instance, we have Article objects and need a function to compare them.
 
-A natural solution would be to add Article.compare static method: */
+A natural solution would be to add Article.compare "static method: */
 {
   class Article {
     constructor(title, date) {
@@ -89,10 +89,10 @@ A natural solution would be to add Article.compare static method: */
   console.log( articles[0].title ); // CSS
 }
 
-/* Here Article.compare method stands “above” articles, as a means to compare them. 
+/* Here Article.compare method stands "above" articles, as a means to compare them. 
 It’s not a method of an article, but rather of the whole class. */
 
-/* Another example would be a so-called “factory” method. 
+/* Another example would be a so-called "factory" method. 
 
 Let’s say, we need multiple ways to create an article:
 
@@ -201,4 +201,43 @@ and accessible as Rabbit.compare and Rabbit.planet: */
   rabbits[0].run(); // Black Rabbit runs with speed 5.
   
   console.log(Rabbit.planet); // Earth
+}
+
+/* Now when we call Rabbit.compare, the inherited Animal.compare will be called.
+
+How does it work? Again, using prototypes. As you might have already 
+guessed, extends gives Rabbit the [[Prototype]] reference to Animal.
+
+
+Animal      prototype   Animal.prototype
+[compare]   --------->  [constructor: Animal]
+  /\                    [run: function      ]
+   | [[Prototype]]            /\
+   |                          | [[Prototype]]
+Rabbit      prototype   Rabbit.prototype
+[     ]     ----------> [constructor: Rabbit]
+                        [hide: function     ]
+                              /\
+                              |  [[Prototype]]
+                        rabbit
+                        [name: "White Rabbit"]
+
+So, Rabbit extends Animal creates two [[Prototype]] references:
+
+  1. Rabbit function prototypally inherits from Animal function.
+  2. Rabbit.prototype prototypally inherits from Animal.prototype.
+
+As a result, inheritance works both for regular and static methods.
+
+Here, let’s check that by code:
+*/
+{
+  class Animal {}
+class Rabbit extends Animal {}
+
+// for statics
+console.log(Rabbit.__proto__ === Animal); // true
+
+// for regular methods
+console.log(Rabbit.prototype.__proto__ === Animal.prototype); // true
 }
