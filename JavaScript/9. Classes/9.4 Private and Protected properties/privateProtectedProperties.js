@@ -12,18 +12,18 @@ It gives the following benefits:
     - If we strictly delimit the internal interface, then the developer of the 
     class can freely change its internal properties and methods, even without 
     informing the users.
-    - If you’re a developer of such class, it’s great to know that private 
+    - If you're a developer of such class, it's great to know that private 
     methods can be safely renamed, their parameters can be changed, and even 
     removed, because no external code depends on them.
   - For users, when a new version comes out, it may be a total overhaul 
   internally, but still simple to upgrade if the external interface is the same.
   
   - Hiding complexity
-    - It’s always convenient when implementation details are hidden, and a 
+    - It's always convenient when implementation details are hidden, and a 
     simple, well-documented external interface is available.
 
 To hide an internal interface we use either protected or private properties:
-  - Protected fields start with _. That’s a well-known convention, not enforced
+  - Protected fields start with _. That's a well-known convention, not enforced
   at the language level. Programmers should only access a field starting 
   with _ from its class and classes inheriting from it.
 
@@ -40,9 +40,9 @@ browsers, but can be polyfilled.
 
 That is "a must" practice in developing anything more complex than a "hello world" app.
 
-To understand this, let’s break away from development and turn our eyes into the real world.
+To understand this, let's break away from development and turn our eyes into the real world.
 
-Usually, devices that we’re using are quite complex. But delimiting the 
+Usually, devices that we're using are quite complex. But delimiting the 
 internal interface from the external one allows to use them without problems. */
 
 /* A real-life example */
@@ -56,9 +56,9 @@ coffee machine – all details are well-tuned and hidden inside.
 If we remove the protective cover from the coffee machine, then using it will 
 be much more complex (where to press?), and dangerous (it can electrocute).
 
-As we’ll see, in programming objects are like coffee machines.
+As we'll see, in programming objects are like coffee machines.
 
-But in order to hide inner details, we’ll use not a protective cover, but 
+But in order to hide inner details, we'll use not a protective cover, but 
 rather special syntax of the language and conventions. */
 
 
@@ -70,7 +70,7 @@ groups:
   - External interface – methods and properties, accessible also from outside the class.
 
 
-If we continue the analogy with the coffee machine – what’s hidden inside: 
+If we continue the analogy with the coffee machine – what's hidden inside: 
 a boiler tube, heating element, and so on – is its internal interface.
 
 An internal interface is used for the object to work, its details use each other. 
@@ -81,7 +81,7 @@ that no one can reach those. Details are hidden and inaccessible. We can use
 its features via the external interface.
 
 So, all we need to use an object is to know its external interface. We may be 
-completely unaware how it works inside, and that’s great.
+completely unaware how it works inside, and that's great.
 
 That was a general introduction.
 */
@@ -103,20 +103,20 @@ want inheriting classes to gain access to them.
 Protected fields are not implemented in JavaScript on the language level, but 
 in practice they are very convenient, so they are emulated.
 
-Now we’ll make a coffee machine in JavaScript with all these types of properties. 
-A coffee machine has a lot of details, we won’t model them to stay simple (though we could).
+Now we'll make a coffee machine in JavaScript with all these types of properties. 
+A coffee machine has a lot of details, we won't model them to stay simple (though we could).
 */
 
 
 /* Protecting “waterAmount” */
-/* Let’s make a simple coffee machine class first: */
+/* Let's make a simple coffee machine class first: */
 {
   class CoffeeMachine {
     waterAmount = 0; // the amount of water inside
   
     constructor(power) {
       this.power = power;
-      alert( `Created a coffee-machine, power: ${power}` );
+      console.log( `Created a coffee-machine, power: ${power}` );
     }
   
   }
@@ -130,13 +130,110 @@ A coffee machine has a lot of details, we won’t model them to stay simple (tho
 /* Right now the properties waterAmount and power are public. 
 We can easily get/set them from the outside to any value.
 
-Let’s change waterAmount property to protected to have more control over it. 
-For instance, we don’t want anyone to set it below zero. */
+Let's change waterAmount property to protected to have more control over it. 
+For instance, we don't want anyone to set it below zero. */
 
 /* Protected properties are usually prefixed with an underscore _.
 
-That is not enforced on the language level, but there’s a well-known convention 
+That is not enforced on the language level, but there's a well-known convention 
 between programmers that such properties and methods should not be accessed 
 from the outside.
 
 So our property will be called _waterAmount: */
+{
+  class CoffeeMachine {
+    _waterAmount = 0;
+  
+    set waterAmount(value) {
+      if (value < 0) {
+        value = 0;
+      }
+      this._waterAmount = value;
+    }
+  
+    get waterAmount() {
+      return this._waterAmount;
+    }
+  
+    constructor(power) {
+      this._power = power;
+    }
+  
+  }
+  
+  // create the coffee machine
+  let coffeeMachine = new CoffeeMachine(100);
+  
+  // add water
+  coffeeMachine.waterAmount = -10; // _waterAmount will become 0, not -10
+}
+/* Now the access is under control, so setting the water amount 
+below zero becomes impossible. */
+
+
+/* Read-only “power” */
+/* For power property, let's make it read-only. It sometimes happens that a 
+property must be set at creation time only, and then never modified.
+
+That's exactly the case for a coffee machine: power never changes.
+
+To do so, we only need to make getter, but not the setter: */
+{
+  class CoffeeMachine {
+    // ...
+  
+    constructor(power) {
+      this._power = power;
+    }
+  
+    get power() {
+      return this._power;
+    }
+  
+  }
+  
+  // create the coffee machine
+  let coffeeMachine = new CoffeeMachine(100);
+  
+  console.log(`Power is: ${coffeeMachine.power}W`); // Power is: 100W
+  
+  coffeeMachine.power = 25; // Error (no setter)
+}
+
+/* Getter/setter functions */
+/* Here we used getter/setter syntax.
+
+But most of the time get.../set... functions are preferred, like this: */
+{
+  class CoffeeMachine {
+    _waterAmount = 0;
+  
+    setWaterAmount(value) {       // <---- setter for waterAmount
+      if (value < 0) value = 0;
+      this._waterAmount = value;
+    }
+  
+    getWaterAmount() {            // <---- getter for waterAmount
+      return this._waterAmount;
+    }
+  }
+  
+  new CoffeeMachine().setWaterAmount(100);
+}
+/* That looks a bit longer, but functions are more flexible. 
+They can accept multiple arguments (even if we don't need them right now).
+
+On the other hand, get/set syntax is shorter, so ultimately there's no 
+strict rule, it's up to you to decide. */
+
+
+/* Note: Protected fields are inherited */
+/* If we inherit class MegaMachine extends CoffeeMachine, then nothing 
+prevents us from accessing this._waterAmount or this._power from the 
+methods of the new class.
+
+So protected fields are naturally inheritable. Unlike private ones that 
+we'll see below. */
+
+
+/* Private "#waterLimit" */
