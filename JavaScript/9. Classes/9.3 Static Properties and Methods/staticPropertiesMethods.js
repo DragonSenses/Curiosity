@@ -90,6 +90,70 @@ A natural solution would be to add Article.compare static method: */
 }
 
 /* Here Article.compare method stands “above” articles, as a means to compare them. 
-It’s not a method of an article, but rather of the whole class.
+It’s not a method of an article, but rather of the whole class. */
 
-Another example would be a so-called “factory” method. */
+/* Another example would be a so-called “factory” method. 
+
+Let’s say, we need multiple ways to create an article:
+
+  1. Create by given parameters (title, date etc).
+  2. Create an empty article with today’s date.
+  3. …or else somehow.
+
+The first way can be implemented by the constructor. And for the second one we 
+can make a static method of the class.
+
+Such as Article.createTodays() here: */
+{
+  class Article {
+    constructor(title, date) {
+      this.title = title;
+      this.date = date;
+    }
+  
+    static createTodays() {
+      // remember, this = Article
+      return new this("Today's digest", new Date());
+    }
+  }
+  
+  let article = Article.createTodays();
+  
+  console.log( article.title ); // Today's digest
+
+
+/* Now every time we need to create a today’s digest, we can call 
+Article.createTodays(). Once again, that’s not a method of an article, 
+but a method of the whole class.
+
+Static methods are also used in database-related classes to search/save/remove 
+entries from the database, like this: */
+
+// assuming Article is a special class for managing articles
+// static method to remove the article by id:
+Article.remove({id: 12345});
+
+}
+
+/* Static methods aren’t available for individual objects */
+/* Static methods are callable on classes, not on individual objects.
+
+E.g. such code won’t work: 
+// ...
+article.createTodays(); /// Error: article.createTodays is not a function
+*/
+
+
+/* Static Properties */
+/* Static properties are also possible, they look like regular class 
+properties, but prepended by static: */
+{
+  class Article {
+    static publisher = "Ilya Kantor";
+  }
+  
+  console.log( Article.publisher ); // Ilya Kantor
+
+  /* That is the same as a direct assignment to Article: */
+  Article.publisher = "Ilya Kantor";
+}
