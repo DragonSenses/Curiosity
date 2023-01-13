@@ -44,14 +44,14 @@ For instance: */
   // eslint-disable-next-line no-inner-declarations
   function Rabbit() {} // instead of class
 
-  alert( new Rabbit() instanceof Rabbit ); // true
+  console.log( new Rabbit() instanceof Rabbit ); // true
 }
 
 /* …And with built-in classes like Array: */
 {
   let arr = [1, 2, 3];
-  alert( arr instanceof Array ); // true
-  alert( arr instanceof Object ); // true
+  console.log( arr instanceof Array ); // true
+  console.log( arr instanceof Object ); // true
 }
 
 /* Please note that arr also belongs to the Object class. That’s because 
@@ -78,7 +78,7 @@ For example: */
 
   let obj = { canEat: true };
 
-  alert(obj instanceof Animal); // true: Animal[Symbol.hasInstance](obj) is called
+  console.log(obj instanceof Animal); // true: Animal[Symbol.hasInstance](obj) is called
 }
 
 /* 2. Most classes do not have Symbol.hasInstance. In that case, the standard 
@@ -103,8 +103,102 @@ In the case of an inheritance, the match will be at the second step: */
 class Rabbit extends Animal {}
 
 let rabbit = new Rabbit();
-alert(rabbit instanceof Animal); // true
+console.log(rabbit instanceof Animal); // true
 
 // rabbit.__proto__ === Animal.prototype (no match)
 // rabbit.__proto__.__proto__ === Animal.prototype (match!)
+}
+
+/* Here’s the illustration of what rabbit instanceof Animal compares with 
+Animal.prototype: 
+
+    null
+    /\
+    | [[Prototype]]
+Object.prototype
+[              ]            // = Animal.prototype?
+    /\
+    | [[Prototype]]
+Animal.prototype
+[              ]            // = Animal.prototype?
+    /\
+    | [[Prototype]]
+Rabbit.prototype
+[              ]            // = Animal.prototype?
+    /\
+    | [[Prototype]]
+rabbit
+[              ]
+*/
+
+/* By the way, there’s also a method objA.isPrototypeOf(objB), that returns 
+true if objA is somewhere in the chain of prototypes for objB. So the test of 
+obj instanceof Class can be rephrased as Class.prototype.isPrototypeOf(obj).
+
+It’s funny, but the Class constructor itself does not participate in the check! 
+Only the chain of prototypes and Class.prototype matters.
+
+That can lead to interesting consequences when a prototype property is changed 
+after the object is created. 
+
+Like here: */
+{
+  // eslint-disable-next-line no-inner-declarations
+  function Rabbit() {}
+  let rabbit = new Rabbit();
+
+  // changed the prototype
+  Rabbit.prototype = {};
+
+  // ...not a rabbit any more!
+  console.log( rabbit instanceof Rabbit ); // false
+}
+
+
+/* Bonus: Object.prototype.toString for the type */
+/* We already know that plain objects are converted to string as [object Object]: */
+{
+  let obj = {};
+
+  console.log(obj); // [object Object]
+  console.log(obj.toString()); // the same
+}
+
+/* That’s their implementation of toString. But there’s a hidden feature that 
+makes toString actually much more powerful than that. We can use it as an 
+extended typeof and an alternative for instanceof.
+
+Sounds strange? Indeed. Let’s demystify.
+
+By specification, the built-in toString can be extracted from the object and 
+executed in the context of any other value. And its result depends on that value. 
+
+- For a number, it will be [object Number]
+- For a boolean, it will be [object Boolean]
+- For null: [object Null]
+- For undefined: [object Undefined]
+- For arrays: [object Array]
+- …etc (customizable). 
+
+Let’s demonstrate: */
+{
+  // copy toString method into a variable for convenience
+  let objectToString = Object.prototype.toString;
+
+  // what type is this?
+  let arr = [];
+
+  console.log( objectToString.call(arr) ); // [object Array]
+}
+/* Here we used call as described in the chapter Decorators and forwarding, 
+call/apply to execute the function objectToString in the context this=arr.
+
+Internally, the toString algorithm examines this and returns the corresponding 
+result. More examples: */
+{
+  let s = Object.prototype.toString;
+
+  console.log( s.call(123) ); // [object Number]
+  console.log( s.call(null) ); // [object Null]
+  console.log( s.call(console.log) ); // [object Function]
 }
