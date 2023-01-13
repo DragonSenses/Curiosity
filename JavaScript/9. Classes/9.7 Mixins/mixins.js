@@ -24,10 +24,10 @@ StreetSweeper and a class Bicycle, and want to make their mix: a
 StreetSweepingBicycle.
 
 Or we have a class User and a class EventEmitter that implements event 
-generation, and we’d like to add the functionality of EventEmitter to User, 
+generation, and we'd like to add the functionality of EventEmitter to User, 
 so that our users can emit events.
 
-There’s a concept that can help here, called “mixins”.
+There's a concept that can help here, called "mixins".
 
 As defined in Wikipedia, a mixin is a class containing methods that can be 
 used by other classes without a need to inherit from it.
@@ -41,15 +41,15 @@ but we do not use it alone, we use it to add the behavior to other classes.
 object with useful methods, so that we can easily merge them into a 
 prototype of any class.
 
-For instance here the mixin sayHiMixin is used to add some “speech” for User: */
+For instance here the mixin sayHiMixin is used to add some "speech" for User: */
 {
   // mixin
   let sayHiMixin = {
     sayHi() {
-      alert(`Hello ${this.name}`);
+      console.log(`Hello ${this.name}`);
     },
     sayBye() {
-      alert(`Bye ${this.name}`);
+      console.log(`Bye ${this.name}`);
     }
   };
 
@@ -67,8 +67,8 @@ For instance here the mixin sayHiMixin is used to add some “speech” for User
   new User("World").sayHi(); // Hello World!
 }
 
-/* There’s no inheritance, but a simple method copying. So User may inherit 
-from another class and also include the mixin to “mix-in” the additional methods, 
+/* There's no inheritance, but a simple method copying. So User may inherit 
+from another class and also include the mixin to "mix-in" the additional methods, 
 like this: 
 
 class User extends Person {
@@ -85,7 +85,7 @@ For instance, here sayHiMixin inherits from sayMixin:
 {
   let sayMixin = {
     say(phrase) {
-      alert(phrase);
+      console.log(phrase);
     }
   };
   
@@ -117,7 +117,7 @@ For instance, here sayHiMixin inherits from sayMixin:
 sayHiMixin (at lines labelled with (*)) looks for the method in the prototype 
 of that mixin, not the class.
 
-Here’s the diagram (see the right part): 
+Here's the diagram (see the right part): 
 
                                     sayMixin
                                     [say: function    ]
@@ -132,7 +132,7 @@ User.prototype                      sayHiMixin
 user
 [name: ... ]
 
-That’s because methods sayHi and sayBye were initially created in 
+That's because methods sayHi and sayBye were initially created in 
 sayHiMixin. So even though they got copied, their [[HomeObject]] internal 
 property references sayHiMixin, as shown in the picture above.
 
@@ -142,15 +142,15 @@ means it searches sayHiMixin.[[Prototype]].
 
 
 /* EventMixin */
-/* Now let’s make a mixin for real life.
+/* Now let's make a mixin for real life.
 
 An important feature of many browser objects (for instance) is that they 
-can generate events. Events are a great way to “broadcast information” to 
-anyone who wants it. So let’s make a mixin that allows us to easily add 
+can generate events. Events are a great way to "broadcast information" to 
+anyone who wants it. So let's make a mixin that allows us to easily add 
 event-related functions to any class/object. 
 
-  - The mixin will provide a method .trigger(name, [...data]) to “generate an 
-  event” when something important happens to it. The name argument is a name 
+  - The mixin will provide a method .trigger(name, [...data]) to "generate an 
+  event" when something important happens to it. The name argument is a name 
   of the event, optionally followed by additional arguments with event data.
 
   - Also the method .on(name, handler) that adds handler function as the 
@@ -167,5 +167,84 @@ for such events to load the calendar for the logged-in person.
 Or, a menu can generate the event "select" when a menu item is selected, and 
 other objects may assign handlers to react on that event. And so on.
 
-Here’s the code:
+Here's the code:
 */
+{
+  let eventMixin = {
+    /**
+     * Subscribe to event, usage:
+     *  menu.on('select', function(item) { ... }
+    */
+    on(eventName, handler) {
+      if (!this._eventHandlers) this._eventHandlers = {};
+      if (!this._eventHandlers[eventName]) {
+        this._eventHandlers[eventName] = [];
+      }
+      this._eventHandlers[eventName].push(handler);
+    },
+  
+    /**
+     * Cancel the subscription, usage:
+     *  menu.off('select', handler)
+     */
+    off(eventName, handler) {
+      let handlers = this._eventHandlers?.[eventName];
+      if (!handlers) return;
+      for (let i = 0; i < handlers.length; i++) {
+        if (handlers[i] === handler) {
+          handlers.splice(i--, 1);
+        }
+      }
+    },
+  
+    /**
+     * Generate an event with the given name and data
+     *  this.trigger('select', data1, data2);
+     */
+    trigger(eventName, ...args) {
+      if (!this._eventHandlers?.[eventName]) {
+        return; // no handlers for that event name
+      }
+  
+      // call the handlers
+      this._eventHandlers[eventName].forEach(handler => handler.apply(this, args));
+    }
+  };
+
+/* 
+  .on(eventName, handler) – assigns function handler to run when the event with
+  that name occurs. Technically, there's an _eventHandlers property that stores
+  an array of handlers for each event name, and it just adds it to the list.
+  
+  .off(eventName, handler) – removes the function from the handlers list.
+
+  .trigger(eventName, ...args) – generates the event: all handlers from 
+  _eventHandlers[eventName] are called, with a list of arguments ...args. 
+  
+Usage: */
+
+// Make a class
+class Menu {
+  choose(value) {
+    this.trigger("select", value);
+  }
+}
+// Add the mixin with event-related methods
+Object.assign(Menu.prototype, eventMixin);
+
+let menu = new Menu();
+
+// add a handler, to be called on selection:
+menu.on("select", value => console.log(`Value selected: ${value}`));
+
+// triggers the event => the handler above runs and shows:
+// Value selected: 123
+menu.choose("123");
+
+/* Now, if we'd like any code to react to a menu selection, we can listen for 
+it with menu.on(...).
+
+And eventMixin mixin makes it easy to add such behavior to as many classes 
+as we'd like, without interfering with the inheritance chain. */
+
+}
