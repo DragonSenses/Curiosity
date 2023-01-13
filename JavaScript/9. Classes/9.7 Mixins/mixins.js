@@ -64,7 +64,7 @@ For instance here the mixin sayHiMixin is used to add some “speech” for User
   Object.assign(User.prototype, sayHiMixin);
 
   // now User can say hi
-  new User("Dude").sayHi(); // Hello Dude!
+  new User("World").sayHi(); // Hello World!
 }
 
 /* There’s no inheritance, but a simple method copying. So User may inherit 
@@ -111,5 +111,61 @@ For instance, here sayHiMixin inherits from sayMixin:
   Object.assign(User.prototype, sayHiMixin);
   
   // now User can say hi
-  new User("Dude").sayHi(); // Hello Dude!
+  new User("World").sayHi(); // Hello World!
 }
+/* Please note that the call to the parent method super.say() from 
+sayHiMixin (at lines labelled with (*)) looks for the method in the prototype 
+of that mixin, not the class.
+
+Here’s the diagram (see the right part): 
+
+                                    sayMixin
+                                    [say: function    ]
+                                        /\
+                                        | [[Prototype]]
+User.prototype                      sayHiMixin
+[constructor: User] [[HomeObject]]  [sayHi: function ]
+[sayHi: function  ] --------------> [sayBye: function]
+[sayBye: function ] -------------->
+      /\
+      | [[Prototype]]
+user
+[name: ... ]
+
+That’s because methods sayHi and sayBye were initially created in 
+sayHiMixin. So even though they got copied, their [[HomeObject]] internal 
+property references sayHiMixin, as shown in the picture above.
+
+As super looks for parent methods in [[HomeObject]].[[Prototype]], that 
+means it searches sayHiMixin.[[Prototype]].
+*/
+
+
+/* EventMixin */
+/* Now let’s make a mixin for real life.
+
+An important feature of many browser objects (for instance) is that they 
+can generate events. Events are a great way to “broadcast information” to 
+anyone who wants it. So let’s make a mixin that allows us to easily add 
+event-related functions to any class/object. 
+
+  - The mixin will provide a method .trigger(name, [...data]) to “generate an 
+  event” when something important happens to it. The name argument is a name 
+  of the event, optionally followed by additional arguments with event data.
+
+  - Also the method .on(name, handler) that adds handler function as the 
+  listener to events with the given name. It will be called when an event with 
+  the given name triggers, and get the arguments from the .trigger call.
+
+  - …And the method .off(name, handler) that removes the handler listener.
+
+
+After adding the mixin, an object user will be able to generate an event "login" 
+when the visitor logs in. And another object, say, calendar may want to listen 
+for such events to load the calendar for the logged-in person.
+
+Or, a menu can generate the event "select" when a menu item is selected, and 
+other objects may assign handlers to react on that event. And so on.
+
+Here’s the code:
+*/
