@@ -11,7 +11,7 @@ typeof       | primitives                       | string
 ------------------------------------------------------------
 instanceof   | objects                          | true/false
 
-As we can see, {}.toString is technically a “more advanced” typeof.
+As we can see, {}.toString is technically a "more advanced" typeof.
 
 And instanceof operator really shines when we are working with a class 
 hierarchy and want to check for the class taking into account inheritance.
@@ -54,7 +54,7 @@ For instance: */
   console.log( arr instanceof Object ); // true
 }
 
-/* Please note that arr also belongs to the Object class. That’s because 
+/* Please note that arr also belongs to the Object class. That's because 
 Array prototypically inherits from Object.
 
 Normally, instanceof examines the prototype chain for the check. We can also 
@@ -62,9 +62,9 @@ set a custom logic in the static method Symbol.hasInstance.
 
 The algorithm of obj instanceof Class works roughly as follows: 
 
-1. If there’s a static method Symbol.hasInstance, then just call 
+1. If there's a static method Symbol.hasInstance, then just call 
 it: Class[Symbol.hasInstance](obj). It should return either true or false, 
-and we’re done. That’s how we can customize the behavior of instanceof.
+and we're done. That's how we can customize the behavior of instanceof.
 
 For example: */
 // setup instanceOf check that assumes that
@@ -109,7 +109,7 @@ console.log(rabbit instanceof Animal); // true
 // rabbit.__proto__.__proto__ === Animal.prototype (match!)
 }
 
-/* Here’s the illustration of what rabbit instanceof Animal compares with 
+/* Here's the illustration of what rabbit instanceof Animal compares with 
 Animal.prototype: 
 
     null
@@ -131,11 +131,11 @@ rabbit
 [              ]
 */
 
-/* By the way, there’s also a method objA.isPrototypeOf(objB), that returns 
+/* By the way, there's also a method objA.isPrototypeOf(objB), that returns 
 true if objA is somewhere in the chain of prototypes for objB. So the test of 
 obj instanceof Class can be rephrased as Class.prototype.isPrototypeOf(obj).
 
-It’s funny, but the Class constructor itself does not participate in the check! 
+It's funny, but the Class constructor itself does not participate in the check! 
 Only the chain of prototypes and Class.prototype matters.
 
 That can lead to interesting consequences when a prototype property is changed 
@@ -164,11 +164,11 @@ Like here: */
   console.log(obj.toString()); // the same
 }
 
-/* That’s their implementation of toString. But there’s a hidden feature that 
+/* That's their implementation of toString. But there's a hidden feature that 
 makes toString actually much more powerful than that. We can use it as an 
 extended typeof and an alternative for instanceof.
 
-Sounds strange? Indeed. Let’s demystify.
+Sounds strange? Indeed. Let's demystify.
 
 By specification, the built-in toString can be extracted from the object and 
 executed in the context of any other value. And its result depends on that value. 
@@ -180,7 +180,7 @@ executed in the context of any other value. And its result depends on that value
 - For arrays: [object Array]
 - …etc (customizable). 
 
-Let’s demonstrate: */
+Let's demonstrate: */
 {
   // copy toString method into a variable for convenience
   let objectToString = Object.prototype.toString;
@@ -202,3 +202,37 @@ result. More examples: */
   console.log( s.call(null) ); // [object Null]
   console.log( s.call(console.log) ); // [object Function]
 }
+
+
+/* Symbol.toStringTag */
+/* The behavior of Object toString can be customized using a special object 
+property Symbol.toStringTag.
+
+For instance: */
+{
+  let user = {
+    [Symbol.toStringTag]: "User"
+  };
+  
+  console.log( {}.toString.call(user) ); // [object User]
+}
+
+/* For most environment-specific objects, there is such a property. 
+Here are some browser specific examples: */
+{
+  // toStringTag for the environment-specific object and class:
+  console.log( window[Symbol.toStringTag]); // Window
+  console.log( XMLHttpRequest.prototype[Symbol.toStringTag] ); // XMLHttpRequest
+
+  console.log( {}.toString.call(window) ); // [object Window]
+  console.log( {}.toString.call(new XMLHttpRequest()) ); // [object XMLHttpRequest]
+}
+
+/* As you can see, the result is exactly Symbol.toStringTag (if exists), wrapped 
+into [object ...].
+
+At the end we have more powerful typeof that not only works for primitive data
+types, but also for built-in objects and even can be customized.
+
+We can use {}.toString.call instead of instanceof for built-in objects when we 
+want to get the type as a string rather than just to check. */
