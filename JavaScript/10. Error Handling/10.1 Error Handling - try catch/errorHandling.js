@@ -257,7 +257,7 @@ name property?
 
 Like this: */
 {
-  let json = '{ "age": 30 }'; // incomplete data
+  let json = '{ "age": 20 }'; // incomplete data
 
   try {
 
@@ -306,3 +306,43 @@ For instance:
   alert(error.name); // Error
   alert(error.message); // Things happen o_O
 }
+
+/* Let’s see what kind of error JSON.parse generates: */
+{
+  try {
+    JSON.parse("{ bad json o_O }");
+  } catch (err) {
+    alert(err.name); // SyntaxError
+    alert(err.message); // Unexpected token b in JSON at position 2
+  }
+}
+
+/* As we can see, that’s a SyntaxError.
+
+And in our case, the absence of name is an error, as users must have a name.
+
+So let’s throw it: */
+{
+  let json = '{ "age": 20 }'; // incomplete data
+
+  try {
+
+    let user = JSON.parse(json); // <-- no errors
+
+    if (!user.name) {
+      throw new SyntaxError("Incomplete data: no name"); // (*)
+    }
+
+    alert( user.name );
+
+  } catch (err) {
+    alert( "JSON Error: " + err.message ); // JSON Error: Incomplete data: no name
+  }
+}
+
+/* In the line (*), the throw operator generates a SyntaxError with the given 
+message, the same way as JavaScript would generate it itself. The execution of 
+try immediately stops and the control flow jumps into catch.
+
+Now catch became a single place for all error handling: both for JSON.parse 
+and other cases. */
