@@ -433,3 +433,58 @@ try...catch and can be either caught by an outer try...catch construct (if
 
 So the catch block actually handles only errors that it knows how to deal 
 with and “skips” all others. */
+
+/* The example below demonstrates how such errors can be caught by one more 
+level of try...catch: */
+function readData() {
+  let json = '{ "age": 20 }';
+
+  try {
+    // ...
+    blabla(); // error!
+  } catch (err) {
+    // ...
+    if (!(err instanceof SyntaxError)) {
+      throw err; // rethrow (don't know how to deal with it)
+    }
+  }
+}
+
+try {
+  readData();
+} catch (err) {
+  alert( "External catch got: " + err ); // caught it!
+}
+
+console.log(json);
+
+/* Here readData only knows how to handle SyntaxError, while the outer 
+try...catch knows how to handle everything. */
+
+
+/* try…catch…finally */
+/* The try...catch construct may have one more code clause: finally.
+
+If it exists, it runs in all cases: 
+  -after try, if there were no errors,
+  - after catch, if there were errors.
+  
+The extended syntax looks like this:
+try {
+   ... try to execute the code ...
+} catch (err) {
+   ... handle errors ...
+} finally {
+   ... execute always ...
+}
+
+
+Try running this code: */
+try {
+  alert( 'try' );
+  if (confirm('Make an error?')) BAD_CODE();
+} catch (err) {
+  alert( 'catch' );
+} finally {
+  alert( 'finally' );
+}
