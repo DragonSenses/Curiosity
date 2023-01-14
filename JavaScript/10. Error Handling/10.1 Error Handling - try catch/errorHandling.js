@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* Error handling - try...catch */
 /* Summary
 The try...catch construct allows to handle runtime errors. 
@@ -97,7 +98,6 @@ try {
 
   alert('Start of try runs');  // (1) <--
 
-  // eslint-disable-next-line no-undef
   lalala; // error, variable is not defined!
 
   alert('End of try (never reached)');  // (2)
@@ -130,3 +130,62 @@ can’t understand the code.
 So, try...catch can only handle errors that occur in valid code. 
 Such errors are called “runtime errors” or, sometimes, “exceptions”.
 */
+
+/* try...catch works synchronously */
+/* If an exception happens in “scheduled” code, like in setTimeout, 
+then try...catch won’t catch it: */
+try {
+  setTimeout(function() {
+    noSuchVariable; // script will die here
+  }, 1000);
+} catch (err) {
+  alert( "won't work" );
+}
+
+/* That’s because the function itself is executed later, when the engine 
+has already left the try...catch construct. 
+
+To catch an exception inside a scheduled function, try...catch must 
+be inside that function:
+*/
+setTimeout(function() {
+  try {
+    noSuchVariable; // try...catch handles the error!
+  } catch {
+    alert( "error is caught here!" );
+  }
+}, 1000);
+
+
+/* Error object */
+/* When an error occurs, JavaScript generates an object containing the 
+details about it. The object is then passed as an argument to catch: */
+try {
+  // ...
+} catch (err) { // <-- the "error object", could use another word instead of err
+  // ...
+}
+
+/* For all built-in errors, the error object has two main properties: 
+name - Error name. For instance, for an undefined variable that’s "ReferenceError".
+
+message - Textual message about error details.
+
+  There are other non-standard properties available in most environments. One of 
+most widely used and supported is:
+
+stack - Current call stack: a string with information about the sequence of 
+nested calls that led to the error. Used for debugging purposes. 
+
+For instance: */
+try {
+  lalala; // error, variable is not defined!
+} catch (err) {
+  alert(err.name); // ReferenceError
+  alert(err.message); // lalala is not defined
+  alert(err.stack); // ReferenceError: lalala is not defined at (...call stack)
+
+  // Can also show an error as a whole
+  // The error is converted to string as "name: message"
+  alert(err); // ReferenceError: lalala is not defined
+}
