@@ -346,3 +346,35 @@ try immediately stops and the control flow jumps into catch.
 
 Now catch became a single place for all error handling: both for JSON.parse 
 and other cases. */
+
+
+/* Rethrowing */
+/* In the example above we use try...catch to handle incorrect data. 
+But is it possible that another unexpected error occurs within the 
+try {...} block? Like a programming error (variable is not defined) or 
+something else, not just this “incorrect data” thing.
+
+For example: */
+{
+  let json = '{ "age": 20 }'; // incomplete data
+
+  try {
+    user = JSON.parse(json); // <-- forgot to put "let" before user
+
+    // ...
+  } catch (err) {
+    alert("JSON Error: " + err); // JSON Error: ReferenceError: user is not defined
+    // (no JSON Error actually)
+  }
+}
+
+/* Of course, everything’s possible! Programmers do make mistakes. 
+Even in open-source utilities used by millions for decades – suddenly a bug 
+may be discovered that leads to terrible hacks.
+
+In our case, try...catch is placed to catch “incorrect data” errors. 
+But by its nature, catch gets all errors from try. Here it gets an 
+unexpected error, but still shows the same "JSON Error" message. That’s wrong 
+and also makes the code more difficult to debug. */
+
+/*  */
