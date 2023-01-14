@@ -249,3 +249,60 @@ do much more: send a new network request, suggest an alternative to the
 visitor, send information about the error to a logging facility, … . 
 
 All much better than just dying. */
+
+
+/* Throwing our own errors */
+/* What if json is syntactically correct, but doesn’t have a required 
+name property?
+
+Like this: */
+{
+  let json = '{ "age": 30 }'; // incomplete data
+
+  try {
+
+    let user = JSON.parse(json); // <-- no errors
+    alert( user.name ); // no name!
+
+  } catch (err) {
+    alert( "doesn't execute" );
+  }
+}
+/* Here JSON.parse runs normally, but the absence of name is actually an error for us.
+
+To unify error handling, we’ll use the throw operator. */
+
+
+/* “Throw” operator */
+/* The throw operator generates an error.
+
+The syntax is: 
+    throw <error object>
+
+Technically, we can use anything as an error object. That may be even a 
+primitive, like a number or a string, but it’s better to use objects, preferably 
+with name and message properties (to stay somewhat compatible with built-in errors).
+
+JavaScript has many built-in constructors for standard errors: Error, 
+SyntaxError, ReferenceError, TypeError and others. We can use them to 
+create error objects as well. 
+
+Their syntax is: 
+
+let error = new Error(message);
+// or
+let error = new SyntaxError(message);
+let error = new ReferenceError(message);
+// ...
+
+For built-in errors (not for any objects, just for errors), the name property 
+is exactly the name of the constructor. And message is taken from the argument.
+
+For instance:
+*/
+{
+  let error = new Error("Things happen o_O");
+
+  alert(error.name); // Error
+  alert(error.message); // Things happen o_O
+}
