@@ -536,3 +536,60 @@ in it: */
 
   alert( `execution took ${diff}ms` );
 }
+
+/* You can check by running the code with entering 35 into prompt – it executes
+normally, finally after try. And then enter -1 – there will be an immediate 
+error, and the execution will take 0ms. Both measurements are done correctly.
+
+In other words, the function may finish with return or throw, that doesn’t 
+matter. The finally clause executes in both cases. */
+
+/* Variables are local inside try...catch...finally */
+/* Please note that result and diff variables in the code above are 
+declared before try...catch.
+
+Otherwise, if we declared let in try block, it would only be visible inside 
+of it. */
+
+
+/* finally and return */
+/* The finally clause works for any exit from try...catch. That includes an 
+explicit return.
+
+In the example below, there’s a return in try. In this case, finally is 
+executed just before the control returns to the outer code. 
+
+function func() {
+
+  try {
+    return 1;
+
+  } catch (err) {
+    // ...
+  } finally {
+    alert( 'finally' );
+  }
+}
+
+alert( func() ); // first works alert from finally, and then this one
+
+*/
+
+
+/* try...finally */
+/* The try...finally construct, without catch clause, is also useful. 
+We apply it when we don’t want to handle errors here (let them fall through), 
+but want to be sure that processes that we started are finalized. 
+
+function func() {
+  // start doing something that needs completion (like measurements)
+  try {
+    // ...
+  } finally {
+    // complete that thing even if all dies
+  }
+}
+
+In the code above, an error inside try always falls out, because there’s no 
+catch. But finally works before the execution flow leaves the function.
+*/
