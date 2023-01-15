@@ -6,9 +6,18 @@
   });
   clock.start();
 
+  /* For setTimeout(), remember to:
+    1. pass in a function reference (function name without parenthesis)
+    2. don't lose context of "this" 
+  */
+  let clockStop = clock.stop.bind(clock); // 2. Binds clock.stop with this=clock
+
+  // 1. Pass in function reference to setTimeout
+  setTimeout(clockStop, 10000); // After 10 seconds, run clock.stop() once
+
+
 
   /* extended-clock class should work like this: */
-
   /*
 
     let lowResolutionClock = new ExtendedClock({
