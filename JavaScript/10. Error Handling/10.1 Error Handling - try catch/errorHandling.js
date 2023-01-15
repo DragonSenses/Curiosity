@@ -2,7 +2,7 @@
 /* Error handling - try...catch */
 /* Summary
 The try...catch construct allows to handle runtime errors. 
-It literally allows to "try" running the code and “catch” errors that 
+It literally allows to "try" running the code and "catch" errors that 
 may occur in it.
 
 The syntax is:
@@ -28,31 +28,31 @@ If an error object is not needed, we can omit it by using
 catch { instead of catch (err) {.
 
 We can also generate our own errors using the throw operator. 
-Technically, the argument of throw can be anything, but usually it’s an error 
+Technically, the argument of throw can be anything, but usually it's an error 
 object inheriting from the built-in Error class. More on extending errors in 
 the next chapter.
 
 Rethrowing is a very important pattern of error handling: a catch block 
 usually expects and knows how to handle the particular error type, so it 
-should rethrow errors it doesn’t know.
+should rethrow errors it doesn't know.
 
-Even if we don’t have try...catch, most environments allow us to setup a 
-“global” error handler to catch errors that “fall out”. 
+Even if we don't have try...catch, most environments allow us to setup a 
+"global" error handler to catch errors that "fall out". 
 
-In-browser, that’s window.onerror.
+In-browser, that's window.onerror.
 */
 
 /* No matter how great we are at programming, sometimes our scripts have errors. 
 They may occur because of our mistakes, an unexpected user input, an 
 erroneous server response, and for a thousand other reasons.
 
-Usually, a script “dies” (immediately stops) in case of an error, printing 
+Usually, a script "dies" (immediately stops) in case of an error, printing 
 it to console.
 
-But there’s a syntax construct try...catch that allows us to “catch” errors 
+But there's a syntax construct try...catch that allows us to "catch" errors 
 so the script can, instead of dying, do something more reasonable. */
 
-/* The “try…catch” syntax */
+/* The "try…catch" syntax */
 /* The try...catch construct has two main blocks: try, and then catch: */
 try {
 
@@ -113,7 +113,7 @@ try {
 /* For try...catch to work, the code must be runnable. 
 In other words, it should be valid JavaScript.
 
-It won’t work if the code is syntactically wrong, for instance it has 
+It won't work if the code is syntactically wrong, for instance it has 
 unmatched curly braces: 
 
 try {
@@ -123,17 +123,17 @@ try {
 }
 
 The JavaScript engine first reads the code, and then runs it. 
-The errors that occur on the reading phase are called “parse-time” errors 
-and are unrecoverable (from inside that code). That’s because the engine 
-can’t understand the code.
+The errors that occur on the reading phase are called "parse-time" errors 
+and are unrecoverable (from inside that code). That's because the engine 
+can't understand the code.
 
 So, try...catch can only handle errors that occur in valid code. 
-Such errors are called “runtime errors” or, sometimes, “exceptions”.
+Such errors are called "runtime errors" or, sometimes, "exceptions".
 */
 
 /* try...catch works synchronously */
-/* If an exception happens in “scheduled” code, like in setTimeout, 
-then try...catch won’t catch it: */
+/* If an exception happens in "scheduled" code, like in setTimeout, 
+then try...catch won't catch it: */
 try {
   setTimeout(function() {
     noSuchVariable; // script will die here
@@ -142,7 +142,7 @@ try {
   alert( "won't work" );
 }
 
-/* That’s because the function itself is executed later, when the engine 
+/* That's because the function itself is executed later, when the engine 
 has already left the try...catch construct. 
 
 To catch an exception inside a scheduled function, try...catch must 
@@ -167,7 +167,7 @@ try {
 }
 
 /* For all built-in errors, the error object has two main properties: 
-name - Error name. For instance, for an undefined variable that’s "ReferenceError".
+name - Error name. For instance, for an undefined variable that's "ReferenceError".
 
 message - Textual message about error details.
 
@@ -191,8 +191,8 @@ try {
 }
 
 
-/* Optional “catch” binding */
-/* If we don’t need error details, catch may omit it: */
+/* Optional "catch" binding */
+/* If we don't need error details, catch may omit it: */
 try {
   // ...
 } catch { // <-- without (err)
@@ -200,13 +200,13 @@ try {
 }
 
 
-/* Using “try…catch” */
-/* Let’s explore a real-life use case of try...catch.
+/* Using "try…catch" */
+/* Let's explore a real-life use case of try...catch.
 
 As we already know, JavaScript supports the JSON.parse(str) method to 
 read JSON-encoded values.
 
-Usually it’s used to decode data received over the network, from the 
+Usually it's used to decode data received over the network, from the 
 server or another source.
 
 We receive it and call JSON.parse like this: */
@@ -219,15 +219,15 @@ We receive it and call JSON.parse like this: */
   alert( user.name ); // Luna
   alert( user.age );  // 20
 }
-/* If json is malformed, JSON.parse generates an error, so the script “dies”.
+/* If json is malformed, JSON.parse generates an error, so the script "dies".
 
 Should we be satisfied with that? Of course not!
 
-This way, if something’s wrong with the data, the visitor will never know 
-that (unless they open the developer console). And people really don’t like 
-when something “just dies” without any error message.
+This way, if something's wrong with the data, the visitor will never know 
+that (unless they open the developer console). And people really don't like 
+when something "just dies" without any error message.
 
-Let’s use try...catch to handle the error: */
+Let's use try...catch to handle the error: */
 {
   let json = "{ bad json }";
 
@@ -252,7 +252,7 @@ All much better than just dying. */
 
 
 /* Throwing our own errors */
-/* What if json is syntactically correct, but doesn’t have a required 
+/* What if json is syntactically correct, but doesn't have a required 
 name property?
 
 Like this: */
@@ -270,17 +270,17 @@ Like this: */
 }
 /* Here JSON.parse runs normally, but the absence of name is actually an error for us.
 
-To unify error handling, we’ll use the throw operator. */
+To unify error handling, we'll use the throw operator. */
 
 
-/* “Throw” operator */
+/* "Throw" operator */
 /* The throw operator generates an error.
 
 The syntax is: 
     throw <error object>
 
 Technically, we can use anything as an error object. That may be even a 
-primitive, like a number or a string, but it’s better to use objects, preferably 
+primitive, like a number or a string, but it's better to use objects, preferably 
 with name and message properties (to stay somewhat compatible with built-in errors).
 
 JavaScript has many built-in constructors for standard errors: Error, 
@@ -307,7 +307,7 @@ For instance:
   alert(error.message); // Things happen o_O
 }
 
-/* Let’s see what kind of error JSON.parse generates: */
+/* Let's see what kind of error JSON.parse generates: */
 {
   try {
     JSON.parse("{ bad json o_O }");
@@ -317,11 +317,11 @@ For instance:
   }
 }
 
-/* As we can see, that’s a SyntaxError.
+/* As we can see, that's a SyntaxError.
 
 And in our case, the absence of name is an error, as users must have a name.
 
-So let’s throw it: */
+So let's throw it: */
 {
   let json = '{ "age": 20 }'; // incomplete data
 
@@ -352,7 +352,7 @@ and other cases. */
 /* In the example above we use try...catch to handle incorrect data. 
 But is it possible that another unexpected error occurs within the 
 try {...} block? Like a programming error (variable is not defined) or 
-something else, not just this “incorrect data” thing.
+something else, not just this "incorrect data" thing.
 
 For example: */
 {
@@ -368,24 +368,24 @@ For example: */
   }
 }
 
-/* Of course, everything’s possible! Programmers do make mistakes. 
+/* Of course, everything's possible! Programmers do make mistakes. 
 Even in open-source utilities used by millions for decades – suddenly a bug 
 may be discovered that leads to terrible hacks.
 
-In our case, try...catch is placed to catch “incorrect data” errors. 
+In our case, try...catch is placed to catch "incorrect data" errors. 
 But by its nature, catch gets all errors from try. Here it gets an 
-unexpected error, but still shows the same "JSON Error" message. That’s wrong 
+unexpected error, but still shows the same "JSON Error" message. That's wrong 
 and also makes the code more difficult to debug. */
 
-/* To avoid such problems, we can employ the “rethrowing” technique. 
+/* To avoid such problems, we can employ the "rethrowing" technique. 
 The rule is simple:
 
-Catch should only process errors that it knows and “rethrow” all others.
+Catch should only process errors that it knows and "rethrow" all others.
 
-The “rethrowing” technique can be explained in more detail as:
+The "rethrowing" technique can be explained in more detail as:
   1. Catch gets all errors.
   2. In the catch (err) {...} block we analyze the error object err.
-  3. If we don’t know how to handle it, we do throw err.
+  3. If we don't know how to handle it, we do throw err.
 
 Usually, we can check the error type using the instanceof operator: */
 {
@@ -427,12 +427,12 @@ In the code below, we use rethrowing so that catch only handles SyntaxError: */
   }
 }
 
-/* The error throwing on line (*) from inside catch block “falls out” of 
+/* The error throwing on line (*) from inside catch block "falls out" of 
 try...catch and can be either caught by an outer try...catch construct (if 
   it exists), or it kills the script.
 
 So the catch block actually handles only errors that it knows how to deal 
-with and “skips” all others. */
+with and "skips" all others. */
 
 /* The example below demonstrates how such errors can be caught by one more 
 level of try...catch: */
@@ -491,15 +491,15 @@ try {
 
 /* The code has two ways of execution:
 
-  1. If you answer “Yes” to “Make an error?”, then try -> catch -> finally.
-  2. If you say “No”, then try -> finally.
+  1. If you answer "Yes" to "Make an error?", then try -> catch -> finally.
+  2. If you say "No", then try -> finally.
 
 The finally clause is often used when we start doing something and want to 
 finalize it in any case of outcome.
 
 For instance, we want to measure the time that a Fibonacci numbers 
 function fib(n) takes. Naturally, we can start measuring before it runs and 
-finish afterwards. But what if there’s an error during the function call? 
+finish afterwards. But what if there's an error during the function call? 
 In particular, the implementation of fib(n) in the code below returns an 
 error for negative or non-integer numbers.
 
@@ -541,7 +541,7 @@ in it: */
 normally, finally after try. And then enter -1 – there will be an immediate 
 error, and the execution will take 0ms. Both measurements are done correctly.
 
-In other words, the function may finish with return or throw, that doesn’t 
+In other words, the function may finish with return or throw, that doesn't 
 matter. The finally clause executes in both cases. */
 
 /* Variables are local inside try...catch...finally */
@@ -556,7 +556,7 @@ of it. */
 /* The finally clause works for any exit from try...catch. That includes an 
 explicit return.
 
-In the example below, there’s a return in try. In this case, finally is 
+In the example below, there's a return in try. In this case, finally is 
 executed just before the control returns to the outer code. 
 
 function func() {
@@ -578,7 +578,7 @@ alert( func() ); // first works alert from finally, and then this one
 
 /* try...finally */
 /* The try...finally construct, without catch clause, is also useful. 
-We apply it when we don’t want to handle errors here (let them fall through), 
+We apply it when we don't want to handle errors here (let them fall through), 
 but want to be sure that processes that we started are finalized. 
 
 function func() {
@@ -590,6 +590,66 @@ function func() {
   }
 }
 
-In the code above, an error inside try always falls out, because there’s no 
+In the code above, an error inside try always falls out, because there's no 
 catch. But finally works before the execution flow leaves the function.
 */
+
+
+/* Global catch */
+/* Environment-specific - The information from this section is not a part of 
+the core JavaScript. 
+
+Let's imagine we've got a fatal error outside of try...catch, and the script 
+died. Like a programming error or some other terrible thing.
+
+Is there a way to react on such occurrences? We may want to log the error, 
+show something to the user (normally they don't see error messages), etc.
+
+There is none in the specification, but environments usually provide it, 
+because it's really useful. 
+
+For instance, 
+  - Node.js has process.on("uncaughtException") for that. 
+  - And in the browser we can assign a function to the special window.onerror 
+  property, that will run in case of an uncaught error.
+
+Syntax:
+
+window.onerror = function(message, url, line, col, error) {
+  // ...
+};
+
+  * message - Error message.
+  * url - URL of the script where error happened.
+  * line, col - Line and column numbers where error happened.
+  * error - Error object.
+
+For instance: 
+
+<script>
+  window.onerror = function(message, url, line, col, error) {
+    alert(`${message}\n At ${line}:${col} of ${url}`);
+  };
+
+  function readData() {
+    badFunc(); // Whoops, something went wrong!
+  }
+
+  readData();
+</script>
+
+*/
+
+/* The role of the global handler window.onerror is usually not to recover 
+the script execution – that's probably impossible in case of programming 
+errors, but to send the error message to developers.
+
+There are also web-services that provide error-logging for such cases, like 
+https://errorception.com or https://www.muscula.com.
+
+They work like this:
+  1. We register at the service and get a piece of JS (or a script URL) from
+  them to insert on pages.
+  2. That JS script sets a custom window.onerror function.
+  3. When an error occurs, it sends a network request about it to the service.
+  4. We can log in to the service web interface and see errors. */
