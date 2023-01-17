@@ -98,3 +98,69 @@ new Promise(executor)
 
 That was an example of a successful job completion, a “fulfilled promise”.
 */
+
+/* And now an example of the executor rejecting the promise with an error: */
+{
+  let promise = new Promise(function(resolve, reject) {
+    // after 1 second signal that the job is finished with an error
+    setTimeout(() => reject(new Error("Whoops!")), 1000);
+  });
+}
+/* The call to reject(...) moves the promise object to "rejected" state: 
+
+new Promise(executor)   
+[state: "pending"]      resolve(error)    [state: "rejected"]
+[result: undefined]     -------------->   [result: error]
+
+
+To summarize, the executor should perform a job (usually something that 
+  takes time) and then call resolve or reject to change the state of the 
+  corresponding promise object.
+
+A promise that is either resolved or rejected is called “settled”, as opposed 
+to an initially “pending” promise.
+*/
+
+/* There can be only a single result or an error */
+/* The executor should call only one resolve or one reject. 
+Any state change is final.
+
+All further calls of resolve and reject are ignored: */
+{
+  let promise = new Promise(function(resolve, reject) {
+    resolve("done");
+  
+    reject(new Error("…")); // ignored
+    setTimeout(() => resolve("…")); // ignored
+  });
+}
+/* The idea is that a job done by the executor may have only one result or an error.
+
+Also, resolve/reject expect only one argument (or none) and will ignore additional 
+arguments. */
+
+/* Reject with Error objects */
+/* In case something goes wrong, the executor should call reject. That can be 
+done with any type of argument (just like resolve). But it is recommended to 
+use Error objects (or objects that inherit from Error). The reasoning for that 
+will soon become apparent. */
+
+/* Immediately calling resolve/reject */
+/* In practice, an executor usually does something asynchronously and calls 
+resolve/reject after some time, but it doesn’t have to. We also can call 
+resolve or reject immediately, like this: */
+{
+  let promise = new Promise(function(resolve, reject) {
+    // not taking our time to do the job
+    resolve(123); // immediately give the result: 123
+  });
+}
+/* For instance, this might happen when we start to do a job but then see 
+that everything has already been completed and cached.
+
+That’s fine. We immediately have a resolved promise. */
+
+/* The state and result are internal */
+/* The properties state and result of the Promise object are internal. 
+We can’t directly access them. We can use the methods .then/.catch/.finally 
+for that. They are described below. */
