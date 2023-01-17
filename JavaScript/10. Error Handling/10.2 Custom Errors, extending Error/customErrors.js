@@ -103,6 +103,58 @@ line (2) we reset it to the right value. */
       this.name = "ValidationError";
     }
   }
-
-  // TODO - Add the usage
+  
+  // Usage
+  function readUser(json) {
+    let user = JSON.parse(json);
+  
+    if (!user.age) {
+      throw new ValidationError("No field: age");
+    }
+    if (!user.name) {
+      throw new ValidationError("No field: name");
+    }
+  
+    return user;
+  }
+  
+  // Working example with try..catch
+  
+  try {
+    let user = readUser('{ "age": 25 }');
+    console.log(user);
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      alert("Invalid data: " + err.message); // Invalid data: No field: name
+    } else if (err instanceof SyntaxError) { // (*)
+      alert("JSON Syntax Error: " + err.message);
+    } else {
+      throw err; // unknown error, rethrow it (**)
+    }
+  }
 }
+
+/* The try..catch block in the code above handles both our ValidationError 
+and the built-in SyntaxError from JSON.parse.
+
+Please take a look at how we use instanceof to check for the specific error 
+type in the line (*).
+
+We could also look at err.name, like this: 
+
+// ...
+// instead of (err instanceof SyntaxError)
+} else if (err.name == "SyntaxError") { // (*)
+// ...
+
+
+The instanceof version is much better, because in the future we are going 
+to extend ValidationError, make subtypes of it, like PropertyRequiredError. 
+And instanceof check will continue to work for new inheriting classes. 
+So that’s future-proof.
+
+Also it’s important that if catch meets an unknown error, then it rethrows 
+it in the line (**). The catch block only knows how to handle validation and 
+syntax errors, other kinds (caused by a typo in the code or other unknown 
+reasons) should fall through.
+*/
