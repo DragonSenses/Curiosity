@@ -164,3 +164,81 @@ That’s fine. We immediately have a resolved promise. */
 /* The properties state and result of the Promise object are internal. 
 We can’t directly access them. We can use the methods .then/.catch/.finally 
 for that. They are described below. */
+
+
+/* Consumers: then, catch */
+/* A Promise object serves as a link between the executor (the “producing 
+code” or “singer”) and the consuming functions (the “fans”), which will 
+receive the result or error. Consuming functions can be registered (subscribed) 
+using the methods .then and .catch. */
+
+/* then 
+The most important, fundamental one is .then.
+
+The syntax is:
+
+promise.then(
+  function(result) { //handle a successful result },
+  function(error) { //handle an error }
+);
+
+The first argument of .then is a function that runs when the promise is 
+resolved and receives the result.
+
+The second argument of .then is a function that runs when the promise is 
+rejected and receives the error.
+
+*/
+
+/* For instance, here’s a reaction to a successfully resolved promise: */
+{
+  let promise = new Promise(function(resolve, reject) {
+    setTimeout(() => resolve("done!"), 1000);
+  });
+  
+  // resolve runs the first function in .then
+  promise.then(
+    result => alert(result), // shows "done!" after 1 second
+    error => alert(error) // doesn't run
+  );
+}
+
+/* The first function was executed.
+
+And in the case of a rejection, the second one: */
+{
+  let promise = new Promise(function(resolve, reject) {
+    setTimeout(() => reject(new Error("Whoops!")), 1000);
+  });
+  
+  // reject runs the second function in .then
+  promise.then(
+    result => alert(result), // doesn't run
+    error => alert(error) // shows "Error: Whoops!" after 1 second
+  );
+}
+
+/* If we’re interested only in successful completions, then we can 
+provide only one function argument to .then: */
+{
+  let promise = new Promise(resolve => {
+    setTimeout(() => resolve("done!"), 1000);
+  });
+  
+  promise.then(alert); // shows "done!" after 1 second
+}
+
+/* catch */
+/* If we’re interested only in errors, then we can use null as the 
+first argument: .then(null, errorHandlingFunction). Or we can 
+use .catch(errorHandlingFunction), which is exactly the same: */
+{
+  let promise = new Promise((resolve, reject) => {
+    setTimeout(() => reject(new Error("Whoops!")), 1000);
+  });
+  
+  // .catch(f) is the same as promise.then(null, f)
+  promise.catch(alert); // shows "Error: Whoops!" after 1 second
+}
+/* The call .catch(f) is a just a shorthand, 
+a complete analog of .then(null, f) */
