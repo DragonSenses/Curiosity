@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* Promise */
 /* Promise Analogy
 Imagine that you’re a top singer, and fans ask day and night for your upcoming song.
@@ -46,4 +47,54 @@ When the executor obtains the result, be it soon or late, doesn’t matter, it
 should call one of these callbacks: 
   - resolve(value) — if the job is finished successfully, with result value.
   - reject(error) — if an error has occurred, error is the error object.
+*/
+
+/* So to summarize: the executor runs automatically and attempts to perform a 
+job. When it is finished with the attempt, it calls resolve if it was successful 
+or reject if there was an error.
+
+The promise object returned by the new Promise constructor has these 
+internal properties:
+  * state — initially "pending", then changes to either "fulfilled" when 
+resolve is called or "rejected" when reject is called.
+  * result — initially undefined, then changes to value when resolve(value) 
+is called or error when reject(error) is called.
+
+So the executor eventually moves promise to one of these states: 
+
+
+                          --> [state: "fulfilled"]
+new Promise(executor)    /    [result: value]
+[state: "pending"]      /
+[result: undefined]     \
+                         \
+                          --> [state: "rejected"]
+                              [result: error]
+*/
+
+/* Here’s an example of a promise constructor and a simple executor function 
+with “producing code” that takes time (via setTimeout): */
+{
+  let promise = new Promise(function(resolve, reject) {
+    // the function is executed automatically when the promise is constructed
+  
+    // after 1 second signal that the job is done with the result "done"
+    setTimeout(() => resolve("done"), 1000);
+  });
+}
+/* We can see two things by running the code above: 
+  1. The executor is called automatically and immediately (by new Promise).
+
+  2. The executor receives two arguments: resolve and reject. These functions 
+  are pre-defined by the JavaScript engine, so we don’t need to create them. 
+  We should only call one of them when ready.
+
+After one second of “processing”, the executor calls resolve("done") to produce
+the result. This changes the state of the promise object:
+
+new Promise(executor)   
+[state: "pending"]      resolve("done")   [state: "fulfilled"]
+[result: undefined]     -------------->   [result: "done"]
+
+That was an example of a successful job completion, a “fulfilled promise”.
 */
