@@ -69,7 +69,7 @@ know when it happens, to use new functions and variables from that script.
 Let’s add a callback function as a second argument to loadScript that should 
 execute when the script loads: */
 {
-  // eslint-disable-next-line no-inner-declarations, no-unused-vars
+  // eslint-disable-next-line no-inner-declarations
   function loadScript(src, callback) {
     let script = document.createElement('script');
     script.src = src;
@@ -78,4 +78,45 @@ execute when the script loads: */
   
     document.head.append(script);
   }
+
+
+/* The onload event is described in the article 
+"Resource loading: onload and onerror", it basically executes a function 
+after the script is loaded and executed.
+
+Now if we want to call new functions from the script, we should write that 
+in the callback: */
+
+loadScript('/my/script.js', function() {
+  // the callback runs after the script is loaded
+  // eslint-disable-next-line no-undef
+  newFunction(); // so now it works
+  // ...
+});
+
 }
+
+/* That’s the idea: the second argument is a function (usually anonymous) 
+that runs when the action is completed.
+
+Here’s a runnable example with a real script: */
+{
+  // eslint-disable-next-line no-inner-declarations
+  function loadScript(src, callback) {
+    let script = document.createElement('script');
+    script.src = src;
+    script.onload = () => callback(script);
+    document.head.append(script);
+  }
+  
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js', script => {
+    alert(`Cool, the script ${script.src} is loaded`);
+    // eslint-disable-next-line no-undef
+    alert( _ ); // _ is a function declared in the loaded script
+  });
+}
+/* That’s called a “callback-based” style of asynchronous programming. 
+A function that does something asynchronously should provide a callback 
+argument where we put the function to run after it’s complete.
+
+Here we did it in loadScript, but of course it’s a general approach. */
