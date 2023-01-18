@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* Promises Chaining */
 /* Summary 
-If a .then (or catch/finally, doesn’t matter) handler returns a promise, the 
+If a .then (or catch/finally, doesn't matter) handler returns a promise, the 
 rest of the chain waits until it settles. When it does, its result (or error) 
 is passed further.
 
@@ -25,7 +25,7 @@ that promise settles with:
 ...with the result of the new promise...
 */
 
-/* Let’s return to the problem mentioned in the chapter Introduction: callbacks: 
+/* Let's return to the problem mentioned in the chapter Introduction: callbacks: 
 we have a sequence of asynchronous tasks to be performed one after another — 
 for instance, loading scripts. How can we code it well?
 
@@ -113,10 +113,10 @@ For example: */
   });
 }
 
-/* What we did here is just several handlers to one promise. They don’t pass 
+/* What we did here is just several handlers to one promise. They don't pass 
 the result to each other; instead they process it independently.
 
-Here’s the picture (compare it with the chaining above): 
+Here's the picture (compare it with the chaining above): 
 
           [new Promise]
             resolve(1)
@@ -166,7 +166,7 @@ For instance: */
 }
 /* Here the first .then shows 1 and returns new Promise(…) in the line (*). 
 After one second it resolves, and the result (the argument of resolve, here 
-it’s result * 2) is passed on to the handler of the second .then. That handler
+it's result * 2) is passed on to the handler of the second .then. That handler
 is in the line (**), it shows 2 and does the same thing.
 
 So the output is the same as in the previous example: 1 → 2 → 4, but now 
@@ -175,7 +175,7 @@ with 1 second delay between alert calls.
 Returning promises allows us to build chains of asynchronous actions. */
 
 /* Example: loadScript */
-/* Let’s use this feature with the promisified loadScript to load scripts 
+/* Let's use this feature with the promisified loadScript to load scripts 
 one by one, in sequence: */
 {
   loadScript("/article/promise-chaining/one.js")
@@ -211,8 +211,8 @@ it resolves. Then it initiates the loading of the next script. So scripts are
 loaded one after another.
 
 We can add more asynchronous actions to the chain. Please note that the code 
-is still “flat” — it grows down, not to the right. There are no signs of the 
-“pyramid of doom”.
+is still "flat" — it grows down, not to the right. There are no signs of the 
+"pyramid of doom".
 
 Technically, we could add .then directly to each loadScript, like this: */
 {
@@ -228,27 +228,27 @@ Technically, we could add .then directly to each loadScript, like this: */
   });
 }
 
-/* This code does the same: loads 3 scripts in sequence. But it “grows to 
-the right”. So we have the same problem as with callbacks.
+/* This code does the same: loads 3 scripts in sequence. But it "grows to 
+the right". So we have the same problem as with callbacks.
 
-People who start to use promises sometimes don’t know about chaining, so they 
+People who start to use promises sometimes don't know about chaining, so they 
 write it this way. Generally, chaining is preferred.
 
-Sometimes it’s ok to write .then directly, because the nested function has 
+Sometimes it's ok to write .then directly, because the nested function has 
 access to the outer scope. In the example above the most nested callback has 
-access to all variables script1, script2, script3. But that’s an exception 
+access to all variables script1, script2, script3. But that's an exception 
 rather than a rule. */
 
 /* Thenables */
 /* To be precise, a handler may return not exactly a promise, but a 
-so-called “thenable” object – an arbitrary object that has a method .then. 
+so-called "thenable" object – an arbitrary object that has a method .then. 
 It will be treated the same way as a promise.
 
-The idea is that 3rd-party libraries may implement “promise-compatible” 
+The idea is that 3rd-party libraries may implement "promise-compatible" 
 objects of their own. They can have an extended set of methods, but also be 
 compatible with native promises, because they implement .then.
 
-Here’s an example of a thenable object: */
+Here's an example of a thenable object: */
 class Thenable {
   constructor(num) {
     this.num = num;
@@ -277,9 +277,9 @@ having to inherit from Promise. */
 
 /* Bigger example: fetch */
 /* In frontend programming, promises are often used for network requests. 
-So let’s see an extended example of that.
+So let's see an extended example of that.
 
-We’ll use the fetch method to load the information about the user from the 
+We'll use the fetch method to load the information about the user from the 
 remote server. It has a lot of optional parameters covered in separate 
 chapters, but the basic syntax is quite simple: */
 {
@@ -311,9 +311,9 @@ server: */
 
 /* The response object returned from fetch also includes the method 
 response.json() that reads the remote data and parses it as JSON. In our case 
-that’s even more convenient, so let’s switch to it.
+that's even more convenient, so let's switch to it.
 
-We’ll also use arrow functions for brevity: */
+We'll also use arrow functions for brevity: */
 {
   // same as above, but response.json() parses the remote content as JSON
   fetch('/article/promise-chaining/user.json')
@@ -321,7 +321,7 @@ We’ll also use arrow functions for brevity: */
   .then(user => alert(user.name)); // iliakan, got user name
 }
 
-/* Now let’s do something with the loaded user.
+/* Now let's do something with the loaded user.
 
 For instance, we can make one more request to GitHub, load the user profile and
 show the avatar: */
@@ -345,12 +345,12 @@ show the avatar: */
   });
 }
 
-/* The code works; see comments about the details. However, there’s a potential
+/* The code works; see comments about the details. However, there's a potential
 problem in it, a typical error for those who begin to use promises.
 
 Look at the line (*): how can we do something after the avatar has finished 
-showing and gets removed? For instance, we’d like to show a form for editing
-that user or something else. As of now, there’s no way. */
+showing and gets removed? For instance, we'd like to show a form for editing
+that user or something else. As of now, there's no way. */
 
 /* To make the chain extendable, we need to return a promise that resolves 
 when the avatar finishes showing.
@@ -381,5 +381,36 @@ becomes settled only after the call of resolve(githubUser) in setTimeout (**).
 The next .then in the chain will wait for that.
 
 As a good practice, an asynchronous action should always return a promise. 
-That makes it possible to plan actions after it; even if we don’t plan to 
+That makes it possible to plan actions after it; even if we don't plan to 
 extend the chain now, we may need it later. */
+
+/* Finally, we can split the code into reusable functions: */
+function loadJson(url) {
+  return fetch(url)
+    .then(response => response.json());
+}
+
+function loadGithubUser(name) {
+  return loadJson(`https://api.github.com/users/${name}`);
+}
+
+function showAvatar(githubUser) {
+  return new Promise(function(resolve, reject) {
+    let img = document.createElement('img');
+    img.src = githubUser.avatar_url;
+    img.className = "promise-avatar-example";
+    document.body.append(img);
+
+    setTimeout(() => {
+      img.remove();
+      resolve(githubUser);
+    }, 3000);
+  });
+}
+
+// Use them:
+loadJson('/article/promise-chaining/user.json')
+  .then(user => loadGithubUser(user.name))
+  .then(showAvatar)
+  .then(githubUser => alert(`Finished showing ${githubUser.name}`));
+  // ...
