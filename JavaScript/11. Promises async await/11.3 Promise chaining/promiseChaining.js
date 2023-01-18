@@ -206,3 +206,71 @@ one by one, in sequence: */
   });
 }
 
+/* Here each loadScript call returns a promise, and the next .then runs when 
+it resolves. Then it initiates the loading of the next script. So scripts are 
+loaded one after another.
+
+We can add more asynchronous actions to the chain. Please note that the code 
+is still “flat” — it grows down, not to the right. There are no signs of the 
+“pyramid of doom”.
+
+Technically, we could add .then directly to each loadScript, like this: */
+{
+  loadScript("/article/promise-chaining/one.js").then(script1 => {
+    loadScript("/article/promise-chaining/two.js").then(script2 => {
+      loadScript("/article/promise-chaining/three.js").then(script3 => {
+        // this function has access to variables script1, script2 and script3
+        one();
+        two();
+        three();
+      });
+    });
+  });
+}
+
+/* This code does the same: loads 3 scripts in sequence. But it “grows to 
+the right”. So we have the same problem as with callbacks.
+
+People who start to use promises sometimes don’t know about chaining, so they 
+write it this way. Generally, chaining is preferred.
+
+Sometimes it’s ok to write .then directly, because the nested function has 
+access to the outer scope. In the example above the most nested callback has 
+access to all variables script1, script2, script3. But that’s an exception 
+rather than a rule. */
+
+/* Thenables */
+/* To be precise, a handler may return not exactly a promise, but a 
+so-called “thenable” object – an arbitrary object that has a method .then. 
+It will be treated the same way as a promise.
+
+The idea is that 3rd-party libraries may implement “promise-compatible” 
+objects of their own. They can have an extended set of methods, but also be 
+compatible with native promises, because they implement .then.
+
+Here’s an example of a thenable object: */
+class Thenable {
+  constructor(num) {
+    this.num = num;
+  }
+  then(resolve, reject) {
+    alert(resolve); // function() { native code }
+    // resolve with this.num*2 after the 1 second
+    setTimeout(() => resolve(this.num * 2), 1000); // (**)
+  }
+}
+
+new Promise(resolve => resolve(1))
+  .then(result => {
+    return new Thenable(result); // (*)
+  })
+  .then(alert); // shows 2 after 1000ms
+
+  /* JavaScript checks the object returned by the .then handler in line (*): 
+  if it has a callable method named then, then it calls that method providing 
+  native functions resolve, reject as arguments (similar to an executor) and 
+  waits until one of them is called. In the example above resolve(2) is called 
+  after 1 second (**). Then the result is passed further down the chain.
+
+This feature allows us to integrate custom objects with promise chains without 
+having to inherit from Promise. */
