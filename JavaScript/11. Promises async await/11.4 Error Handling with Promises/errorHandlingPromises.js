@@ -60,3 +60,47 @@ above rejects (a network problem or invalid json or whatever), then it would
 catch it. */
 
 /* Implicit try…catch */
+/* The code of a promise executor and promise handlers has an 
+"invisible try..catch" around it. If an exception happens, it gets caught and 
+treated as a rejection.
+
+For instance, this code: */
+{
+  new Promise((resolve, reject) => {
+    throw new Error("Whoops!");
+  }).catch(alert); // Error: Whoops!
+}
+/* …Works exactly the same as this: */
+{
+  new Promise((resolve, reject) => {
+    reject(new Error("Whoops!"));
+  }).catch(alert); // Error: Whoops!
+}
+/* The "invisible try..catch" around the executor automatically catches the 
+error and turns it into rejected promise.
+
+This happens not only in the executor function, but in its handlers as well. 
+If we throw inside a .then handler, that means a rejected promise, so the 
+control jumps to the nearest error handler. */
+
+/* Here’s an example: */
+{
+  new Promise((resolve, reject) => {
+    resolve("ok");
+  }).then((result) => {
+    throw new Error("Whoops!"); // rejects the promise
+  }).catch(alert); // Error: Whoops!
+}
+
+/* This happens for all errors, not just those caused by the throw 
+statement. For example, a programming error: */
+{
+  new Promise((resolve, reject) => {
+    resolve("ok");
+  }).then((result) => {
+    // eslint-disable-next-line no-undef
+    blabla(); // no such function
+  }).catch(alert); // ReferenceError: blabla is not defined
+}
+/* The final .catch not only catches explicit rejections, but also 
+accidental errors in the handlers above. */
