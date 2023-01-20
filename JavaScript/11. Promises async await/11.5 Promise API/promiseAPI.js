@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* Promise API */
 /* Summary 
@@ -113,3 +114,107 @@ For instance: */
 /* Here the second promise rejects in two seconds. That leads to an immediate 
 rejection of Promise.all, so .catch executes: the rejection error becomes the 
 outcome of the entire Promise.all. */
+
+/* In case of an error, other promises are ignored */
+/* If one promise rejects, Promise.all immediately rejects, completely 
+forgetting about the other ones in the list. Their results are ignored.
+
+For example, if there are multiple fetch calls, like in the example above, and 
+one fails, the others will still continue to execute, but Promise.all won’t 
+watch them anymore. They will probably settle, but their results will be ignored.
+
+Promise.all does nothing to cancel them, as there’s no concept of “cancellation” 
+in promises. In another chapter we’ll cover AbortController that can help with 
+that, but it’s not a part of the Promise API. */
+
+/* Promise.all(iterable) allows non-promise “regular” values in iterable */
+/* Normally, Promise.all(...) accepts an iterable (in most cases an array) of 
+promises. But if any of those objects is not a promise, it’s passed to the 
+resulting array “as is”.
+
+For instance, here the results are [1, 2, 3]: */
+{
+  Promise.all([
+    new Promise((resolve, reject) => {
+      setTimeout(() => resolve(1), 1000);
+    }),
+    2,
+    3
+  ]).then(alert); // 1, 2, 3
+}
+/* So we are able to pass ready values to Promise.all where convenient. */
+
+
+/* Promise.allSettled */
+/* Promise.all rejects as a whole if any promise rejects. That’s good for 
+“all or nothing” cases, when we need all results successful to proceed: */
+{
+  Promise.all([
+    fetch('/template.html'),
+    fetch('/style.css'),
+    fetch('/data.json')
+  ]).then(render); // render method needs results of all fetches
+}
+/* Promise.allSettled just waits for all promises to settle, regardless of 
+the result. The resulting array has: 
+  - {status:"fulfilled", value:result} for successful responses,
+  - {status:"rejected", reason:error} for errors.
+
+For example, we’d like to fetch the information about multiple users. Even if 
+one request fails, we’re still interested in the others.
+
+Let’s use Promise.allSettled: */
+{
+  let urls = [
+    'https://api.github.com/users/iliakan',
+    'https://api.github.com/users/remy',
+    'https://no-such-url'
+  ];
+  
+  Promise.allSettled(urls.map(url => fetch(url)))
+    .then(results => { // (*)
+      results.forEach((result, num) => {
+        if (result.status == "fulfilled") {
+          alert(`${urls[num]}: ${result.value.status}`);
+        }
+        if (result.status == "rejected") {
+          alert(`${urls[num]}: ${result.reason}`);
+        }
+      });
+    });
+}
+/* The results in the line (*) above will be: 
+
+[
+  {status: 'fulfilled', value: ...response...},
+  {status: 'fulfilled', value: ...response...},
+  {status: 'rejected', reason: ...error object...}
+]
+
+So for each promise we get its status and value/error.
+*/
+
+/* Polyfill */
+/* If the browser doesn’t support Promise.allSettled, it’s easy to polyfill: */
+{
+  if (!Promise.allSettled) {
+    const rejectHandler = reason => ({ status: 'rejected', reason });
+  
+    const resolveHandler = value => ({ status: 'fulfilled', value });
+  
+    Promise.allSettled = function (promises) {
+      const convertedPromises = promises.map(p => Promise.resolve(p).then(resolveHandler, rejectHandler));
+      return Promise.all(convertedPromises);
+    };
+  }
+}
+/* In this code, promises.map takes input values, turns them into promises 
+(just in case a non-promise was passed) with p => Promise.resolve(p), and then 
+adds .then handler to every one.
+
+That handler turns a successful result value into {status:'fulfilled', value}, 
+and an error reason into {status:'rejected', reason}. That’s exactly the format
+of Promise.allSettled.
+
+Now we can use Promise.allSettled to get the results of all given promises, 
+even if some of them reject. */
