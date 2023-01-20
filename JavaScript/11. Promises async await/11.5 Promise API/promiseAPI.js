@@ -27,14 +27,15 @@ Of all these, Promise.all is probably the most common in practice.
 */
 
 /* Promise.all */
-/* Let’s say we want many promises to execute in parallel and wait until all of them are ready.
+/* Let's say we want many promises to execute in parallel and wait until all of them are ready.
 
 For instance, download several URLs in parallel and process the content once they are all done.
 
-That’s what Promise.all is for. 
+That's what Promise.all is for. 
 
 The syntax is:
-    let promise = Promise.all(iterable);
+    
+  let promise = Promise.all(iterable);
 
 Promise.all takes an iterable (usually, an array of promises) and returns a new promise.
 
@@ -54,7 +55,7 @@ result is an array [1, 2, 3]: */
 
 /* Please note that the order of the resulting array members is the same as 
 in its source promises. Even though the first promise takes the longest time 
-to resolve, it’s still first in the array of results.
+to resolve, it's still first in the array of results.
 
 A common trick is to map an array of job data into an array of promises, and 
 then wrap that into Promise.all. 
@@ -120,17 +121,17 @@ outcome of the entire Promise.all. */
 forgetting about the other ones in the list. Their results are ignored.
 
 For example, if there are multiple fetch calls, like in the example above, and 
-one fails, the others will still continue to execute, but Promise.all won’t 
+one fails, the others will still continue to execute, but Promise.all won't 
 watch them anymore. They will probably settle, but their results will be ignored.
 
-Promise.all does nothing to cancel them, as there’s no concept of “cancellation” 
-in promises. In another chapter we’ll cover AbortController that can help with 
-that, but it’s not a part of the Promise API. */
+Promise.all does nothing to cancel them, as there's no concept of "cancellation" 
+in promises. In another chapter we'll cover AbortController that can help with 
+that, but it's not a part of the Promise API. */
 
-/* Promise.all(iterable) allows non-promise “regular” values in iterable */
+/* Promise.all(iterable) allows non-promise "regular" values in iterable */
 /* Normally, Promise.all(...) accepts an iterable (in most cases an array) of 
-promises. But if any of those objects is not a promise, it’s passed to the 
-resulting array “as is”.
+promises. But if any of those objects is not a promise, it's passed to the 
+resulting array "as is".
 
 For instance, here the results are [1, 2, 3]: */
 {
@@ -146,8 +147,8 @@ For instance, here the results are [1, 2, 3]: */
 
 
 /* Promise.allSettled */
-/* Promise.all rejects as a whole if any promise rejects. That’s good for 
-“all or nothing” cases, when we need all results successful to proceed: */
+/* Promise.all rejects as a whole if any promise rejects. That's good for 
+"all or nothing" cases, when we need all results successful to proceed: */
 {
   Promise.all([
     fetch('/template.html'),
@@ -160,10 +161,10 @@ the result. The resulting array has:
   - {status:"fulfilled", value:result} for successful responses,
   - {status:"rejected", reason:error} for errors.
 
-For example, we’d like to fetch the information about multiple users. Even if 
-one request fails, we’re still interested in the others.
+For example, we'd like to fetch the information about multiple users. Even if 
+one request fails, we're still interested in the others.
 
-Let’s use Promise.allSettled: */
+Let's use Promise.allSettled: */
 {
   let urls = [
     'https://api.github.com/users/iliakan',
@@ -195,7 +196,7 @@ So for each promise we get its status and value/error.
 */
 
 /* Polyfill */
-/* If the browser doesn’t support Promise.allSettled, it’s easy to polyfill: */
+/* If the browser doesn't support Promise.allSettled, it's easy to polyfill: */
 {
   if (!Promise.allSettled) {
     const rejectHandler = reason => ({ status: 'rejected', reason });
@@ -213,8 +214,113 @@ So for each promise we get its status and value/error.
 adds .then handler to every one.
 
 That handler turns a successful result value into {status:'fulfilled', value}, 
-and an error reason into {status:'rejected', reason}. That’s exactly the format
+and an error reason into {status:'rejected', reason}. That's exactly the format
 of Promise.allSettled.
 
 Now we can use Promise.allSettled to get the results of all given promises, 
 even if some of them reject. */
+
+/* Promise.race */
+/* Similar to Promise.all, but waits only for the first settled promise and 
+gets its result (or error).
+
+The syntax is: 
+
+  let promise = Promise.race(iterable);
+    
+For instance, here the result will be 1: */
+{
+  Promise.race([
+    new Promise((resolve, reject) => setTimeout(() => resolve(1), 1000)),
+    new Promise((resolve, reject) => setTimeout(() => reject(new Error("Whoops!")), 2000)),
+    new Promise((resolve, reject) => setTimeout(() => resolve(3), 3000))
+  ]).then(alert); // 1
+}
+/* The first promise here was fastest, so it became the result. After the first
+settled promise "wins the race", all further results/errors are ignored. */
+
+/* Promise.any */
+/* Similar to Promise.race, but waits only for the first fulfilled promise 
+and gets its result. If all of the given promises are rejected, then the 
+returned promise is rejected with AggregateError – a special error object that 
+stores all promise errors in its errors property.
+
+The syntax is: 
+
+  let promise = Promise.any(iterable);
+
+For instance, here the result will be 1: */
+{
+  Promise.any([
+    new Promise((resolve, reject) => setTimeout(() => reject(new Error("Whoops!")), 1000)),
+    new Promise((resolve, reject) => setTimeout(() => resolve(1), 2000)),
+    new Promise((resolve, reject) => setTimeout(() => resolve(3), 3000))
+  ]).then(alert); // 1
+}
+/* The first promise here was fastest, but it was rejected, so the second 
+promise became the result. After the first fulfilled promise "wins the race", 
+all further results are ignored.
+
+Here's an example when all promises fail: */
+{
+  Promise.any([
+    new Promise((resolve, reject) => setTimeout(() => reject(new Error("Ouch!")), 1000)),
+    new Promise((resolve, reject) => setTimeout(() => reject(new Error("Error!")), 2000))
+  ]).catch(error => {
+    console.log(error.constructor.name); // AggregateError
+    console.log(error.errors[0]); // Error: Ouch!
+    console.log(error.errors[1]); // Error: Error!
+  });
+}
+/* As you can see, error objects for failed promises are available in the 
+errors property of the AggregateError object. */
+
+
+/* Promise.resolve/reject */
+/* Methods Promise.resolve and Promise.reject are rarely needed in modern code,
+because async/await syntax (we'll cover it a bit later) makes them somewhat obsolete.
+
+We cover them here for completeness and for those who can't use async/await for 
+some reason. */
+
+/* Promise.resolve */
+/* Promise.resolve(value) creates a resolved promise with the result value.
+
+Same as: 
+
+  let promise = new Promise(resolve => resolve(value));
+  
+The method is used for compatibility, when a function is expected to return a promise.
+
+For example, the loadCached function below fetches a URL and remembers (caches)
+its content. For future calls with the same URL it immediately gets the previous
+content from cache, but uses Promise.resolve to make a promise of it, so the 
+returned value is always a promise: */
+
+let cache = new Map();
+
+function loadCached(url) {
+  if (cache.has(url)) {
+    return Promise.resolve(cache.get(url)); // (*)
+  }
+
+  return fetch(url)
+    .then(response => response.text())
+    .then(text => {
+      cache.set(url,text);
+      return text;
+    });
+}
+
+/* We can write loadCached(url).then(…), because the function is guaranteed to 
+return a promise. We can always use .then after loadCached. That's the purpose
+of Promise.resolve in the line (*). */
+
+/* Promise.reject */
+/* Promise.reject(error) creates a rejected promise with error. 
+
+Same as:
+
+  let promise = new Promise((resolve, reject) => reject(error));
+  
+In practice, this method is almost never used. */
