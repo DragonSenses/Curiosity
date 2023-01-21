@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-inner-declarations */
 /* Async/await */
 /* The async keyword before a function has two effects:
@@ -73,7 +74,6 @@ Here’s an example with a promise that resolves in 1 second:
 {
   async function f() {
 
-    // eslint-disable-next-line no-unused-vars
     let promise = new Promise((resolve, reject) => {
       setTimeout(() => resolve("done!"), 1000);
     });
@@ -96,3 +96,69 @@ the meantime: execute other scripts, handle events, etc.
 
 It’s just a more elegant syntax of getting the promise result than 
 promise.then. And, it’s easier to read and write. */
+
+/* Can’t use await in regular functions */
+/* If we try to use await in a non-async function, there would be a syntax 
+error: */
+function f() {
+  let promise = Promise.resolve(1);
+  // let result = await promise; // Syntax error
+}
+/* We may get this error if we forget to put async before a function. 
+As stated earlier, await only works inside an async function. */
+
+
+/* Let’s take the showAvatar() example from the chapter Promises chaining and 
+rewrite it using async/await: 
+  1. We’ll need to replace .then calls with await.
+  2. Also we should make the function async for them to work.
+*/
+async function showAvatar() {
+
+  // read our JSON
+  let response = await fetch('/article/promise-chaining/user.json');
+  let user = await response.json();
+
+  // read github user
+  let githubResponse = await fetch(`https://api.github.com/users/${user.name}`);
+  let githubUser = await githubResponse.json();
+
+  // show the avatar
+  let img = document.createElement('img');
+  img.src = githubUser.avatar_url;
+  img.className = "promise-avatar-example";
+  document.body.append(img);
+
+  // wait 3 seconds
+  await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+
+  img.remove();
+
+  return githubUser;
+}
+
+showAvatar();
+
+/* Modern browsers allow top-level await in modules */
+/* In modern browsers, await on top level works just fine, when we’re inside a 
+module. We’ll cover modules in article Modules, introduction.
+
+For instance: */
+
+/* we assume this code runs at top level, inside a module
+
+let response = await fetch('/article/promise-chaining/user.json');
+let user = await response.json();
+
+console.log(user); 
+*/
+
+/* If we’re not using modules, or older browsers must be supported, there’s a 
+universal recipe: wrapping into an anonymous async function.
+
+Like this: */
+(async () => {
+  let response = await fetch('/article/promise-chaining/user.json');
+  let user = await response.json();
+  // ...
+})();
