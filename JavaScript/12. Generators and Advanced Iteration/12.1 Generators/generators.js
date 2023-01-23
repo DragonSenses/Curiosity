@@ -177,3 +177,130 @@ e.g. the spread syntax ...: */
   /* In the code above, ...generateSequence() turns the iterable generator 
   object into an array of items */
 }
+
+/* Using generators for iterables */
+/* Some time ago, in the chapter Iterables we created an iterable range object 
+that returns values from..to.
+
+Here, let’s remember the code: */
+{
+  let range = {
+    from: 1,
+    to: 5,
+  
+    // for..of range calls this method once in the very beginning
+    [Symbol.iterator]() {
+      // ...it returns the iterator object:
+      // onward, for..of works only with that object, asking it for next values
+      return {
+        current: this.from,
+        last: this.to,
+  
+        // next() is called on each iteration by the for..of loop
+        next() {
+          // it should return the value as an object {done:.., value :...}
+          if (this.current <= this.last) {
+            return { done: false, value: this.current++ };
+          } else {
+            return { done: true };
+          }
+        }
+      };
+    }
+  };
+  
+  // iteration over range returns numbers from range.from to range.to
+  alert([...range]); // 1,2,3,4,5
+}
+
+/* We can use a generator function for iteration by providing it as Symbol.iterator.
+
+Here’s the same range, but much more compact: */
+{
+  let range = {
+    from: 1,
+    to: 5,
+  
+    *[Symbol.iterator]() { // a shorthand for [Symbol.iterator]: function*()
+      for(let value = this.from; value <= this.to; value++) {
+        yield value;
+      }
+    }
+  };
+  
+  alert( [...range] ); // 1,2,3,4,5
+}
+
+/* That works, because range[Symbol.iterator]() now returns a generator, and 
+generator methods are exactly what for..of expects:
+  - it has a .next() method
+  - that returns values in the form {value: ..., done: true/false}
+
+That’s not a coincidence, of course. Generators were added to JavaScript 
+language with iterators in mind, to implement them easily.
+
+The variant with a generator is much more concise than the original iterable 
+code of range, and keeps the same functionality. */
+
+
+/* Generators may generate values forever */
+/* In the examples above we generated finite sequences, but we can also make a 
+generator that yields values forever. For instance, an unending sequence of 
+pseudo-random numbers.
+
+That surely would require a break (or return) in for..of over such generator. 
+Otherwise, the loop would repeat forever and hang. */
+
+
+/* Generator composition */
+/* Generator composition is a special feature of generators that allows to 
+transparently “embed” generators in each other.
+
+For instance, we have a function that generates a sequence of numbers: 
+
+function* generateSequence(start, end) {
+  for (let i = start; i <= end; i++) yield i;
+}
+
+Now we’d like to reuse it to generate a more complex sequence:
+  - first, digits 0..9 (with character codes 48…57),
+  - followed by uppercase alphabet letters A..Z (character codes 65…90)
+  - followed by lowercase alphabet letters a..z (character codes 97…122)
+
+We can use this sequence e.g. to create passwords by selecting characters from 
+it (could add syntax characters as well), but let’s generate it first.
+
+In a regular function, to combine results from multiple other functions, we 
+call them, store the results, and then join at the end.
+
+For generators, there’s a special yield* syntax to “embed” (compose) one 
+generator into another.
+
+The composed generator:*/
+{
+  function* generateSequence(start, end) {
+    for (let i = start; i <= end; i++) yield i;
+  }
+
+  function* generatePasswordCodes() {
+
+    // 0..9
+    yield* generateSequence(48, 57);
+  
+    // A..Z
+    yield* generateSequence(65, 90);
+  
+    // a..z
+    yield* generateSequence(97, 122);
+  
+  }
+  
+  let str = '';
+  
+  for(let code of generatePasswordCodes()) {
+    str += String.fromCharCode(code);
+  }
+  
+  alert(str); // 0..9A..Za..z
+
+}
