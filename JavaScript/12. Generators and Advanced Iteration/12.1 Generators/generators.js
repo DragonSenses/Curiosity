@@ -1,3 +1,4 @@
+/* eslint-disable no-inner-declarations */
 /* Generators */
 /* Regular functions return only one, single value (or nothing).
 
@@ -117,3 +118,62 @@ they return the same object: {done: true}.*/
 But usually the first syntax is preferred, as the star * denotes that it’s a 
 generator function, it describes the kind, not the name, so it should stick 
 with the function keyword. */
+
+
+/* Generators are iterable */
+/* As you probably already guessed looking at the next() method, generators 
+are iterable.
+
+We can loop over their values using for..of: */
+{
+  
+function* generateSequence() {
+    yield 1;
+    yield 2;
+    return 3;
+  } 
+
+  
+  let generator = generateSequence();
+  
+  for(let value of generator) {
+    alert(value); // 1, then 2
+  }
+}
+/* Looks a lot nicer than calling .next().value, right?
+
+…But please note: the example above shows 1, then 2, and that’s all. It doesn’t show 3!
+
+It’s because for..of iteration ignores the last value, when done: true. 
+So, if we want all results to be shown by for..of, we must return them 
+with yield: */
+{
+  function* generateSequence() {
+    yield 1;
+    yield 2;
+    yield 3;  // return with yield
+  }
+  
+  let generator = generateSequence();
+  
+  for(let value of generator) {
+    alert(value); // 1, then 2, then 3
+  }
+}
+
+/* As generators are iterable, we can call all related functionality, 
+e.g. the spread syntax ...: */
+{
+  function* generateSequence() {
+    yield 1;
+    yield 2;
+    yield 3;
+  }
+  
+  let sequence = [0, ...generateSequence()];
+  
+  alert(sequence); // 0, 1, 2, 3
+
+  /* In the code above, ...generateSequence() turns the iterable generator 
+  object into an array of items */
+}
