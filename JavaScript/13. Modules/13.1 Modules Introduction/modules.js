@@ -172,3 +172,135 @@ export let user = "John";
 <script type="module" src="hello.js"></script>
 */
 
+/* In the browser, if we talk about HTML pages, independent top-level scope 
+also exists for each <script type="module">.
+
+Here are two scripts on the same page, both type="module". They don’t see each 
+other’s top-level variables: 
+
+<script type="module">
+  // The variable is only visible in this module script
+  let user = "John";
+</script>
+
+<script type="module">
+  alert(user); // Error: user is not defined
+</script>
+
+*/
+
+/* Please note: */
+/* In the browser, we can make a variable window-level global by explicitly 
+assigning it to a window property, e.g. window.user = "John".
+
+Then all scripts will see it, both with type="module" and without it.
+
+That said, making such global variables is frowned upon. Please try to avoid them. */
+
+
+/* A module code is evaluated only the first time when imported */
+/* If the same module is imported into multiple other modules, its code is 
+executed only once, upon the first import. Then its exports are given to all 
+further importers.
+
+The one-time evaluation has important consequences, that we should be aware of.
+
+Let’s see a couple of examples.
+
+First, if executing a module code brings side-effects, like showing a message, 
+then importing it multiple times will trigger it only once – the first time: 
+
+// 📁 alert.js
+alert("Module is evaluated!");
+
+// Import the same module from different files
+
+// 📁 1.js
+import `./alert.js`; // Module is evaluated!
+
+// 📁 2.js
+import `./alert.js`; // (shows nothing)
+
+
+The second import shows nothing, because the module has already been evaluated.
+
+There’s a rule: top-level module code should be used for initialization, 
+creation of module-specific internal data structures. If we need to make 
+something callable multiple times – we should export it as a function, like 
+we did with sayHi above.
+*/
+
+/* Now, let’s consider a deeper example. Let’s say, a module exports an object:
+
+// 📁 admin.js
+export let admin = {
+  name: "John"
+};
+
+If this module is imported from multiple files, the module is only evaluated 
+the first time, admin object is created, and then passed to all further importers.
+
+All importers get exactly the one and only admin object:
+
+// 📁 1.js
+import {admin} from './admin.js';
+admin.name = "Pete";
+
+// 📁 2.js
+import {admin} from './admin.js';
+alert(admin.name); // Pete
+
+// Both 1.js and 2.js reference the same admin object
+// Changes made in 1.js are visible in 2.js
+
+As you can see, when 1.js changes the name property in the imported admin, 
+then 2.js can see the new admin.name.
+
+That’s exactly because the module is executed only once. Exports are generated, 
+and then they are shared between importers, so if something changes the admin 
+object, other importers will see that.
+*/
+
+/* Such behavior is actually very convenient, because it allows us to configure
+modules. 
+
+In other words, a module can provide a generic functionality that needs a setup. 
+  E.g. authentication needs credentials. Then it can export a configuration 
+  object expecting the outer code to assign to it.
+
+Here’s the classical pattern: 
+  1. A module exports some means of configuration, e.g. a configuration object.
+  2. On the first import we initialize it, write to its properties. The 
+  top-level application script may do that.
+  3. Further imports use the module.
+
+For instance, the admin.js module may provide certain functionality 
+(e.g. authentication), but expect the credentials to come into the config 
+object from outside: 
+
+// 📁 admin.js
+export let config = { };
+
+export function sayHi() {
+  alert(`Ready to serve, ${config.user}!`);
+}
+
+Here, admin.js exports the config object (initially empty, but may have 
+  default properties too).
+
+Then in init.js, the first script of our app, we import config from it and 
+set config.user:
+
+// 📁 init.js
+import {config} from './admin.js';
+config.user = "Pete";
+
+…Now the module admin.js is configured.
+
+Further importers can call it, and it correctly shows the current user:
+
+// 📁 another.js
+import {sayHi} from './admin.js';
+
+sayHi(); // Ready to serve, Pete!
+*/
