@@ -179,3 +179,113 @@ That’s natural, as it expects to find Symbol.iterator, not Symbol.asyncIterato
 
 It’s also the case for for..of: the syntax without await needs Symbol.iterator.
 */
+
+
+/* Recall generators */
+/* Now let’s recall generators, as they allow to make iteration code much 
+shorter. Most of the time, when we’d like to make an iterable, we’ll use 
+generators.
+
+For sheer simplicity, omitting some important stuff, they are “functions that 
+generate (yield) values”. They are explained in detail in the chapter Generators.
+
+Generators are labelled with function* (note the star) and use yield to 
+generate a value, then we can use for..of to loop over them.
+
+This example generates a sequence of values from start to end: */
+function* generateSequence(start, end) {
+  for (let i = start; i <= end; i++) {
+    yield i;
+  }
+}
+
+for(let value of generateSequence(1, 5)) {
+  alert(value); // 1, then 2, then 3, then 4, then 5
+}
+
+/* As we already know, to make an object iterable, we should add Symbol.iterator 
+to it. 
+
+let range = {
+  from: 1,
+  to: 5,
+  [Symbol.iterator]() {
+    return <object with next to make range iterable>
+  }
+}
+
+A common practice for Symbol.iterator is to return a generator, it makes the 
+code shorter, as you can see: */
+let range = {
+  from: 1,
+  to: 5,
+
+  *[Symbol.iterator]() { // a shorthand for [Symbol.iterator]: function*()
+    for(let value = this.from; value <= this.to; value++) {
+      yield value;
+    }
+  }
+};
+
+for(let value of range) {
+  alert(value); // 1, then 2, then 3, then 4, then 5
+}
+
+/* In regular generators we can’t use await. All values must come synchronously, 
+as required by the for..of construct.
+
+What if we’d like to generate values asynchronously? 
+  From network requests, for instance.
+
+Let’s switch to asynchronous generators to make it possible. */
+
+
+/* Async generators */
+/* For most practical applications, when we’d like to make an object that 
+asynchronously generates a sequence of values, we can use an asynchronous generator.
+
+The syntax is simple: prepend function* with async. That makes the generator 
+asynchronous.
+
+And then use for await (...) to iterate over it, like this: */
+{
+  // eslint-disable-next-line no-inner-declarations
+  async function* generateSequence(start, end) {
+
+    for (let i = start; i <= end; i++) {
+  
+      // Wow, can use await!
+      await new Promise(resolve => setTimeout(resolve, 1000));
+  
+      yield i;
+    }
+  
+  }
+  
+  (async () => {
+  
+    let generator = generateSequence(1, 5);
+    for await (let value of generator) {
+      alert(value); // 1, then 2, then 3, then 4, then 5 (with delay between)
+    }
+  
+  })();
+}
+/* As the generator is asynchronous, we can use await inside it, rely on 
+promises, perform network requests and so on. */
+
+/* Under-the-hood difference */
+/* Technically, if you’re an advanced reader who remembers the details about 
+generators, there’s an internal difference.
+
+For async generators, the generator.next() method is asynchronous, it returns 
+promises.
+
+In a regular generator we’d use result = generator.next() to get values. In 
+an async generator, we should add await, like this: 
+
+result = await generator.next(); // result = {value: ..., done: true/false}
+
+That’s why async generators work with for await...of.*/
+
+
