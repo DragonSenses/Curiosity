@@ -304,3 +304,110 @@ import {sayHi} from './admin.js';
 
 sayHi(); // Ready to serve, Pete!
 */
+
+/* import.meta */
+/* The object import.meta contains the information about the current module.
+
+Its content depends on the environment. In the browser, it contains the URL 
+of the script, or a current webpage URL if inside HTML: 
+
+<script type="module">
+  alert(import.meta.url); // script URL
+  // for an inline script - the URL of the current HTML-page
+</script>
+
+*/
+
+
+/* In a module, “this” is undefined */
+/* That’s kind of a minor feature, but for completeness we should mention it.
+
+In a module, top-level this is undefined.
+
+Compare it to non-module scripts, where this is a global object: 
+
+<script>
+  alert(this); // window
+</script>
+
+<script type="module">
+  alert(this); // undefined
+</script>
+
+*/
+
+/* Browser-specific features */
+/* There are also several browser-specific differences of scripts with 
+type="module" compared to regular ones. */
+
+/* Module scripts are deferred */
+/* Module scripts are always deferred, same effect as defer attribute 
+(described in the chapter Scripts: async, defer), for both external and 
+inline scripts.
+
+In other words: 
+  - downloading external module scripts <script type="module" src="..."> 
+  doesn’t block HTML processing, they load in parallel with other resources.
+  - module scripts wait until the HTML document is fully ready (even if 
+    they are tiny and load faster than HTML), and then run.
+  - relative order of scripts is maintained: scripts that go first in the 
+  document, execute first.
+  
+  
+As a side effect, module scripts always “see” the fully loaded HTML-page, 
+including HTML elements below them.
+
+For instance:
+
+<script type="module">
+  alert(typeof button); // object: the script can 'see' the button below
+  // as modules are deferred, the script runs after the whole page is loaded
+</script>
+
+Compare to regular script below:
+
+<script>
+  alert(typeof button); // button is undefined, the script can't see elements below
+  // regular scripts run immediately, before the rest of the page is processed
+</script>
+
+<button id="button">Button</button>
+
+
+Please note: the second script actually runs before the first! So we’ll see 
+undefined first, and then object.
+
+That’s because modules are deferred, so we wait for the document to be processed. 
+The regular script runs immediately, so we see its output first.
+
+When using modules, we should be aware that the HTML page shows up as it loads,
+and JavaScript modules run after that, so the user may see the page before the 
+JavaScript application is ready. Some functionality may not work yet. We should
+put “loading indicators”, or otherwise ensure that the visitor won’t be 
+confused by that.
+*/
+
+/* Async works on inline scripts */
+/* For non-module scripts, the async attribute only works on external scripts. 
+Async scripts run immediately when ready, independently of other scripts or the
+HTML document.
+
+For module scripts, it works on inline scripts as well.
+
+For example, the inline script below has async, so it doesn’t wait for anything.
+
+It performs the import (fetches ./analytics.js) and runs when ready, even if 
+the HTML document is not finished yet, or if other scripts are still pending.
+
+That’s good for functionality that doesn’t depend on anything, like counters, 
+ads, document-level event listeners. 
+
+<!-- all dependencies are fetched (analytics.js), and the script runs -->
+<!-- doesn't wait for the document or other <script> tags -->
+<script async type="module">
+  import {counter} from './analytics.js';
+
+  counter.count();
+</script>
+
+*/
