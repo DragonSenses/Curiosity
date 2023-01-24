@@ -411,3 +411,90 @@ ads, document-level event listeners.
 </script>
 
 */
+
+/* External scripts */
+/* External scripts that have type="module" are different in two aspects: 
+  1. External scripts with the same src run only once:
+  
+  <!-- the script my.js is fetched and executed only once -->
+  <script type="module" src="my.js"></script>
+  <script type="module" src="my.js"></script>
+
+  2. External scripts that are fetched from another origin (e.g. another 
+  site) require CORS headers, as described in the chapter Fetch: Cross-Origin Requests. 
+  In other words, if a module script is fetched from another origin, the remote
+  server must supply a header Access-Control-Allow-Origin allowing the fetch.
+
+  <!-- another-site.com must supply Access-Control-Allow-Origin -->
+  <!-- otherwise, the script won't execute -->
+  <script type="module" src="http://another-site.com/their.js"></script>
+
+That ensures better security by default.
+*/
+
+/* No “bare” modules allowed */
+/* In the browser, import must get either a relative or absolute URL. 
+Modules without any path are called “bare” modules. Such modules are not allowed in import.
+
+For instance, this import is invalid: 
+
+import {sayHi} from 'sayHi'; // Error, "bare" module
+// the module must have a path, e.g. './sayHi.js' or wherever the module is
+
+Certain environments, like Node.js or bundle tools allow bare modules, without 
+any path, as they have their own ways for finding modules and hooks to fine-tune 
+them. But browsers do not support bare modules yet.
+*/
+
+
+/* Compatibility, “nomodule” */
+/* Old browsers do not understand type="module". Scripts of an unknown type are
+just ignored. For them, it’s possible to provide a fallback using the nomodule
+attribute: 
+
+<script type="module">
+  alert("Runs in modern browsers");
+</script>
+
+<script nomodule>
+  alert("Modern browsers know both type=module and nomodule, so skip this")
+  alert("Old browsers ignore script with unknown type=module, but execute this.");
+</script>
+
+*/
+
+/* Build tools */
+/* In real-life, browser modules are rarely used in their “raw” form. Usually, 
+we bundle them together with a special tool such as Webpack and deploy to the
+production server.
+
+One of the benefits of using bundlers – they give more control over how modules
+are resolved, allowing bare modules and much more, like CSS/HTML modules.
+
+Build tools do the following: 
+  1. Take a “main” module, the one intended to be put in <script type="module"> in HTML.
+  2. Analyze its dependencies: imports and then imports of imports etc.
+  3. Build a single file with all modules (or multiple files, that’s tunable), 
+  replacing native import calls with bundler functions, so that it works. 
+  “Special” module types like HTML/CSS modules are also supported.
+  4. In the process, other transformations and optimizations may be applied:
+    - Unreachable code removed.
+    - Unused exports removed (“tree-shaking”).
+    - Development-specific statements like console and debugger removed.
+    - Modern, bleeding-edge JavaScript syntax may be transformed to older one 
+    with similar functionality using Babel.
+    - The resulting file is minified (spaces removed, variables replaced with 
+    shorter names, etc).
+
+If we use bundle tools, then as scripts are bundled together into a single file
+(or few files), import/export statements inside those scripts are replaced by 
+special bundler functions. So the resulting “bundled” script does not contain 
+any import/export, it doesn’t require type="module", and we can put it into a
+regular script:
+
+<!-- Assuming we got bundle.js from a tool like Webpack -->
+<script src="bundle.js"></script>
+
+That said, native modules are also usable. So we won’t be using Webpack 
+here: you can configure it later.
+*/
