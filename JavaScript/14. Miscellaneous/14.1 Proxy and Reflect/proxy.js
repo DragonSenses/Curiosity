@@ -237,3 +237,58 @@ dictionary = new Proxy(dictionary, ...);
 The proxy should totally replace the target object everywhere. No one should 
 ever reference the target object after it got proxied. Otherwise it’s easy to mess up.
 */
+
+/* Validation with “set” trap */
+/* Let’s say we want an array exclusively for numbers. If a value of another 
+type is added, there should be an error.
+
+The set trap triggers when a property is written. 
+
+set(target, property, value, receiver):
+  - target – is the target object, the one passed as the first argument to new Proxy,
+  - property – property name,
+  - value – property value,
+  - receiver – similar to get trap, matters only for setter properties.
+
+The set trap should return true if setting is successful, and false otherwise (triggers TypeError).
+
+Let’s use it to validate new values: */
+{
+  let numbers = [];
+
+  numbers = new Proxy(numbers, { // (*)
+    set(target, prop, val) { // to intercept property writing
+      if (typeof val == 'number') {
+        target[prop] = val;
+        return true;
+      } else {
+        return false;
+      }
+    }
+  });
+
+  numbers.push(1); // added successfully
+  numbers.push(2); // added successfully
+  alert("Length is: " + numbers.length); // 2
+
+  numbers.push("test"); // TypeError ('set' on proxy returned false)
+
+  alert("This line is never reached (error in the line above)");
+}
+/* Please note: the built-in functionality of arrays is still working! 
+Values are added by push. The length property auto-increases when values 
+are added. Our proxy doesn’t break anything.
+
+We don’t have to override value-adding array methods like push and unshift, 
+and so on, to add checks in there, because internally they use the [[Set]] 
+operation that’s intercepted by the proxy.
+
+So the code is clean and concise. */
+
+/* Don’t forget to return true
+
+As said above, there are invariants to be held.
+
+For set, it must return true for a successful write.
+
+If we forget to do it or return any falsy value, the operation triggers TypeError. */
