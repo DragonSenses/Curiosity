@@ -128,3 +128,112 @@ Internal Method	        Handler Method	          Triggers when…
 [[GetOwnProperty]]	    getOwnPropertyDescriptor	Object.getOwnPropertyDescriptor, for..in, Object.keys/values/entries
 [[OwnPropertyKeys]]	    ownKeys	                  Object.getOwnPropertyNames, Object.getOwnPropertySymbols, for..in, Object.keys/values/entries
 */
+
+/* Invariants */
+/* JavaScript enforces some invariants – conditions that must be fulfilled 
+by internal methods and traps.
+
+Most of them are for return values: 
+  - [Set]] must return true if the value was written successfully, otherwise false.
+  - [[Delete]] must return true if the value was deleted successfully, otherwise false.
+  - …and so on, we’ll see more in examples below.
+
+There are some other invariants, like:
+
+  -[[GetPrototypeOf]], applied to the proxy object must return the same value 
+  as [[GetPrototypeOf]] applied to the proxy object’s target object. In other 
+  words, reading prototype of a proxy must always return the prototype of the
+  target object.
+Traps can intercept these operations, but they must follow these rules.
+
+Invariants ensure correct and consistent behavior of language features. The 
+full invariants list is in the specification. You probably won’t violate them 
+if you’re not doing something weird. */
+
+
+/* Default value with “get” trap */
+/* The most common traps are for reading/writing properties.
+
+To intercept reading, the handler should have a method get(target, property, receiver).
+
+It triggers when a property is read, with following arguments: 
+  - target – is the target object, the one passed as the first argument to new Proxy,
+  - property – property name,
+  - receiver – if the target property is a getter, then receiver is the object that’s 
+  going to be used as this in its call. Usually that’s the proxy object itself (or an 
+  object that inherits from it, if we inherit from proxy). 
+  Right now we don’t need this argument, so it will be explained in more detail later.
+
+Let’s use get to implement default values for an object.
+
+We’ll make a numeric array that returns 0 for nonexistent values.
+
+Usually when one tries to get a non-existing array item, they get undefined, 
+but we’ll wrap a regular array into the proxy that traps reading and returns 0 
+if there’s no such property: */
+let numbers = [0, 1, 2];
+
+numbers = new Proxy(numbers, {
+  get(target, prop) {
+    if (prop in target) {
+      return target[prop];
+    } else {
+      return 0; // default value
+    }
+  }
+});
+
+alert( numbers[1] ); // 1
+alert( numbers[123] ); // 0 (no such item)
+
+/* As we can see, it’s quite easy to do with a get trap.
+
+We can use Proxy to implement any logic for “default” values.
+
+Imagine we have a dictionary, with phrases and their translations: */
+
+let dictionary = {
+  'Hello': 'Hola',
+  'Bye': 'Adiós'
+};
+
+alert( dictionary['Hello'] ); // Hola
+alert( dictionary['Welcome'] ); // undefined
+
+/* Right now, if there’s no phrase, reading from dictionary returns 
+undefined. But in practice, leaving a phrase untranslated is usually 
+better than undefined. So let’s make it return an untranslated phrase 
+in that case instead of undefined.
+
+To achieve that, we’ll wrap dictionary in a proxy that intercepts reading 
+operations: */
+{
+  let dictionary = {
+    'Hello': 'Hola',
+    'Bye': 'Adiós'
+  };
+  
+  dictionary = new Proxy(dictionary, {
+    get(target, phrase) { // intercept reading a property from dictionary
+      if (phrase in target) { // if we have it in the dictionary
+        return target[phrase]; // return the translation
+      } else {
+        // otherwise, return the non-translated phrase
+        return phrase;
+      }
+    }
+  });
+  
+  // Look up arbitrary phrases in the dictionary!
+  // At worst, they're not translated.
+  alert( dictionary['Hello'] ); // Hola
+  alert( dictionary['Welcome to Proxy']); // Welcome to Proxy (no translation)
+}
+
+/* Please note how the proxy overwrites the variable: 
+
+dictionary = new Proxy(dictionary, ...);
+
+The proxy should totally replace the target object everywhere. No one should 
+ever reference the target object after it got proxied. Otherwise it’s easy to mess up.
+*/
