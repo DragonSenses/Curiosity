@@ -42,3 +42,15 @@
 ***
 
 
+## Attribute Selectors
+
+- A set of attribute selectors that allow you to create rules that apply to elements that have an attribute with a specific value
+
+Selector|Meaning|Example
+--------|-------|-------
+***Existence***| `[]` Matches a specific attribute (whatever its value) | `p[class]` Targets any `<p>` element with an attribute called class
+***Equality***| `[=]` Matches a specific attribute with a specific value | `p[class="dog"]` Targets any `<p>` element with an attribute called class whose value is dog
+***Space*** | `[~=]` Matches a specific attribute whose value appears in a space-separated list of words | `p[class~="dog"]` Targets any `<p>` element with an attribute called class whose value is a list of space-separated words, one of which is dog
+***Prefix***| `[^=]` Matches a specific attribute whose value begins with a specific string | `p[attr^"d"]` Targets any `<p>` element with an attribute whose value begins with the letter "d"
+***Substring*** |  `[*=]` Matches a specific attribute whose value contains a specific substring | `p[attr*"do"]` Targets any `<p>` element with an attribute whose value contains the letters "do"
+***Suffix*** | `[$=]` Matches a specific attribute whose value ends with a specific string | `p[attr$"g"]` Targets any `<p>` element with an attribute whose value ends with the letter "g"
