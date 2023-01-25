@@ -3,10 +3,14 @@
 	<head>
 		<title>Hover Active Focus</title>
 		<style type="text/css">
-			input {				padding: 6px 12px 6px 12px;
+			input {
+				padding: 6px 12px 6px 12px;
 				border: 1px solid #665544;
-				color: #ffffff;}			input.submit:hover {
-				background-color: #665544;}			input.submit:active {				background-color: chocolate;}
+				color: #ffffff;}
+			input.submit:hover {
+				background-color: #665544;}
+			input.submit:active {
+				background-color: chocolate;}
 			input.text {
 				color: #cccccc;}
 			input.text:focus {
@@ -20,3 +24,32 @@
 		</form>
 	</body>
 </html>
+
+<!-- Responding to Users    :hover  :active :focus
+
+There are three pseudo-classes that allow you to change the
+appearance of elements when a user is interacting with them.
+
+• :hover - applied when a user hovers over an element with a pointing device such as a mouse
+		○ Commonly used to change appearance of links and buttons when a user places 
+    their cursor over them 
+		○ Note: Does not affect devices with touch screens, as screens cannot discern 
+    when someone is hovering their finger over an element
+
+• :active - applied when an element is being activated by the user 
+  ○ e.g. when a button is being pressed or a link being clicked
+  ○ Used to make a Button or Link feel more responsive to the user, being pressed 
+  gives feedback by changing the style or position of the element slightly
+
+• :focus - applied when an element has focus, which any element you can interact 
+with has, such as a link you can click or any form control
+  ○ Occurs when a browser discovers that you are ready to interact with an 
+  element on the page
+  ○ e.g., when your cursor is in a form input ready to accept typing, that 
+  element is said to have focus
+  ○ Possible to use the Tab Key on keyboard to move through the interactive 
+  items on a page
+
+• When pseudo-classes are used they should appear in this order
+  :link, :visited, :hover, :focus, :active
+-->
