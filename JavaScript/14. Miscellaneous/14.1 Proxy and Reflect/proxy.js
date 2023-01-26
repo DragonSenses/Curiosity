@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-func-assign */
 /* eslint-disable no-inner-declarations */
 /* Proxy */
@@ -342,7 +343,6 @@ Object.keys won’t list it: */
   let user = { };
 
   user = new Proxy(user, {
-    // eslint-disable-next-line no-unused-vars
     ownKeys(target) {
       return ['a', 'b', 'c'];
     }
@@ -365,12 +365,10 @@ Here’s an example of that: */
   let user = { };
 
   user = new Proxy(user, {
-    // eslint-disable-next-line no-unused-vars
     ownKeys(target) { // called once to get a list of properties
       return ['a', 'b', 'c'];
     },
 
-    // eslint-disable-next-line no-unused-vars
     getOwnPropertyDescriptor(target, prop) { // called for every property
       return {
         enumerable: true,
@@ -638,3 +636,153 @@ We’ve got a “richer” wrapper.
 
 Other traps exist: the full list is in the beginning of this article. Their 
 usage pattern is similar to the above. */
+
+/* Reflect */
+/* Reflect is a built-in object that simplifies creation of Proxy.
+
+It was said previously that internal methods, such as [[Get]], [[Set]] and 
+others are specification-only, they can’t be called directly.
+
+The Reflect object makes that somewhat possible. Its methods are minimal 
+wrappers around the internal methods.
+
+Here are examples of operations and Reflect calls that do the same: 
+
+
+Operation	          Reflect call	                      Internal method
+obj[prop]	          Reflect.get(obj, prop)	            [[Get]]
+obj[prop] = value	  Reflect.set(obj, prop, value)	      [[Set]]
+delete obj[prop]	  Reflect.deleteProperty(obj, prop)	  [[Delete]]
+new F(value)	      Reflect.construct(F, value)	        [[Construct]]
+…	                  …	                                  …
+
+
+For example:
+*/
+{
+  let user = {};
+
+  Reflect.set(user, 'name', 'Luna');
+
+  alert(user.name); // Luna
+}
+
+/* In particular, Reflect allows us to call operators (new, delete…) as 
+functions (Reflect.construct, Reflect.deleteProperty, …). That’s an 
+interesting capability, but here another thing is important.
+
+For every internal method, trappable by Proxy, there’s a corresponding method 
+in Reflect, with the same name and arguments as the Proxy trap.
+
+So we can use Reflect to forward an operation to the original object.
+
+In this example, both traps get and set transparently (as if they didn’t 
+exist) forward reading/writing operations to the object, showing a message: */
+{
+  let user = {
+    name: "John",
+  };
+  
+  user = new Proxy(user, {
+    get(target, prop, receiver) {
+      alert(`GET ${prop}`);
+      return Reflect.get(target, prop, receiver); // (1)
+    },
+    set(target, prop, val, receiver) {
+      alert(`SET ${prop}=${val}`);
+      return Reflect.set(target, prop, val, receiver); // (2)
+    }
+  });
+  
+  let name = user.name; // shows "GET name"
+  user.name = "Pete"; // shows "SET name=Pete"
+}
+
+/* Here: 
+  - Reflect.get reads an object property.
+  - Reflect.set writes an object property and returns true if successful, false otherwise.
+
+That is, everything’s simple: if a trap wants to forward the call to the object, 
+it’s enough to call Reflect.<method> with the same arguments.
+
+In most cases we can do the same without Reflect, for instance, reading a 
+property Reflect.get(target, prop, receiver) can be replaced by target[prop]. 
+There are important nuances though.
+*/
+
+/* Proxying a getter */
+/* Let’s see an example that demonstrates why Reflect.get is better. 
+And we’ll also see why get/set have the third argument receiver, that we didn’t use before.
+
+We have an object user with _name property and a getter for it.
+
+Here’s a proxy around it: */
+{
+  let user = {
+    _name: "Guest",
+    get name() {
+      return this._name;
+    }
+  };
+  
+  let userProxy = new Proxy(user, {
+    get(target, prop, receiver) {
+      return target[prop];
+    }
+  });
+  
+  alert(userProxy.name); // Guest
+}
+
+/* The get trap is “transparent” here, it returns the original property, and 
+doesn’t do anything else. That’s enough for our example.
+
+Everything seems to be all right. But let’s make the example a little bit more 
+complex.
+
+After inheriting another object admin from user, we can observe the incorrect 
+behavior: */
+{
+  let user = {
+    _name: "Guest",
+    get name() {
+      return this._name;
+    }
+  };
+  
+  let userProxy = new Proxy(user, {
+    get(target, prop, receiver) {
+      return target[prop]; // (*) target = user
+    }
+  });
+  
+  let admin = {
+    __proto__: userProxy,
+    _name: "Admin"
+  };
+  
+  // Expected: Admin
+  alert(admin.name); // outputs: Guest (?!?)
+}
+
+/* Reading admin.name should return "Admin", not "Guest"!
+
+What’s the matter? Maybe we did something wrong with the inheritance?
+
+But if we remove the proxy, then everything will work as expected.
+
+The problem is actually in the proxy, in the line (*). 
+
+  1. When we read admin.name, as admin object doesn’t have such own property, 
+  the search goes to its prototype.
+
+  2. The prototype is userProxy.
+
+  3. When reading name property from the proxy, its get trap triggers and 
+  returns it from the original object as target[prop] in the line (*).
+  
+  A call to target[prop], when prop is a getter, runs its code in the context 
+  this=target. So the result is this._name from the original object target, 
+  that is: from user.
+
+*/
