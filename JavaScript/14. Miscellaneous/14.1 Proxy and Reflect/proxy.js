@@ -387,3 +387,129 @@ the property is absent in the object. */
 
 
 /* Protected properties with “deleteProperty” and other traps */
+/* There’s a widespread convention that properties and methods prefixed 
+by an underscore _ are internal. They shouldn’t be accessed from outside the object.
+
+Technically that’s possible though: */
+{
+  let user = {
+    name: "Luna",
+    _password: "secret"
+  };
+  
+  alert(user._password); // secret
+}
+
+/* Let’s use proxies to prevent any access to properties starting with _.
+
+We’ll need the traps: 
+  - get to throw an error when reading such property,
+  - set to throw an error when writing,
+  - deleteProperty to throw an error when deleting,
+  - ownKeys to exclude properties starting with _ from for..in and methods like Object.keys.
+  
+Here’s the code: */
+{
+  let user = {
+    name: "Luna",
+    _password: "***"
+  };
+  
+  user = new Proxy(user, {
+    get(target, prop) {
+      if (prop.startsWith('_')) {
+        throw new Error("Access denied");
+      }
+      let value = target[prop];
+      return (typeof value === 'function') ? value.bind(target) : value; // (*)
+    },
+    set(target, prop, val) { // to intercept property writing
+      if (prop.startsWith('_')) {
+        throw new Error("Access denied");
+      } else {
+        target[prop] = val;
+        return true;
+      }
+    },
+    deleteProperty(target, prop) { // to intercept property deletion
+      if (prop.startsWith('_')) {
+        throw new Error("Access denied");
+      } else {
+        delete target[prop];
+        return true;
+      }
+    },
+    ownKeys(target) { // to intercept property list
+      return Object.keys(target).filter(key => !key.startsWith('_'));
+    }
+  });
+  
+  // "get" doesn't allow to read _password
+  try {
+    alert(user._password); // Error: Access denied
+  } catch(e) { alert(e.message); }
+  
+  // "set" doesn't allow to write _password
+  try {
+    user._password = "test"; // Error: Access denied
+  } catch(e) { alert(e.message); }
+  
+  // "deleteProperty" doesn't allow to delete _password
+  try {
+    delete user._password; // Error: Access denied
+  } catch(e) { alert(e.message); }
+  
+  // "ownKeys" filters out _password
+  for(let key in user) alert(key); // name
+}
+
+/* Please note the important detail in the get trap, in the line (*): 
+
+get(target, prop) {
+  // ...
+  let value = target[prop];
+  return (typeof value === 'function') ? value.bind(target) : value; // (*)
+}
+
+Why do we need a function to call value.bind(target)?
+
+The reason is that object methods, such as user.checkPassword(), must be 
+able to access _password:
+*/
+{
+  user = {
+    // ...
+    checkPassword(value) {
+      // object method must be able to read _password
+      return value === this._password;
+    }
+  };
+}
+
+
+/* A call to user.checkPassword() gets proxied user as this (the object before 
+  dot becomes this), so when it tries to access this._password, the get trap 
+  activates (it triggers on any property read) and throws an error.
+
+So we bind the context of object methods to the original object, target, in the
+line (*). Then their future calls will use target as this, without any traps.
+
+That solution usually works, but isn’t ideal, as a method may pass the 
+unproxied object somewhere else, and then we’ll get messed up: where’s the 
+original object, and where’s the proxied one?
+
+Besides, an object may be proxied multiple times (multiple proxies may add 
+different “tweaks” to the object), and if we pass an unwrapped object to a 
+method, there may be unexpected consequences.
+
+So, such a proxy shouldn’t be used everywhere. */
+
+/* Private properties of a class */
+/* Modern JavaScript engines natively support private properties in classes, 
+prefixed with #. They are described in the article Private and protected 
+properties and methods. No proxies required.
+
+Such properties have their own issues though. In particular, they are not inherited. */
+
+
+/* “In range” with “has” trap */
