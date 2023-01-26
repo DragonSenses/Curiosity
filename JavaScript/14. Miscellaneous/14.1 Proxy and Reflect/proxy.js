@@ -291,4 +291,99 @@ As said above, there are invariants to be held.
 
 For set, it must return true for a successful write.
 
-If we forget to do it or return any falsy value, the operation triggers TypeError. */
+If we forget to do it or return any falsy value, the operation 
+triggers TypeError. */
+
+
+/* Iteration with “ownKeys” and “getOwnPropertyDescriptor” */
+/* Object.keys, for..in loop and most other methods that iterate over 
+object properties use [[OwnPropertyKeys]] internal method (intercepted 
+  by ownKeys trap) to get a list of properties.
+
+Such methods differ in details: 
+
+  - Object.getOwnPropertyNames(obj) returns non-symbol keys.
+  - Object.getOwnPropertySymbols(obj) returns symbol keys.
+  - Object.keys/values() returns non-symbol keys/values with enumerable 
+  flag (property flags were explained in the article Property flags and descriptors).
+  - for..in loops over non-symbol keys with enumerable flag, and also prototype keys.
+
+…But all of them start with that list.
+
+In the example below we use ownKeys trap to make for..in loop over user, and 
+also Object.keys and Object.values, to skip properties starting with an underscore _
+*/
+let user = {
+  name: "Luna",
+  age: 20,
+  _password: "***"
+};
+
+user = new Proxy(user, {
+  ownKeys(target) {
+    return Object.keys(target).filter(key => !key.startsWith('_'));
+  }
+});
+
+// "ownKeys" filters out _password
+for(let key in user) alert(key); // name, then: age
+
+// same effect on these methods:
+alert( Object.keys(user) ); // name,age
+alert( Object.values(user) ); // Luna,20
+
+/* So far, it works.
+
+Although, if we return a key that doesn’t exist in the object, 
+Object.keys won’t list it: */
+{
+  let user = { };
+
+  user = new Proxy(user, {
+    // eslint-disable-next-line no-unused-vars
+    ownKeys(target) {
+      return ['a', 'b', 'c'];
+    }
+  });
+
+  alert( Object.keys(user) ); // <empty>
+}
+
+/* Why? The reason is simple: Object.keys returns only properties with the 
+enumerable flag. To check for it, it calls the internal 
+method [[GetOwnProperty]] for every property to get its descriptor. And here, 
+as there’s no property, its descriptor is empty, no enumerable flag, so it’s skipped.
+
+For Object.keys to return a property, we need it to either exist in the object, 
+with the enumerable flag, or we can intercept calls to [[GetOwnProperty]] (the 
+trap getOwnPropertyDescriptor does it), and return a descriptor with enumerable: true.
+
+Here’s an example of that: */
+{
+  let user = { };
+
+  user = new Proxy(user, {
+    // eslint-disable-next-line no-unused-vars
+    ownKeys(target) { // called once to get a list of properties
+      return ['a', 'b', 'c'];
+    },
+
+    // eslint-disable-next-line no-unused-vars
+    getOwnPropertyDescriptor(target, prop) { // called for every property
+      return {
+        enumerable: true,
+        configurable: true
+        /* ...other flags, probable "value:..." */
+      };
+    }
+
+  });
+
+  alert( Object.keys(user) ); // a, b, c
+}
+/* Let’s note once again: we only need to intercept [[GetOwnProperty]] if 
+the property is absent in the object. */
+
+
+
+/* Protected properties with “deleteProperty” and other traps */
