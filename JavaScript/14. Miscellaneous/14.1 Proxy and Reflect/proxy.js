@@ -1,3 +1,5 @@
+/* eslint-disable no-func-assign */
+/* eslint-disable no-inner-declarations */
 /* Proxy */
 /* Summary
 
@@ -513,3 +515,126 @@ Such properties have their own issues though. In particular, they are not inheri
 
 
 /* “In range” with “has” trap */
+/* Let’s see more examples.
+
+We have a range object: 
+
+let range = {
+  start: 1,
+  end: 10
+};
+
+
+We’d like to use the in operator to check that a number is in range.
+
+The has trap intercepts in calls.
+
+has(target, property)
+  - target – is the target object, passed as the first argument to new Proxy,
+  - property – property name
+
+Here’s the demo: */
+{
+  let range = {
+    start: 1,
+    end: 10
+  };
+  
+  range = new Proxy(range, {
+    has(target, prop) {
+      return prop >= target.start && prop <= target.end;
+    }
+  });
+  
+  alert(5 in range); // true
+  alert(50 in range); // false
+}
+/* Nice syntactic sugar, isn’t it? And very simple to implement. */
+
+
+/* Wrapping functions: "apply" */
+/* We can wrap a proxy around a function as well.
+
+The apply(target, thisArg, args) trap handles calling a proxy as function: 
+  - target is the target object (function is an object in JavaScript),
+  - thisArg is the value of this.
+  - args is a list of arguments.
+  
+For example, let’s recall delay(f, ms) decorator, that we did in the 
+article Decorators and forwarding, call/apply.
+
+In that article we did it without proxies. A call to delay(f, ms) returned 
+a function that forwards all calls to f after ms milliseconds.
+
+Here’s the previous, function-based implementation: */
+{
+  function delay(f, ms) {
+    // return a wrapper that passes the call to f after the timeout
+    return function() { // (*)
+      setTimeout(() => f.apply(this, arguments), ms);
+    };
+  }
+  
+  function sayHi(user) {
+    alert(`Hello, ${user}!`);
+  }
+  
+  // after this wrapping, calls to sayHi will be delayed for 3 seconds
+  sayHi = delay(sayHi, 3000);
+  
+  sayHi("Luna"); // Hello, Luna! (after 3 seconds)
+}
+/* As we’ve seen already, that mostly works. The wrapper function (*) performs 
+the call after the timeout.
+
+But a wrapper function does not forward property read/write operations or 
+anything else. After the wrapping, the access is lost to properties of the 
+original functions, such as name, length and others: */
+{
+  function delay(f, ms) {
+    return function() {
+      setTimeout(() => f.apply(this, arguments), ms);
+    };
+  }
+  
+  function sayHi(user) {
+    alert(`Hello, ${user}!`);
+  }
+  
+  alert(sayHi.length); // 1 (function length is the arguments count in its declaration)
+  
+  sayHi = delay(sayHi, 3000);
+  
+  alert(sayHi.length); // 0 (in the wrapper declaration, there are zero arguments)
+}
+
+/* Proxy is much more powerful, as it forwards everything to the target object. */
+/* Let’s use Proxy instead of a wrapping function:  */
+{
+  function delay(f, ms) {
+    return new Proxy(f, {
+      apply(target, thisArg, args) {
+        setTimeout(() => target.apply(thisArg, args), ms);
+      }
+    });
+  }
+  
+  function sayHi(user) {
+    alert(`Hello, ${user}!`);
+  }
+  
+  sayHi = delay(sayHi, 3000);
+  
+  alert(sayHi.length); // 1 (*) proxy forwards "get length" operation to the target
+  
+  sayHi("Luna"); // Hello, Luna! (after 3 seconds)
+}
+
+/* The result is the same, but now not only calls, but all operations on the 
+proxy are forwarded to the original function. So sayHi.length is returned 
+correctly after the wrapping in the line (*).
+
+We’ve got a “richer” wrapper.
+
+Other traps exist: the full list is in the beginning of this article. Their 
+usage pattern is similar to the above. */
