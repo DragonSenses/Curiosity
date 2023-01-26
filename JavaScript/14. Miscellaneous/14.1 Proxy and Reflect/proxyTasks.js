@@ -85,18 +85,47 @@ name and value of the property.
 P.S. In this task, please only take care about writing to a property. 
 Other operations can be implemented in a similar way.
 */
+
+/* The solution consists of two parts: 
+1. Whenever .observe(handler) is called, we need to remember the handler 
+somewhere, to be able to call it later. We can store handlers right in the 
+object, using our symbol as the property key.
+
+2. We need a proxy with set trap to call handlers in case of any change.
+*/
+let handlers = Symbol('handlers');
+
 function makeObservable(target) {
-  /* your code */
+  // 1. Initialize handlers store
+  target[handlers] = [];
+
+  // Store the handler function in array for future calls
+  target.observe = function(handler) {
+    this[handlers].push(handler);
+  };
+
+  // 2. Create a proxy to handle changes
+  return new Proxy(target, {
+    // eslint-disable-next-line no-unused-vars
+    set(target, property, value, receiver) {
+      let success = Reflect.set(...arguments); // forward the operation to object
+      if (success) { // if there were no error while setting the property
+        // call all handlers
+        target[handlers].forEach(handler => handler(property, value));
+      }
+      return success;
+    }
+  });
 }
 
 // Here’s how it should work: 
 {
-let user = {};
-user = makeObservable(user);
+  let user = {};
+  user = makeObservable(user);
 
-user.observe((key, value) => {
-  console.log(`SET ${key}=${value}`);
-});
+  user.observe((key, value) => {
+    console.log(`SET ${key}=${value}`);
+  });
 
-user.name = "Luna"; // console.logs: SET name=Luna
+  user.name = "Luna"; // console.logs: SET name=Luna
 }
