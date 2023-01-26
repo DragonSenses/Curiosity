@@ -784,5 +784,116 @@ The problem is actually in the proxy, in the line (*).
   A call to target[prop], when prop is a getter, runs its code in the context 
   this=target. So the result is this._name from the original object target, 
   that is: from user.
-
 */
+
+/* To fix such situations, we need receiver, the third argument of get trap. 
+It keeps the correct this to be passed to a getter. In our case that’s admin.
+
+How to pass the context for a getter? For a regular function we could use 
+call/apply, but that’s a getter, it’s not “called”, just accessed.
+
+Reflect.get can do that. Everything will work right if we use it.
+
+Here’s the corrected variant: */
+{
+  let user = {
+    _name: "Guest",
+    get name() {
+      return this._name;
+    }
+  };
+  
+  let userProxy = new Proxy(user, {
+    get(target, prop, receiver) { // receiver = admin
+      return Reflect.get(target, prop, receiver); // (*)
+    }
+  });
+  
+  
+  let admin = {
+    __proto__: userProxy,
+    _name: "Admin"
+  };
+  
+  alert(admin.name); // Admin
+}
+
+/* Now receiver that keeps a reference to the correct this (that is admin), is 
+passed to the getter using Reflect.get in the line (*).
+
+We can rewrite the trap even shorter: 
+
+get(target, prop, receiver) {
+  return Reflect.get(...arguments);
+}
+
+
+Reflect calls are named exactly the same way as traps and accept the same 
+arguments. They were specifically designed this way.
+
+So, return Reflect... provides a safe no-brainer to forward the operation and 
+make sure we don’t forget anything related to that.
+*/
+
+
+/* Proxy limitations 
+Proxies provide a unique way to alter or tweak the behavior of the existing 
+objects at the lowest level. Still, it’s not perfect. There are limitations.
+*/
+
+/* Built-in objects: Internal slots */
+/* Many built-in objects, for example Map, Set, Date, Promise and others 
+make use of so-called “internal slots”.
+
+These are like properties, but reserved for internal, specification-only 
+purposes. For instance, Map stores items in the internal slot [[MapData]]. 
+Built-in methods access them directly, not via [[Get]]/[[Set]] internal 
+methods. So Proxy can’t intercept that.
+
+Why care? They’re internal anyway!
+
+Well, here’s the issue. After a built-in object like that gets proxied, the 
+proxy doesn’t have these internal slots, so built-in methods will fail.
+
+For example: */
+{
+  let map = new Map();
+
+  let proxy = new Proxy(map, {});
+
+  proxy.set('test', 1); // Error
+}
+/* Internally, a Map stores all data in its [[MapData]] internal slot. 
+The proxy doesn’t have such a slot. The built-in method Map.prototype.set 
+method tries to access the internal property this.[[MapData]], but because 
+this=proxy, can’t find it in proxy and just fails.
+
+Fortunately, there’s a way to fix it: */
+{
+  let map = new Map();
+
+  let proxy = new Proxy(map, {
+    get(target, prop, receiver) {
+      let value = Reflect.get(...arguments);
+      return typeof value == 'function' ? value.bind(target) : value;
+    }
+  });
+
+  proxy.set('test', 1);
+  alert(proxy.get('test')); // 1 (works!)
+}
+
+/* Now it works fine, because get trap binds function properties, such as 
+map.set, to the target object (map) itself.
+
+Unlike the previous example, the value of this inside proxy.set(...) will be 
+not proxy, but the original map. So when the internal implementation of set 
+tries to access this.[[MapData]] internal slot, it succeeds. */
+
+/* Array has no internal slots */
+/* A notable exception: built-in Array doesn’t use internal slots. That’s 
+for historical reasons, as it appeared so long ago.
+
+So there’s no such problem when proxying an array. */
+
+/* Private fields */
