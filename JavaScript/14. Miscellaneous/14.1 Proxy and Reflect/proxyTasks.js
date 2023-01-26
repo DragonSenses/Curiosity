@@ -16,14 +16,20 @@ let user = {
 
 function wrap(target) {
   return new Proxy(target, {
-      /* your code */
+    get(target, prop, receiver) {
+      if (prop in target) {
+        return Reflect.get(target, prop, receiver);
+      } else {
+        throw new ReferenceError(`Property doesn't exist: "${prop}"`);
+      }
+    }
   });
 }
 
 user = wrap(user);
 
-alert(user.name); // Luna
-alert(user.age); // ReferenceError: Property doesn't exist: "age"
+console.log(user.name); // Luna
+console.log(user.age); // ReferenceError: Property doesn't exist: "age"
 
 
 
@@ -48,11 +54,18 @@ That’s how it should work: */
 let array = [1, 2, 3];
 
 array = new Proxy(array, {
-  /* your code */
+  get(target, prop, receiver) {
+    if (prop < 0) {
+      // even if we access it like arr[1]
+      // prop is a string, so need to convert it to number
+      prop = +prop + target.length;
+    }
+    return Reflect.get(target, prop, receiver);
+  }
 });
 
-alert( array[-1] ); // 3
-alert( array[-2] ); // 2
+console.log( array[-1] ); // 3
+console.log( array[-2] ); // 2
 
 // Other array functionality should be kept "as is"
 
@@ -82,8 +95,8 @@ let user = {};
 user = makeObservable(user);
 
 user.observe((key, value) => {
-  alert(`SET ${key}=${value}`);
+  console.log(`SET ${key}=${value}`);
 });
 
-user.name = "Luna"; // alerts: SET name=Luna
+user.name = "Luna"; // console.logs: SET name=Luna
 }
