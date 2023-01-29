@@ -29,7 +29,7 @@ alert(5n / 2n); // 2
 /* Please note: the division 5/2 returns the result rounded towards zero, 
 without the decimal part. All operations on bigints return bigints.
 
-We can’t mix bigints and regular numbers: */
+We can't mix bigints and regular numbers: */
 
 alert(1n + 2); // Error: Cannot mix BigInt and other types
 
@@ -47,12 +47,12 @@ like this: */
 }
 
 /* The conversion operations are always silent, never give errors, but if the 
-bigint is too huge and won’t fit the number type, then extra bits will be cut 
+bigint is too huge and won't fit the number type, then extra bits will be cut 
 off, so we should be careful doing such conversion. */
 
 /* The unary plus is not supported on bigints */
 /* The unary plus operator +value is a well-known way to convert value to a number.
-In order to avoid confusion, it’s not supported on bigints.
+In order to avoid confusion, it's not supported on bigints.
 So we should use Number() to convert a bigint to a number: */
 {
   let bigint = 1n;
@@ -86,3 +86,44 @@ similar to numbers: */
 alert( 1n || 2 ); // 1 (1n is considered truthy)
 
 alert( 0n || 2 ); // 2 (0n is considered falsy)
+
+
+/* Polyfills */
+/* Polyfilling bigints is tricky. The reason is that many JavaScript operators,
+such as +, - and so on behave differently with bigints compared to regular numbers.
+
+For example, division of bigints always returns a bigint (rounded if necessary).
+
+To emulate such behavior, a polyfill would need to analyze the code and replace 
+all such operators with its functions. But doing so is cumbersome and would cost
+a lot of performance.
+
+So, there's no well-known good polyfill.
+
+Although, the other way around is proposed by the developers of JSBI library.
+
+This library implements big numbers using its own methods. We can use them 
+instead of native bigints: 
+
+
+Operation	            native BigInt	    JSBI
+Creation from Number	a = BigInt(789)	  a = JSBI.BigInt(789)
+Addition	            c = a + b	        c = JSBI.add(a, b)
+Subtraction	          c = a - b	        c = JSBI.subtract(a, b)
+…	                    …                	…
+
+…And then use the polyfill (Babel plugin) to convert JSBI calls to native bigints 
+for those browsers that support them.
+
+In other words, this approach suggests that we write code in JSBI instead of native 
+bigints. But JSBI works with numbers as with bigints internally, emulates them 
+closely following the specification, so the code will be "bigint-ready".
+
+We can use such JSBI code "as is" for engines that don't support bigints and 
+for those that do support – the polyfill will convert the calls to native bigints.
+
+
+Resources:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+https://tc39.es/ecma262/#sec-bigint-objects
+*/
