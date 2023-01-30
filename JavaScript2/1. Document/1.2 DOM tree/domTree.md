@@ -171,3 +171,12 @@ The `document` object that represents the whole document is, formally, a DOM nod
 
 ## See DOM structure in real-time
 
+Try <a href="https://software.hixie.ch/utilities/js/live-dom-viewer/">Live DOM Viewer</a>.
+
+Just type in the document, and it will show up as a DOM at an instant.
+
+Another way to explore the DOM is to use the browser developer tools. Actually, that’s what we use when developing.
+
+To do so, open the web page `elk.html`, turn on the browser developer tools and switch to the Elements tab.
+
+It should look like this:
