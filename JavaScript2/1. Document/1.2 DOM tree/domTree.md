@@ -125,3 +125,49 @@ For the HTML:
 DOM-structure will be: <img src="img/noTbodyDomTree.png">
 
 See? The `<tbody>` appeared out of nowhere. We should keep this in mind while working with tables to avoid surprises.
+
+--- 
+
+## Other node types
+
+There are some other node types besides elements and text nodes.
+
+For example, comments:
+
+```html
+<!DOCTYPE HTML>
+<html>
+<body>
+  The truth about elk.
+  <ol>
+    <li>An elk is a smart</li>
+    <!-- comment -->
+    <li>...and cunning animal!</li>
+  </ol>
+</body>
+</html>
+```
+<img src="img/domTreeWithComment.png">
+
+We can see here a new tree node type – comment node, labeled as `#comment`, between two text nodes.
+
+We may think – why is a comment added to the DOM? It doesn’t affect the visual representation in any way. 
+
+But there’s a rule – if something’s in HTML, then it also must be in the DOM tree.
+
+**Everything in HTML, even comments, becomes a part of the DOM.**
+
+Even the `<!DOCTYPE...>` directive at the very beginning of HTML is also a DOM node. It’s in the DOM tree right before `<html>`. Few people know about that. We are not going to touch that node, we even don’t draw it on diagrams, but it’s there.
+
+The `document` object that represents the whole document is, formally, a DOM node as well.
+
+> There are 12 <a href="https://dom.spec.whatwg.org/#node">node types</a>. In practice we usually work with 4 of them:
+> 1. `document` – the “entry point” into DOM.
+> 2. element nodes – HTML-tags, the tree building blocks.
+> 3. text nodes – contain text.
+> 4. comments – sometimes we can put information there, it won’t be shown, but JS can read it from the DOM.
+
+--- 
+
+## See DOM structure in real-time
+
