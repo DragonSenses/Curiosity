@@ -61,3 +61,28 @@ Please note the special characters in text nodes:
   * a space: `␣`
 
 Spaces and newlines are totally valid characters, like letters and digits. They form text nodes and become a part of the DOM. So, for instance, in the example above the `<head>` tag contains some spaces before `<title>`, and that text becomes a #text node (it contains a newline and some spaces only).
+
+There are only two top-level exclusions:
+
+  1. Spaces and newlines before `<head>` are ignored for historical reasons.
+  
+  2. If we put something after `</body>`, then that is automatically moved inside the body, at the end, as the HTML spec requires that all content must be inside `<body>`. So there can’t be any spaces after `</body>`.
+
+In other cases everything’s straightforward – if there are spaces (just like any character) in the document, then they become text nodes in the DOM, and if we remove them, then there won’t be any.
+
+Here are no space-only text nodes:
+
+``` html
+<!DOCTYPE HTML>
+<html><head><title>About elk</title></head><body>The truth about elk.</body></html>
+```
+
+<img src="img/tagTreeNoSpaces.png">
+
+**Spaces at string start/end and space-only text nodes are usually hidden in tools**
+
+Browser tools that work with DOM usually do not show spaces at the start/end of the text and empty text nodes (line-breaks) between tags.
+
+Developer tools save screen space this way.
+
+On further DOM pictures we’ll sometimes omit them when they are irrelevant. Such spaces usually do not affect how the document is displayed.
