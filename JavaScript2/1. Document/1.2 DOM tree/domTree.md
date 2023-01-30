@@ -1,5 +1,25 @@
 # **DOM tree**
 
+## **Summary**
+
+An HTML/XML document is represented inside the browser as the DOM tree.
+
+- Tags become element nodes and form the structure.
+- Text becomes text nodes.
+- …etc, everything in HTML has its place in DOM, even comments.
+
+We can use developer tools to inspect DOM and modify it manually.
+
+Here we covered the basics, the most used and important actions to start with. There’s an extensive documentation about <a href="https://developers.google.com/web/tools/chrome-devtools">Chrome Developer Tools</a>. 
+
+The best way to learn the tools is to click here and there, read menus: most options are obvious. Later, when you know them in general, read the docs and pick up the rest.
+
+DOM nodes have properties and methods that allow us to travel between them, modify them, move around the page, and more. 
+
+---
+
+## **Document Object Model Tree**
+
 The backbone of an HTML document is **tags**.
 
 According to the **Document Object Model (DOM)**, every HTML tag is an object.
