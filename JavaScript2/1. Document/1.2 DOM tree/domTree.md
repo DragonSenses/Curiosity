@@ -179,4 +179,28 @@ Another way to explore the DOM is to use the browser developer tools. Actually, 
 
 To do so, open the web page `elk.html`, turn on the browser developer tools and switch to the Elements tab.
 
-It should look like this:
+In Google Chrome, it should look like this: <img src="img/elkDOM.png">
+
+You can see the DOM, click on elements, see their details and so on.
+
+Please note that the DOM structure in developer tools is simplified. Text nodes are shown just as text. And there are no “blank” (space only) text nodes at all. That’s fine, because most of the time we are interested in element nodes.
+
+Clicking the <img src="img/inspect-image-button.png"> button in the left-upper corner allows us to choose a node from the webpage using a mouse (or other pointer devices) and “inspect” it (scroll to it in the Elements tab). This works great when we have a huge HTML page (and corresponding huge DOM) and would like to see the place of a particular element in it.
+
+Another way to do it would be just right-clicking on a webpage and selecting “Inspect” in the context menu.
+
+<img src="img/inspect-element-on-elk.png">
+
+At the right part of the tools there are the following subtabs:
+
+* **Styles** – we can see CSS applied to the current element rule by rule, including built-in rules (gray). Almost everything can be edited in-place, including the dimensions/margins/paddings of the box below.
+* **Computed** – to see CSS applied to the element by property: for each property we can see a rule that gives it (including CSS inheritance and such).
+* **Event Listeners** – to see event listeners attached to DOM elements (we’ll cover them in the next part of the tutorial).
+…and so on.
+
+The best way to study them is to click around. Most values are editable in-place.
+
+---
+
+## **Interaction with console**
+
