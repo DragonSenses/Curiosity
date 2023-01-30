@@ -29,6 +29,8 @@ Here we used `style.background` to change the background color of `document.body
 
 Soon we’ll learn more ways to manipulate the DOM, but first we need to know about its structure.
 
+---
+
 ## **An example of the DOM**
 
 Let's start with the following simple document:
@@ -86,3 +88,40 @@ Browser tools that work with DOM usually do not show spaces at the start/end of 
 Developer tools save screen space this way.
 
 On further DOM pictures we’ll sometimes omit them when they are irrelevant. Such spaces usually do not affect how the document is displayed.
+
+---
+
+## **Autocorrection**
+
+If the browser encounters malformed HTML, it automatically corrects it when making the DOM.
+
+For instance, the top tag is always `<html>`. Even if it doesn’t exist in the document, it will exist in the DOM, because the browser will create it. The same goes for `<body>`.
+
+As an example, if the HTML file is the single word "Hello", the browser will wrap it into `<html>` and `<body>`, and add the required `<head>`, and the DOM will be: <img src="img/helloDomTree.png">
+
+While generating the DOM, browsers automatically process errors in the document, close tags and so on.
+
+A document with unclosed tags: 
+
+```html
+<p>Hello
+<li>Mom
+<li>and
+<li>Dad
+```
+
+…will become a normal DOM as the browser reads tags and restores the missing parts: <img src="img/unclosedTagsDomTree.png">
+
+### **Tables always have** `<tbody>`
+
+An interesting “special case” is tables. By DOM specification they must have <tbody> tag, but HTML text may omit it. Then the browser creates <tbody> in the DOM automatically.
+
+For the HTML:
+
+```html
+<table id="table"><tr><td>1</td></tr></table>
+```
+
+DOM-structure will be: <img src="img/noTbodyDomTree.png">
+
+See? The `<tbody>` appeared out of nowhere. We should keep this in mind while working with tables to avoid surprises.
