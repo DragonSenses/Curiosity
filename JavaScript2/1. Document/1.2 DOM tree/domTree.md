@@ -204,3 +204,25 @@ The best way to study them is to click around. Most values are editable in-place
 
 ## **Interaction with console**
 
+As we work the DOM, we also may want to apply JavaScript to it. Like: get a node and run some code to modify it, to see the result. Here are few tips to travel between the Elements tab and the console.
+
+For the start:
+
+1. Select the first `<li>` in the Elements tab.
+2. Press `[Esc]` – it will open console right below the Elements tab.
+
+Now the last selected element is available as `$0`, the previously selected is `$1` etc.
+
+We can run commands on them. 
+
+For instance, `$0.style.background = 'red'` makes the selected list item red, like this: <img src="img/redNodeElkDOM.png">
+
+That’s how to get a node from Elements in Console.
+
+There’s also a road back. If there’s a variable referencing a DOM node, then we can use the command `inspect(node)` in Console to see it in the Elements pane.
+
+Or we can just output the DOM node in the console and explore “in-place”, like `document.body` below: <img src="img/outputting-DOM-node.png">
+
+That’s for debugging purposes of course. From the next chapter on we’ll access and modify DOM using JavaScript.
+
+The browser developer tools are a great help in development: we can explore the DOM, try things and see what goes wrong.
