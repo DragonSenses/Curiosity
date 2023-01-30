@@ -45,5 +45,19 @@ Let's start with the following simple document:
 </html>
 ```
 
-The DOM represents HTML as a tree structure of tags. <img src="img/">
+The DOM represents HTML as a tree structure of tags. <img src="img/tagTree.png">
 
+Every tree node is an object.
+
+Tags are element nodes (or just elements) and form the tree structure: `<html>` is at the root, then `<head>` and `<body>` are its children, etc.
+
+The text inside elements forms text nodes, labelled as `#text`. A text node contains only a string. It may not have children and is always a leaf of the tree.
+
+For instance, the `<title>` tag has the text `"About elk"`.
+
+Please note the special characters in text nodes:
+
+  * a newline: `↵` (in JavaScript known as `\n`)
+  * a space: `␣`
+
+Spaces and newlines are totally valid characters, like letters and digits. They form text nodes and become a part of the DOM. So, for instance, in the example above the `<head>` tag contains some spaces before `<title>`, and that text becomes a #text node (it contains a newline and some spaces only).
