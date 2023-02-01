@@ -39,4 +39,31 @@ The topmost tree nodes are available directly as `document` properties:
 
 
 > There's a catch `document.body` can be `null`
-A script 
+A script cannot access an element that doesn’t exist at the moment of running.
+
+In particular, if a script is inside `<head>`, then `document.body` is unavailable, because the browser did not read it yet.
+
+So, in the example below the first `alert` shows `null`:
+
+```html
+<html>
+
+<head>
+  <script>
+    alert( "From HEAD: " + document.body ); // null, there's no <body> yet
+  </script>
+</head>
+
+<body>
+
+  <script>
+    alert( "From BODY: " + document.body ); // HTMLBodyElement, now it exists
+  </script>
+
+</body>
+</html>
+```
+
+> In the DOM world `null` means "doesn't exist"
+> In the DOM, the `null` value means “doesn’t exist” or “no such node”.
+
