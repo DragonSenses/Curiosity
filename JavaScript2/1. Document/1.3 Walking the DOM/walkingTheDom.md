@@ -136,3 +136,61 @@ There’s also a special function `elem.hasChildNodes()` to check whether there 
 
 ## **DOM collections**
 
+As we can see, `childNodes` looks like an array. But actually it’s not an array, but rather a *collection* – a special array-like iterable object.
+
+There are two important consequences:
+
+1. We can use `for..of` to iterate over it:
+
+```javascript
+for (let node of document.body.childNodes) {
+  alert(node); // shows all nodes from the collection
+}
+```
+
+That’s because it’s iterable (provides the `Symbol.iterator` property, as required).
+
+2. Array methods won’t work, because it’s not an array:
+
+```javascript
+alert(document.body.childNodes.filter); // undefined (there's no filter method!)
+```
+
+The first thing is nice. The second is tolerable, because we can use `Array.from` to create a “real” array from the collection, if we want array methods:
+
+```javascript
+alert( Array.from(document.body.childNodes).filter ); // function
+```
+
+---
+
+### **DOM collections are read-only**
+DOM collections, and even more – *all* navigation properties listed in this chapter are read-only.
+
+We can’t replace a child by something else by assigning `childNodes[i] = ...`
+
+Changing DOM needs other methods. We will see them in the next chapter.
+
+---
+
+### **DOM collections are live**
+
+Almost all DOM collections with minor exceptions are live. In other words, they reflect the current state of DOM.
+
+If we keep a reference to `elem.childNodes`, and add/remove nodes into DOM, then they appear in the collection automatically.
+
+---
+
+### **Don’t use `for..in` to loop over collections**
+Collections are iterable using `for..of`. Sometimes people try to use `for..in` for that.
+
+Please, don’t. The `for..in` loop iterates over all enumerable properties. And collections have some “extra” rarely used properties that we usually do not want to get:
+
+```html
+<body>
+<script>
+  // shows 0, 1, length, item, values and more.
+  for (let prop in document.body.childNodes) alert(prop);
+</script>
+</body>
+```
