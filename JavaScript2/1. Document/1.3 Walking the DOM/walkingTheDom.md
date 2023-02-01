@@ -67,3 +67,28 @@ So, in the example below the first `alert` shows `null`:
 > In the DOM world `null` means "doesn't exist"
 > In the DOM, the `null` value means “doesn’t exist” or “no such node”.
 
+---
+
+## **Children: childNodes, firstChild, lastChild**
+
+There are two terms that we’ll use from now on:
+- **Child nodes (or children)** – elements that are direct children. In other words, they are nested exactly in the given one. For instance, `<head>` and `<body>` are children of `<html>` element.
+
+- **Descendants** – all elements that are nested in the given one, including children, their children and so on.
+
+For instance, here `<body>` has children `<div>` and `<ul>` (and few blank text nodes):
+
+```html
+<html>
+<body>
+  <div>Begin</div>
+
+  <ul>
+    <li>
+      <b>Information</b>
+    </li>
+  </ul>
+</body>
+</html>
+```
+
