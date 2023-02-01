@@ -92,3 +92,29 @@ For instance, here `<body>` has children `<div>` and `<ul>` (and few blank text 
 </html>
 ```
 
+…And descendants of `<body>` are not only direct children `<div>`, `<ul`> but also more deeply nested elements, such as `<li>` (a child of `<ul>`) and `<b>` (a child of `<li>`) – the entire subtree.
+
+The `childNodes` collection lists all child nodes, including text nodes.
+
+The example below shows children of `document.body`:
+
+```html
+<html>
+<body>
+  <div>Begin</div>
+
+  <ul>
+    <li>Information</li>
+  </ul>
+
+  <div>End</div>
+
+  <script>
+    for (let i = 0; i < document.body.childNodes.length; i++) {
+      alert( document.body.childNodes[i] ); // Text, DIV, Text, UL, ..., SCRIPT
+    }
+  </script>
+  ...more stuff...
+</body>
+</html>
+```
