@@ -118,3 +118,21 @@ The example below shows children of `document.body`:
 </body>
 </html>
 ```
+
+Please note an interesting detail here. If we run the example above, the last element shown is `<script>`. In fact, the document has more stuff below, but at the moment of the script execution the browser did not read it yet, so the script doesn’t see it.
+
+**Properties `firstChild` and `lastChild` give fast access to the first and last children.**
+
+They are just shorthands. If there exist child nodes, then the following is always true:
+
+```javascript
+elem.childNodes[0] === elem.firstChild
+elem.childNodes[elem.childNodes.length - 1] === elem.lastChild
+```
+
+There’s also a special function `elem.hasChildNodes()` to check whether there are any child nodes.
+
+---
+
+## **DOM collections**
+
