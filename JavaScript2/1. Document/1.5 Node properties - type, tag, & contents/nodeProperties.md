@@ -115,4 +115,154 @@ To see the DOM node class name, we can recall that an object usually has the `co
 alert( document.body.constructor.name ); // HTMLBodyElement
 ```
 
-…Or we can just toString it:
+…Or we can just `toString` it:
+
+```javascript
+alert( document.body ); // [object HTMLBodyElement]
+```
+
+We also can use `instanceof` to check the inheritance:
+```javascript
+alert( document.body instanceof HTMLBodyElement ); // true
+alert( document.body instanceof HTMLElement ); // true
+alert( document.body instanceof Element ); // true
+alert( document.body instanceof Node ); // true
+alert( document.body instanceof EventTarget ); // true
+```
+
+As we can see, DOM nodes are regular JavaScript objects. They use prototype-based classes for inheritance.
+
+That’s also easy to see by outputting an element with `console.dir(elem)` in a browser. There in the console you can see `HTMLElement.prototype`, `Element.prototype` and so on.
+
+---
+
+### `console.dir(elem)` **versus** `console.log(elem)`
+
+Most browsers support two commands in their developer tools: `console.log` and `console.dir`. They output their arguments to the console. For JavaScript objects these commands usually do the same.
+
+But for DOM elements they are different:
+
+- `console.log(elem)` shows the element DOM tree.
+- `console.dir(elem)` shows the element as a DOM object, good to explore its properties.
+
+Try it on `document.body`.
+
+---
+
+### **IDL in the spec**
+
+In the specification, DOM classes aren’t described by using JavaScript, but a special <a href="https://en.wikipedia.org/wiki/Interface_description_language">Interface description language</a> (IDL), that is usually easy to understand.
+
+In IDL all properties are prepended with their types. For instance, DOMString, boolean and so on.
+
+Here’s an excerpt from it, with comments:
+
+```javascript
+// Define HTMLInputElement
+// The colon ":" means that HTMLInputElement inherits from HTMLElement
+interface HTMLInputElement: HTMLElement {
+  // here go properties and methods of <input> elements
+
+  // "DOMString" means that the value of a property is a string
+  attribute DOMString accept;
+  attribute DOMString alt;
+  attribute DOMString autocomplete;
+  attribute DOMString value;
+
+  // boolean value property (true/false)
+  attribute boolean autofocus;
+  ...
+  // now the method: "void" means that the method returns no value
+  void select();
+  ...
+}
+```
+
+---
+
+## **The “nodeType” property**
+
+The `nodeType` property provides one more, “old-fashioned” way to get the “type” of a DOM node.
+
+It has a numeric value:
+
+  - `elem.nodeType == 1` for element nodes,
+  - `elem.nodeType == 3` for text nodes,
+  - `elem.nodeType == 9` for the document object,
+  - there are few other values in the [specification](https://dom.spec.whatwg.org/#node).
+
+For instance:
+
+```html
+<body>
+  <script>
+  let elem = document.body;
+
+  // let's examine: what type of node is in elem?
+  alert(elem.nodeType); // 1 => element
+
+  // and its first child is...
+  alert(elem.firstChild.nodeType); // 3 => text
+
+  // for the document object, the type is 9
+  alert( document.nodeType ); // 9
+  </script>
+</body>
+```
+
+In modern scripts, we can use `instanceof` and other class-based tests to see the node type, but sometimes `nodeType` may be simpler. We can only read `nodeType`, not change it.
+
+---
+
+## **Tag: nodeName and tagName**
+
+Given a DOM node, we can read its tag name from `nodeName` or `tagName` properties:
+
+For instance:
+
+```javascript
+alert( document.body.nodeName ); // BODY
+alert( document.body.tagName ); // BODY
+```
+
+Is there any difference between `tagName` and `nodeName`?
+
+Sure, the difference is reflected in their names, but is indeed a bit subtle.
+
+  - The `tagName` property exists only for `Element` nodes.
+  - The `nodeName` is defined for any `Node`:
+    - for elements it means the same as `tagName`.
+    - for other node types (text, comment, etc.) it has a string with the node type.
+
+In other words, `tagName` is only supported by element nodes (as it originates from Element class), while `nodeName` can say something about other node types.
+
+For instance, let’s compare `tagName` and `nodeName` for the `document` and a comment node:
+
+```html
+<body><!-- comment -->
+
+  <script>
+    // for comment
+    alert( document.body.firstChild.tagName ); // undefined (not an element)
+    alert( document.body.firstChild.nodeName ); // #comment
+
+    // for document
+    alert( document.tagName ); // undefined (not an element)
+    alert( document.nodeName ); // #document
+  </script>
+</body>
+```
+
+If we only deal with elements, then we can use both `tagName` and `nodeName` – there’s no difference.
+
+---
+
+### **The tag name is always uppercase except in XML mode**
+
+The browser has two modes of processing documents: HTML and XML. Usually the HTML-mode is used for webpages. XML-mode is enabled when the browser receives an XML-document with the header: `Content-Type: application/xml+xhtml`.
+
+In HTML mode `tagName/nodeName` is always uppercased: it’s `BODY` either for `<body>` or `<BoDy>`.
+
+In XML mode the case is kept “as is”. Nowadays XML mode is rarely used.
+
+---
