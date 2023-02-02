@@ -266,3 +266,164 @@ In HTML mode `tagName/nodeName` is always uppercased: it’s `BODY` either for `
 In XML mode the case is kept “as is”. Nowadays XML mode is rarely used.
 
 ---
+
+## **innerHTML: the contents**
+
+The [innerHTML](https://w3c.github.io/DOM-Parsing/#the-innerhtml-mixin) property allows to get the HTML inside the element as a string.
+
+We can also modify it. So it’s one of the most powerful ways to change the page.
+
+The example shows the contents of `document.body` and then replaces it completely:
+
+```html
+<body>
+  <p>A paragraph</p>
+  <div>A div</div>
+
+  <script>
+    alert( document.body.innerHTML ); // read the current contents
+    document.body.innerHTML = 'The new BODY!'; // replace it
+  </script>
+
+</body>
+```
+
+We can try to insert invalid HTML, the browser will fix our errors:
+
+```html
+<body>
+
+  <script>
+    document.body.innerHTML = '<b>test'; // forgot to close the tag
+    alert( document.body.innerHTML ); // <b>test</b> (fixed)
+  </script>
+
+</body>
+```
+
+### **Scripts don’t execute**
+If `innerHTML` inserts a `<script>` tag into the document – it becomes a part of HTML, but doesn’t execute.
+
+--- 
+
+## **Beware: “innerHTML+=” does a full overwrite** 
+
+We can append HTML to an element by using `elem.innerHTML+="more html"`.
+
+Like this:
+
+```javascript
+chatDiv.innerHTML += "<div>Hello<img src='smile.gif'/> !</div>";
+chatDiv.innerHTML += "How goes?";
+```
+
+But we should be very careful about doing it, because what’s going on is not an addition, but a full overwrite.
+
+Technically, these two lines do the same:
+```javascript
+elem.innerHTML += "...";
+// is a shorter way to write:
+elem.innerHTML = elem.innerHTML + "..."
+```
+
+In other words, `innerHTML+=` does this:
+
+  1. The old contents is removed.
+  2. The new `innerHTML` is written instead (a concatenation of the old and the new one).
+
+**As the content is “zeroed-out” and rewritten from the scratch, all images and other resources will be reloaded.**
+
+In the `chatDiv` example above the line` chatDiv.innerHTML+="How goes?"` re-creates the HTML content and reloads `smile.gif` (hope it’s cached). If `chatDiv` has a lot of other text and images, then the reload becomes clearly visible.
+
+There are other side-effects as well. For instance, if the existing text was selected with the mouse, then most browsers will remove the selection upon rewriting `innerHTML`. And if there was an `<input>` with a text entered by the visitor, then the text will be removed. And so on.
+
+Luckily, there are other ways to add HTML besides `innerHTML`, and we’ll study them soon.
+
+---
+
+## **outerHTML: full HTML of the element**
+
+The outerHTML property contains the full HTML of the element. That’s like innerHTML plus the element itself.
+
+Here’s an example:
+
+```html
+<div id="elem">Hello <b>World</b></div>
+
+<script>
+  alert(elem.outerHTML); // <div id="elem">Hello <b>World</b></div>
+</script>
+```
+
+***Beware*: unlike `innerHTML`, writing to `outerHTML` does not change the element. Instead, it replaces it in the DOM.**
+
+Yeah, sounds strange, and strange it is, that’s why we make a separate note about it here. Take a look.
+
+Consider the example:
+
+```html
+<div>Hello, world!</div>
+
+<script>
+  let div = document.querySelector('div');
+
+  // replace div.outerHTML with <p>...</p>
+  div.outerHTML = '<p>A new element</p>'; // (*)
+
+  // Wow! 'div' is still the same!
+  alert(div.outerHTML); // <div>Hello, world!</div> (**)
+</script>
+```
+
+Looks really odd, right?
+
+In the line `(*)` we replaced `div` with `<p>A new element</p>`. In the outer document (the DOM) we can see the new content instead of the `<div>`. But, as we can see in line `(**)`, the value of the old `div` variable hasn’t changed!
+
+The `outerHTML` assignment does not modify the DOM element (the object referenced by, in this case, the variable ‘div’), but removes it from the DOM and inserts the new HTML in its place.
+
+So what happened in `div.outerHTML=...` is:
+
+  - `div` was removed from the document.
+  - Another piece of HTML `<p>A new element</p>` was inserted in its place.
+  - `div` still has its old value. The new HTML wasn’t saved to any variable.
+
+It’s so easy to make an error here: modify `div.outerHTML` and then continue to work with `div` as if it had the new content in it. But it doesn’t. Such thing is correct for `innerHTML`, but not for `outerHTML`.
+
+We can write to `elem.outerHTML`, but should keep in mind that it doesn’t change the element we’re writing to (‘elem’). It puts the new HTML in its place instead. We can get references to the new elements by querying the DOM.
+
+---
+
+## **nodeValue/data: text node content**
+
+The `innerHTML` property is only valid for element nodes.
+
+Other node types, such as text nodes, have their counterpart: `nodeValue` and `data` properties. These two are almost the same for practical use, there are only minor specification differences. So we’ll use `data`, because it’s shorter.
+
+An example of reading the content of a text node and a comment:
+
+```html
+<body>
+  Hello
+  <!-- Comment -->
+  <script>
+    let text = document.body.firstChild;
+    alert(text.data); // Hello
+
+    let comment = text.nextSibling;
+    alert(comment.data); // Comment
+  </script>
+</body>
+```
+
+For text nodes we can imagine a reason to read or modify them, but why comments?
+
+Sometimes developers embed information or template instructions into HTML in them, like this:
+
+```html
+<!-- if isAdmin -->
+  <div>Welcome, Admin!</div>
+<!-- /if -->
+```
+…Then JavaScript can read it from data property and process embedded instructions.
+
+---
