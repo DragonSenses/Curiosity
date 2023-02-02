@@ -1,49 +1,72 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-<body>
+  <body>
+    <ul>
+      <li>
+        Animals
+        <ul>
+          <li>
+            Mammals
+            <ul>
+              <li>Cows</li>
+              <li>Donkeys</li>
+              <li>Dogs</li>
+              <li>Tigers</li>
+            </ul>
+          </li>
+          <li>
+            Other
+            <ul>
+              <li>Snakes</li>
+              <li>Birds</li>
+              <li>Lizards</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        Fishes
+        <ul>
+          <li>
+            Aquarium
+            <ul>
+              <li>Guppy</li>
+              <li>Angelfish</li>
+            </ul>
+          </li>
+          <li>
+            Sea
+            <ul>
+              <li>Sea trout</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
 
-  <ul>
-    <li>Animals
-      <ul>
-        <li>Mammals
-          <ul>
-            <li>Cows</li>
-            <li>Donkeys</li>
-            <li>Dogs</li>
-            <li>Tigers</li>
-          </ul>
-        </li>
-        <li>Other
-          <ul>
-            <li>Snakes</li>
-            <li>Birds</li>
-            <li>Lizards</li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li>Fishes
-      <ul>
-        <li>Aquarium
-          <ul>
-            <li>Guppy</li>
-            <li>Angelfish</li>
-          </ul>
-        </li>
-        <li>Sea
-          <ul>
-            <li>Sea trout</li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-  </ul>
+    <script>
+      for (let li of document.querySelectorAll("li")) {
+        let title = li.firstChild.data;
 
-  <script>
-    // ... your code...
-  </script>
+        // title is the text in <li> before any other nodes
+        console.log(title);
 
-</body>
+        console.log("number of nested <li> is ")
+        console.log(li.getElementsByTagName('li').length);
+      }
+
+      // 3. Extra problem: Get the total nested <li> (all descendants)
+      console.log("Total number of all descendants is:" + document.querySelectorAll("li"));
+
+      // 4. Get the first level of <li> of the first <ul> (i.e., Animals, Fishes)
+      let list = document.body.firstElementChild;
+
+      for (let li of list.children) {
+        // firstChild.data is the text in <li> before any other nodes
+        console.log(li.firstChild.data);
+      }
+    </script>
+  </body>
 </html>
 
 <!-- 
