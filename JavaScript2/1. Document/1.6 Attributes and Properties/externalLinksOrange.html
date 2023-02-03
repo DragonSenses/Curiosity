@@ -13,12 +13,47 @@
   </ul>
 
   <script>
-      // setting style for a single link
-    let link = document.querySelector('a');
-    link.style.color = 'orange';
+    // setting style for a single link
+    // let link = document.querySelector('a');
+    // link.style.color = 'orange';
 
-    // ...your code...
+    let links = document.querySelectorAll('a');
+
+    for (let link of links) {
+      let href = link.getAttribute('href');
+
+      if(!href) continue; // no attribute
+
+      if(!href.includes('://')) continue; // no protocol
+
+      if (href.startsWith('http://internal.com')) continue; // internal
+
+      link.style.color = orange;
+    }
+  </script>
+
+
+  <script>
+    // 2nd way: Add the checks to CSS selector
+
+    // look for all links that have :// in href
+    // but href doesn't start with http://internal.com
+    /*  
+    let selector = 'a[href*="://"]:not([href^="http://internal.com"])';
+    let links = document.querySelectorAll(selector); 
+    */
+
+    // links.forEach(link => link.style.color = 'orange');
   </script>
 
 </body>
 </html>
+
+<!-- 
+
+A link is external if:
+
+- Its `href` has `://` in it
+- But doesn't start with `http://internal.com`.
+
+-->

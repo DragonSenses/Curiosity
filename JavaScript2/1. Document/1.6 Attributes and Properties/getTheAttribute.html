@@ -5,9 +5,16 @@
   <div data-widget-name="menu">Choose the genre</div>
 
   <script>
-    /* your code */
+    // getting it
+    let elem = document.querySelector('[data-widget-name]');
+
+    // reading the value
+    console.log(elem.dataset.widgetName);
+    // or
+    console.log(elem.getAttribute('data-widget-name'));
   </script>
 </body>
 </html>
 
-<!-- Write the code to select the element with data-widget-name attribute from the document and to read its value. -->
+<!-- Write the code to select the element with data-widget-name 
+  attribute from the document and to read its value. -->
