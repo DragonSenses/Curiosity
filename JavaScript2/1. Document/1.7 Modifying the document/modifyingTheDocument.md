@@ -71,6 +71,8 @@ Here's how it will look:
 
 That was the HTML example. Now let's create the same `div` with JavaScript (assuming that the styles are in the HTML/CSS already).
 
+---
+
 ## Creating an element
 
 To create DOM nodes, there are two methods:
@@ -105,6 +107,8 @@ div.innerHTML = "<strong>Hi there!</strong> You've read an important message.";
 ```
 
 We've created the element. But as of now it's only in a variable named `div`, not in the page yet. So we can't see it.
+
+---
 
 ## Insertion methods
 
@@ -217,3 +221,112 @@ So, these methods can only be used to insert DOM nodes or text pieces.
 
 But what if we'd like to insert an HTML string "as html", with all tags and stuff working, in the same manner as `elem.innerHTML` does it?
 
+---
+
+## insertAdjacentHTML/Text/Element
+
+For that we can use another, pretty versatile method: `elem.insertAdjacentHTML(where, html)`.
+
+The first parameter is a code word, specifying where to insert relative to `elem`. Must be one of the following:
+
+- `"beforebegin"` -- insert `html` immediately before `elem`,
+- `"afterbegin"` -- insert `html` into `elem`, at the beginning,
+- `"beforeend"` -- insert `html` into `elem`, at the end,
+- `"afterend"` -- insert `html` immediately after `elem`.
+
+The second parameter is an HTML string, that is inserted "as HTML".
+
+For instance:
+
+```html run
+<div id="div"></div>
+<script>
+  div.insertAdjacentHTML('beforebegin', '<p>Hello</p>');
+  div.insertAdjacentHTML('afterend', '<p>Bye</p>');
+</script>
+```
+
+...Would lead to:
+
+```html run
+<p>Hello</p>
+<div id="div"></div>
+<p>Bye</p>
+```
+
+That's how we can append arbitrary HTML to the page.
+
+Here's the picture of insertion variants: <img src="img/insert-adjacent.png">
+
+We can easily notice similarities between this and the previous picture. The insertion points are actually the same, but this method inserts HTML.
+
+The method has two brothers:
+
+- `elem.insertAdjacentText(where, text)` -- the same syntax, but a string of `text` is inserted "as text" instead of HTML,
+- `elem.insertAdjacentElement(where, elem)` -- the same syntax, but inserts an element.
+
+They exist mainly to make the syntax "uniform". In practice, only `insertAdjacentHTML` is used most of the time. Because for elements and text, we have methods `append/prepend/before/after` -- they are shorter to write and can insert nodes/text pieces.
+
+So here's an alternative variant of showing a message:
+
+```html run
+<style>
+.alert {
+  padding: 15px;
+  border: 1px solid #d6e9c6;
+  border-radius: 4px;
+  color: #3c763d;
+  background-color: #dff0d8;
+}
+</style>
+
+<script>
+  document.body.insertAdjacentHTML("afterbegin", `<div class="alert">
+    <strong>Hi there!</strong> You've read an important message.
+  </div>`);
+</script>
+```
+
+## Node removal
+
+To remove a node, there's a method `node.remove()`.
+
+Let's make our message disappear after a second:
+
+```html run untrusted
+<style>
+.alert {
+  padding: 15px;
+  border: 1px solid #d6e9c6;
+  border-radius: 4px;
+  color: #3c763d;
+  background-color: #dff0d8;
+}
+</style>
+
+<script>
+  let div = document.createElement('div');
+  div.className = "alert";
+  div.innerHTML = "<strong>Hi there!</strong> You've read an important message.";
+
+  document.body.append(div);
+*!*
+  setTimeout(() => div.remove(), 1000);
+*/!*
+</script>
+```
+
+Please note: if we want to *move* an element to another place -- there's no need to remove it from the old one.
+
+**All insertion methods automatically remove the node from the old place.**
+
+For instance, let's swap elements:
+
+```html run height=50
+<div id="first">First</div>
+<div id="second">Second</div>
+<script>
+  // no need to call remove
+  second.after(first); // take #second and after it insert #first
+</script>
+```
