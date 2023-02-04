@@ -178,7 +178,7 @@ So when there's no padding we can use `clientWidth/clientHeight` to get the cont
 
 These properties are like `clientWidth/clientHeight`, but they also include the scrolled out (hidden) parts:
 
-![](metric-scroll-width-height.svg)
+![](img/metric-scroll-width-height.svg)
 
 On the picture above:
 
@@ -226,7 +226,7 @@ Setting `scrollTop` to `0` or a big value, such as `1e9` will make the element s
 
 We've just covered geometry properties of DOM elements, that can be used to get widths, heights and calculate distances.
 
-But as we know from the chapter <info:styles-and-classes>, we can read CSS-height and width using `getComputedStyle`.
+We can read CSS-height and width using `getComputedStyle`.
 
 So why not to read the width of an element with `getComputedStyle`, like this?
 
