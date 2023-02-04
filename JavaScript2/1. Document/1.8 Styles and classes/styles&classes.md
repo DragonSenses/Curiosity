@@ -130,3 +130,172 @@ button.style.WebkitBorderRadius = '5px';
 ---
 
 ## **Resetting the style property**
+
+Sometimes we want to assign a style property, and later remove it.
+
+For instance, to hide an element, we can set `elem.style.display = "none"`.
+
+Then later we may want to remove the `style.display` as if it were not set. Instead of `delete elem.style.display` we should assign an empty string to it: `elem.style.display = ""`.
+
+```js run
+// if we run this code, the <body> will blink
+document.body.style.display = "none"; // hide
+
+setTimeout(() => document.body.style.display = "", 1000); // back to normal
+```
+
+If we set `style.display` to an empty string, then the browser applies CSS classes and its built-in styles normally, as if there were no such `style.display` property at all.
+
+Also there is a special method for that, `elem.style.removeProperty('style property')`. So, We can remove a property like this:
+
+```js run
+document.body.style.background = 'red'; //set background to red
+
+setTimeout(() => document.body.style.removeProperty('background'), 1000); // remove background after 1 second
+```
+
+### Full rewrite with `style.cssText`
+
+Normally, we use `style.*` to assign individual style properties. We can’t set the full style like `div.style="color: red; width: 100px"`, because `div.style` is an object, and it’s read-only.
+
+To set the full style as a string, there’s a special property `style.cssText`
+
+```html
+<div id="div">Button</div>
+
+<script>
+  // we can set special style flags like "important" here
+  div.style.cssText=`color: red !important;
+    background-color: yellow;
+    width: 100px;
+    text-align: center;
+  `;
+
+  alert(div.style.cssText);
+</script>
+```
+
+This property is rarely used, because such assignment removes all existing styles: it does not add, but replaces them. May occasionally delete something needed. But we can safely use it for new elements, when we know we won’t delete an existing style.
+
+The same can be accomplished by setting an attribute: `div.setAttribute('style', 'color: red...')`
+
+---
+
+## **Mind the units**
+
+Don't forget to add CSS units to values.
+
+For instance, we should not set `elem.style.top` to `10`, but rather to `10px`. Otherwise it wouldn't work:
+
+```html run height=100
+<body>
+  <script>
+  *!*
+    // doesn't work!
+    document.body.style.margin = 20;
+    alert(document.body.style.margin); // '' (empty string, the assignment is ignored)
+  */!*
+
+    // now add the CSS unit (px) - and it works
+    document.body.style.margin = '20px';
+    alert(document.body.style.margin); // 20px
+
+    alert(document.body.style.marginTop); // 20px
+    alert(document.body.style.marginLeft); // 20px
+  </script>
+</body>
+```
+
+Please note: the browser "unpacks" the property `style.margin` in the last lines and infers `style.marginLeft` and `style.marginTop` from it.
+
+## **Computed styles: getComputedStyle**
+
+So, modifying a style is easy. But how to *read* it?
+
+For instance, we want to know the size, margins, the color of an element. How to do it?
+
+**The `style` property operates only on the value of the `"style"` attribute, without any CSS cascade.**
+
+So we can't read anything that comes from CSS classes using `elem.style`.
+
+For instance, here `style` doesn't see the margin:
+
+```html run height=60 no-beautify
+<head>
+  <style> body { color: red; margin: 5px } </style>
+</head>
+<body>
+
+  The red text
+  <script>
+*!*
+    alert(document.body.style.color); // empty
+    alert(document.body.style.marginTop); // empty
+*/!*
+  </script>
+</body>
+```
+
+...But what if we need, say, to increase the margin by `20px`? We would want the current value of it.
+
+There's another method for that: `getComputedStyle`.
+
+The syntax is:
+
+```js
+getComputedStyle(element, [pseudo])
+```
+
+element
+: Element to read the value for.
+
+pseudo
+: A pseudo-element if required, for instance `::before`. An empty string or no argument means the element itself.
+
+The result is an object with styles, like `elem.style`, but now with respect to all CSS classes.
+
+For instance:
+
+```html run height=100
+<head>
+  <style> body { color: red; margin: 5px } </style>
+</head>
+<body>
+
+  <script>
+    let computedStyle = getComputedStyle(document.body);
+
+    // now we can read the margin and the color from it
+
+    alert( computedStyle.marginTop ); // 5px
+    alert( computedStyle.color ); // rgb(255, 0, 0)
+  </script>
+
+</body>
+```
+
+### **Computed and resolved values**
+
+There are two concepts in [CSS](https://drafts.csswg.org/cssom/#resolved-values):
+
+1. A *computed* style value is the value after all CSS rules and CSS inheritance is applied, as the result of the CSS cascade. It can look like `height:1em` or `font-size:125%`.
+2. A *resolved* style value is the one finally applied to the element. Values like `1em` or `125%` are relative. The browser takes the computed value and makes all units fixed and absolute, for instance: `height:20px` or `font-size:16px`. For geometry properties resolved values may have a floating point, like `width:50.5px`.
+
+A long time ago `getComputedStyle` was created to get computed values, but it turned out that resolved values are much more convenient, and the standard changed.
+
+So nowadays `getComputedStyle` actually returns the resolved value of the property, usually in `px` for geometry.
+
+
+### `getComputedStyle` **requires the full property name**
+
+We should always ask for the exact property that we want, like `paddingLeft` or `marginTop` or `borderTopWidth`. Otherwise the correct result is not guaranteed.
+
+For instance, if there are properties `paddingLeft/paddingTop`, then what should we get for `getComputedStyle(elem).padding`? Nothing, or maybe a "generated" value from known paddings? There's no standard rule here.
+
+### **Styles applied to `:visited` links are hidden!**
+
+Visited links may be colored using `:visited` CSS pseudoclass.
+
+But `getComputedStyle` does not give access to that color, because otherwise an arbitrary page could find out whether the user visited a link by creating it on the page and checking the styles.
+
+JavaScript may not see the styles applied by `:visited`. And also, there's a limitation in CSS that forbids applying geometry-changing styles in `:visited`. That's to guarantee that there's no side way for an evil page to test if a link was visited and hence to break the privacy.
