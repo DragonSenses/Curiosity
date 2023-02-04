@@ -97,3 +97,60 @@ There are several occasions when `offsetParent` is `null`:
 1. For not shown elements (`display:none` or not in the document).
 2. For `<body>` and `<html>`.
 3. For elements with `position:fixed`.
+
+## offsetWidth/Height
+
+Now let's move on to the element itself.
+
+These two properties are the simplest ones. They provide the "outer" width/height of the element. Or, in other words, its full size including borders.
+
+![](img/metric-offset-width-height.svg)
+
+For our sample element:
+
+- `offsetWidth = 390` -- the outer width, can be calculated as inner CSS-width (`300px`) plus paddings (`2 * 20px`) and borders (`2 * 25px`).
+- `offsetHeight = 290` -- the outer height.
+
+### Geometry properties are zero/null for elements that are not displayed
+
+Geometry properties are calculated only for displayed elements.
+
+If an element (or any of its ancestors) has `display:none` or is not in the document, then all geometry properties are zero (or `null` for `offsetParent`).
+
+For example, `offsetParent` is `null`, and `offsetWidth`, `offsetHeight` are `0` when we created an element, but haven't inserted it into the document yet, or it (or its ancestor) has `display:none`.
+
+We can use this to check if an element is hidden, like this:
+
+```js
+function isHidden(elem) {
+  return !elem.offsetWidth && !elem.offsetHeight;
+}
+```
+
+Please note that such `isHidden` returns `true` for elements that are on-screen, but have zero sizes.
+
+## clientTop/Left
+
+Inside the element we have the borders.
+
+To measure them, there are properties `clientTop` and `clientLeft`.
+
+In our example:
+
+- `clientLeft = 25` -- left border width
+- `clientTop = 25` -- top border width
+
+![](img/metric-client-left-top.svg)
+
+...But to be precise -- these properties are not border width/height, but rather relative coordinates of the inner side from the outer side.
+
+What's the difference?
+
+It becomes visible when the document is right-to-left (the operating system is in Arabic or Hebrew languages). The scrollbar is then not on the right, but on the left, and then `clientLeft` also includes the scrollbar width.
+
+In that case, `clientLeft` would be not `25`, but with the scrollbar width `25 + 16 = 41`.
+
+Here's the example in hebrew:
+
+![](img/metric-client-left-top-rtl.svg)
+
