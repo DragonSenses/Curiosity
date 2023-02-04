@@ -154,3 +154,23 @@ Here's the example in hebrew:
 
 ![](img/metric-client-left-top-rtl.svg)
 
+## clientWidth/Height
+
+These properties provide the size of the area inside the element borders.
+
+They include the content width together with paddings, but without the scrollbar:
+
+![](img/metric-client-width-height.svg)
+
+On the picture above let's first consider `clientHeight`.
+
+There's no horizontal scrollbar, so it's exactly the sum of what's inside the borders: CSS-height `200px` plus top and bottom paddings (`2 * 20px`) total `240px`.
+
+Now `clientWidth` -- here the content width is not `300px`, but `284px`, because `16px` are occupied by the scrollbar. So the sum is `284px` plus left and right paddings, total `324px`.
+
+**If there are no paddings, then `clientWidth/Height` is exactly the content area, inside the borders and the scrollbar (if any).**
+
+![](img/metric-client-width-nopadding.svg)
+
+So when there's no padding we can use `clientWidth/clientHeight` to get the content area size.
+
