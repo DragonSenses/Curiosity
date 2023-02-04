@@ -51,3 +51,49 @@ So, without scrollbar the content width would be `300px`, but if the scrollbar i
 
 Usually paddings are shown empty on our illustrations, but if there's a lot of text in the element and it overflows, then browsers show the "overflowing" text at `padding-bottom`, that's normal.
 
+## Geometry
+
+Here's the overall picture with geometry properties:
+
+![](img/metric-all.svg)
+
+Values of these properties are technically numbers, but these numbers are "of pixels", so these are pixel measurements.
+
+Let's start exploring the properties starting from the outside of the element.
+
+## offsetParent, offsetLeft/Top
+
+These properties are rarely needed, but still they are the "most outer" geometry properties, so we'll start with them.
+
+The `offsetParent` is the nearest ancestor that the browser uses for calculating coordinates during rendering.
+
+That's the nearest ancestor that is one of the following:
+
+1. CSS-positioned (`position` is `absolute`, `relative`, `fixed` or `sticky`),  or
+2. `<td>`, `<th>`, or `<table>`,  or
+3. `<body>`.
+
+Properties `offsetLeft/offsetTop` provide x/y coordinates relative to `offsetParent` upper-left corner.
+
+In the example below the inner `<div>` has `<main>` as `offsetParent` and `offsetLeft/offsetTop` shifts from its upper-left corner (`180`):
+
+```html run height=10
+<main style="position: relative" id="main">
+  <article>
+    <div id="example" style="position: absolute; left: 180px; top: 180px">...</div>
+  </article>
+</main>
+<script>
+  alert(example.offsetParent.id); // main
+  alert(example.offsetLeft); // 180 (note: a number, not a string "180px")
+  alert(example.offsetTop); // 180
+</script>
+```
+
+![](img/metric-offset-parent.svg)
+
+There are several occasions when `offsetParent` is `null`:
+
+1. For not shown elements (`display:none` or not in the document).
+2. For `<body>` and `<html>`.
+3. For elements with `position:fixed`.
