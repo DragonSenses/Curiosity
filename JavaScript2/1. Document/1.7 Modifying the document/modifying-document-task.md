@@ -601,7 +601,7 @@ In the `index.html`
 # Colored clock with setInterval
 
 Create a colored clock, where hh:mm:ss format and
-hh is red, mm is green, and ss is purple.
+hh is red, mm is green, and ss is blue.
 
 Use HTML/CSS for the styling, JavaScript only updates time in elements.
 
@@ -678,6 +678,79 @@ Please note that the call to `update()` is not only scheduled in `clockStart()`,
 
 Also it is important to set a new interval in `clockStart()` only when the clock is not running. Otherways clicking the start button several times would set multiple concurrent intervals. Even worse – we would only keep the `timerID` of the last interval, losing references to all others. Then we wouldn’t be able to stop the clock ever again! Note that we need to clear the `timerID` when the clock is stopped in the line `(**)`, so that it can be started again by running `clockStart()`.
 
+The `index.html`:
+
+```html
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+    .hour {
+      color: red
+    }
+
+    .min {
+      color: green
+    }
+
+    .sec {
+      color: blue
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="clock">
+    <span class="hour">hh</span>:<span class="min">mm</span>:<span class="sec">ss</span>
+  </div>
+
+  <script>
+    let timerId;
+
+    function update() {
+      let clock = document.getElementById('clock');
+      let date = new Date();
+
+      let hours = date.getHours();
+      if (hours < 10) hours = '0' + hours;
+      clock.children[0].innerHTML = hours;
+
+      let minutes = date.getMinutes();
+      if (minutes < 10) minutes = '0' + minutes;
+      clock.children[1].innerHTML = minutes;
+
+      let seconds = date.getSeconds();
+      if (seconds < 10) seconds = '0' + seconds;
+      clock.children[2].innerHTML = seconds;
+    }
+
+    function clockStart() {
+      // set a new interval only if the clock is stopped
+      // otherwise we would rewrite the timerID reference to the running interval and wouldn't be able to stop the clock ever again
+      if (!timerId) {
+        timerId = setInterval(update, 1000);
+      }
+      update(); // <--  start right now, don't wait 1 second till the first setInterval works
+    }
+
+    function clockStop() {
+      clearInterval(timerId);
+      timerId = null; // <-- clear timerID to indicate that the clock has been stopped, so that it is possible to start it again in clockStart()
+    }
+
+  </script>
+
+  <!-- click on this button calls clockStart() -->
+  <input type="button" onclick="clockStart()" value="Start">
+
+  <!-- click on this button calls clockStop() -->
+  <input type="button" onclick="clockStop()" value="Stop">
+
+</body>
+</html>
+```
+
 ---
 
 # Insert the HTML in the list
@@ -689,6 +762,16 @@ Write the code to insert `<li>2</li><li>3</li>` between two `<li>` here:
   <li id="one">1</li>
   <li id="two">4</li>
 </ul>
+```
+
+---
+
+***Answer:*** 
+
+When we need to insert a piece of HTML somewhere, `insertAdjacentHTML` is the best fit.
+
+```js
+one.insertAdjacentHTML('afterend', '<li>2</li><li>3</li>');
 ```
 
 ---
