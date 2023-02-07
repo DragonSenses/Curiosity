@@ -453,6 +453,149 @@ P.S. For this task it's enough to generate the calendar, should not yet be click
 
 We’ll create the table as a string: `"<table>...</table>"`, and then assign it to `innerHTML`.
 
+The algorithm:
+
+1. Create the table header with `<th>` and weekday names.
+2. Create the date object `d = new Date(year, month-1)`. That’s the first day of `month` (taking into account that months in JavaScript start from `0`, not `1`).
+3. First few cells till the first day of the month `d.getDay()` may be empty. Let’s fill them in with `<td></td>`.
+4. Increase the day in `d: d.setDate(d.getDate()+1)`. If `d.getMonth()` is not yet the next month, then add the new cell `<td>` to the calendar. If that’s a Sunday, then add a newline `“</tr><tr>”`.
+5. If the month has finished, but the table row is not yet full, add empty `<td>` into it, to make it square.
+
+The JavaScript:
+
+```js
+function createCalendar(elem, year, month) {
+
+  let mon = month - 1; // months in JS are 0..11, not 1..12
+  let d = new Date(year, mon);
+
+  let table = '<table><tr><th>MO</th><th>TU</th><th>WE</th><th>TH</th><th>FR</th><th>SA</th><th>SU</th></tr><tr>';
+
+  // spaces for the first row
+  // from Monday till the first day of the month
+  // * * * 1  2  3  4
+  for (let i = 0; i < getDay(d); i++) {
+    table += '<td></td>';
+  }
+
+  // <td> with actual dates
+  while (d.getMonth() == mon) {
+    table += '<td>' + d.getDate() + '</td>';
+
+    if (getDay(d) % 7 == 6) { // sunday, last day of week - newline
+      table += '</tr><tr>';
+    }
+
+    d.setDate(d.getDate() + 1);
+  }
+
+  // add spaces after last days of month for the last row
+  // 29 30 31 * * * *
+  if (getDay(d) != 0) {
+    for (let i = getDay(d); i < 7; i++) {
+      table += '<td></td>';
+    }
+  }
+
+  // close the table
+  table += '</tr></table>';
+
+  elem.innerHTML = table;
+}
+
+function getDay(date) { // get day number from 0 (monday) to 6 (sunday)
+  let day = date.getDay();
+  if (day == 0) day = 7; // make Sunday (0) the last day
+  return day - 1;
+}
+
+createCalendar(calendar, 2012, 9);
+```
+
+In the `index.html` 
+
+```html
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    td,
+    th {
+      border: 1px solid black;
+      padding: 3px;
+      text-align: center;
+    }
+
+    th {
+      font-weight: bold;
+      background-color: #E6E6E6;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div id="calendar"></div>
+
+  <script>
+    function createCalendar(elem, year, month) {
+
+      let mon = month - 1; // months in JS are 0..11, not 1..12
+      let d = new Date(year, mon);
+
+      let table = '<table><tr><th>MO</th><th>TU</th><th>WE</th><th>TH</th><th>FR</th><th>SA</th><th>SU</th></tr><tr>';
+
+      // spaces for the first row
+      // from Monday till the first day of the month
+      // * * * 1  2  3  4
+      for (let i = 0; i < getDay(d); i++) {
+        table += '<td></td>';
+      }
+
+      // <td> with actual dates
+      while (d.getMonth() == mon) {
+        table += '<td>' + d.getDate() + '</td>';
+
+        if (getDay(d) % 7 == 6) { // sunday, last day of week - newline
+          table += '</tr><tr>';
+        }
+
+        d.setDate(d.getDate() + 1);
+      }
+
+      // add spaces after last days of month for the last row
+      // 29 30 31 * * * *
+      if (getDay(d) != 0) {
+        for (let i = getDay(d); i < 7; i++) {
+          table += '<td></td>';
+        }
+      }
+
+      // close the table
+      table += '</tr></table>';
+
+      elem.innerHTML = table;
+    }
+
+    function getDay(date) { // get day number from 0 (monday) to 6 (sunday)
+      let day = date.getDay();
+      if (day == 0) day = 7; // make Sunday (0) the last day
+      return day - 1;
+    }
+
+    createCalendar(calendar, 2023, 2);
+  </script>
+
+</body>
+</html>
+```
+
 ---
 
 # Colored clock with setInterval
