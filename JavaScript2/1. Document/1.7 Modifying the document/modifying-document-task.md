@@ -107,13 +107,13 @@ Why does that happen?
 
 ***Answer:***
 
-The HTML in the task is incorrect. That’s the reason of the odd thing.
+The HTML in the task is incorrect. That's the reason of the odd thing.
 
 The browser has to fix it automatically. But there may be no text inside the `<table>`: according to the spec only table-specific tags are allowed. So the browser shows `"aaa"` before the `<table>`.
 
-Now it’s obvious that when we remove the table, it remains.
+Now it's obvious that when we remove the table, it remains.
 
-The question can be easily answered by exploring the DOM using the browser tools. You’ll see `"aaa"` before the `<table>`.
+The question can be easily answered by exploring the DOM using the browser tools. You'll see `"aaa"` before the `<table>`.
 
 The HTML standard specifies in detail how to process bad HTML, and such behavior of the browser is correct.
 
@@ -451,14 +451,14 @@ P.S. For this task it's enough to generate the calendar, should not yet be click
 
 ***Answer:*** 
 
-We’ll create the table as a string: `"<table>...</table>"`, and then assign it to `innerHTML`.
+We'll create the table as a string: `"<table>...</table>"`, and then assign it to `innerHTML`.
 
 The algorithm:
 
 1. Create the table header with `<th>` and weekday names.
-2. Create the date object `d = new Date(year, month-1)`. That’s the first day of `month` (taking into account that months in JavaScript start from `0`, not `1`).
-3. First few cells till the first day of the month `d.getDay()` may be empty. Let’s fill them in with `<td></td>`.
-4. Increase the day in `d: d.setDate(d.getDate()+1)`. If `d.getMonth()` is not yet the next month, then add the new cell `<td>` to the calendar. If that’s a Sunday, then add a newline `“</tr><tr>”`.
+2. Create the date object `d = new Date(year, month-1)`. That's the first day of `month` (taking into account that months in JavaScript start from `0`, not `1`).
+3. First few cells till the first day of the month `d.getDay()` may be empty. Let's fill them in with `<td></td>`.
+4. Increase the day in `d: d.setDate(d.getDate()+1)`. If `d.getMonth()` is not yet the next month, then add the new cell `<td>` to the calendar. If that's a Sunday, then add a newline `"</tr><tr>"`.
 5. If the month has finished, but the table row is not yet full, add empty `<td>` into it, to make it square.
 
 The JavaScript:
@@ -623,7 +623,7 @@ In `index.html`
 
 ---
 
-***Answer:*** First, let’s make HTML/CSS.
+***Answer:*** First, let's make HTML/CSS.
 
 Each component of the time would look great in its own `<span>`:
 
@@ -633,7 +633,7 @@ Each component of the time would look great in its own `<span>`:
 </div>
 ```
 
-Also we’ll need CSS to color them.
+Also we'll need CSS to color them.
 
 The `update` function will refresh the clock, to be called by `setInterval` every second:
 
@@ -676,7 +676,7 @@ function clockStop() {
 
 Please note that the call to `update()` is not only scheduled in `clockStart()`, but immediately run in the line `(*)`. Otherwise the visitor would have to wait till the first execution of `setInterval`. And the clock would be empty till then.
 
-Also it is important to set a new interval in `clockStart()` only when the clock is not running. Otherways clicking the start button several times would set multiple concurrent intervals. Even worse – we would only keep the `timerID` of the last interval, losing references to all others. Then we wouldn’t be able to stop the clock ever again! Note that we need to clear the `timerID` when the clock is stopped in the line `(**)`, so that it can be started again by running `clockStart()`.
+Also it is important to set a new interval in `clockStart()` only when the clock is not running. Otherways clicking the start button several times would set multiple concurrent intervals. Even worse – we would only keep the `timerID` of the last interval, losing references to all others. Then we wouldn't be able to stop the clock ever again! Note that we need to clear the `timerID` when the clock is stopped in the line `(**)`, so that it can be started again by running `clockStart()`.
 
 The `index.html`:
 
@@ -780,7 +780,7 @@ one.insertAdjacentHTML('afterend', '<li>2</li><li>3</li>');
 
 There's a table:
 
-```html run
+```html
 <table>
 <thead>
   <tr>
@@ -807,3 +807,88 @@ There's a table:
 There may be more rows in it.
 
 Write the code to sort it by the `"name"` column.
+
+`index.html`
+```html
+<!DOCTYPE html>
+
+<table id="table">
+<thead>
+  <tr>
+    <th>Name</th><th>Surname</th><th>Age</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>John</td><td>Smith</td><td>10</td>
+  </tr>
+  <tr>
+    <td>Pete</td><td>Brown</td><td>15</td>
+  </tr>
+  <tr>
+    <td>Ann</td><td>Lee</td><td>5</td>
+  </tr>
+  <tr>
+    <td>...</td><td>...</td><td>...</td>
+  </tr>
+</tbody>
+</table>
+
+<script>
+  // ... your code ...
+</script>
+```
+
+---
+
+***Answer:*** The solution is short, yet may look a bit tricky, so here I provide it with extensive comments:
+
+```js
+let sortedRows = Array.from(table.tBodies[0].rows) // 1
+  .sort((rowA, rowB) => rowA.cells[0].innerHTML.localeCompare(rowB.cells[0].innerHTML));
+
+table.tBodies[0].append(...sortedRows); // (3)
+```
+
+The step-by-step algorthm:
+
+  1. Get all `<tr>`, from `<tbody>`.
+  2. Then sort them comparing by the content of the first `<td>` (the name field).
+  3. Now insert nodes in the right order by `.append(...sortedRows)`.
+
+We don't have to remove row elements, just "re-insert", they leave the old place automatically.
+
+P.S. In our case, there's an explicit `<tbody>` in the table, but even if HTML table doesn't have `<tbody>`, the DOM structure always has it.
+
+```html
+<!DOCTYPE html>
+
+<table id="table">
+<thead>
+  <tr>
+    <th>Name</th><th>Surname</th><th>Age</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>John</td><td>Smith</td><td>10</td>
+  </tr>
+  <tr>
+    <td>Pete</td><td>Brown</td><td>15</td>
+  </tr>
+  <tr>
+    <td>Ann</td><td>Lee</td><td>5</td>
+  </tr>
+  <tr>
+    <td>...</td><td>...</td><td>...</td>
+  </tr>
+</tbody>
+</table>
+
+<script>
+  let sortedRows = Array.from(table.tBodies[0].rows)
+    .sort((rowA, rowB) => rowA.cells[0].innerHTML.localeCompare(rowB.cells[0].innerHTML));
+
+  table.tBodies[0].append(...sortedRows);
+</script>
+```
