@@ -8,12 +8,32 @@ Which of these 3 commands will do exactly the same?
 2. `elem.innerHTML = text`
 3. `elem.textContent = text`
 
+---
+
+***Answer:* 1 and 3**
+
+Both commands result in adding the `text` "as text" into the `elem`
+
+Here's an example:
+
+```html
+<div id="elem1"></div>
+<div id="elem2"></div>
+<div id="elem3"></div>
+<script>
+  let text = '<b>text</b>';
+
+  elem1.append(document.createTextNode(text));
+  elem2.innerHTML = text;
+  elem3.textContent = text;
+</script>
+```
 
 # Clear the element
 
 Create a function `clear(elem)` that removes everything from the element.
 
-```html run height=60
+```html
 <ol id="elem">
   <li>Hello</li>
   <li>World</li>
@@ -25,6 +45,35 @@ Create a function `clear(elem)` that removes everything from the element.
   clear(elem); // clears the list
 </script>
 ```
+
+---
+
+***Answer:***
+
+```javascript
+function clear(elem) {
+  while (elem.firstChild) {
+    elem.firstChild.remove();
+  }
+}
+
+//  or simpler way to do the same
+function clear(elem) {
+  elem.innerHTML = '';
+}
+```
+
+*Don't do this:* 
+
+```javascript
+function clear(elem) {
+  for (let i=0; i < elem.childNodes.length; i++) {
+      elem.childNodes[i].remove();
+  }
+}
+```
+
+Iterating through the element's child nodes using a `for loop` or `for..of` then calling `remove()` shifts the collection `elemen.childNodes`, so elements start from the index 0 every time. But `i` increases, and some elements will be skipped. 
 
 # Why does "aaa" remain?
 
@@ -49,6 +98,20 @@ Why does that happen?
   // why there's still "aaa" in the document?
 </script>
 ```
+
+---
+
+***Answer:***
+
+The HTML in the task is incorrect. That’s the reason of the odd thing.
+
+The browser has to fix it automatically. But there may be no text inside the `<table>`: according to the spec only table-specific tags are allowed. So the browser shows `"aaa"` before the `<table>`.
+
+Now it’s obvious that when we remove the table, it remains.
+
+The question can be easily answered by exploring the DOM using the browser tools. You’ll see `"aaa"` before the `<table>`.
+
+The HTML standard specifies in detail how to process bad HTML, and such behavior of the browser is correct.
 
 # Create a list
 
