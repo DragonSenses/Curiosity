@@ -29,6 +29,8 @@ Here's an example:
 </script>
 ```
 
+---
+
 # Clear the element
 
 Create a function `clear(elem)` that removes everything from the element.
@@ -75,6 +77,8 @@ function clear(elem) {
 
 Iterating through the element's child nodes using a `for loop` or `for..of` then calling `remove()` shifts the collection `elemen.childNodes`, so elements start from the index 0 every time. But `i` increases, and some elements will be skipped. 
 
+---
+
 # Why does "aaa" remain?
 
 In the example below, the call `table.remove()` removes the table from the document.
@@ -113,6 +117,8 @@ The question can be easily answered by exploring the DOM using the browser tools
 
 The HTML standard specifies in detail how to process bad HTML, and such behavior of the browser is correct.
 
+---
+
 # Create a list
 
 Write an interface to create a list from user input.
@@ -126,6 +132,41 @@ For every list item:
 All elements should be created dynamically.
 
 If a user types HTML-tags, they should be treated like a text.
+
+---
+
+***Answer:***
+
+Please note the usage of `textContent` to assign the `<li>` content.
+
+```html
+<!DOCTYPE HTML>
+<html>
+<body>
+  <h1>Create a list</h1>
+
+  <script>
+    let ul = document.createElement('ul');
+    document.body.append(ul);
+
+    while (true) {
+      let data = prompt("Enter the text for the list item", "");
+
+      if (!data) {
+        break;
+      }
+
+      let li = document.createElement('li');
+      li.textContent = data;
+      ul.append(li);
+    }
+  </script>
+
+</body>
+</html>
+```
+
+---
 
 # Create a tree from the object
 
@@ -165,15 +206,158 @@ Choose one of two ways of solving this task:
 1. Create the HTML for the tree and then assign to `container.innerHTML`.
 2. Create tree nodes and append with DOM methods.
 
-Would be great if you could do both.
-
 P.S. The tree should not have "extra" elements like empty `<ul></ul>` for the leaves.
+
+---
+**Answer**: The easiest way to walk the object is to use recursion.
+
+***Solution with `innerHTML`:***
+
+```html
+<!DOCTYPE html>
+<html>
+<body>
+
+  <div id="container"></div>
+
+  <script>
+    let data = {
+      "Fish": {
+        "trout": {},
+        "salmon": {}
+      },
+
+      "Tree": {
+        "Huge": {
+          "sequoia": {},
+          "oak": {}
+        },
+        "Flowering": {
+          "apple tree": {},
+          "magnolia": {}
+        }
+      }
+    };
+
+    function createTree(container, obj) {
+      container.innerHTML = createTreeText(obj);
+    }
+
+    function createTreeText(obj) { // standalone recursive function
+      let li = '';
+      let ul;
+      for (let key in obj) {
+        li += '<li>' + key + createTreeText(obj[key]) + '</li>';
+      }
+      if (li) {
+        ul = '<ul>' + li + '</ul>'
+      }
+      return ul || '';
+    }
+
+    createTree(container, data);
+  </script>
+</body>
+</html>
+```
+
+---
+
+***Solution with `DOM`:***
+
+```html
+<!DOCTYPE html>
+<html>
+<body>
+
+  <div id="container"></div>
+
+  <script>
+    let data = {
+      "Fish": {
+        "trout": {},
+        "salmon": {}
+      },
+
+      "Tree": {
+        "Huge": {
+          "sequoia": {},
+          "oak": {}
+        },
+        "Flowering": {
+          "apple tree": {},
+          "magnolia": {}
+        }
+      }
+    };
+
+    function createTree(container, obj) {
+      container.append(createTreeDom(obj));
+    }
+
+    function createTreeDom(obj) {
+      // if there's no children, then the call returns undefined
+      // and the <ul> won't be created
+      if (!Object.keys(obj).length) return;
+
+      let ul = document.createElement('ul');
+
+      for (let key in obj) {
+        let li = document.createElement('li');
+        li.innerHTML = key;
+
+        let childrenUl = createTreeDom(obj[key]);
+        if (childrenUl) {
+          li.append(childrenUl);
+        }
+
+        ul.append(li);
+      }
+
+      return ul;
+    }
+
+    let container = document.getElementById('container');
+    createTree(container, data);
+  </script>
+
+</body>
+</html>
+```
+
+---
 
 # Show descendants in a tree
 
 There's a tree organized as nested `ul/li`.
 
 Write the code that adds to each `<li>` the number of its descendants. Skip leaves (nodes without children).
+
+The result:
+```
+- Animals [9]
+  - Mammals [4]
+    - Cows
+    - Donkeys
+    - Dogs
+    - Tigers
+  - Other [3]
+    - Snakes
+    - Birds
+    - Lizards
+- Fishes [5]
+  - Aquarium [2]
+    - Guppy
+    - Angelfish
+  - Sea [1]
+    - Sea trout
+```
+
+---
+
+***Answer:***
+
+---
 
 # Create a calendar
 
@@ -187,11 +371,15 @@ For instance, `createCalendar(cal, 2012, 9)` should generate in element `cal` th
 
 P.S. For this task it's enough to generate the calendar, should not yet be clickable.
 
+---
+
 # Colored clock with setInterval
 
 Create a colored clock like here
 
 Use HTML/CSS for the styling, JavaScript only updates time in elements.
+
+---
 
 # Insert the HTML in the list
 
@@ -203,6 +391,8 @@ Write the code to insert `<li>2</li><li>3</li>` between two `<li>` here:
   <li id="two">4</li>
 </ul>
 ```
+
+---
 
 # Sort the table
 
