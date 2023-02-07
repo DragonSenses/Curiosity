@@ -115,3 +115,141 @@ But in CSS positioning, `right` property means the distance from the right edge,
 If we just look at the picture above, we can see that in JavaScript it is not so. All window coordinates are counted from the top-left corner, including these ones.
 
 ## elementFromPoint(x, y)
+
+The call to `document.elementFromPoint(x, y)` returns the most nested element at window coordinates `(x, y)`.
+
+The syntax is:
+
+```js
+let elem = document.elementFromPoint(x, y);
+```
+
+For instance, the code below highlights and outputs the tag of the element that is now in the middle of the window:
+
+```js run
+let centerX = document.documentElement.clientWidth / 2;
+let centerY = document.documentElement.clientHeight / 2;
+
+let elem = document.elementFromPoint(centerX, centerY);
+
+elem.style.background = "red";
+alert(elem.tagName);
+```
+
+As it uses window coordinates, the element may be different depending on the current scroll position.
+
+### For out-of-window coordinates the `elementFromPoint` returns `null`
+
+The method `document.elementFromPoint(x,y)` only works if `(x,y)` are inside the visible area.
+
+If any of the coordinates is negative or exceeds the window width/height, then it returns `null`.
+
+Here's a typical error that may occur if we don't check for it:
+
+```js
+let elem = document.elementFromPoint(x, y);
+// if the coordinates happen to be out of the window, then elem = null
+
+elem.style.background = ''; // Error!
+```
+
+---
+
+## Using for "fixed" positioning
+
+Most of time we need coordinates in order to position something.
+
+To show something near an element, we can use `getBoundingClientRect` to get its coordinates, and then CSS `position` together with `left/top` (or `right/bottom`).
+
+For instance, the function `createMessageUnder(elem, html)` below shows the message under `elem`:
+
+```js
+let elem = document.getElementById("coords-show-mark");
+
+function createMessageUnder(elem, html) {
+  // create message element
+  let message = document.createElement('div');
+  // better to use a css class for the style here
+  message.style.cssText = "position:fixed; color: red";
+
+  // assign coordinates, don't forget "px"!
+  let coords = elem.getBoundingClientRect();
+
+  message.style.left = coords.left + "px";
+  message.style.top = coords.bottom + "px";
+
+  message.innerHTML = html;
+
+  return message;
+}
+
+// Usage:
+// add it for 5 seconds in the document
+let message = createMessageUnder(elem, 'Hello, world!');
+document.body.append(message);
+setTimeout(() => message.remove(), 5000);
+```
+
+Click the button to run it:
+
+<button id="coords-show-mark">Button with id="coords-show-mark", the message will appear under it</button>
+
+The code can be modified to show the message at the left, right, below, apply CSS animations to "fade it in" and so on. That's easy, as we have all the coordinates and sizes of the element.
+
+But note the important detail: when the page is scrolled, the message flows away from the button.
+
+The reason is obvious: the message element relies on `position:fixed`, so it remains at the same place of the window while the page scrolls away.
+
+To change that, we need to use document-based coordinates and `position:absolute`.
+
+---
+
+## Document coordinates
+
+Document-relative coordinates start from the upper-left corner of the document, not the window.
+
+In CSS, window coordinates correspond to `position:fixed`, while document coordinates are similar to `position:absolute` on top.
+
+We can use `position:absolute` and `top/left` to put something at a certain place of the document, so that it remains there during a page scroll. But we need the right coordinates first.
+
+There's no standard method to get the document coordinates of an element. But it's easy to write it.
+
+The two coordinate systems are connected by the formula:
+- `pageY` = `clientY` + height of the scrolled-out vertical part of the document.
+- `pageX` = `clientX` + width of the scrolled-out horizontal part of the document.
+
+The function `getCoords(elem)` will take window coordinates from `elem.getBoundingClientRect()` and add the current scroll to them:
+
+```js
+// get document coordinates of the element
+function getCoords(elem) {
+  let box = elem.getBoundingClientRect();
+
+  return {
+    top: box.top + window.pageYOffset,
+    right: box.right + window.pageXOffset,
+    bottom: box.bottom + window.pageYOffset,
+    left: box.left + window.pageXOffset
+  };
+}
+```
+
+If in the example above we used it with `position:absolute`, then the message would stay near the element on scroll.
+
+The modified `createMessageUnder` function:
+
+```js
+function createMessageUnder(elem, html) {
+  let message = document.createElement('div');
+  message.style.cssText = "*!*position:absolute*/!*; color: red";
+
+  let coords = *!*getCoords(elem);*/!*
+
+  message.style.left = coords.left + "px";
+  message.style.top = coords.bottom + "px";
+
+  message.innerHTML = html;
+
+  return message;
+}
+```
