@@ -37,3 +37,66 @@ This handler is assigned to `<div>`, but also runs if you click any nested tag l
 ```
 
 Isn't it a bit strange? Why does the handler on `<div>` run if the actual click was on `<em>`?
+
+## Bubbling
+
+The bubbling principle is simple.
+
+**When an event happens on an element, it first runs the handlers on it, then on its parent, then all the way up on other ancestors.**
+
+Let's say we have 3 nested elements `FORM > DIV > P` with a handler on each of them:
+
+```html run autorun
+<style>
+  body * {
+    margin: 10px;
+    border: 1px solid blue;
+  }
+</style>
+
+<form onclick="alert('form')">FORM
+  <div onclick="alert('div')">DIV
+    <p onclick="alert('p')">P</p>
+  </div>
+</form>
+```
+
+A click on the inner `<p>` first runs `onclick`:
+1. On that `<p>`.
+2. Then on the outer `<div>`.
+3. Then on the outer `<form>`.
+4. And so on upwards till the `document` object.
+
+![](event-order-bubbling.svg)
+
+So if we click on `<p>`, then we'll see 3 alerts: `p` -> `div` -> `form`.
+
+The process is called "bubbling", because events "bubble" from the inner element up through parents like a bubble in the water.
+
+### *Almost* all events bubble.
+
+The key word in this phrase is "almost".
+
+For instance, a `focus` event does not bubble. There are other examples too, we'll meet them. But still it's an exception, rather than a rule, most events do bubble.
+
+---
+
+## event.target
+
+A handler on a parent element can always get the details about where it actually happened.
+
+**The most deeply nested element that caused the event is called a *target* element, accessible as `event.target`.**
+
+Note the differences from `this` (=`event.currentTarget`):
+
+- `event.target` -- is the "target" element that initiated the event, it doesn't change through the bubbling process.
+- `this` -- is the "current" element, the one that has a currently running handler on it.
+
+For instance, if we have a single handler `form.onclick`, then it can "catch" all clicks inside the form. No matter where the click happened, it bubbles up to `<form>` and runs the handler.
+
+In `form.onclick` handler:
+
+- `this` (=`event.currentTarget`) is the `<form>` element, because the handler runs on it.
+- `event.target` is the actual element inside the form that was clicked.
+
+It's possible that `event.target` could equal `this` -- it happens when the click is made directly on the `<form>` element.
