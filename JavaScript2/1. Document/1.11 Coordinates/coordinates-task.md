@@ -91,9 +91,50 @@ body {
 ```
 ---
 
-Answer:
+***Answer:***
 
+# Outer corners
 
+Outer corners are basically what we get from [elem.getBoundingClientRect()](https://developer.mozilla.org/en-US/docs/DOM/element.getBoundingClientRect).
+
+Coordinates of the upper-left corner `answer1` and the bottom-right corner `answer2`:
+
+```js
+let coords = elem.getBoundingClientRect();
+
+let answer1 = [coords.left, coords.top];
+let answer2 = [coords.right, coords.bottom];
+```
+
+# Left-upper inner corner
+
+That differs from the outer corner by the border width. A reliable way to get the distance is `clientLeft/clientTop`:
+
+```js
+let answer3 = [coords.left + field.clientLeft, coords.top + field.clientTop];
+```
+
+# Right-bottom inner corner
+
+In our case we need to substract the border size from the outer coordinates.
+
+We could use CSS way:
+
+```js
+let answer4 = [
+  coords.right - parseInt(getComputedStyle(field).borderRightWidth),
+  coords.bottom - parseInt(getComputedStyle(field).borderBottomWidth)
+];
+```
+
+An alternative way would be to add `clientWidth/clientHeight` to coordinates of the left-upper corner. That's probably even better:
+
+```js
+let answer4 = [
+  coords.left + elem.clientLeft + elem.clientWidth,
+  coords.top + elem.clientTop + elem.clientHeight
+];
+```
 ---
 
 # Show a note near the element
@@ -109,7 +150,94 @@ It's used inside function `showNote(anchor, position, html)`, provided in the ta
 
 ---
 
-Answer:
+***Answer:*** In this task we only need to accurately calculate the coordinates. See the code for details.
+
+Please note: the elements must be in the document to read `offsetHeight` and other properties.
+A hidden (`display:none`) or out of the document element has no size.
+
+```html
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit sint atque dolorum fuga ad incidunt voluptatum error fugiat animi amet! Odio temporibus nulla id unde quaerat dignissimos enim nisi rem provident molestias sit tempore omnis recusandae
+    esse sequi officia sapiente.</p>
+
+  <blockquote>
+    Teacher: Why are you late?
+    Student: There was a man who lost a hundred dollar bill.
+    Teacher: That's nice. Were you helping him look for it?
+    Student: No. I was standing on it.
+  </blockquote>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit sint atque dolorum fuga ad incidunt voluptatum error fugiat animi amet! Odio temporibus nulla id unde quaerat dignissimos enim nisi rem provident molestias sit tempore omnis recusandae
+    esse sequi officia sapiente.</p>
+
+
+  <script>
+    /**
+     * Positions elem relative to anchor as said in position.
+     *
+     * @param {Node} anchor     Anchor element for positioning
+     * @param {string} position One of: top/right/bottom
+     * @param {Node} elem       Element to position
+     *
+     * Both elements: elem and anchor must be in the document
+     */
+    function positionAt(anchor, position, elem) {
+
+      let anchorCoords = anchor.getBoundingClientRect();
+
+      switch (position) {
+        case "top":
+          elem.style.left = anchorCoords.left + "px";
+          elem.style.top = anchorCoords.top - elem.offsetHeight + "px";
+          break;
+
+        case "right":
+          elem.style.left = anchorCoords.left + anchor.offsetWidth + "px";
+          elem.style.top = anchorCoords.top + "px";
+          break;
+
+        case "bottom":
+          elem.style.left = anchorCoords.left + "px";
+          elem.style.top = anchorCoords.top + anchor.offsetHeight + "px";
+          break;
+      }
+
+    }
+
+    /**
+     * Shows a note with the given html at the given position
+     * relative to the anchor element.
+     */
+    function showNote(anchor, position, html) {
+
+      let note = document.createElement('div');
+      note.className = "note";
+      note.innerHTML = html;
+      document.body.append(note);
+
+      positionAt(anchor, position, note);
+    }
+
+    // test it
+    let blockquote = document.querySelector('blockquote');
+
+    showNote(blockquote, "top", "note above");
+    showNote(blockquote, "right", "note at the right");
+    showNote(blockquote, "bottom", "note below");
+  </script>
+
+</body>
+</html>
+```
 
 ---
 
@@ -123,7 +251,92 @@ Take the solution of that task as a starting point. To test the scroll, add the 
 
 ---
 
-Answer:
+***Answer:*** The solution is actually pretty simple:
+
+- Use `position:absolute` in CSS instead of `position:fixed` for `.note`.
+- Use the function `getCoords()` from the chapter **Coordinates** to get document-relative coordinates.
+
+```html
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body style="height: 2000px">
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit sint atque dolorum fuga ad incidunt voluptatum error fugiat animi amet! Odio temporibus nulla id unde quaerat dignissimos enim nisi rem provident molestias sit tempore omnis recusandae
+    esse sequi officia sapiente.</p>
+
+  <blockquote>
+    Teacher: Why are you late?
+    Student: There was a man who lost a hundred dollar bill.
+    Teacher: That's nice. Were you helping him look for it?
+    Student: No. I was standing on it.
+  </blockquote>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit sint atque dolorum fuga ad incidunt voluptatum error fugiat animi amet! Odio temporibus nulla id unde quaerat dignissimos enim nisi rem provident molestias sit tempore omnis recusandae
+    esse sequi officia sapiente.</p>
+
+
+  <script>
+
+    function getCoords(elem) {
+      let box = elem.getBoundingClientRect();
+
+      return {
+        top: box.top + window.pageYOffset,
+        left: box.left + window.pageXOffset
+      };
+    }
+
+    function positionAt(anchor, position, elem) {
+
+      let anchorCoords = getCoords(anchor);
+
+      switch (position) {
+        case "top":
+          elem.style.left = anchorCoords.left + "px";
+          elem.style.top = anchorCoords.top - elem.offsetHeight + "px";
+          break;
+
+        case "right":
+          elem.style.left = anchorCoords.left + anchor.offsetWidth + "px";
+          elem.style.top = anchorCoords.top + "px";
+          break;
+
+        case "bottom":
+          elem.style.left = anchorCoords.left + "px";
+          elem.style.top = anchorCoords.top + anchor.offsetHeight + "px";
+          break;
+      }
+
+    }
+
+    function showNote(anchor, position, html) {
+
+      let note = document.createElement('div');
+      note.className = "note";
+      note.innerHTML = html;
+      document.body.append(note);
+
+      positionAt(anchor, position, note);
+    }
+
+    // test it
+    let blockquote = document.querySelector('blockquote');
+
+    showNote(blockquote, "top", "note above");
+    showNote(blockquote, "right", "note at the right");
+    showNote(blockquote, "bottom", "note below");
+  </script>
+
+
+</body>
+</html>
+```
 
 ---
 
@@ -148,4 +361,103 @@ positionAt(blockquote, "top-in", note);
 
 ---
 
-Answer:
+***Answer:***
+
+`index.html`:
+
+```html
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body style="height: 2000px">
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit sint atque dolorum fuga ad incidunt voluptatum error fugiat animi amet! Odio temporibus nulla id unde quaerat dignissimos enim nisi rem provident molestias sit tempore omnis recusandae
+    esse sequi officia sapiente.</p>
+
+  <blockquote>
+    Teacher: Why are you late?
+    Student: There was a man who lost a hundred dollar bill.
+    Teacher: That's nice. Were you helping him look for it?
+    Student: No. I was standing on it.
+  </blockquote>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit sint atque dolorum fuga ad incidunt voluptatum error fugiat animi amet! Odio temporibus nulla id unde quaerat dignissimos enim nisi rem provident molestias sit tempore omnis recusandae
+    esse sequi officia sapiente.</p>
+
+  <script>
+    function getCoords(elem) {
+      let box = elem.getBoundingClientRect();
+
+      return {
+        top: box.top + window.pageYOffset,
+        left: box.left + window.pageXOffset
+      };
+    }
+
+    function showNote(anchor, position, html) {
+
+      let note = document.createElement('div');
+      note.className = "note";
+      note.innerHTML = html;
+      document.body.append(note);
+
+      positionAt(anchor, position, note);
+    }
+
+    function positionAt(anchor, position, elem) {
+
+      let anchorCoords = getCoords(anchor);
+
+      switch (position) {
+        case "top-out":
+          elem.style.left = anchorCoords.left + "px";
+          elem.style.top = anchorCoords.top - elem.offsetHeight + "px";
+          break;
+
+        case "right-out":
+          elem.style.left = anchorCoords.left + anchor.offsetWidth + "px";
+          elem.style.top = anchorCoords.top + "px";
+          break;
+
+        case "bottom-out":
+          elem.style.left = anchorCoords.left + "px";
+          elem.style.top = anchorCoords.top + anchor.offsetHeight + "px";
+          break;
+
+        case "top-in":
+          elem.style.left = anchorCoords.left + "px";
+          elem.style.top = anchorCoords.top + "px";
+          break;
+
+        case "right-in":
+          elem.style.width = '150px';
+          elem.style.left = anchorCoords.left + anchor.offsetWidth - elem.offsetWidth + "px";
+          elem.style.top = anchorCoords.top + "px";
+          break;
+
+        case "bottom-in":
+          elem.style.left = anchorCoords.left + "px";
+          elem.style.top = anchorCoords.top + anchor.offsetHeight - elem.offsetHeight + "px";
+          break;
+      }
+
+    }
+
+
+    let blockquote = document.querySelector('blockquote');
+
+    showNote(blockquote, "top-in", "note top-in");
+    showNote(blockquote, "top-out", "note top-out");
+    showNote(blockquote, "right-out", "note right-out");
+    showNote(blockquote, "bottom-in", "note bottom-in");
+  </script>
+
+
+</body>
+</html>
+```
