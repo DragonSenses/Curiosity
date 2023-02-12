@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="mouse-enter-leave.css">
+</head>
+
+<body>
+
+  <div id="parent" onmouseenter="mouselog(event)" onmouseleave="mouselog(event)">parent
+    <div id="child">child</div>
+  </div>
+
+  <textarea id="text"></textarea>
+  <input type="button" onclick="text.value=''" value="Clear">
+
+  <script src="mouse-enter-leave.js"></script>
+
+</body>
+
+</html>
