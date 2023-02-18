@@ -201,3 +201,107 @@ window.onbeforeunload = function() {
 ```
 
 The behavior was changed, because some webmasters abused this event handler by showing misleading and annoying messages. So right now old browsers still may show it as a message, but aside of that -- there's no way to customize the message shown to the user.
+
+---
+
+### The `event.preventDefault()` doesn't work from a `beforeunload` handler
+
+That may sound weird, but most browsers ignore `event.preventDefault()`.
+
+Which means, following code may not work:
+```js run
+window.addEventListener("beforeunload", (event) => {
+  // doesn't work, so this event handler doesn't do anything
+	event.preventDefault();
+});
+```
+
+Instead, in such handlers one should set `event.returnValue` to a string to get the result similar to the code above:
+```js run
+window.addEventListener("beforeunload", (event) => {
+  // works, same as returning from window.onbeforeunload
+	event.returnValue = "There are unsaved changes. Leave now?";
+});
+```
+
+## readyState
+
+What happens if we set the `DOMContentLoaded` handler after the document is loaded?
+
+Naturally, it never runs.
+
+There are cases when we are not sure whether the document is ready or not. We'd like our function to execute when the DOM is loaded, be it now or later.
+
+The `document.readyState` property tells us about the current loading state.
+
+There are 3 possible values:
+
+- `"loading"` -- the document is loading.
+- `"interactive"` -- the document was fully read.
+- `"complete"` -- the document was fully read and all resources (like images) are loaded too.
+
+So we can check `document.readyState` and setup a handler or execute the code immediately if it's ready.
+
+Like this:
+
+```js
+function work() { /*...*/ }
+
+if (document.readyState == 'loading') {
+  // still loading, wait for the event
+  document.addEventListener('DOMContentLoaded', work);
+} else {
+  // DOM is ready!
+  work();
+}
+```
+
+There's also the `readystatechange` event that triggers when the state changes, so we can print all these states like this:
+
+```js run
+// current state
+console.log(document.readyState);
+
+// print state changes
+document.addEventListener('readystatechange', () => console.log(document.readyState));
+```
+
+The `readystatechange` event is an alternative mechanics of tracking the document loading state, it appeared long ago. Nowadays, it is rarely used.
+
+Let's see the full events flow for the completeness.
+
+Here's a document with `<iframe>`, `<img>` and handlers that log events:
+
+```html
+<script>
+  log('initial readyState:' + document.readyState);
+
+  document.addEventListener('readystatechange', () => log('readyState:' + document.readyState));
+  document.addEventListener('DOMContentLoaded', () => log('DOMContentLoaded'));
+
+  window.onload = () => log('window onload');
+</script>
+
+<iframe src="iframe.html" onload="log('iframe onload')"></iframe>
+
+<img src="https://en.js.cx/clipart/train.gif" id="img">
+<script>
+  img.onload = () => log('img onload');
+</script>
+```
+
+The working example is [in the sandbox](sandbox:readystate).
+
+The typical output:
+1. [1] initial readyState:loading
+2. [2] readyState:interactive
+3. [2] DOMContentLoaded
+4. [3] iframe onload
+5. [4] img onload
+6. [4] readyState:complete
+7. [4] window onload
+
+The numbers in square brackets denote the approximate time of when it happens. Events labeled with the same digit happen approximately at the same time (+- a few ms).
+
+- `document.readyState` becomes `interactive` right before `DOMContentLoaded`. These two things actually mean the same.
+- `document.readyState` becomes `complete` when all resources (`iframe` and `img`) are loaded. Here we can see that it happens in about the same time as `img.onload` (`img` is the last resource) and `window.onload`. Switching to `complete` state means the same as `window.onload`. The difference is that `window.onload` always works after all other `load` handlers.
