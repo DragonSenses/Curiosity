@@ -180,3 +180,105 @@ As you can see, there's no `pointercancel` any more.
 
 ---
 
+## Pointer capturing
+
+Pointer capturing is a special feature of pointer events.
+
+The idea is very simple, but may seem quite odd at first, as nothing like that exists for any other event type.
+
+The main method is:
+- `elem.setPointerCapture(pointerId)` -- binds events with the given `pointerId` to `elem`. After the call all pointer events with the same `pointerId` will have `elem` as the target (as if happened on `elem`), no matter where in document they really happened.
+
+In other words, `elem.setPointerCapture(pointerId)` retargets all subsequent events with the given `pointerId` to `elem`.
+
+The binding is removed:
+- automatically when `pointerup` or `pointercancel` events occur,
+- automatically when `elem` is removed from the document,
+- when `elem.releasePointerCapture(pointerId)` is called.
+
+Now what is it good for? It's time to see a real-life example.
+
+**Pointer capturing can be used to simplify drag'n'drop kind of interactions.**
+
+--- 
+
+Let's recall how one can implement a custom slider, described in the **mouse-drag-and-drop**.
+
+We can make a `slider` element to represent the strip and the "runner" (`thumb`) inside it:
+
+```html
+<div class="slider">
+  <div class="thumb"></div>
+</div>
+```
+
+With styles, go to `slider.html` to see how it looks.  
+
+And here's the working logic, as it was described, after replacing mouse events with similar pointer events:
+
+1. The user presses on the slider `thumb` -- `pointerdown` triggers.
+2. Then they move the pointer -- `pointermove` triggers, and our code moves the `thumb` element along.
+    - ...As the pointer moves, it may leave the slider `thumb` element, go above or below it. The `thumb` should move strictly horizontally, remaining aligned with the pointer.
+
+In the mouse event based solution, to track all pointer movements, including when it goes above/below the `thumb`, we had to assign `mousemove` event handler on the whole `document`.
+
+That's not a cleanest solution, though. One of the problems is that when a user moves the pointer around the document, it may trigger event handlers (such as  `mouseover`) on some other elements, invoke totally unrelated UI functionality, and we don't want that.
+
+This is the place where `setPointerCapture` comes into play.
+
+- We can call `thumb.setPointerCapture(event.pointerId)` in `pointerdown` handler,
+- Then future pointer events until `pointerup/cancel` will be retargeted to `thumb`.
+- When `pointerup` happens (dragging complete), the binding is removed automatically, we don't need to care about it.
+
+So, even if the user moves the pointer around the whole document, events handlers will be called on `thumb`. Nevertheless, coordinate properties of the event objects, such as `clientX/clientY` will still be correct - the capturing only affects `target/currentTarget`.
+
+Here's the essential code:
+
+```js
+thumb.onpointerdown = function(event) {
+  // retarget all pointer events (until pointerup) to thumb
+  thumb.setPointerCapture(event.pointerId);
+
+  // start tracking pointer moves
+  thumb.onpointermove = function(event) {
+    // moving the slider: listen on the thumb, as all pointer events are retargeted to it
+    let newLeft = event.clientX - slider.getBoundingClientRect().left;
+    thumb.style.left = newLeft + 'px';
+  };
+
+  // on pointer up finish tracking pointer moves
+  thumb.onpointerup = function(event) {
+    thumb.onpointermove = null;
+    thumb.onpointerup = null;
+    // ...also process the "drag end" if needed
+  };
+};
+
+// note: no need to call thumb.releasePointerCapture,
+// it happens on pointerup automatically
+```
+
+---
+
+For the full demo see `demo.html`.
+
+In the demo, there's also an additional element with `onmouseover` handler showing the current date.
+
+Please note: while you're dragging the thumb, you may hover over this element, and its handler *does not* trigger.
+
+So the dragging is now free of side effects, thanks to `setPointerCapture`.
+
+---
+
+At the end, pointer capturing gives us two benefits:
+1. The code becomes cleaner as we don't need to add/remove handlers on the whole `document` any more. The binding is released automatically.
+2. If there are other pointer event handlers in the document, they won't be accidentally triggered by the pointer while the user is dragging the slider.
+
+### Pointer capturing events
+
+There's one more thing to mention here, for the sake of completeness.
+
+There are two events associated with pointer capturing:
+
+- `gotpointercapture` fires when an element uses `setPointerCapture` to enable capturing.
+- `lostpointercapture` fires when the capture is released: either explicitly with `releasePointerCapture` call, or automatically on `pointerup`/`pointercancel`.
