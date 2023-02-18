@@ -166,4 +166,47 @@ Async scripts are great when we integrate an independent third-party script into
 ### **The `async` attribute is only for external scripts**
 Just like `defer`, the `async` attribute is ignored if the `<script>` tag has no `src`.
 
+---
 
+## Dynamic scripts
+
+There's one more important way of adding a script to the page.
+
+We can create a script and append it to the document dynamically using JavaScript:
+
+```js run
+let script = document.createElement('script');
+script.src = "/article/script-async-defer/long.js";
+document.body.append(script); // (*)
+```
+
+The script starts loading as soon as it's appended to the document `(*)`.
+
+**Dynamic scripts behave as "async" by default.**
+
+That is:
+- They don't wait for anything, nothing waits for them.
+- The script that loads first -- runs first ("load-first" order).
+
+This can be changed if we explicitly set `script.async=false`. Then scripts will be executed in the document order, just like `defer`.
+
+In this example, `loadScript(src)` function adds a script and also sets `async` to `false`.
+
+So `long.js` always runs first (as it's added first):
+
+```js run
+function loadScript(src) {
+  let script = document.createElement('script');
+  script.src = src;
+  script.async = false;
+  document.body.append(script);
+}
+
+// long.js runs first because of async=false
+loadScript("/article/script-async-defer/long.js");
+loadScript("/article/script-async-defer/small.js");
+```
+
+Without `script.async=false`, scripts would execute in default, load-first order (the `small.js` probably first).
+
+Again, as with the `defer`, the order matters if we'd like to load a library and then another script that depends on it.
