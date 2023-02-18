@@ -32,3 +32,172 @@ Page load events:
 
 ---
 
+## DOMContentLoaded
+
+The `DOMContentLoaded` event happens on the `document` object.
+
+We must use `addEventListener` to catch it:
+
+```js
+document.addEventListener("DOMContentLoaded", ready);
+// not "document.onDOMContentLoaded = ..."
+```
+
+For instance:
+
+```html run height=200 refresh
+<script>
+  function ready() {
+    alert('DOM is ready');
+
+    // image is not yet loaded (unless it was cached), so the size is 0x0
+    alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`);
+  }
+
+  document.addEventListener("DOMContentLoaded", ready);
+
+</script>
+
+<img id="img" src="https://en.js.cx/clipart/train.gif?speed=1&cache=0">
+```
+
+In the example, the `DOMContentLoaded` handler runs when the document is loaded, so it can see all the elements, including `<img>` below.
+
+But it doesn't wait for the image to load. So `alert` shows zero sizes.
+
+At first sight, the `DOMContentLoaded` event is very simple. The DOM tree is ready -- here's the event. There are few peculiarities though.
+
+### DOMContentLoaded and scripts
+
+When the browser processes an HTML-document and comes across a `<script>` tag, it needs to execute before continuing building the DOM. That's a precaution, as scripts may want to modify DOM, and even `document.write` into it, so `DOMContentLoaded` has to wait.
+
+So DOMContentLoaded definitely happens after such scripts:
+
+```html run
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    alert("DOM ready!");
+  });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js"></script>
+
+<script>
+  alert("Library loaded, inline script executed");
+</script>
+```
+
+In the example above, we first see "Library loaded...", and then "DOM ready!" (all scripts are executed).
+
+---
+
+### Scripts that don't block DOMContentLoaded
+
+There are two exceptions from this rule:
+1. Scripts with the `async` attribute, that we'll cover later in **script-async-defer**, don't block `DOMContentLoaded`.
+2. Scripts that are generated dynamically with `document.createElement('script')` and then added to the webpage also don't block this event.
+
+### DOMContentLoaded and styles
+
+External style sheets don't affect DOM, so `DOMContentLoaded` does not wait for them.
+
+But there's a pitfall. If we have a script after the style, then that script must wait until the stylesheet loads:
+
+```html run
+<link type="text/css" rel="stylesheet" href="style.css">
+<script>
+  // the script doesn't execute until the stylesheet is loaded
+  alert(getComputedStyle(document.body).marginTop);
+</script>
+```
+
+The reason for this is that the script may want to get coordinates and other style-dependent properties of elements, like in the example above. Naturally, it has to wait for styles to load.
+
+As `DOMContentLoaded` waits for scripts, it now waits for styles before them as well.
+
+### Built-in browser autofill
+
+Firefox, Chrome and Opera autofill forms on `DOMContentLoaded`.
+
+For instance, if the page has a form with login and password, and the browser remembered the values, then on `DOMContentLoaded` it may try to autofill them (if approved by the user).
+
+So if `DOMContentLoaded` is postponed by long-loading scripts, then autofill also awaits. You probably saw that on some sites (if you use browser autofill) -- the login/password fields don't get autofilled immediately, but there's a delay till the page fully loads. That's actually the delay until the `DOMContentLoaded` event.
+
+## window.onload
+
+The `load` event on the `window` object triggers when the whole page is loaded including styles, images and other resources. This event is available via the `onload` property.
+
+The example below correctly shows image sizes, because `window.onload` waits for all images:
+
+```html run height=200 refresh
+<script>
+  window.onload = function() { // can also use window.addEventListener('load', (event) => {
+    alert('Page loaded');
+
+    // image is loaded at this time
+    alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`);
+  };
+</script>
+
+<img id="img" src="https://en.js.cx/clipart/train.gif?speed=1&cache=0">
+```
+
+## window.onunload
+
+When a visitor leaves the page, the `unload` event triggers on `window`. We can do something there that doesn't involve a delay, like closing related popup windows.
+
+The notable exception is sending analytics.
+
+Let's say we gather data about how the page is used: mouse clicks, scrolls, viewed page areas, and so on.
+
+Naturally, `unload` event is when the user leaves us, and we'd like to save the data on our server.
+
+There exists a special `navigator.sendBeacon(url, data)` method for such needs, described in the specification <https://w3c.github.io/beacon/>.
+
+It sends the data in background. The transition to another page is not delayed: the browser leaves the page, but still performs `sendBeacon`.
+
+Here's how to use it:
+```js
+let analyticsData = { /* object with gathered data */ };
+
+window.addEventListener("unload", function() {
+  navigator.sendBeacon("/analytics", JSON.stringify(analyticsData));
+});
+```
+
+- The request is sent as POST.
+- We can send not only a string, but also forms and other formats, as described in the chapter <info:fetch>, but usually it's a stringified object.
+- The data is limited by 64kb.
+
+When the `sendBeacon` request is finished, the browser probably has already left the document, so there's no way to get server response (which is usually empty for analytics).
+
+There's also a `keepalive` flag for doing such "after-page-left" requests in  [fetch](info:fetch) method for generic network requests. You can find more information in the chapter <info:fetch-api>.
+
+
+If we want to cancel the transition to another page, we can't do it here. But we can use another event -- `onbeforeunload`.
+
+## window.onbeforeunload
+
+If a visitor initiated navigation away from the page or tries to close the window, the `beforeunload` handler asks for additional confirmation.
+
+If we cancel the event, the browser may ask the visitor if they are sure.
+
+You can try it by running this code and then reloading the page:
+
+```js run
+window.onbeforeunload = function() {
+  return false;
+};
+```
+
+For historical reasons, returning a non-empty string also counts as canceling the event. Some time ago browsers used to show it as a message, but as the [modern specification](https://html.spec.whatwg.org/#unloading-documents) says, they shouldn't.
+
+Here's an example:
+
+```js run
+window.onbeforeunload = function() {
+  return "There are unsaved changes. Leave now?";
+};
+```
+
+The behavior was changed, because some webmasters abused this event handler by showing misleading and annoying messages. So right now old browsers still may show it as a message, but aside of that -- there's no way to customize the message shown to the user.
