@@ -46,14 +46,14 @@ Your email please: <input type="email" id="input">
 <div id="error"></div>
 
 <script>
-*!*input.onblur*/!* = function() {
+input.onblur = function() {
   if (!input.value.includes('@')) { // not email
     input.classList.add('invalid');
     error.innerHTML = 'Please enter a correct email.'
   }
 };
 
-*!*input.onfocus*/!* = function() {
+input.onfocus = function() {
   if (this.classList.contains('invalid')) {
     // remove the "error" indication, because the user wants to re-enter something
     this.classList.remove('invalid');
@@ -86,10 +86,10 @@ Your email please: <input type="email" id="input">
     if (!this.value.includes('@')) { // not email
       // show the error
       this.classList.add("error");
-*!*
+
       // ...and put the focus back
       input.focus();
-*/!*
+
     } else {
       this.classList.remove("error");
     }
@@ -122,3 +122,118 @@ The best recipe is to be careful when using these events. If we want to track us
 
 ---
 
+## Allow focusing on any element: tabindex
+
+By default, many elements do not support focusing.
+
+The list varies a bit between browsers, but one thing is always correct: `focus/blur` support is guaranteed for elements that a visitor can interact with: `<button>`, `<input>`, `<select>`, `<a>` and so on.
+
+On the other hand, elements that exist to format something, such as `<div>`, `<span>`, `<table>` -- are unfocusable by default. The method `elem.focus()` doesn't work on them, and `focus/blur` events are never triggered.
+
+This can be changed using HTML-attribute `tabindex`.
+
+Any element becomes focusable if it has `tabindex`. The value of the attribute is the order number of the element when `key:Tab` (or something like that) is used to switch between them.
+
+That is: if we have two elements, the first has `tabindex="1"`, and the second has `tabindex="2"`, then pressing `key:Tab` while in the first element -- moves the focus into the second one.
+
+The switch order is: elements with `tabindex` from `1` and above go first (in the `tabindex` order), and then elements without `tabindex` (e.g. a regular `<input>`).
+
+Elements without matching `tabindex` are switched in the document source order (the default order).
+
+There are two special values:
+
+- `tabindex="0"` puts an element among those without `tabindex`. That is, when we switch elements, elements with `tabindex=0` go after elements with `tabindex ≥ 1`.
+
+    Usually it's used to make an element focusable, but keep the default switching order. To make an element a part of the form on par with `<input>`.
+
+- `tabindex="-1"` allows only programmatic focusing on an element. The `key:Tab` key ignores such elements, but method `elem.focus()` works.
+
+For instance, here's a list. Click the first item and press `key:Tab`:
+
+```html autorun no-beautify
+Click the first item and press Tab. Keep track of the order. Please note that many subsequent Tabs can move the focus out of the iframe in the example.
+<ul>
+  <li tabindex="1">One</li>
+  <li tabindex="0">Zero</li>
+  <li tabindex="2">Two</li>
+  <li tabindex="-1">Minus one</li>
+</ul>
+
+<style>
+  li { cursor: pointer; }
+  :focus { outline: 1px dashed green; }
+</style>
+```
+
+The order is like this: `1 - 2 - 0`. Normally, `<li>` does not support focusing, but `tabindex` full enables it, along with events and styling with `:focus`.
+
+---
+
+### The property `elem.tabIndex` works too
+
+We can add `tabindex` from JavaScript by using the `elem.tabIndex` property. That has the same effect.
+
+---
+
+## Delegation: focusin/focusout
+
+Events `focus` and `blur` do not bubble.
+
+For instance, we can't put `onfocus` on the `<form>` to highlight it, like this:
+
+```html autorun height=80
+<!-- on focusing in the form -- add the class -->
+<form onfocus="this.className='focused'">
+  <input type="text" name="name" value="Name">
+  <input type="text" name="surname" value="Surname">
+</form>
+
+<style> .focused { outline: 1px solid red; } </style>
+```
+
+The example above doesn't work, because when user focuses on an `<input>`, the `focus` event triggers on that input only. It doesn't bubble up. So `form.onfocus` never triggers.
+
+There are two solutions.
+
+First, there's a funny historical feature: `focus/blur` do not bubble up, but propagate down on the capturing phase.
+
+This will work:
+
+```html autorun height=80
+<form id="form">
+  <input type="text" name="name" value="Name">
+  <input type="text" name="surname" value="Surname">
+</form>
+
+<style> .focused { outline: 1px solid red; } </style>
+
+<script>
+
+  // put the handler on capturing phase (last argument true)
+  form.addEventListener("focus", () => form.classList.add('focused'), true);
+  form.addEventListener("blur", () => form.classList.remove('focused'), true);
+
+</script>
+```
+
+Second, there are `focusin` and `focusout` events -- exactly the same as `focus/blur`, but they bubble.
+
+Note that they must be assigned using `elem.addEventListener`, not `on<event>`.
+
+So here's another working variant:
+
+```html autorun height=80
+<form id="form">
+  <input type="text" name="name" value="Name">
+  <input type="text" name="surname" value="Surname">
+</form>
+
+<style> .focused { outline: 1px solid red; } </style>
+
+<script>
+
+  form.addEventListener("focusin", () => form.classList.add('focused'));
+  form.addEventListener("focusout", () => form.classList.remove('focused'));
+
+</script>
+```
