@@ -200,3 +200,88 @@ Finally, we've split a CPU-hungry task into parts - now it doesn't block the use
 
 ---
 
+## Use case 2: progress indication
+
+Another benefit of splitting heavy tasks for browser scripts is that we can show progress indication.
+
+As mentioned earlier, changes to DOM are painted only after the currently running task is completed, irrespective of how long it takes.
+
+On one hand, that's great, because our function may create many elements, add them one-by-one to the document and change their styles -- the visitor won't see any "intermediate", unfinished state. An important thing, right?
+
+Here's the demo, the changes to `i` won't show up until the function finishes, so we'll see only the last value:
+
+
+```html run
+<div id="progress"></div>
+
+<script>
+
+  function count() {
+    for (let i = 0; i < 1e6; i++) {
+      i++;
+      progress.innerHTML = i;
+    }
+  }
+
+  count();
+</script>
+```
+
+...But we also may want to show something during the task, e.g. a progress bar.
+
+If we split the heavy task into pieces using `setTimeout`, then changes are painted out in-between them.
+
+This looks prettier:
+
+```html run
+<div id="progress"></div>
+
+<script>
+  let i = 0;
+
+  function count() {
+
+    // do a piece of the heavy job (*)
+    do {
+      i++;
+      progress.innerHTML = i;
+    } while (i % 1e3 != 0);
+
+    if (i < 1e7) {
+      setTimeout(count);
+    }
+
+  }
+
+  count();
+</script>
+```
+
+Now the `<div>` shows increasing values of `i`, a kind of a progress bar.
+
+---
+
+## Use case 3: doing something after the event
+
+In an event handler we may decide to postpone some actions until the event bubbled up and was handled on all levels. We can do that by wrapping the code in zero delay `setTimeout`.
+
+In the chapter <info:dispatch-events> we saw an example: custom event `menu-open` is dispatched in `setTimeout`, so that it happens after the "click" event is fully handled.
+
+```js
+menu.onclick = function() {
+  // ...
+
+  // create a custom event with the clicked menu item data
+  let customEvent = new CustomEvent("menu-open", {
+    bubbles: true
+  });
+
+  // dispatch the custom event asynchronously
+  setTimeout(() => menu.dispatchEvent(customEvent));
+};
+```
+
+---
+
+## Macrotasks and Microtasks
+
