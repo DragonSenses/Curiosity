@@ -182,3 +182,94 @@ We can use `MutationObserver` to automatically detect when code snippets are ins
 So we'll handle the highlighting functionality in one place, relieving us from the need to integrate it.
 
 ---
+
+### Dynamic highlight demo
+
+Here's the working example.
+
+If you run this code, it starts observing the element below and highlighting any code snippets that appear there:
+
+```js run
+let observer = new MutationObserver(mutations => {
+
+  for(let mutation of mutations) {
+    // examine new nodes, is there anything to highlight?
+
+    for(let node of mutation.addedNodes) {
+      // we track only elements, skip other nodes (e.g. text nodes)
+      if (!(node instanceof HTMLElement)) continue;
+
+      // check the inserted element for being a code snippet
+      if (node.matches('pre[class*="language-"]')) {
+        Prism.highlightElement(node);
+      }
+
+      // or maybe there's a code snippet somewhere in its subtree?
+      for(let elem of node.querySelectorAll('pre[class*="language-"]')) {
+        Prism.highlightElement(elem);
+      }
+    }
+  }
+
+});
+
+let demoElem = document.getElementById('highlight-demo');
+
+observer.observe(demoElem, {childList: true, subtree: true});
+```
+
+Here, below, there's an HTML-element and JavaScript that dynamically fills it using `innerHTML`.
+
+Please run the previous code (above, observes that element), and then the code below. You'll see how `MutationObserver` detects and highlights the snippet.
+
+<p id="highlight-demo" style="border: 1px solid #ddd">A demo-element with <code>id="highlight-demo"</code>, run the code above to observe it.</p>
+
+The following code populates its `innerHTML`, that causes the `MutationObserver` to react and highlight its contents:
+
+```js run
+let demoElem = document.getElementById('highlight-demo');
+
+// dynamically insert content with code snippets
+demoElem.innerHTML = `A code snippet is below:
+  <pre class="language-javascript"><code> let hello = "world!"; </code></pre>
+  <div>Another one:</div>
+  <div>
+    <pre class="language-css"><code>.class { margin: 5px; } </code></pre>
+  </div>
+`;
+```
+
+Now we have `MutationObserver` that can track all highlighting in observed elements or the whole `document`. We can add/remove code snippets in HTML without thinking about it.
+
+## Additional methods
+
+There's a method to stop observing the node:
+
+- `observer.disconnect()` -- stops the observation.
+
+When we stop the observing, it might be possible that some changes were not yet processed by the observer. In such cases, we use
+
+- `observer.takeRecords()` -- gets a list of unprocessed mutation records - those that happened, but the callback has not handled them.
+
+These methods can be used together, like this:
+
+```js
+// get a list of unprocessed mutations
+// should be called before disconnecting,
+// if you care about possibly unhandled recent mutations
+let mutationRecords = observer.takeRecords();
+
+// stop tracking changes
+observer.disconnect();
+...
+```
+
+### Records returned by `observer.takeRecords()` are removed from the processing queue
+
+The callback won't be called for records, returned by `observer.takeRecords()`.
+
+### Garbage collection interaction
+
+Observers use weak references to nodes internally. That is, if a node is removed from the DOM, and becomes unreachable, then it can be garbage collected.
+
+The mere fact that a DOM node is observed doesn't prevent the garbage collection.
