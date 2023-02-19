@@ -47,3 +47,156 @@ Web Workers do not have access to DOM, so they are useful, mainly, for calculati
 
 ---
 
+## Event Loop
+
+The *event loop* concept is very simple. There's an endless loop, where the JavaScript engine waits for tasks, executes them and then sleeps, waiting for more tasks.
+
+The general algorithm of the engine:
+
+1. While there are tasks:
+    - execute them, starting with the oldest task.
+2. Sleep until a task appears, then go to 1.
+
+That's a formalization for what we see when browsing a page. The JavaScript engine does nothing most of the time, it only runs if a script/handler/event activates.
+
+Examples of tasks:
+
+- When an external script `<script src="...">` loads, the task is to execute it.
+- When a user moves their mouse, the task is to dispatch `mousemove` event and execute handlers.
+- When the time is due for a scheduled `setTimeout`, the task is to run its callback.
+- ...and so on.
+
+Tasks are set -- the engine handles them -- then waits for more tasks (while sleeping and consuming close to zero CPU).
+
+It may happen that a task comes while the engine is busy, then it's enqueued.
+
+The tasks form a queue, so-called "macrotask queue" (v8 term):
+
+![](eventLoop.svg)
+
+For instance, while the engine is busy executing a `script`, a user may move their mouse causing `mousemove`, and `setTimeout` may be due and so on, these tasks form a queue, as illustrated on the picture above.
+
+Tasks from the queue are processed on "first come – first served" basis. When the engine browser is done with the `script`, it handles `mousemove` event, then `setTimeout` handler, and so on.
+
+So far, quite simple, right?
+
+Two more details:
+1. Rendering never happens while the engine executes a task. It doesn't matter if the task takes a long time. Changes to the DOM are painted only after the task is complete.
+2. If a task takes too long, the browser can't do other tasks, such as processing user events. So after a time, it raises an alert like "Page Unresponsive", suggesting killing the task with the whole page. That happens when there are a lot of complex calculations or a programming error leading to an infinite loop.
+
+That was the theory. Now let's see how we can apply that knowledge.
+
+---
+
+## Use-case 1: splitting CPU-hungry tasks
+
+Let's say we have a CPU-hungry task.
+
+For example, syntax-highlighting (used to colorize code examples on this page) is quite CPU-heavy. To highlight the code, it performs the analysis, creates many colored elements, adds them to the document -- for a large amount of text that takes a lot of time.
+
+While the engine is busy with syntax highlighting, it can't do other DOM-related stuff, process user events, etc. It may even cause the browser to "hiccup" or even "hang" for a bit, which is unacceptable.
+
+We can avoid problems by splitting the big task into pieces. Highlight first 100 lines, then schedule `setTimeout` (with zero-delay) for the next 100 lines, and so on.
+
+To demonstrate this approach, for the sake of simplicity, instead of text-highlighting, let's take a function that counts from `1` to `1000000000`.
+
+If you run the code below, the engine will "hang" for some time. For server-side JS that's clearly noticeable, and if you are running it in-browser, then try to click other buttons on the page -- you'll see that no other events get handled until the counting finishes.
+
+```js run
+let i = 0;
+
+let start = Date.now();
+
+function count() {
+
+  // do a heavy job
+  for (let j = 0; j < 1e9; j++) {
+    i++;
+  }
+
+  alert("Done in " + (Date.now() - start) + 'ms');
+}
+
+count();
+```
+
+The browser may even show a "the script takes too long" warning.
+
+### Let's split the job using nested `setTimeout` calls:
+
+```js run
+let i = 0;
+
+let start = Date.now();
+
+function count() {
+
+  // do a piece of the heavy job (*)
+  do {
+    i++;
+  } while (i % 1e6 != 0);
+
+  if (i == 1e9) {
+    alert("Done in " + (Date.now() - start) + 'ms');
+  } else {
+    setTimeout(count); // schedule the new call (**)
+  }
+
+}
+
+count();
+```
+
+Now the browser interface is fully functional during the "counting" process.
+
+A single run of `count` does a part of the job `(*)`, and then re-schedules itself `(**)` if needed:
+
+1. First run counts: `i=1...1000000`.
+2. Second run counts: `i=1000001..2000000`.
+3. ...and so on.
+
+Now, if a new side task (e.g. `onclick` event) appears while the engine is busy executing part 1, it gets queued and then executes when part 1 finished, before the next part. Periodic returns to the event loop between `count` executions provide just enough "air" for the JavaScript engine to do something else, to react to other user actions.
+
+The notable thing is that both variants -- with and without splitting the job by `setTimeout` -- are comparable in speed. There's not much difference in the overall counting time.
+
+To make them closer, let's make an improvement.
+
+We'll move the scheduling to the beginning of the `count()`:
+
+```js run
+let i = 0;
+
+let start = Date.now();
+
+function count() {
+
+  // move the scheduling to the beginning
+  if (i < 1e9 - 1e6) {
+    setTimeout(count); // schedule the new call
+  }
+
+  do {
+    i++;
+  } while (i % 1e6 != 0);
+
+  if (i == 1e9) {
+    alert("Done in " + (Date.now() - start) + 'ms');
+  }
+
+}
+
+count();
+```
+
+Now when we start to `count()` and see that we'll need to `count()` more, we schedule that immediately, before doing the job.
+
+If you run it, it's easy to notice that it takes significantly less time.
+
+Why?  
+
+That's simple: as you remember, there's the in-browser minimal delay of 4ms for many nested `setTimeout` calls. Even if we set `0`, it's `4ms` (or a bit more). So the earlier we schedule it - the faster it runs.
+
+Finally, we've split a CPU-hungry task into parts - now it doesn't block the user interface. And its overall execution time isn't much longer.
+
+---
+
