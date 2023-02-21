@@ -285,3 +285,63 @@ menu.onclick = function() {
 
 ## Macrotasks and Microtasks
 
+Along with *macrotasks*, described in this chapter, there are *microtasks*, mentioned in the chapter <info:microtask-queue>.
+
+Microtasks come solely from our code. They are usually created by promises: an execution of `.then/catch/finally` handler becomes a microtask. Microtasks are used "under the cover" of `await` as well, as it's another form of promise handling.
+
+There's also a special function `queueMicrotask(func)` that queues `func` for execution in the microtask queue.
+
+**Immediately after every *macrotask*, the engine executes all tasks from *microtask* queue, prior to running any other macrotasks or rendering or anything else.**
+
+For instance, take a look:
+
+```js run
+setTimeout(() => alert("timeout"));
+
+Promise.resolve()
+  .then(() => alert("promise"));
+
+alert("code");
+```
+
+What's going to be the order here?
+
+1. `code` shows first, because it's a regular synchronous call.
+2. `promise` shows second, because `.then` passes through the microtask queue, and runs after the current code.
+3. `timeout` shows last, because it's a macrotask.
+
+The richer event loop picture looks like this (order is from top to bottom, that is: the script first, then microtasks, rendering and so on):
+
+![](eventLoop-full.svg)
+
+All microtasks are completed before any other event handling or rendering or any other macrotask takes place.
+
+That's important, as it guarantees that the application environment is basically the same (no mouse coordinate changes, no new network data, etc) between microtasks.
+
+If we'd like to execute a function asynchronously (after the current code), but before changes are rendered or new events handled, we can schedule it with `queueMicrotask`.
+
+Here's an example with "counting progress bar", similar to the one shown previously, but `queueMicrotask` is used instead of `setTimeout`. You can see that it renders at the very end. Just like the synchronous code:
+
+```html run
+<div id="progress"></div>
+
+<script>
+  let i = 0;
+
+  function count() {
+
+    // do a piece of the heavy job (*)
+    do {
+      i++;
+      progress.innerHTML = i;
+    } while (i % 1e3 != 0);
+
+    if (i < 1e6) {
+      queueMicrotask(count);
+    }
+
+  }
+
+  count();
+</script>
+```
