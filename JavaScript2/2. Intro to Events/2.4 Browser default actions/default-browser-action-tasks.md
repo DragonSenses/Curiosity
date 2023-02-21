@@ -103,3 +103,16 @@ In real life instead of asking we can send a "logging" request to the server tha
 
 All we need is to catch the `contents.onclick` and use `confirm` to ask the user. A good idea would be to use `link.getAttribute('href')` instead of `link.href` for the URL. See the solution for details.
 
+---
+
+# Image gallery
+
+Create an image gallery where the main image changes by the click on a thumbnail.
+
+Open `imageGallery.html` for an example.
+
+P.S. Use event delegation.
+
+### Answer: see `imageGallery.html`
+
+The solution is to assign the handler to the container and track clicks. If a click is on the `<a>` link, then change `src` of `#largeImg` to the `href` of the thumbnail.
