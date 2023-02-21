@@ -157,3 +157,86 @@ P.S. The table can be big, with any number of rows and columns.
 
 ---
 
+# Tooltip behavior
+
+Create JS-code for the tooltip behavior.
+
+When a mouse comes over an element with `data-tooltip`, the tooltip should appear over it, and when it's gone then hide.
+
+An example of annotated HTML:
+```html
+<button data-tooltip="the tooltip is longer than the element">Short button</button>
+<button data-tooltip="HTML<br>tooltip">One more button</button>
+```
+
+Should work like this:
+
+[iframe src="solution" height=200 border=1]
+
+In this task we assume that all elements with `data-tooltip` have only text inside. No nested tags (yet).
+
+Details:
+
+- The distance between the element and the tooltip should be `5px`.
+- The tooltip should be centered relative to the element, if possible.
+- The tooltip should not cross window edges. Normally it should be above the element, but if the element is at the page top and there's no space for the tooltip, then below it.
+- The tooltip content is given in the `data-tooltip` attribute. It can be arbitrary HTML.
+
+You'll need two events here:
+- `mouseover` triggers when a pointer comes over an element.
+- `mouseout` triggers when a pointer leaves an element.
+
+Please use event delegation: set up two handlers on `document` to track all "overs" and "outs" from elements with `data-tooltip` and manage tooltips from there.
+
+After the behavior is implemented, even people unfamiliar with JavaScript can add annotated elements.
+
+P.S. Only one tooltip may show up at a time.
+
+```html
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      height: 2000px;
+      /* make body scrollable, the tooltip should work after the scroll */
+    }
+
+    .tooltip {
+      /* some styles for the tooltip, you can use your own instead */
+      position: fixed;
+      padding: 10px 20px;
+      border: 1px solid #b3c9ce;
+      border-radius: 4px;
+      text-align: center;
+      font: italic 14px/1.3 sans-serif;
+      color: #333;
+      background: #fff;
+      box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+    }
+  </style>
+</head>
+
+<body>
+
+  <p>LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa</p>
+  <p>LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa</p>
+
+  <button data-tooltip="the tooltip is longer than the element">Short button</button>
+  <button data-tooltip="HTML<br>tooltip">One more button</button>
+
+  <p>Scroll the page to make buttons appear on the top, check if the tooltips show up correctly.</p>
+
+
+  <script>
+    // ...your code...
+  </script>
+
+</body>
+</html>
+```
+
+### Answer see `toolTip.html`
+
