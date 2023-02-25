@@ -13,7 +13,7 @@ P.S. In real life we may want to show "more messages" or "more goods".
 
 ---
 
-## Answer
+## Answer: see `endlessPage.html`
 
 The core of the solution is a function that adds more dates to the page (or loads more stuff in real-life) while we're at the page end.
 
@@ -79,5 +79,37 @@ function populate() {
     document.body.insertAdjacentHTML("beforeend", `<p>Date: ${new Date()}</p>`);
   }
 }
+```
 
 ---
+
+# Up/down button
+
+Create a "to the top" button to help with page scrolling.
+
+It should work like this:
+- While the page is not scrolled down at least for the window height -- it's invisible.
+- When the page is scrolled down more than the window height -- there appears an "upwards" arrow in the left-top corner. If the page is scrolled back, it disappears.
+- When the arrow is clicked, the page scrolls to the top.
+
+Like this (top-left corner, scroll to see):
+
+---
+
+## Answer: see `toTheTop.html`
+
+The script: 
+
+```js
+    arrowTop.onclick = function() {
+      window.scrollTo(pageXOffset, 0);
+      // after scrollTo, there will be a "scroll" event, so the arrow will hide automatically
+    };
+
+    window.addEventListener('scroll', function() {
+      arrowTop.hidden = (pageYOffset < document.documentElement.clientHeight);
+    });
+```
+
+---
+
