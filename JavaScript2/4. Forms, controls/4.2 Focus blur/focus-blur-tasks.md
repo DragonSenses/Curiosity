@@ -72,11 +72,49 @@ See `edit-td-on-click` directory and make `my.css` and `script.js` files.
 
 Focus on the mouse. Then use arrow keys to move it.
 
+Demo: `keyboardMouse.html`
+
 P.S. Don't put event handlers anywhere except the `#mouse` element.
 
 P.P.S. Don't modify HTML/CSS, the approach should be generic and work with any element.
 
 ---
 
-## Answer:
+## Answer: see `keyboardMouse.html`
 
+We can use `mouse.onclick` to handle the click and make the mouse "moveable" with `position:fixed`, then `mouse.onkeydown` to handle arrow keys.
+
+The only pitfall is that `keydown` only triggers on elements with focus. So we need to add `tabindex` to the element.  As we're forbidden to change HTML, we can use `mouse.tabIndex` property for that.
+
+P.S. We also can replace `mouse.onclick` with `mouse.onfocus`.
+
+```js
+  <script>
+    mouse.tabIndex = 0;
+
+    mouse.onclick = function() {
+      this.style.left = this.getBoundingClientRect().left + 'px';
+      this.style.top = this.getBoundingClientRect().top + 'px';
+
+      this.style.position = 'fixed';
+    };
+
+
+    mouse.onkeydown = function(e) {
+      switch (e.key) {
+        case 'ArrowLeft':
+          this.style.left = parseInt(this.style.left) - this.offsetWidth + 'px';
+          return false;
+        case 'ArrowUp':
+          this.style.top = parseInt(this.style.top) - this.offsetHeight + 'px';
+          return false;
+        case 'ArrowRight':
+          this.style.left = parseInt(this.style.left) + this.offsetWidth + 'px';
+          return false;
+        case 'ArrowDown':
+          this.style.top = parseInt(this.style.top) + this.offsetHeight + 'px';
+          return false;
+      }
+    };
+  </script>
+```
