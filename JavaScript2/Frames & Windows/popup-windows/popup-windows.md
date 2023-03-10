@@ -165,3 +165,112 @@ Otherwise, e.g. if the main window is from `site.com`, and the popup from `gmail
 
 ---
 
+## Accessing window from popup
+
+A popup may access the "opener" window as well using `window.opener` reference. It is `null` for all windows except popups.
+
+If you run the code below, it replaces the opener (current) window content with "Test":
+
+```js run
+let newWin = window.open("about:blank", "hello", "width=200,height=200");
+
+newWin.document.write(
+  "<script>window.opener.document.body.innerHTML = 'Test'<\/script>"
+);
+```
+
+So the connection between the windows is bidirectional: the main window and the popup have a reference to each other.
+
+## Closing a popup
+
+To close a window: `win.close()`.
+
+To check if a window is closed: `win.closed`.
+
+Technically, the `close()` method is available for any `window`, but `window.close()` is ignored by most browsers if `window` is not created with `window.open()`. So it'll only work on a popup.
+
+The `closed` property is `true` if the window is closed. That's useful to check if the popup (or the main window) is still open or not. A user can close it anytime, and our code should take that possibility into account.
+
+This code loads and then closes the window:
+
+```js run
+let newWindow = open('/', 'example', 'width=300,height=300');
+
+newWindow.onload = function() {
+  newWindow.close();
+  alert(newWindow.closed); // true
+};
+```
+
+
+## Moving and resizing
+
+There are methods to move/resize a window:
+
+`win.moveBy(x,y)`
+: Move the window relative to current position `x` pixels to the right and `y` pixels down. Negative values are allowed (to move left/up).
+
+`win.moveTo(x,y)`
+: Move the window to coordinates `(x,y)` on the screen.
+
+`win.resizeBy(width,height)`
+: Resize the window by given `width/height` relative to the current size. Negative values are allowed.
+
+`win.resizeTo(width,height)`
+: Resize the window to the given size.
+
+There's also `window.onresize` event.
+
+---
+
+### Only popups
+
+To prevent abuse, the browser usually blocks these methods. They only work reliably on popups that we opened, that have no additional tabs.
+
+### No minification/maximization
+
+JavaScript has no way to minify or maximize a window. These OS-level functions are hidden from Frontend-developers.
+
+Move/resize methods do not work for maximized/minimized windows.
+
+---
+
+## Scrolling a window
+
+We already talked about scrolling a window in the chapter <info:size-and-scroll-window>.
+
+`win.scrollBy(x,y)`
+: Scroll the window `x` pixels right and `y` down relative the current scroll. Negative values are allowed.
+
+`win.scrollTo(x,y)`
+: Scroll the window to the given coordinates `(x,y)`.
+
+`elem.scrollIntoView(top = true)`
+: Scroll the window to make `elem` show up at the top (the default) or at the bottom for `elem.scrollIntoView(false)`.
+
+There's also `window.onscroll` event.
+
+## Focus/blur on a window
+
+Theoretically, there are `window.focus()` and `window.blur()` methods to focus/unfocus on a window. And there are also `focus/blur` events that allow to catch the moment when the visitor focuses on a window and switches elsewhere.
+
+Although, in practice they are severely limited, because in the past evil pages abused them.
+
+For instance, look at this code:
+
+```js run
+window.onblur = () => window.focus();
+```
+
+When a user attempts to switch out of the window (`window.onblur`), it brings the window back into focus. The intention is to "lock" the user within the `window`.
+
+So browsers had to introduce many limitations to forbid the code like that and protect the user from ads and evils pages. They depend on the browser.
+
+For instance, a mobile browser usually ignores `window.focus()` completely. Also focusing doesn't work when a popup opens in a separate tab rather than a new window.
+
+Still, there are some use cases when such calls do work and can be useful.
+
+For instance:
+
+- When we open a popup, it might be a good idea to run `newWindow.focus()` on it. Just in case, for some OS/browser combinations it ensures that the user is in the new window now.
+- If we want to track when a visitor actually uses our web-app, we can track `window.onfocus/onblur`. That allows us to suspend/resume in-page activities, animations etc. But please note that the `blur` event means that the visitor switched out from the window, but they still may observe it. The window is in the background, but still may be visible.
