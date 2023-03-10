@@ -33,4 +33,60 @@ In the source document you can find links to test images, and also the code to c
 
 ---
 
-## **Answer:**
+## Starter Code
+
+```html
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+  <script>
+    function preloadImages(sources, callback) {
+      /* your code */
+    }
+
+    // ---------- The test ----------
+
+    let sources = [
+      "https://en.js.cx/images-load/1.jpg",
+      "https://en.js.cx/images-load/2.jpg",
+      "https://en.js.cx/images-load/3.jpg"
+    ];
+
+    // add random characters to prevent browser caching
+    for (let i = 0; i < sources.length; i++) {
+      sources[i] += '?' + Math.random();
+    }
+
+    // for each image,
+    // let's create another img with the same src and check that we have its width immediately
+    function testLoaded() {
+      let widthSum = 0;
+      for (let i = 0; i < sources.length; i++) {
+        let img = document.createElement('img');
+        img.src = sources[i];
+        widthSum += img.width;
+      }
+      alert(widthSum);
+    }
+
+    // every image is 100x100, the total width should be 300
+    preloadImages(sources, testLoaded);
+  </script>
+
+</body>
+</html>
+```
+
+---
+
+## **Answer:** See `loadImages.html`
+
+The algorithm:
+1. Make `img` for every source.
+2. Add `onload/onerror` for every image.
+3. Increase the counter when either `onload` or `onerror` triggers.
+4. When the counter value equals to the sources count -- we're done: `callback()`.
