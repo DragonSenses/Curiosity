@@ -34,3 +34,9 @@ Note: If you specify a width for a box, then the borders, margin, and padding ar
 
 ---
 
+## White Space & Vertical Margin
+
+- The `padding` and `margin` properties are very helpful in adding space between various items on the page.
+- Designers refer to the space between items on a page as **white space**. Imagine you had a border around a box. You would not want the text to touch this border or it would become harder to read.
+- Or, imagine you had two boxes sitting side by side (each with a black border). You would not necessarily want the boxes to touch edges as this would make the line look twice as thick on the facing sides.
+- If the bottom margin of any box touches the top margin of another, the browser will render it differently than you might expect. **It will only show the larger of the two margins.** If both margins are the same size, it will only show one.
