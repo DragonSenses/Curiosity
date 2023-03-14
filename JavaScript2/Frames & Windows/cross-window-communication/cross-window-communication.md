@@ -147,3 +147,235 @@ The `iframe.onload` event (on the `<iframe>` tag) is essentially the same as `if
 ---
 
 ## Windows on subdomains: document.domain
+
+By definition, two URLs with different domains have different origins.
+
+But if windows share the same second-level domain, for instance `john.site.com`, `peter.site.com` and `site.com` (so that their common second-level domain is `site.com`), we can make the browser ignore that difference, so that they can be treated as coming from the "same origin" for the purposes of cross-window communication.
+
+To make it work, each such window should run the code:
+
+```js
+document.domain = 'site.com';
+```
+
+That's all. Now they can interact without limitations. Again, that's only possible for pages with the same second-level domain.
+
+### Deprecated, but still working
+
+The `document.domain` property is in the process of being removed from the [specification](https://html.spec.whatwg.org/multipage/origin.html#relaxing-the-same-origin-restriction). The cross-window messaging (explained soon below) is the suggested replacement.
+
+That said, as of now all browsers support it. And the support will be kept for the future, not to break old code that relies on `document.domain`.
+
+---
+
+## Iframe: wrong document pitfall
+
+When an iframe comes from the same origin, and we may access its  `document`, there's a pitfall. It's not related to cross-origin things, but important to know.
+
+Upon its creation an iframe immediately has a document. But that document is different from the one that loads into it!
+
+So if we do something with the document immediately, that will probably be lost.
+
+Here, look:
+
+
+```html run
+<iframe src="/" id="iframe"></iframe>
+
+<script>
+  let oldDoc = iframe.contentDocument;
+  iframe.onload = function() {
+    let newDoc = iframe.contentDocument;
+    // the loaded document is not the same as initial!
+    alert(oldDoc == newDoc); // false
+  };
+</script>
+```
+
+We shouldn't work with the document of a not-yet-loaded iframe, because that's the *wrong document*. If we set any event handlers on it, they will be ignored.
+
+How to detect the moment when the document is there?
+
+The right document is definitely at place when `iframe.onload`  triggers. But it only triggers when the whole iframe with all resources is loaded.
+
+We can try to catch the moment earlier using checks in `setInterval`:
+
+```html run
+<iframe src="/" id="iframe"></iframe>
+
+<script>
+  let oldDoc = iframe.contentDocument;
+
+  // every 100 ms check if the document is the new one
+  let timer = setInterval(() => {
+    let newDoc = iframe.contentDocument;
+    if (newDoc == oldDoc) return;
+
+    alert("New document is here!");
+
+    clearInterval(timer); // cancel setInterval, don't need it any more
+  }, 100);
+</script>
+```
+
+## Collection: window.frames
+
+An alternative way to get a window object for `<iframe>` -- is to get it from the named collection  `window.frames`:
+
+- By number: `window.frames[0]` -- the window object for the first frame in the document.
+- By name: `window.frames.iframeName` -- the window object for the frame with  `name="iframeName"`.
+
+For instance:
+
+```html run
+<iframe src="/" style="height:80px" name="win" id="iframe"></iframe>
+
+<script>
+  alert(iframe.contentWindow == frames[0]); // true
+  alert(iframe.contentWindow == frames.win); // true
+</script>
+```
+
+An iframe may have other iframes inside. The corresponding `window` objects form a hierarchy.
+
+Navigation links are:
+
+- `window.frames` -- the collection of "children" windows (for nested frames).
+- `window.parent` -- the reference to the "parent" (outer) window.
+- `window.top` -- the reference to the topmost parent window.
+
+For instance:
+
+```js run
+window.frames[0].parent === window; // true
+```
+
+We can use the `top` property to check if the current document is open inside a frame or not:
+
+```js run
+if (window == top) { // current window == window.top?
+  alert('The script is in the topmost window, not in a frame');
+} else {
+  alert('The script runs in a frame!');
+}
+```
+
+---
+
+## The "sandbox" iframe attribute
+
+The `sandbox` attribute allows for the exclusion of certain actions inside an `<iframe>` in order to prevent it executing untrusted code. It "sandboxes" the iframe by treating it as coming from another origin and/or applying other limitations.
+
+There's a "default set" of restrictions applied for `<iframe sandbox src="...">`. But it can be relaxed if we provide a space-separated list of restrictions that should not be applied as a value of the attribute, like this: `<iframe sandbox="allow-forms allow-popups">`.
+
+In other words, an empty `"sandbox"` attribute puts the strictest limitations possible, but we can put a space-delimited list of those that we want to lift.
+
+Here's a list of limitations:
+
+`allow-same-origin`
+: By default `"sandbox"` forces the "different origin" policy for the iframe. In other words, it makes the browser to treat the `iframe` as coming from another origin, even if its `src` points to the same site. With all implied restrictions for scripts. This option removes that feature.
+
+`allow-top-navigation`
+: Allows the `iframe` to change `parent.location`.
+
+`allow-forms`
+: Allows to submit forms from `iframe`.
+
+`allow-scripts`
+: Allows to run scripts from the `iframe`.
+
+`allow-popups`
+: Allows to `window.open` popups from the `iframe`
+
+See [the manual](mdn:/HTML/Element/iframe) for more.
+
+The example below demonstrates a sandboxed iframe with the default set of restrictions: `<iframe sandbox src="...">`. It has some JavaScript and a form.
+
+Please note that nothing works. So the default set is really harsh: **see** `index.html`
+
+### The purpose of the `"sandbox"` attribute is only to *add more* restrictions. It cannot remove them. In particular, it can't relax same-origin restrictions if the iframe comes from another origin.
+
+---
+
+## Cross-window messaging
+
+The `postMessage` interface allows windows to talk to each other no matter which origin they are from.
+
+So, it's a way around the "Same Origin" policy. It allows a window from `john-smith.com` to talk to `gmail.com` and exchange information, but only if they both agree and call corresponding JavaScript functions. That makes it safe for users.
+
+The interface has two parts.
+
+### postMessage
+
+The window that wants to send a message calls [postMessage](mdn:api/Window.postMessage) method of the receiving window. In other words, if we want to send the message to `win`, we should call  `win.postMessage(data, targetOrigin)`.
+
+Arguments:
+
+`data`
+: The data to send. Can be any object, the data is cloned using the "structured serialization algorithm". IE supports only strings, so we should `JSON.stringify` complex objects to support that browser.
+
+`targetOrigin`
+: Specifies the origin for the target window, so that only a window from the given origin will get the message.
+
+The `targetOrigin` is a safety measure. Remember, if the target window comes from another origin, we can't read its `location` in the sender window. So we can't be sure which site is open in the intended window right now: the user could navigate away, and the sender window has no idea about it.
+
+Specifying `targetOrigin` ensures that the window only receives the data if it's still at the right site. Important when the data is sensitive.
+
+For instance, here `win` will only receive the message if it has a document from the origin `http://example.com`:
+
+```html no-beautify
+<iframe src="http://example.com" name="example">
+
+<script>
+  let win = window.frames.example;
+
+  win.postMessage("message", "http://example.com");
+</script>
+```
+
+If we don't want that check, we can set `targetOrigin` to `*`.
+
+```html no-beautify
+<iframe src="http://example.com" name="example">
+
+<script>
+  let win = window.frames.example;
+
+  win.postMessage("message", "*");
+</script>
+```
+
+
+### onmessage
+
+To receive a message, the target window should have a handler on the `message` event. It triggers when `postMessage` is called (and `targetOrigin` check is successful).
+
+The event object has special properties:
+
+`data`
+: The data from `postMessage`.
+
+`origin`
+: The origin of the sender, for instance `http://javascript.info`.
+
+`source`
+: The reference to the sender window. We can immediately `source.postMessage(...)` back if we want.
+
+To assign that handler, we should use `addEventListener`, a short syntax `window.onmessage` does not work.
+
+Here's an example:
+
+```js
+window.addEventListener("message", function(event) {
+  if (event.origin != 'http://javascript.info') {
+    // something from an unknown domain, let's ignore it
+    return;
+  }
+
+  alert( "received: " + event.data );
+
+  // can message back using event.source.postMessage(...)
+});
+```
+
+The full example: see `crossWindowMessaging.html`
