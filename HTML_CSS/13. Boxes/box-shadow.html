@@ -4,22 +4,29 @@
 		<title>Box Shadow</title>
 		<style type="text/css">
 			p {
-				width: 100px;				height: 100px;
-				background-color: #e1ddda;				margin: 20px;
-				display: inline-block;}			p.one { 
+				width: 100px;
+				height: 100px;
+				background-color: #e1ddda;
+				margin: 20px;
+				display: inline-block;}
+			p.one { 
 				-moz-box-shadow: -5px -5px #777777; 
 				-webkit-box-shadow: -5px -5px #777777; 
 				box-shadow: -5px -5px #777777;}
-			p.two {				-moz-box-shadow: 5px 5px 5px #777777; 
+			p.two {
+				-moz-box-shadow: 5px 5px 5px #777777; 
 				-webkit-box-shadow: 5px 5px 5px #777777;
 				box-shadow: 5px 5px 5px #777777;}  
-			p.three {				-moz-box-shadow: 5px 5px 5px 5px #777777; 
+			p.three {
+				-moz-box-shadow: 5px 5px 5px 5px #777777; 
 				-webkit-box-shadow: 5px 5px 5px 5px #777777;
 				box-shadow: 5px 5px 5px 5px #777777;} 
-			p.four {				-moz-box-shadow: 0 0 10px #777777; 
+			p.four {
+				-moz-box-shadow: 0 0 10px #777777; 
 				-webkit-box-shadow: 0 0 10px #777777;
 				box-shadow: 0 0 10px #777777;}
-			p.five {				-moz-box-shadow: inset 0 0 10px #777777; 
+			p.five {
+				-moz-box-shadow: inset 0 0 10px #777777; 
 				-webkit-box-shadow: inset 0 0 10px #777777;
 				box-shadow: inset 0 0 10px #777777;}
 		</style>
@@ -33,3 +40,14 @@
 		<p class="five"></p>
 	</body>
 </html>
+
+<!-- Box Shadow
+
+• box-shadow property allows you to add a drop shadow around a box, works like text-shadow and must use at least the first of these two values as well as a color:
+	• Horizontal Offset - negative values position on the shadow to the left of the box
+	• Vertical Offset  - negative values position to the top of the box 
+	• Blur Distance - if omitted, the shadow is a solid line like a border
+	• Spread of Shadow - If used, a positive value will cause the shadow to expand in all directions, and a negative value will make it contract
+	• inset keyword can also be used before these values to create an inner-shadow
+
+-->
