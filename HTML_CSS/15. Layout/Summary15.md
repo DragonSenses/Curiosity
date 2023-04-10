@@ -97,3 +97,26 @@ normal flow, boxes can overlap. The
 `z-index` property allows you to control
 which box appears on top.
 
+
+---
+
+# Screen Sizes
+
+Different visitors to your site will have different sized screens that show different amounts of information, so your design needs to be able to work on a range of different sized screens.
+
+When designing for print, you always know the size of the
+piece of paper that your design will be printed on. However,
+when it comes to designing for the web, you are faced with the
+unique challenge that different users will have different sized
+screens.
+
+Since computers have been sold to the public, the size of screens
+has been steadily increasing. This means that some people
+viewing your site might have 13 inch monitors while others may
+have 27+ inch monitors.
+
+The size of a user's screen affects how big they can open
+their windows and how much of the page they will see. There
+are also an increasing number of handheld devices (mobile
+phones and tablets) that have smaller screens.
+
