@@ -120,3 +120,24 @@ their windows and how much of the page they will see. There
 are also an increasing number of handheld devices (mobile
 phones and tablets) that have smaller screens.
 
+## Screen Resolution
+
+Resolution refers to the number of dots a screen shows per inch. Some devices have a higher resolution than desktop computers and most operating systems allow users to adjust the resolution of their screens.
+
+Most computers will allow owners to adjust the resolution
+of the display or the number of pixels that are shown on the
+screen. For example, here you can see the options to change
+the screen size from 720 x 480 pixels up to 1280 x 800 pixels.
+
+It is interesting to note that the higher the resolution, the
+smaller the text appears. Many mobile devices have screens
+that are higher resolution than their desktop counterparts.
+
+|Device|Size|Resolution|
+|------|----|----------|
+|iPhone4|3.5 inches|960 x 640 Pixels|
+|iPad2| 9.7 inches | 1024 x 768 Pixels|
+|13" MacBook|13.3 inches| 1280 x 800 Pixels|
+|27" iMac | 27 inches | 2560 x 1440 Pixels|
+
+# Page Sizes
