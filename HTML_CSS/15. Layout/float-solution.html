@@ -31,3 +31,25 @@
 		</div>
 	</body>
 </html>
+
+<!-- float solution -- parents of floated elements
+
+
+  Traditionally, developers got around this problem by adding
+an extra element after the last floated box (inside the
+containing element). A CSS rule would be applied to this
+additional element setting the clear property to have a value
+of both. But this meant that an extra element was added to the
+HTML just to fix the height of the containing element.
+
+  More recently, developers have opted for a purely CSS-based
+solution because it means that there is no need to add an extra
+element to the HTML page after the floated elements. The pure
+CSS solution adds two CSS rules to the containing element (in this
+example the <div> element):
+
+  1.  The overflow property is given a value auto.
+
+  2. The width property is set to 100%.
+
+-->
