@@ -225,3 +225,154 @@ Access-Control-Expose-Headers: Content-Encoding,API-Key
 
 With such an `Access-Control-Expose-Headers` header, the script is allowed to read the `Content-Encoding` and `API-Key` headers of the response.
 
+## "Unsafe" requests
+
+We can use any HTTP-method: not just `GET/POST`, but also `PATCH`, `DELETE` and others.
+
+Some time ago no one could even imagine that a webpage could make such requests. So there may still exist webservices that treat a non-standard method as a signal: "That's not a browser". They can take it into account when checking access rights.
+
+So, to avoid misunderstandings, any "unsafe" request -- that couldn't be done in the old times, the browser does not make such requests right away. First, it sends a preliminary, so-called "preflight" request, to ask for permission.
+
+A preflight request uses the method `OPTIONS`, no body and three headers:
+
+- `Access-Control-Request-Method` header has the method of the unsafe request.
+- `Access-Control-Request-Headers` header provides a comma-separated list of its unsafe HTTP-headers.
+- `Origin` header tells from where the request came. (such as `https://javascript.info`)
+
+If the server agrees to serve the requests, then it should respond with empty body, status 200 and headers:
+
+- `Access-Control-Allow-Origin` must be either `*` or the requesting origin, such as `https://javascript.info`, to allow it.
+- `Access-Control-Allow-Methods` must have the allowed method.
+- `Access-Control-Allow-Headers` must have a list of allowed headers.
+- Additionally, the header `Access-Control-Max-Age` may specify a number of seconds to cache the permissions. So the browser won't have to send a preflight for subsequent requests that satisfy given permissions.
+
+![](xhr-preflight.svg)
+
+Let's see how it works step-by-step on the example of a cross-origin `PATCH` request (this method is often used to update data):
+
+```js
+let response = await fetch('https://site.com/service.json', {
+  method: 'PATCH',
+  headers: {
+    'Content-Type': 'application/json',
+    'API-Key': 'secret'
+  }
+});
+```
+
+There are three reasons why the request is unsafe (one is enough):
+- Method `PATCH`
+- `Content-Type` is not one of: `application/x-www-form-urlencoded`, `multipart/form-data`, `text/plain`.
+- "Unsafe" `API-Key` header.
+
+### Step 1 (preflight request)
+
+Prior to sending such a request, the browser, on its own, sends a preflight request that looks like this:
+
+```http
+OPTIONS /service.json
+Host: site.com
+Origin: https://javascript.info
+Access-Control-Request-Method: PATCH
+Access-Control-Request-Headers: Content-Type,API-Key
+```
+
+- Method: `OPTIONS`.
+- The path -- exactly the same as the main request: `/service.json`.
+- Cross-origin special headers:
+    - `Origin` -- the source origin.
+    - `Access-Control-Request-Method` -- requested method.
+    - `Access-Control-Request-Headers` -- a comma-separated list of "unsafe" headers.
+
+### Step 2 (preflight response)
+
+The server should respond with status 200 and the headers:
+- `Access-Control-Allow-Origin: https://javascript.info`
+- `Access-Control-Allow-Methods: PATCH`
+- `Access-Control-Allow-Headers: Content-Type,API-Key`.
+
+That allows future communication, otherwise an error is triggered.
+
+If the server expects other methods and headers in the future, it makes sense to allow them in advance by adding them to the list.
+
+For example, this response also allows `PUT`, `DELETE` and additional headers:
+
+```http
+200 OK
+Access-Control-Allow-Origin: https://javascript.info
+Access-Control-Allow-Methods: PUT,PATCH,DELETE
+Access-Control-Allow-Headers: API-Key,Content-Type,If-Modified-Since,Cache-Control
+Access-Control-Max-Age: 86400
+```
+
+Now the browser can see that `PATCH` is in `Access-Control-Allow-Methods` and `Content-Type,API-Key` are in the list `Access-Control-Allow-Headers`, so it sends out the main request.
+
+If there's the header `Access-Control-Max-Age` with a number of seconds, then the preflight permissions are cached for the given time. The response above will be cached for 86400 seconds (one day). Within this timeframe, subsequent requests will not cause a preflight. Assuming that they fit the cached allowances, they will be sent directly.
+
+### Step 3 (actual request)
+
+When the preflight is successful, the browser now makes the main request. The process here is the same as for safe requests.
+
+The main request has the `Origin` header (because it's cross-origin):
+
+```http
+PATCH /service.json
+Host: site.com
+Content-Type: application/json
+API-Key: secret
+Origin: https://javascript.info
+```
+
+### Step 4 (actual response)
+
+The server should not forget to add `Access-Control-Allow-Origin` to the main response. A successful preflight does not relieve from that:
+
+```http
+Access-Control-Allow-Origin: https://javascript.info
+```
+
+Then JavaScript is able to read the main server response.
+
+---
+
+### Preflight request occurs "behind the scenes", it's invisible to JavaScript.
+
+JavaScript only gets the response to the main request or an error if there's no server permission.
+
+---
+
+## Credentials
+
+A cross-origin request initiated by JavaScript code by default does not bring any credentials (cookies or HTTP authentication).
+
+That's uncommon for HTTP-requests. Usually, a request to `http://site.com` is accompanied by all cookies from that domain. Cross-origin requests made by JavaScript methods on the other hand are an exception.
+
+For example, `fetch('http://another.com')` does not send any cookies, even those  (!) that belong to `another.com` domain.
+
+Why?
+
+That's because a request with credentials is much more powerful than without them. If allowed, it grants JavaScript the full power to act on behalf of the user and access sensitive information using their credentials.
+
+Does the server really trust the script that much? Then it must explicitly allow requests with credentials with an additional header.
+
+To send credentials in `fetch`, we need to add the option `credentials: "include"`, like this:
+
+```js
+fetch('http://another.com', {
+  credentials: "include"
+});
+```
+
+Now `fetch` sends cookies originating from `another.com` with request to that site.
+
+If the server agrees to accept the request *with credentials*, it should add a header `Access-Control-Allow-Credentials: true` to the response, in addition to `Access-Control-Allow-Origin`.
+
+For example:
+
+```http
+200 OK
+Access-Control-Allow-Origin: https://javascript.info
+Access-Control-Allow-Credentials: true
+```
+
+Please note: `Access-Control-Allow-Origin` is prohibited from using a star `*` for requests with credentials. Like shown above, it must provide the exact origin there. That's an additional safety measure, to ensure that the server really knows who it trusts to make such requests.
