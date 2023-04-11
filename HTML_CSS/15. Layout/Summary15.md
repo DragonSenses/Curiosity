@@ -181,3 +181,17 @@ However, the user gets a taste for what is lower on the page
 and can tell that there will be more to see if they scroll down.
 
 # Fixed Width Layouts
+
+Fixed width layout designs do not change size as the user increases
+or decreases the size of their browser window. Measurements tend to be given in pixels.
+
+|Advantages|Disadvantages|
+|----------|-------------|
+|Pixel values are accurate at controlling size and positioning of elements. | You can end up with big gaps around the edge of a page. 
+| The designer has far greater control over the appearance and position of items on the page than with liquid layouts. | If the user's screen is a much higher resolution than the designer's screen, the page can look smaller and text can be harder to read.
+| You can control the lengths of lines of text regardless of the size of the user's window. | If a user increases font sizes, text might not fit into the allotted spaces.
+| The size of an image will always remain the same relative to the rest of the page. | The design works best on devices that have a site or resolution similar to that of desktop or laptop computers. 
+|  | The page will often take up more vertical space than a liquid layout with the same content.
+
+# Liquid Layouts
+
