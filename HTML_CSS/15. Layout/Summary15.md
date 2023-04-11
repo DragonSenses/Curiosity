@@ -195,3 +195,20 @@ or decreases the size of their browser window. Measurements tend to be given in 
 
 # Liquid Layouts
 
+Liquid layout designs stretch and contract
+as the user increases or decreases the
+size of their browser window. They tend to
+use percentages.
+
+|Advantages|Disadvantages|
+|----------|-------------|
+| Pages expand to fill the entire browser window so there are no spaces around the page on a large screen. | If you do not control the width of sections of the page then the design can look very different than you intended, with unexpected gaps around certain elements or items squashed together.
+| If the user has a small window, the page can contract to fit it without the user having to scroll to the side. | If the user has a wide window, lines of text can become very long, which makes them harder to read.
+| The design is tolerant of users setting font sizes larger than the designer intended (because the page can stretch). | If the user has a very narrow window, words may be squashed and you can end up with few words on each line.
+| | If a fixed width item (such as an image) is in a box that is too small to hold it (because the user has made the window smaller) the image can overflow over the text.
+
+
+Because liquid layouts can stretch the entire width of the browser, resulting in long lines
+of text that are hard to read, some liquid layouts only let part of the page expand and contract.
+
+Other parts of the page have minimum and maximum widths.
