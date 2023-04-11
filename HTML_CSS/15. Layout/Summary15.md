@@ -141,3 +141,43 @@ that are higher resolution than their desktop counterparts.
 |27" iMac | 27 inches | 2560 x 1440 Pixels|
 
 # Page Sizes
+
+Because screen sizes and display resolutions vary so much, web
+designers often try to create pages of around 960-1000 pixels wide
+(since most users will be able to see designs this wide on their screens).
+
+Judging the height that peopleare likely to see on the screen
+without scrolling down the page is much harder. For several
+years, designers assumed that users would see the top 570-
+600 pixels of a page without having to scroll and some tried
+to fit all of the key messages in this area (fearing that people
+would not scroll down the page).
+
+As screen sizes have increased and handheld devices have
+become more popular, the area users will see is far more
+variable.
+
+The area of the page that users would see without scrolling was
+often referred as being "above the fold" (a term newspapers
+had originally coined to describe the area of the front page you
+would see if the paper were folded in half).
+
+It is now recognized that if someone is interested in the
+content of the page, they are likely to scroll down to see more.
+
+Having said which, usability studies have shown that visitors
+can judge a page in under a second so it is still important to
+let new visitors know that the site is relevant to them and their
+interests.
+
+As a result, many designs still try to let the user know what the
+site is about within the top 570- 600 pixels, as well as hint at
+more content below this point. But do not try to cram too much into that top area.
+
+The shaded area is hidden by the constraints of the browser
+window, so the user must scroll in order to view the lower region.
+
+However, the user gets a taste for what is lower on the page
+and can tell that there will be more to see if they scroll down.
+
+# Fixed Width Layouts
