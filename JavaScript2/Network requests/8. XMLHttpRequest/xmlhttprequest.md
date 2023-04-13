@@ -49,3 +49,271 @@ If we need to track uploading specifically, then we should listen to same events
 
 ---
 
+# XMLHttpRequest
+
+`XMLHttpRequest` is a built-in browser object that allows to make HTTP requests in JavaScript.
+
+Despite having the word "XML" in its name, it can operate on any data, not only in XML format. We can upload/download files, track progress and much more.
+
+Right now, there's another, more modern method `fetch`, that somewhat deprecates `XMLHttpRequest`.
+
+In modern web-development `XMLHttpRequest` is used for three reasons:
+
+1. Historical reasons: we need to support existing scripts with `XMLHttpRequest`.
+2. We need to support old browsers, and don't want polyfills (e.g. to keep scripts tiny).
+3. We need something that `fetch` can't do yet, e.g. to track upload progress.
+
+Does that sound familiar? If yes, then all right, go on with `XMLHttpRequest`. Otherwise, please head on to <info:fetch>.
+
+## The basics
+
+XMLHttpRequest has two modes of operation: synchronous and asynchronous.
+
+Let's see the asynchronous first, as it's used in the majority of cases.
+
+To do the request, we need 3 steps:
+
+1. Create `XMLHttpRequest`:
+    ```js
+    let xhr = new XMLHttpRequest();
+    ```
+    The constructor has no arguments.
+
+2. Initialize it, usually right after `new XMLHttpRequest`:
+    ```js
+    xhr.open(method, URL, [async, user, password])
+    ```
+
+    This method specifies the main parameters of the request:
+
+    - `method` -- HTTP-method. Usually `"GET"` or `"POST"`.
+    - `URL` -- the URL to request, a string, can be [URL](info:url) object.
+    - `async` -- if explicitly set to `false`, then the request is synchronous, we'll cover that a bit later.
+    - `user`, `password` -- login and password for basic HTTP auth (if required).
+
+    Please note that `open` call, contrary to its name, does not open the connection. It only configures the request, but the network activity only starts with the call of `send`.
+
+3. Send it out.
+
+    ```js
+    xhr.send([body])
+    ```
+
+    This method opens the connection and sends the request to server. The optional `body` parameter contains the request body.
+
+    Some request methods like `GET` do not have a body. And some of them like `POST` use `body` to send the data to the server. We'll see examples of that later.
+
+4. Listen to `xhr` events for response.
+
+    These three events are the most widely used:
+    - `load` -- when the request is complete (even if HTTP status is like 400 or 500), and the response is fully downloaded.
+    - `error` -- when the request couldn't be made, e.g. network down or invalid URL.
+    - `progress` -- triggers periodically while the response is being downloaded, reports how much has been downloaded.
+
+    ```js
+    xhr.onload = function() {
+      alert(`Loaded: ${xhr.status} ${xhr.response}`);
+    };
+
+    xhr.onerror = function() { // only triggers if the request couldn't be made at all
+      alert(`Network Error`);
+    };
+
+    xhr.onprogress = function(event) { // triggers periodically
+      // event.loaded - how many bytes downloaded
+      // event.lengthComputable = true if the server sent Content-Length header
+      // event.total - total number of bytes (if lengthComputable)
+      alert(`Received ${event.loaded} of ${event.total}`);
+    };
+    ```
+
+Here's a full example. The code below loads the URL at `/article/xmlhttprequest/example/load` from the server and prints the progress:
+
+```js run
+// 1. Create a new XMLHttpRequest object
+let xhr = new XMLHttpRequest();
+
+// 2. Configure it: GET-request for the URL /article/.../load
+xhr.open('GET', '/article/xmlhttprequest/example/load');
+
+// 3. Send the request over the network
+xhr.send();
+
+// 4. This will be called after the response is received
+xhr.onload = function() {
+  if (xhr.status != 200) { // analyze HTTP status of the response
+    alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
+  } else { // show the result
+    alert(`Done, got ${xhr.response.length} bytes`); // response is the server response
+  }
+};
+
+xhr.onprogress = function(event) {
+  if (event.lengthComputable) {
+    alert(`Received ${event.loaded} of ${event.total} bytes`);
+  } else {
+    alert(`Received ${event.loaded} bytes`); // no Content-Length
+  }
+
+};
+
+xhr.onerror = function() {
+  alert("Request failed");
+};
+```
+
+Once the server has responded, we can receive the result in the following `xhr` properties:
+
+`status`
+: HTTP status code (a number): `200`, `404`, `403` and so on, can be `0` in case of a non-HTTP failure.
+
+`statusText`
+: HTTP status message (a string): usually `OK` for `200`, `Not Found` for `404`, `Forbidden` for `403` and so on.
+
+`response` (old scripts may use `responseText`)
+: The server response body.
+
+We can also specify a timeout using the corresponding property:
+
+```js
+xhr.timeout = 10000; // timeout in ms, 10 seconds
+```
+
+If the request does not succeed within the given time, it gets canceled and `timeout` event triggers.
+
+### URL search parameters
+
+To add parameters to URL, like `?name=value`, and ensure the proper encoding, we can use [URL](info:url) object:
+
+```js
+let url = new URL('https://google.com/search');
+url.searchParams.set('q', 'test me!');
+
+// the parameter 'q' is encoded
+xhr.open('GET', url); // https://google.com/search?q=test+me%21
+```
+
+## Response Type
+
+We can use `xhr.responseType` property to set the response format:
+
+- `""` (default) -- get as string,
+- `"text"` -- get as string,
+- `"arraybuffer"` -- get as `ArrayBuffer` (for binary data, see chapter <info:arraybuffer-binary-arrays>),
+- `"blob"` -- get as `Blob` (for binary data, see chapter <info:blob>),
+- `"document"` -- get as XML document (can use XPath and other XML methods) or HTML document (based on the MIME type of the received data),
+- `"json"` -- get as JSON (parsed automatically).
+
+For example, let's get the response as JSON:
+
+```js run
+let xhr = new XMLHttpRequest();
+
+xhr.open('GET', '/article/xmlhttprequest/example/json');
+
+xhr.responseType = 'json';
+
+xhr.send();
+
+// the response is {"message": "Hello, world!"}
+xhr.onload = function() {
+  let responseObj = xhr.response;
+  alert(responseObj.message); // Hello, world!
+};
+```
+---
+
+### Please note:
+
+In the old scripts you may also find `xhr.responseText` and even `xhr.responseXML` properties.
+
+They exist for historical reasons, to get either a string or XML document. Nowadays, we should set the format in `xhr.responseType` and get `xhr.response` as demonstrated above.
+
+---
+
+## Ready states
+
+`XMLHttpRequest` changes between states as it progresses. The current state is accessible as  `xhr.readyState`.
+
+All states, as in [the specification](https://xhr.spec.whatwg.org/#states):
+
+```js
+UNSENT = 0; // initial state
+OPENED = 1; // open called
+HEADERS_RECEIVED = 2; // response headers received
+LOADING = 3; // response is loading (a data packet is received)
+DONE = 4; // request complete
+```
+
+An `XMLHttpRequest` object travels them in the order `0` -> `1` -> `2` -> `3` -> ... -> `3` -> `4`. State `3` repeats every time a data packet is received over the network.
+
+We can track them using `readystatechange` event:
+
+```js
+xhr.onreadystatechange = function() {
+  if (xhr.readyState == 3) {
+    // loading
+  }
+  if (xhr.readyState == 4) {
+    // request finished
+  }
+};
+```
+
+You can find `readystatechange` listeners in really old code, it's there for historical reasons, as there was a time when there were no `load` and other events. Nowadays, `load/error/progress` handlers deprecate it.
+
+## Aborting request
+
+We can terminate the request at any time. The call to `xhr.abort()` does that:
+
+```js
+xhr.abort(); // terminate the request
+```
+
+That triggers `abort` event, and `xhr.status` becomes `0`.
+
+## Synchronous requests
+
+If in the `open` method the third parameter `async` is set to `false`, the request is made synchronously.
+
+In other words, JavaScript execution pauses at `send()` and resumes when the response is received. Somewhat like `alert` or `prompt` commands.
+
+Here's the rewritten example, the 3rd parameter of `open` is `false`:
+
+```js
+let xhr = new XMLHttpRequest();
+
+xhr.open('GET', '/article/xmlhttprequest/hello.txt', *!*false*/!*);
+
+try {
+  xhr.send();
+  if (xhr.status != 200) {
+    alert(`Error ${xhr.status}: ${xhr.statusText}`);
+  } else {
+    alert(xhr.response);
+  }
+} catch(err) { // instead of onerror
+  alert("Request failed");
+}
+```
+
+It might look good, but synchronous calls are used rarely, because they block in-page JavaScript till the loading is complete. In some browsers it becomes impossible to scroll. If a synchronous call takes too much time, the browser may suggest to close the "hanging" webpage.
+
+Many advanced capabilities of `XMLHttpRequest`, like requesting from another domain or specifying a timeout, are unavailable for synchronous requests. Also, as you can see, no progress indication.
+
+Because of all that, synchronous requests are used very sparingly, almost never. We won't talk about them any more.
+
+## HTTP-headers
+
+`XMLHttpRequest` allows both to send custom headers and read headers from the response.
+
+There are 3 methods for HTTP-headers:
+
+`setRequestHeader(name, value)`
+: Sets the request header with the given `name` and `value`.
+
+For instance:
+
+```js
+xhr.setRequestHeader('Content-Type', 'application/json');
+```
