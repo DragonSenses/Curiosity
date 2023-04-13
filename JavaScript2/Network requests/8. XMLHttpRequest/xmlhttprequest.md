@@ -317,3 +317,75 @@ For instance:
 ```js
 xhr.setRequestHeader('Content-Type', 'application/json');
 ```
+
+---
+
+### Headers Limitations
+
+Several headers are managed exclusively by the browser, e.g. `Referer` and `Host`.
+
+The full list is [in the specification](https://xhr.spec.whatwg.org/#the-setrequestheader()-method).
+
+`XMLHttpRequest` is not allowed to change them, for the sake of user safety and correctness of the request.
+
+
+---
+
+### Can't remove a header
+
+Another peculiarity of `XMLHttpRequest` is that one can't undo `setRequestHeader`.
+
+Once the header is set, it's set. Additional calls add information to the header, don't overwrite it.
+
+For instance:
+
+```js
+xhr.setRequestHeader('X-Auth', '123');
+xhr.setRequestHeader('X-Auth', '456');
+
+// the header will be:
+// X-Auth: 123, 456
+```
+
+---
+
+`getResponseHeader(name)`
+: Gets the response header with the given `name` (except `Set-Cookie` and `Set-Cookie2`).
+
+For instance:
+
+```js
+xhr.getResponseHeader('Content-Type')
+```
+
+`getAllResponseHeaders()`
+: Returns all response headers, except `Set-Cookie` and `Set-Cookie2`.
+
+Headers are returned as a single line, e.g.:
+
+```http
+Cache-Control: max-age=31536000
+Content-Length: 4260
+Content-Type: image/png
+Date: Sat, 08 Sep 2012 16:53:16 GMT
+```
+
+The line break between headers is always `"\r\n"` (doesn't depend on OS), so we can easily split it into individual headers. The separator between the name and the value is always a colon followed by a space `": "`. That's fixed in the specification.
+
+So, if we want to get an object with name/value pairs, we need to throw in a bit JS.
+
+Like this (assuming that if two headers have the same name, then the latter one overwrites the former one):
+
+```js
+let headers = xhr
+  .getAllResponseHeaders()
+  .split('\r\n')
+  .reduce((result, current) => {
+    let [name, value] = current.split(': ');
+    result[name] = value;
+    return result;
+  }, {});
+
+// headers['Content-Type'] = 'image/png'
+```
+
