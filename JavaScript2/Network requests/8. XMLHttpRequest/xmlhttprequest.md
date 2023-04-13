@@ -389,3 +389,145 @@ let headers = xhr
 // headers['Content-Type'] = 'image/png'
 ```
 
+## POST, FormData
+
+To make a POST request, we can use the built-in [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object.
+
+The syntax:
+
+```js
+let formData = new FormData([form]); // creates an object, optionally fill from <form>
+formData.append(name, value); // appends a field
+```
+
+We create it, optionally fill from a form, `append` more fields if needed, and then:
+
+1. `xhr.open('POST', ...)` – use `POST` method.
+2. `xhr.send(formData)` to submit the form to the server.
+
+For instance:
+
+```html run refresh
+<form name="person">
+  <input name="name" value="John">
+  <input name="surname" value="Smith">
+</form>
+
+<script>
+  // pre-fill FormData from the form
+  let formData = new FormData(document.forms.person);
+
+  // add one more field
+  formData.append("middle", "Lee");
+
+  // send it out
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", "/article/xmlhttprequest/post/user");
+  xhr.send(formData);
+
+  xhr.onload = () => alert(xhr.response);
+</script>
+```
+
+The form is sent with `multipart/form-data` encoding.
+
+Or, if we like JSON more, then `JSON.stringify` and send as a string.
+
+Just don't forget to set the header `Content-Type: application/json`, many server-side frameworks automatically decode JSON with it:
+
+```js
+let xhr = new XMLHttpRequest();
+
+let json = JSON.stringify({
+  name: "John",
+  surname: "Smith"
+});
+
+xhr.open("POST", '/submit')
+xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+xhr.send(json);
+```
+
+The `.send(body)` method is pretty omnivore. It can send almost any `body`, including `Blob` and `BufferSource` objects.
+
+## Upload progress
+
+The `progress` event triggers only on the downloading stage.
+
+That is: if we `POST` something, `XMLHttpRequest` first uploads our data (the request body), then downloads the response.
+
+If we're uploading something big, then we're surely more interested in tracking the upload progress. But `xhr.onprogress` doesn't help here.
+
+There's another object, without methods, exclusively to track upload events: `xhr.upload`.
+
+It generates events, similar to `xhr`, but `xhr.upload` triggers them solely on uploading:
+
+- `loadstart` -- upload started.
+- `progress` -- triggers periodically during the upload.
+- `abort` -- upload aborted.
+- `error` -- non-HTTP error.
+- `load` -- upload finished successfully.
+- `timeout` -- upload timed out (if `timeout` property is set).
+- `loadend` -- upload finished with either success or error.
+
+Example of handlers:
+
+```js
+xhr.upload.onprogress = function(event) {
+  alert(`Uploaded ${event.loaded} of ${event.total} bytes`);
+};
+
+xhr.upload.onload = function() {
+  alert(`Upload finished successfully.`);
+};
+
+xhr.upload.onerror = function() {
+  alert(`Error during the upload: ${xhr.status}`);
+};
+```
+
+Here's a real-life example: file upload with progress indication:
+
+```html run
+<input type="file" onchange="upload(this.files[0])">
+
+<script>
+function upload(file) {
+  let xhr = new XMLHttpRequest();
+
+  // track upload progress
+  xhr.upload.onprogress = function(event) {
+    console.log(`Uploaded ${event.loaded} of ${event.total}`);
+  };
+
+  // track completion: both successful or not
+  xhr.onloadend = function() {
+    if (xhr.status == 200) {
+      console.log("success");
+    } else {
+      console.log("error " + this.status);
+    }
+  };
+
+  xhr.open("POST", "/article/xmlhttprequest/post/upload");
+  xhr.send(file);
+}
+</script>
+```
+
+## Cross-origin requests
+
+`XMLHttpRequest` can make cross-origin requests, using the same CORS policy as [fetch](info:fetch-crossorigin).
+
+Just like `fetch`, it doesn't send cookies and HTTP-authorization to another origin by default. To enable them, set `xhr.withCredentials` to `true`:
+
+```js
+let xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.open('POST', 'http://anywhere.com/request');
+...
+```
+
+See the chapter <info:fetch-crossorigin> for details about cross-origin headers.
