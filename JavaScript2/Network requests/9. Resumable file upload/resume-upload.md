@@ -73,9 +73,7 @@ Here's the demo with both client and server code, written on Node.js.
 
 It works only partially on this site, as Node.js is behind another server named Nginx, that buffers uploads, passing them to Node.js when fully complete.
 
-But you can download it and run locally for the full demonstration:
-
-[codetabs src="upload-resume" height=200]
+But you can download it and run locally for the full demonstration: see `resume-upload-demo` folder.
 
 As we can see, modern networking methods are close to file managers in their capabilities -- control over headers, progress indicator, sending file parts, etc.
 
