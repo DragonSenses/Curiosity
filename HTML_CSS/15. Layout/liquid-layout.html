@@ -75,4 +75,28 @@ screen.
 When trying this in your browser, remember to make the
 window smaller and larger.
 
+There is a rule on the <body> element to set the width of the
+page to 90% so that there is a small gap between the left and
+right-hand sides of the browser window and the main content.
+
+The three columns are all given a margin of 1% and a width of
+31.3%. This adds up to 99.9% of the width of the <body>
+element, so some browsers might not perfectly align the
+right-hand side of the third column with other elements on
+the page.
+
+The <div> elements that hold the navigation, feature, and
+footer will stretch to fill the width of the containing <body>
+element. They are given a 1% margin to help them align with
+the columns.
+
+If you imagine the browser window to be very wide or very
+narrow, you can see how lines of text could become very long or
+very short.
+
+This is where the min-width and max-width properties help
+create boundaries within which the layout can stretch (although
+Internet Explorer 7 was the first version of IE to support these
+properties).
+
 -->
