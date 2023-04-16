@@ -220,3 +220,75 @@ socket.onmessage = (event) => {
   // event.data is either a string (if text) or arraybuffer (if binary)
 };
 ```
+
+## Rate limiting
+
+Imagine, our app is generating a lot of data to send. But the user has a slow network connection, maybe on a mobile internet, outside of a city.
+
+We can call `socket.send(data)` again and again. But the data will be buffered (stored) in memory and sent out only as fast as network speed allows.
+
+The `socket.bufferedAmount` property stores how many bytes remain buffered at this moment, waiting to be sent over the network.
+
+We can examine it to see whether the socket is actually available for transmission.
+
+```js
+// every 100ms examine the socket and send more data  
+// only if all the existing data was sent out
+setInterval(() => {
+  if (socket.bufferedAmount == 0) {
+    socket.send(moreData());
+  }
+}, 100);
+```
+
+
+## Connection close
+
+Normally, when a party wants to close the connection (both browser and server have equal rights), they send a "connection close frame" with a numeric code and a textual reason.
+
+The method for that is:
+```js
+socket.close([code], [reason]);
+```
+
+- `code` is a special WebSocket closing code (optional)
+- `reason` is a string that describes the reason of closing (optional)
+
+Then the other party in the `close` event handler gets the code and the reason, e.g.:
+
+```js
+// closing party:
+socket.close(1000, "Work complete");
+
+// the other party
+socket.onclose = event => {
+  // event.code === 1000
+  // event.reason === "Work complete"
+  // event.wasClean === true (clean close)
+};
+```
+
+Most common code values:
+
+- `1000` -- the default, normal closure (used if no `code` supplied),
+- `1006` -- no way to set such code manually, indicates that the connection was lost (no close frame).
+
+There are other codes like:
+
+- `1001` -- the party is going away, e.g. server is shutting down, or a browser leaves the page,
+- `1009` -- the message is too big to process,
+- `1011` -- unexpected error on server,
+- ...and so on.
+
+The full list can be found in [RFC6455, §7.4.1](https://tools.ietf.org/html/rfc6455#section-7.4.1).
+
+WebSocket codes are somewhat like HTTP codes, but different. In particular, codes lower than `1000` are reserved, there'll be an error if we try to set such a code.
+
+```js
+// in case connection is broken
+socket.onclose = event => {
+  // event.code === 1006
+  // event.reason === ""
+  // event.wasClean === false (no closing frame)
+};
+```
