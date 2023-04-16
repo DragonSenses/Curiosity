@@ -83,3 +83,18 @@ That said, it isn't a programming language issue. Most modern languages, includi
 
 ---
 
+## Area of usage
+
+Long polling works great in situations when messages are rare.
+
+If messages come very often, then the chart of requesting-receiving messages, painted above, becomes saw-like.
+
+Every message is a separate request, supplied with headers, authentication overhead, and so on.
+
+So, in this case, another method is preferred, such as [Websocket](info:websocket) or [Server Sent Events](info:server-sent-events).
+
+## Demo: a chat
+
+Here's a demo chat, you can also download it and run locally (if you're familiar with Node.js and can install modules): see `long-polling-demo` folder.
+
+Browser code is in `browser.js`.
