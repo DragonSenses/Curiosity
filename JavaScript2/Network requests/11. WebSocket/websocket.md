@@ -98,3 +98,125 @@ That's actually it, we can talk WebSocket already. Quite simple, isn't it?
 
 Now let's talk more in-depth.
 
+## Opening a websocket
+
+When `new WebSocket(url)` is created, it starts connecting immediately.
+
+During the connection, the browser (using headers) asks the server: "Do you support Websocket?" And if the server replies "yes", then the talk continues in WebSocket protocol, which is not HTTP at all.
+
+![](websocket-handshake.svg)
+
+Here's an example of browser headers for a request made by `new WebSocket("wss://javascript.info/chat")`.
+
+```
+GET /chat
+Host: javascript.info
+Origin: https://javascript.info
+Connection: Upgrade
+Upgrade: websocket
+Sec-WebSocket-Key: Iv8io/9s+lYFgZWcXczP8Q==
+Sec-WebSocket-Version: 13
+```
+
+- `Origin` -- the origin of the client page, e.g. `https://javascript.info`. WebSocket objects are cross-origin by nature. There are no special headers or other limitations. Old servers are unable to handle WebSocket anyway, so there are no compatibility issues. But the `Origin` header is important, as it allows the server to decide whether or not to talk WebSocket with this website.
+- `Connection: Upgrade` -- signals that the client would like to change the protocol.
+- `Upgrade: websocket` -- the requested protocol is "websocket".
+- `Sec-WebSocket-Key` -- a random browser-generated key, used to ensure that the server supports WebSocket protocol. It's random to prevent proxies from caching any following communication.
+- `Sec-WebSocket-Version` -- WebSocket protocol version, 13 is the current one.
+
+---
+
+### WebSocket handshake can't be emulated
+
+We can't use `XMLHttpRequest` or `fetch` to make this kind of HTTP-request, because JavaScript is not allowed to set these headers.
+
+---
+
+If the server agrees to switch to WebSocket, it should send code 101 response:
+
+```
+101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: hsBlbuDTkk24srzEOTBUlZAlC2g=
+```
+
+Here `Sec-WebSocket-Accept` is `Sec-WebSocket-Key`, recoded using a special algorithm. Upon seeing it, the browser understands that the server really does support the WebSocket protocol.
+
+Afterwards, the data is transferred using the WebSocket protocol, we'll see its structure ("frames") soon. And that's not HTTP at all.
+
+### Extensions and subprotocols
+
+There may be additional headers `Sec-WebSocket-Extensions` and `Sec-WebSocket-Protocol` that describe extensions and subprotocols.
+
+For instance:
+
+- `Sec-WebSocket-Extensions: deflate-frame` means that the browser supports data compression. An extension is something related to transferring the data, functionality that extends the WebSocket protocol. The header `Sec-WebSocket-Extensions` is sent automatically by the browser, with the list of all extensions it supports.
+
+- `Sec-WebSocket-Protocol: soap, wamp` means that we'd like to transfer not just any data, but the data in [SOAP](https://en.wikipedia.org/wiki/SOAP) or WAMP ("The WebSocket Application Messaging Protocol") protocols. WebSocket subprotocols are registered in the [IANA catalogue](https://www.iana.org/assignments/websocket/websocket.xml). So, this header describes the data formats that we're going to use.
+
+    This optional header is set using the second parameter of `new WebSocket`. That's the array of subprotocols, e.g. if we'd like to use SOAP or WAMP:
+
+    ```js
+    let socket = new WebSocket("wss://javascript.info/chat", ["soap", "wamp"]);
+    ```
+
+The server should respond with a list of protocols and extensions that it agrees to use.
+
+For example, the request:
+
+```
+GET /chat
+Host: javascript.info
+Upgrade: websocket
+Connection: Upgrade
+Origin: https://javascript.info
+Sec-WebSocket-Key: Iv8io/9s+lYFgZWcXczP8Q==
+Sec-WebSocket-Version: 13
+*!*
+Sec-WebSocket-Extensions: deflate-frame
+Sec-WebSocket-Protocol: soap, wamp
+*/!*
+```
+
+Response:
+
+```
+101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: hsBlbuDTkk24srzEOTBUlZAlC2g=
+Sec-WebSocket-Extensions: deflate-frame
+Sec-WebSocket-Protocol: soap
+```
+
+Here the server responds that it supports the extension "deflate-frame", and only SOAP of the requested subprotocols.
+
+
+## Data transfer
+
+WebSocket communication consists of "frames" -- data fragments, that can be sent from either side, and can be of several kinds:
+
+- "text frames" -- contain text data that parties send to each other.
+- "binary data frames" -- contain binary data that parties send to each other.
+- "ping/pong frames" are used to check the connection, sent from the server, the browser responds to these automatically.
+- there's also "connection close frame" and a few other service frames.
+
+In the browser, we directly work only with text or binary frames.
+
+**WebSocket `.send()` method can send either text or binary data.**
+
+A call `socket.send(body)` allows `body` in string or a binary format, including `Blob`, `ArrayBuffer`, etc. No settings are required: just send it out in any format.
+
+**When we receive the data, text always comes as string. And for binary data, we can choose between `Blob` and `ArrayBuffer` formats.**
+
+That's set by `socket.binaryType` property, it's `"blob"` by default, so binary data comes as `Blob` objects.
+
+[Blob](info:blob) is a high-level binary object, it directly integrates with `<a>`, `<img>` and other tags, so that's a sane default. But for binary processing, to access individual data bytes, we can change it to `"arraybuffer"`:
+
+```js
+socket.binaryType = "arraybuffer";
+socket.onmessage = (event) => {
+  // event.data is either a string (if text) or arraybuffer (if binary)
+};
+```
