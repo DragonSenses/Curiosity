@@ -64,3 +64,118 @@ A message may include one or more fields in any order, but `id:` usually goes th
 
 ---
 
+# Server Sent Events
+
+The [Server-Sent Events](https://html.spec.whatwg.org/multipage/comms.html#the-eventsource-interface) specification describes a built-in class `EventSource`, that keeps connection with the server and allows to receive events from it.
+
+Similar to `WebSocket`, the connection is persistent.
+
+But there are several important differences:
+
+| `WebSocket` | `EventSource` |
+|-------------|---------------|
+| Bi-directional: both client and server can exchange messages | One-directional: only server sends data |
+| Binary and text data | Only text |
+| WebSocket protocol | Regular HTTP |
+
+`EventSource` is a less-powerful way of communicating with the server than `WebSocket`.
+
+Why should one ever use it?
+
+The main reason: it's simpler. In many applications, the power of `WebSocket` is a little bit too much.
+
+We need to receive a stream of data from server: maybe chat messages or market prices, or whatever. That's what `EventSource` is good at. Also it supports auto-reconnect, something  we need to implement manually with `WebSocket`. Besides, it's a plain old HTTP, not a new protocol.
+
+## Getting messages
+
+To start receiving messages, we just need to create `new EventSource(url)`.
+
+The browser will connect to `url` and keep the connection open, waiting for events.
+
+The server should respond with status 200 and the header `Content-Type: text/event-stream`, then keep the connection and write messages into it in the special format, like this:
+
+```
+data: Message 1
+
+data: Message 2
+
+data: Message 3
+data: of two lines
+```
+
+- A message text goes after `data:`, the space after the colon is optional.
+- Messages are delimited with double line breaks `\n\n`.
+- To send a line break `\n`, we can immediately send one more `data:` (3rd message above).
+
+In practice, complex messages are usually sent JSON-encoded. Line-breaks are encoded as `\n` within them, so multiline `data:` messages are not necessary.
+
+For instance:
+
+```js
+data: {"user":"John","message":"First line*!*\n*/!* Second line"}
+```
+
+...So we can assume that one `data:` holds exactly one message.
+
+For each such message, the `message` event is generated:
+
+```js
+let eventSource = new EventSource("/events/subscribe");
+
+eventSource.onmessage = function(event) {
+  console.log("New message", event.data);
+  // will log 3 times for the data stream above
+};
+
+// or eventSource.addEventListener('message', ...)
+```
+
+### Cross-origin requests
+
+`EventSource` supports cross-origin requests, like `fetch` and any other networking methods. We can use any URL:
+
+```js
+let source = new EventSource("https://another-site.com/events");
+```
+
+The remote server will get the `Origin` header and must respond with `Access-Control-Allow-Origin` to proceed.
+
+To pass credentials, we should set the additional option `withCredentials`, like this:
+
+```js
+let source = new EventSource("https://another-site.com/events", {
+  withCredentials: true
+});
+```
+
+Please see the chapter <info:fetch-crossorigin> for more details about cross-origin headers.
+
+## Reconnection
+
+Upon creation, `new EventSource` connects to the server, and if the connection is broken -- reconnects.
+
+That's very convenient, as we don't have to care about it.
+
+There's a small delay between reconnections, a few seconds by default.
+
+The server can set the recommended delay using `retry:` in response (in milliseconds):
+
+```js
+retry: 15000
+data: Hello, I set the reconnection delay to 15 seconds
+```
+
+The `retry:` may come both together with some data, or as a standalone message.
+
+The browser should wait that many milliseconds before reconnecting. Or longer, e.g. if the browser knows (from OS) that there's no network connection at the moment, it may wait until the connection appears, and then retry.
+
+- If the server wants the browser to stop reconnecting, it should respond with HTTP status 204.
+- If the browser wants to close the connection, it should call `eventSource.close()`:
+
+```js
+let eventSource = new EventSource(...);
+
+eventSource.close();
+```
+
+Also, there will be no reconnection if the response has an incorrect `Content-Type` or its HTTP status differs from 301, 307, 200 and 204. In such cases the `"error"` event will be emitted, and the browser won't reconnect.
