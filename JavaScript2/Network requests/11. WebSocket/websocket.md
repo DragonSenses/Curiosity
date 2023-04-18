@@ -292,3 +292,95 @@ socket.onclose = event => {
   // event.wasClean === false (no closing frame)
 };
 ```
+## Connection state
+
+To get connection state, additionally there's `socket.readyState` property with values:
+
+- **`0`** -- "CONNECTING": the connection has not yet been established,
+- **`1`** -- "OPEN": communicating,
+- **`2`** -- "CLOSING": the connection is closing,
+- **`3`** -- "CLOSED": the connection is closed.
+
+
+## Chat example
+
+Let's review a chat example using browser WebSocket API and Node.js WebSocket module <https://github.com/websockets/ws>. We'll pay the main attention to the client side, but the server is also simple.
+
+HTML: we need a `<form>` to send messages and a `<div>` for incoming messages:
+
+```html
+<!-- message form -->
+<form name="publish">
+  <input type="text" name="message">
+  <input type="submit" value="Send">
+</form>
+
+<!-- div with messages -->
+<div id="messages"></div>
+```
+
+From JavaScript we want three things:
+1. Open the connection.
+2. On form submission -- `socket.send(message)` for the message.
+3. On incoming message -- append it to `div#messages`.
+
+Here's the code:
+
+```js
+let socket = new WebSocket("wss://javascript.info/article/websocket/chat/ws");
+
+// send message from the form
+document.forms.publish.onsubmit = function() {
+  let outgoingMessage = this.message.value;
+
+  socket.send(outgoingMessage);
+  return false;
+};
+
+// message received - show the message in div#messages
+socket.onmessage = function(event) {
+  let message = event.data;
+
+  let messageElem = document.createElement('div');
+  messageElem.textContent = message;
+  document.getElementById('messages').prepend(messageElem);
+}
+```
+
+Server-side code is a little bit beyond our scope. Here we'll use Node.js, but you don't have to. Other platforms also have their means to work with WebSocket.
+
+The server-side algorithm will be:
+
+1. Create `clients = new Set()` -- a set of sockets.
+2. For each accepted websocket, add it to the set `clients.add(socket)` and set `message` event listener to get its messages.
+3. When a message is received: iterate over clients and send it to everyone.
+4. When a connection is closed: `clients.delete(socket)`.
+
+```js
+const ws = new require('ws');
+const wss = new ws.Server({noServer: true});
+
+const clients = new Set();
+
+http.createServer((req, res) => {
+  // here we only handle websocket connections
+  // in real project we'd have some other code here to handle non-websocket requests
+  wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect);
+});
+
+function onSocketConnect(ws) {
+  clients.add(ws);
+
+  ws.on('message', function(message) {
+    message = message.slice(0, 50); // max message length will be 50
+
+    for(let client of clients) {
+      client.send(message);
+    }
+  });
+
+  ws.on('close', function() {
+    clients.delete(ws);
+  });
+}
+```
