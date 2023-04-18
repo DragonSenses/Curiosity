@@ -384,3 +384,6 @@ function onSocketConnect(ws) {
   });
 }
 ```
+
+Demo in `demo-chat` folder. Just don’t forget to install Node.js and npm install ws before running.
+
