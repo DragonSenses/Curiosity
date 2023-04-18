@@ -179,3 +179,96 @@ eventSource.close();
 ```
 
 Also, there will be no reconnection if the response has an incorrect `Content-Type` or its HTTP status differs from 301, 307, 200 and 204. In such cases the `"error"` event will be emitted, and the browser won't reconnect.
+
+---
+
+### Please note:
+
+When a connection is finally closed, there's no way to "reopen" it. If we'd like to connect again, just create a new `EventSource`.
+
+---
+
+## Message id
+
+When a connection breaks due to network problems, either side can't be sure which messages were received, and which weren't.
+
+To correctly resume the connection, each message should have an `id` field, like this:
+
+```
+data: Message 1
+id: 1
+
+data: Message 2
+id: 2
+
+data: Message 3
+data: of two lines
+id: 3
+```
+
+When a message with `id:` is received, the browser:
+
+- Sets the property `eventSource.lastEventId` to its value.
+- Upon reconnection sends the header `Last-Event-ID` with that `id`, so that the server may re-send following messages.
+
+```smart header="Put `id:` after `data:`"
+Please note: the `id` is appended below message `data` by the server, to ensure that `lastEventId` is updated after the message is received.
+```
+
+## Connection status: readyState
+
+The `EventSource` object has `readyState` property, that has one of three values:
+
+```js no-beautify
+EventSource.CONNECTING = 0; // connecting or reconnecting
+EventSource.OPEN = 1;       // connected
+EventSource.CLOSED = 2;     // connection closed
+```
+
+When an object is created, or the connection is down, it's always `EventSource.CONNECTING` (equals `0`).
+
+We can query this property to know the state of `EventSource`.
+
+## Event types
+
+By default `EventSource` object generates three events:
+
+- `message` -- a message received, available as `event.data`.
+- `open` -- the connection is open.
+- `error` -- the connection could not be established, e.g. the server returned HTTP 500 status.
+
+The server may specify another type of event with `event: ...` at the event start.
+
+For example:
+
+```
+event: join
+data: Bob
+
+data: Hello
+
+event: leave
+data: Bob
+```
+
+To handle custom events, we must use `addEventListener`, not `onmessage`:
+
+```js
+eventSource.addEventListener('join', event => {
+  alert(`Joined ${event.data}`);
+});
+
+eventSource.addEventListener('message', event => {
+  alert(`Said: ${event.data}`);
+});
+
+eventSource.addEventListener('leave', event => {
+  alert(`Left ${event.data}`);
+});
+```
+
+## Full example
+
+Here's the server that sends messages with `1`, `2`, `3`, then `bye` and breaks the connection.
+
+Then the browser automatically reconnects. See `demo-server-sent-events`.
