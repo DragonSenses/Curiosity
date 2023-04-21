@@ -300,3 +300,29 @@ Normally, if such a thing happens, and a user visits a web-page with hacker's Ja
 
 But if a cookie is `httpOnly`, then `document.cookie` doesn't see it, so it is protected.
 
+## Appendix: Cookie functions
+
+Here's a small set of functions to work with cookies, more convenient than a manual modification of `document.cookie`.
+
+There exist many cookie libraries for that, so these are for demo purposes. Fully working though.
+
+### getCookie(name)
+
+The shortest way to access a cookie is to use a [regular expression](info:regular-expressions).
+
+The function `getCookie(name)` returns the cookie with the given `name`:
+
+```js
+// returns the cookie with the given name,
+// or undefined if not found
+function getCookie(name) {
+  let matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+```
+
+Here `new RegExp` is generated dynamically, to match `; name=<value>`.
+
+Please note that a cookie value is encoded, so `getCookie` uses a built-in `decodeURIComponent` function to decode it.
