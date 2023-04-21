@@ -373,3 +373,12 @@ function deleteCookie(name) {
 }
 ```
 
+---
+
+### Updating or deleting must use same path and domain
+
+Please note: when we update or delete a cookie, we should use exactly the same path and domain options as when we set it.
+
+---
+
+Together: [cookie.js](cookie.js).
