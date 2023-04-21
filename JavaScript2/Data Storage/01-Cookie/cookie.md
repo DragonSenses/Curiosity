@@ -255,3 +255,34 @@ When a user follows a legitimate link to `bank.com`, like from their own notes, 
 We could work around that by using two cookies: one for "general recognition", only for the purposes of saying: "Hello, John", and the other one for data-changing operations with `samesite=strict`. Then, a person coming from outside of the site will see a welcome, but payments must be initiated from the bank's website, for the second cookie to be sent.
 
 - **`samesite=lax`**
+
+A more relaxed approach that also protects from XSRF and doesn't break the user experience.
+
+Lax mode, just like `strict`, forbids the browser to send cookies when coming from outside the site, but adds an exception.
+
+A `samesite=lax` cookie is sent if both of these conditions are true:
+1. The HTTP method is "safe" (e.g. GET, but not POST).
+
+    The full list of safe HTTP methods is in the [RFC7231 specification](https://tools.ietf.org/html/rfc7231). Basically, these are the methods that should be used for reading, but not writing the data. They must not perform any data-changing operations. Following a link is always GET, the safe method.
+
+2. The operation performs a top-level navigation (changes URL in the browser address bar).
+
+    That's usually true, but if the navigation is performed in an `<iframe>`, then it's not top-level. Also, JavaScript methods for network requests do not perform any navigation, hence they don't fit.
+
+So, what `samesite=lax` does, is to basically allow the most common "go to URL" operation to have cookies. E.g. opening a website link from notes that satisfy these conditions.
+
+But anything more complicated, like a network request from another site or a form submission, loses cookies.
+
+If that's fine for you, then adding `samesite=lax` will probably not break the user experience and add protection.
+
+Overall, `samesite` is a great option.
+
+There's a drawback:
+
+- `samesite` is ignored (not supported) by very old browsers, year 2017 or so.
+
+**So if we solely rely on `samesite` to provide protection, then old browsers will be vulnerable.**
+
+But we surely can use `samesite` together with other protection measures, like xsrf tokens, to add an additional layer of defence and then, in the future, when old browsers die out, we'll probably be able to drop xsrf tokens.
+
+
