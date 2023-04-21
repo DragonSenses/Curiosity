@@ -326,3 +326,50 @@ function getCookie(name) {
 Here `new RegExp` is generated dynamically, to match `; name=<value>`.
 
 Please note that a cookie value is encoded, so `getCookie` uses a built-in `decodeURIComponent` function to decode it.
+
+### setCookie(name, value, options)
+
+Sets the cookie's `name` to the given `value` with `path=/` by default (can be modified to add other defaults):
+
+```js run
+function setCookie(name, value, options = {}) {
+
+  options = {
+    path: '/',
+    // add other defaults here if necessary
+    ...options
+  };
+
+  if (options.expires instanceof Date) {
+    options.expires = options.expires.toUTCString();
+  }
+
+  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+  for (let optionKey in options) {
+    updatedCookie += "; " + optionKey;
+    let optionValue = options[optionKey];
+    if (optionValue !== true) {
+      updatedCookie += "=" + optionValue;
+    }
+  }
+
+  document.cookie = updatedCookie;
+}
+
+// Example of use:
+setCookie('user', 'John', {secure: true, 'max-age': 3600});
+```
+
+### deleteCookie(name)
+
+To delete a cookie, we can call it with a negative expiration date:
+
+```js
+function deleteCookie(name) {
+  setCookie(name, "", {
+    'max-age': -1
+  })
+}
+```
+
