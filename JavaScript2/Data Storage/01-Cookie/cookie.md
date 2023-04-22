@@ -382,3 +382,42 @@ Please note: when we update or delete a cookie, we should use exactly the same p
 ---
 
 Together: [cookie.js](cookie.js).
+
+## Appendix: Third-party cookies
+
+A cookie is called "third-party" if it's placed by a domain other than the page the user is visiting.
+
+For instance:
+1. A page at `site.com` loads a banner from another site: `<img src="https://ads.com/banner.png">`.
+2. Along with the banner, the remote server at `ads.com` may set the `Set-Cookie` header with a cookie like `id=1234`. Such a cookie originates from the `ads.com` domain, and will only be visible at `ads.com`:
+
+    ![](cookie-third-party.svg)
+
+3. Next time when `ads.com` is accessed, the remote server gets the `id` cookie and recognizes the user:
+
+    ![](cookie-third-party-2.svg)
+
+4. What's even more important is, when the user moves from `site.com` to another site `other.com`, which also has a banner, then `ads.com` gets the cookie, as it belongs to `ads.com`, thus recognizing the visitor and tracking him as he moves between sites:
+
+    ![](cookie-third-party-3.svg)
+
+
+Third-party cookies are traditionally used for tracking and ads services, due to their nature. They are bound to the originating domain, so `ads.com` can track the same user between different sites, if they all access it.
+
+Naturally, some people don't like being tracked, so browsers allow to disable such cookies.
+
+Also, some modern browsers employ special policies for such cookies:
+- Safari does not allow third-party cookies at all.
+- Firefox comes with a "black list" of third-party domains where it blocks third-party cookies.
+
+
+---
+
+### Please note: 
+
+If we load a script from a third-party domain, like `<script src="https://google-analytics.com/analytics.js">`, and that script uses `document.cookie` to set a cookie, then such cookie is not third-party.
+
+If a script sets a cookie, then no matter where the script came from -- the cookie belongs to the domain of the current webpage.
+
+---
+
