@@ -78,3 +78,105 @@ alert( localStorage.getItem('test') ); // 1
 We only have to be on the same origin (domain/port/protocol), the url path can be different.
 
 The `localStorage` is shared between all windows with the same origin, so if we set the data in one window, the change becomes visible in another one.
+
+## Object-like access
+
+We can also use a plain object way of getting/setting keys, like this:
+
+```js run
+// set key
+localStorage.test = 2;
+
+// get key
+alert( localStorage.test ); // 2
+
+// remove key
+delete localStorage.test;
+```
+
+That's allowed for historical reasons, and mostly works, ***but generally not recommended***, because:
+
+1. If the key is user-generated, it can be anything, like `length` or `toString`, or another built-in method of `localStorage`. In that case `getItem/setItem` work fine, while object-like access fails:
+
+    ```js run
+    let key = 'length';
+    localStorage[key] = 5; // Error, can't assign length
+    ```
+
+2. There's a `storage` event, it triggers when we modify the data. That event does not happen for object-like access. We'll see that later in this chapter.
+
+## Looping over keys
+
+As we've seen, the methods provide "get/set/remove by key" functionality. But how to get all saved values or keys?
+
+Unfortunately, storage objects are not iterable.
+
+One way is to loop over them as over an array:
+
+```js run
+for(let i=0; i<localStorage.length; i++) {
+  let key = localStorage.key(i);
+  alert(`${key}: ${localStorage.getItem(key)}`);
+}
+```
+
+Another way is to use `for key in localStorage` loop, just as we do with regular objects.
+
+It iterates over keys, but also outputs few built-in fields that we don't need:
+
+```js run
+// bad try
+for(let key in localStorage) {
+  alert(key); // shows getItem, setItem and other built-in stuff
+}
+```
+
+...So we need either to filter fields from the prototype with `hasOwnProperty` check:
+
+```js run
+for(let key in localStorage) {
+  if (!localStorage.hasOwnProperty(key)) {
+    continue; // skip keys like "setItem", "getItem" etc
+  }
+  alert(`${key}: ${localStorage.getItem(key)}`);
+}
+```
+
+...Or just get the "own" keys with `Object.keys` and then loop over them if needed:
+
+```js run
+let keys = Object.keys(localStorage);
+for(let key of keys) {
+  alert(`${key}: ${localStorage.getItem(key)}`);
+}
+```
+
+The latter works, because `Object.keys` only returns the keys that belong to the object, ignoring the prototype.
+
+## Strings only
+
+Please note that both key and value must be strings.
+
+If they were any other type, like a number, or an object, they would get converted to a string automatically:
+
+```js run
+localStorage.user = {name: "John"};
+alert(localStorage.user); // [object Object]
+```
+
+We can use `JSON` to store objects though:
+
+```js run
+localStorage.user = JSON.stringify({name: "John"});
+
+// sometime later
+let user = JSON.parse( localStorage.user );
+alert( user.name ); // John
+```
+
+Also it is possible to stringify the whole storage object, e.g. for debugging purposes:
+
+```js run
+// added formatting options to JSON.stringify to make the object look nicer
+alert( JSON.stringify(localStorage, null, 2) );
+```
