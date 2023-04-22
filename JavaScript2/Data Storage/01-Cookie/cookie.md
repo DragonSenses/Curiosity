@@ -421,3 +421,27 @@ If a script sets a cookie, then no matter where the script came from -- the cook
 
 ---
 
+## Appendix: GDPR
+
+This topic is not related to JavaScript at all, just something to keep in mind when setting cookies.
+
+There's a legislation in Europe called GDPR, that enforces a set of rules for websites to respect the users' privacy. One of these rules is to require an explicit permission for tracking cookies from the user.
+
+Please note, that's only about tracking/identifying/authorizing cookies.
+
+So, if we set a cookie that just saves some information, but neither tracks nor identifies the user, then we are free to do it.
+
+But if we are going to set a cookie with an authentication session or a tracking id, then a user must allow that.
+
+Websites generally have two variants of following GDPR. You must have seen them both already in the web:
+
+1. If a website wants to set tracking cookies only for authenticated users.
+
+    To do so, the registration form should have a checkbox like "accept the privacy policy" (that describes how cookies are used), the user must check it, and then the website is free to set auth cookies.
+
+2. If a website wants to set tracking cookies for everyone.
+
+    To do so legally, a website shows a modal "splash screen" for newcomers, and requires them to agree to the cookies. Then the website can set them and let people see the content. That can be disturbing for new visitors though. No one likes to see such "must-click" modal splash screens instead of the content. But GDPR requires an explicit agreement.
+
+
+GDPR is not only about cookies, it's about other privacy-related issues too, but that's too much beyond our scope.
