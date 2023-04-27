@@ -187,3 +187,79 @@ We can handle things more gracefully in `db.onversionchange`, prompt the visitor
 Or, an alternative approach would be to not close the database in `db.onversionchange`, but instead use the `onblocked` handler (in the new tab) to alert the visitor, tell him that the newer version can't be loaded until they close other tabs.
 
 These update collisions happen rarely, but we should at least have some handling for them, at least an `onblocked` handler, to prevent our script from dying silently.
+
+## Object store
+
+To store something in IndexedDB, we need an *object store*.
+
+An object store is a core concept of IndexedDB. Counterparts in other databases are called "tables" or "collections". It's where the data is stored. A database may have multiple stores: one for users, another one for goods, etc.
+
+Despite being named an "object store", primitives can be stored too.
+
+**We can store almost any value, including complex objects.**
+
+IndexedDB uses the [standard serialization algorithm](https://www.w3.org/TR/html53/infrastructure.html#section-structuredserializeforstorage) to clone-and-store an object. It's like `JSON.stringify`, but more powerful, capable of storing much more datatypes.
+
+An example of an object that can't be stored: an object with circular references. Such objects are not serializable. `JSON.stringify` also fails for such objects.
+
+**There must be a unique `key` for every value in the store.**     
+
+A key must be one of these types - number, date, string, binary, or array. It's a unique identifier, so we can search/remove/update values by the key.
+
+![](indexeddb-structure.svg)
+
+As we'll see very soon, we can provide a key when we add a value to the store, similar to `localStorage`. But when we store objects, IndexedDB allows setting up an object property as the key, which is much more convenient. Or we can auto-generate keys.
+
+But we need to create an object store first.
+
+The syntax to create an object store:
+
+```js
+db.createObjectStore(name[, keyOptions]);
+```
+
+Please note, the operation is synchronous, no `await` needed.
+
+- `name` is the store name, e.g. `"books"` for books,
+- `keyOptions` is an optional object with one of two properties:
+  - `keyPath` -- a path to an object property that IndexedDB will use as the key, e.g. `id`.
+  - `autoIncrement` -- if `true`, then the key for a newly stored object is generated automatically, as an ever-incrementing number.
+
+If we don't supply `keyOptions`, then we'll need to provide a key explicitly later, when storing an object.
+
+For instance, this object store uses `id` property as the key:
+
+```js
+db.createObjectStore('books', {keyPath: 'id'});
+```
+
+**An object store can only be created/modified while updating the DB version, in `upgradeneeded` handler.**
+
+That's a technical limitation. Outside of the handler we'll be able to add/remove/update the data, but object stores can only be created/removed/altered during a version update.
+
+To perform a database version upgrade, there are two main approaches:
+
+1. We can implement per-version upgrade functions: from 1 to 2, from 2 to 3, from 3 to 4 etc. Then, in `upgradeneeded` we can compare versions (e.g. old 2, now 4) and run per-version upgrades step by step, for every intermediate version (2 to 3, then 3 to 4).
+2. Or we can just examine the database: get a list of existing object stores as `db.objectStoreNames`. That object is a [DOMStringList](https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#domstringlist) that provides `contains(name)` method to check for existance. And then we can do updates depending on what exists and what doesn't.
+
+For small databases the second variant may be simpler.
+
+Here's the demo of the second approach:
+
+```js
+let openRequest = indexedDB.open("db", 2);
+
+// create/upgrade the database without version checks
+openRequest.onupgradeneeded = function() {
+  let db = openRequest.result;
+  if (!db.objectStoreNames.contains('books')) { // if there's no "books" store
+    db.createObjectStore('books', {keyPath: 'id'}); // create it
+  }
+};
+```
+
+To delete an object store:
+
+```js
+db.deleteObjectStore('books')
+```
