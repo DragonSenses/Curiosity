@@ -134,3 +134,56 @@ To protect from errors, we should check `db.version` and suggest a page reload. 
 ---
 
 ### Parallel update problem
+
+As we're talking about versioning, let's tackle a small related problem.
+
+Let's say:
+1. A visitor opened our site in a browser tab, with database version `1`.
+2. Then we rolled out an update, so our code is newer.
+3. And then the same visitor opens our site in another tab.
+
+So there's a tab with an open connection to DB version `1`, while the second one attempts to update it to version `2` in its `upgradeneeded` handler.
+
+The problem is that a database is shared between two tabs, as it's the same site, same origin. And it can't be both version `1` and `2`. To perform the update to version `2`, all connections to version 1 must be closed, including the one in the first tab.
+
+In order to organize that, the `versionchange` event triggers on the "outdated" database object. We should listen for it and close the old database connection (and probably suggest a page reload, to load the updated code).
+
+If we don't listen for the `versionchange` event and don't close the old connection, then the second, new connection won't be made. The `openRequest` object will emit the `blocked` event instead of `success`. So the second tab won't work.
+
+Here's the code to correctly handle the parallel upgrade. It installs the `onversionchange` handler, that triggers if the current database connection becomes outdated (db version is updated elsewhere) and closes the connection.
+
+```js
+let openRequest = indexedDB.open("store", 2);
+
+openRequest.onupgradeneeded = ...;
+openRequest.onerror = ...;
+
+openRequest.onsuccess = function() {
+  let db = openRequest.result;
+
+  db.onversionchange = function() {
+    db.close();
+    alert("Database is outdated, please reload the page.")
+  };
+
+  // ...the db is ready, use it...
+};
+
+openRequest.onblocked = function() {
+  // this event shouldn't trigger if we handle onversionchange correctly
+
+  // it means that there's another open connection to the same database
+  // and it wasn't closed after db.onversionchange triggered for it
+};
+```
+
+...In other words, here we do two things:
+
+1. The `db.onversionchange` listener informs us about a parallel update attempt, if the current database version becomes outdated.
+2. The `openRequest.onblocked` listener informs us about the opposite situation: there's a connection to an outdated version elsewhere, and it doesn't close, so the newer connection can't be made.
+
+We can handle things more gracefully in `db.onversionchange`, prompt the visitor to save the data before the connection is closed and so on. 
+
+Or, an alternative approach would be to not close the database in `db.onversionchange`, but instead use the `onblocked` handler (in the new tab) to alert the visitor, tell him that the newer version can't be loaded until they close other tabs.
+
+These update collisions happen rarely, but we should at least have some handling for them, at least an `onblocked` handler, to prevent our script from dying silently.
