@@ -263,3 +263,44 @@ To delete an object store:
 ```js
 db.deleteObjectStore('books')
 ```
+
+## Transactions
+
+The term "transaction" is generic, used in many kinds of databases.
+
+A transaction is a group of operations, that should either all succeed or all fail.
+
+For instance, when a person buys something, we need to:
+
+1. Subtract the money from their account.
+2. Add the item to their inventory.
+
+It would be pretty bad if we complete the 1st operation, and then something goes wrong, e.g. lights out, and we fail to do the 2nd. Both should either succeed (purchase complete, good!) or both fail (at least the person kept their money, so they can retry).
+
+Transactions can guarantee that.
+
+**All data operations must be made within a transaction in IndexedDB.**
+
+To start a transaction:
+
+```js
+db.transaction(store[, type]);
+```
+
+- `store` is a store name that the transaction is going to access, e.g. `"books"`. Can be an array of store names if we're going to access multiple stores.
+- `type` – a transaction type, one of:
+  - `readonly` -- can only read, the default.
+  - `readwrite` -- can only read and write the data, but not create/remove/alter object stores.
+
+There's also `versionchange` transaction type: such transactions can do everything, but we can't create them manually. IndexedDB automatically creates a `versionchange` transaction when opening the database, for `upgradeneeded` handler. That's why it's a single place where we can update the database structure, create/remove object stores.
+
+---
+
+### Why are there different types of transactions?
+
+Performance is the reason why transactions need to be labeled either `readonly` and `readwrite`.
+
+Many `readonly` transactions are able to access the same store concurrently, but `readwrite` transactions can't. A `readwrite` transaction "locks" the store for writing. The next transaction must wait before the previous one finishes before accessing the same store.
+
+---
+
