@@ -678,3 +678,65 @@ let request = store.openCursor(query, [direction]);
 
 // to get keys, not values (like getAllKeys): store.openKeyCursor
 ```
+
+- **`query`** is a key or a key range, same as for `getAll`.
+- **`direction`** is an optional argument, which order to use:
+  - `"next"` -- the default, the cursor walks up from the record with the lowest key.
+  - `"prev"` -- the reverse order: down from the record with the biggest key.
+  - `"nextunique"`, `"prevunique"` -- same as above, but skip records with the same key (only for cursors over indexes, e.g. for multiple books with price=5 only the first one will be returned).
+
+**The main difference of the cursor is that `request.onsuccess` triggers multiple times: once for each result.**
+
+Here's an example of how to use a cursor:
+
+```js
+let transaction = db.transaction("books");
+let books = transaction.objectStore("books");
+
+let request = books.openCursor();
+
+// called for each book found by the cursor
+request.onsuccess = function() {
+  let cursor = request.result;
+  if (cursor) {
+    let key = cursor.key; // book key (id field)
+    let value = cursor.value; // book object
+    console.log(key, value);
+    cursor.continue();
+  } else {
+    console.log("No more books");
+  }
+};
+```
+
+The main cursor methods are:
+
+- `advance(count)` -- advance the cursor `count` times, skipping values.
+- `continue([key])` -- advance the cursor to the next value in range matching (or immediately after `key` if given).
+
+Whether there are more values matching the cursor or not -- `onsuccess` gets called, and then in `result` we can get the cursor pointing to the next record, or `undefined`.
+
+In the example above the cursor was made for the object store.
+
+But we also can make a cursor over an index. As we remember, indexes allow to search by an object field. Cursors over indexes do precisely the same as over object stores -- they save memory by returning one value at a time.
+
+For cursors over indexes, `cursor.key` is the index key (e.g. price), and we should use `cursor.primaryKey` property for the object key:
+
+```js
+let request = priceIdx.openCursor(IDBKeyRange.upperBound(5));
+
+// called for each record
+request.onsuccess = function() {
+  let cursor = request.result;
+  if (cursor) {
+    let primaryKey = cursor.primaryKey; // next object store key (id field)
+    let value = cursor.value; // next object store object (book object)
+    let key = cursor.key; // next index key (price)
+    console.log(key, value);
+    cursor.continue();
+  } else {
+    console.log("No more books");
+  }
+};
+```
+
