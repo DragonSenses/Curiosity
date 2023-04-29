@@ -592,3 +592,35 @@ openRequest.onupgradeneeded = function() {
 
 Imagine that our `inventory` has 4 books. Here's the picture that shows exactly what the `index` is:
 
+![](indexeddb-index.svg)
+
+As said, the index for each value of `price` (second argument) keeps the list of keys that have that price.
+
+The index keeps itself up to date automatically, we don't have to care about it.
+
+Now, when we want to search for a given price, we simply apply the same search methods to the index:
+
+```js
+let transaction = db.transaction("books"); // readonly
+let books = transaction.objectStore("books");
+let priceIndex = books.index("price_idx");
+
+let request = priceIndex.getAll(10);
+
+request.onsuccess = function() {
+  if (request.result !== undefined) {
+    console.log("Books", request.result); // array of books with price=10
+  } else {
+    console.log("No such books");
+  }
+};
+```
+
+We can also use `IDBKeyRange` to create ranges and looks for cheap/expensive books:
+
+```js
+// find books where price <= 5
+let request = priceIndex.getAll(IDBKeyRange.upperBound(5));
+```
+
+Indexes are internally sorted by the tracked object field, `price` in our case. So when we do the search, the results are also sorted by `price`.
