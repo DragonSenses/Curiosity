@@ -551,3 +551,44 @@ An object store sorts values by key internally.
 So requests that return many values always return them in sorted by key order.
 
 ---
+
+### By a field using an index
+
+To search by other object fields, we need to create an additional data structure named "index".
+
+An index is an "add-on" to the store that tracks a given object field. For each value of that field, it stores a list of keys for objects that have that value. There will be a more detailed picture below.
+
+The syntax:
+
+```js
+objectStore.createIndex(name, keyPath, [options]);
+```
+
+- **`name`** -- index name,
+- **`keyPath`** -- path to the object field that the index should track (we're going to search by that field),
+- **`option`** -- an optional object with properties:
+  - **`unique`** -- if true, then there may be only one object in the store with the given value at the `keyPath`. The index will enforce that by generating an error if we try to add a duplicate.
+  - **`multiEntry`** -- only used if the value on `keyPath` is an array. In that case, by default, the index will treat the whole array as the key. But if `multiEntry` is true, then the index will keep a list of store objects for each value in that array. So array members become index keys.
+
+In our example, we store books keyed by `id`.
+
+Let's say we want to search by `price`.
+
+First, we need to create an index. It must be done in `upgradeneeded`, just like an object store:
+
+```js
+openRequest.onupgradeneeded = function() {
+  // we must create the index here, in versionchange transaction
+  let books = db.createObjectStore('books', {keyPath: 'id'});
+*!*
+  let index = books.createIndex('price_idx', 'price');
+*/!*
+};
+```
+
+- The index will track `price` field.
+- The price is not unique, there may be multiple books with the same price, so we don't set `unique` option.
+- The price is not an array, so `multiEntry` flag is not applicable.
+
+Imagine that our `inventory` has 4 books. Here's the picture that shows exactly what the `index` is:
+
