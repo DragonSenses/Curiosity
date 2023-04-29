@@ -455,3 +455,99 @@ transaction.onabort = function() {
   console.log("Error", transaction.error);
 };
 ```
+
+### Event delegation
+
+Do we need onerror/onsuccess for every request? Not every time. We can use event delegation instead.
+
+**IndexedDB events bubble: `request` -> `transaction` -> `database`.**
+
+All events are DOM events, with capturing and bubbling, but usually only bubbling stage is used.
+
+So we can catch all errors using `db.onerror` handler, for reporting or other purposes:
+
+```js
+db.onerror = function(event) {
+  let request = event.target; // the request that caused the error
+
+  console.log("Error", request.error);
+};
+```
+
+...But what if an error is fully handled? We don't want to report it in that case.
+
+We can stop the bubbling and hence `db.onerror` by using `event.stopPropagation()` in `request.onerror`.
+
+```js
+request.onerror = function(event) {
+  if (request.error.name == "ConstraintError") {
+    console.log("Book with such id already exists"); // handle the error
+    event.preventDefault(); // don't abort the transaction
+    event.stopPropagation(); // don't bubble error up, "chew" it
+  } else {
+    // do nothing
+    // transaction will be aborted
+    // we can take care of error in transaction.onabort
+  }
+};
+```
+
+## Searching
+
+There are two main types of search in an object store:
+
+1. By a key value or a key range. In our "books" storage that would be a value or range of values of `book.id`.
+2. By another object field, e.g. `book.price`. This required an additional data structure, named "index".
+
+### By key
+
+First let's deal with the first type of search: by key.
+
+Searching methods support both exact key values and so-called "ranges of values" -- [IDBKeyRange](https://www.w3.org/TR/IndexedDB/#keyrange) objects that specify an acceptable "key range".
+
+`IDBKeyRange` objects are created using following calls:
+
+- `IDBKeyRange.lowerBound(lower, [open])` means: `≥lower` (or `>lower` if `open` is true)
+- `IDBKeyRange.upperBound(upper, [open])` means: `≤upper` (or `<upper` if `open` is true)
+- `IDBKeyRange.bound(lower, upper, [lowerOpen], [upperOpen])` means: between `lower` and `upper`. If the open flags is true, the corresponding key is not included in the range.
+- `IDBKeyRange.only(key)` -- a range that consists of only one `key`, rarely used.
+
+We'll see practical examples of using them very soon.
+
+To perform the actual search, there are following methods. They accept a `query` argument that can be either an exact key or a key range:
+
+- `store.get(query)` -- search for the first value by a key or a range.
+- `store.getAll([query], [count])` -- search for all values, limit by `count` if given.
+- `store.getKey(query)` -- search for the first key that satisfies the query, usually a range.
+- `store.getAllKeys([query], [count])` -- search for all keys that satisfy the query, usually a range, up to `count` if given.
+- `store.count([query])` -- get the total count of keys that satisfy the query, usually a range.
+
+For instance, we have a lot of books in our store. Remember, the `id` field is the key, so all these methods can search by `id`.
+
+Request examples:
+
+```js
+// get one book
+books.get('js')
+
+// get books with 'css' <= id <= 'html'
+books.getAll(IDBKeyRange.bound('css', 'html'))
+
+// get books with id < 'html'
+books.getAll(IDBKeyRange.upperBound('html', true))
+
+// get all books
+books.getAll()
+
+// get all keys, where id > 'js'
+books.getAllKeys(IDBKeyRange.lowerBound('js', true))
+```
+
+---
+
+### Object store is always sorted
+An object store sorts values by key internally.
+
+So requests that return many values always return them in sorted by key order.
+
+---
