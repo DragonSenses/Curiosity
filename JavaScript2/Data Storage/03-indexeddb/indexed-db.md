@@ -624,3 +624,57 @@ let request = priceIndex.getAll(IDBKeyRange.upperBound(5));
 ```
 
 Indexes are internally sorted by the tracked object field, `price` in our case. So when we do the search, the results are also sorted by `price`.
+
+## Deleting from store
+
+The `delete` method looks up values to delete by a query, the call format is similar to `getAll`:
+
+- **`delete(query)`** -- delete matching values by query.
+
+For instance:
+
+```js
+// delete the book with id='js'
+books.delete('js');
+```
+
+If we'd like to delete books based on a price or another object field, then we should first find the key in the index, and then call `delete`:
+
+```js
+// find the key where price = 5
+let request = priceIndex.getKey(5);
+
+request.onsuccess = function() {
+  let id = request.result;
+  let deleteRequest = books.delete(id);
+};
+```
+
+To delete everything:
+
+```js
+books.clear(); // clear the storage.
+```
+
+## Cursors
+
+Methods like `getAll/getAllKeys` return an array of keys/values.
+
+But an object storage can be huge, bigger than the available memory. Then `getAll` will fail to get all records as an array.
+
+What to do?
+
+Cursors provide the means to work around that.
+
+**A *cursor* is a special object that traverses the object storage, given a query, and returns one key/value at a time, thus saving memory.**
+
+As an object store is sorted internally by key, a cursor walks the store in key order (ascending by default).
+
+The syntax:
+
+```js
+// like getAll, but with a cursor:
+let request = store.openCursor(query, [direction]);
+
+// to get keys, not values (like getAllKeys): store.openKeyCursor
+```
