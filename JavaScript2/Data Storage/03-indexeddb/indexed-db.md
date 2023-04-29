@@ -740,6 +740,8 @@ request.onsuccess = function() {
 };
 ```
 
+![](indexeddb-cursor.svg)
+
 ## Promise wrapper
 
 Adding `onsuccess/onerror` to every request is quite a cumbersome task. Sometimes we can make our life easier by using event delegation, e.g. set handlers on the whole transactions, but `async/await` is much more convenient.
@@ -788,3 +790,68 @@ window.addEventListener('unhandledrejection', event => {
   ...report about the error...
 });
 ```
+
+### "Inactive transaction" pitfall
+
+As we already know, a transaction auto-commits as soon as the browser is done with the current code and microtasks. So if we put a *macrotask* like `fetch` in the middle of a transaction, then the transaction won't wait for it to finish. It just auto-commits. So the next request in it would fail.
+
+For a promise wrapper and `async/await` the situation is the same.
+
+Here's an example of `fetch` in the middle of the transaction:
+
+```js
+let transaction = db.transaction("inventory", "readwrite");
+let inventory = transaction.objectStore("inventory");
+
+await inventory.add({ id: 'js', price: 10, created: new Date() });
+
+await fetch(...); // (*)
+
+await inventory.add({ id: 'js', price: 10, created: new Date() }); // Error
+```
+
+The next `inventory.add` after `fetch` `(*)` fails with an "inactive transaction" error, because the transaction is already committed and closed at that time.
+
+The workaround is the same as when working with native IndexedDB: either make a new transaction or just split things apart.
+
+1. Prepare the data and fetch all that's needed first.
+2. Then save in the database.
+
+### Getting native objects
+
+Internally, the wrapper performs a native IndexedDB request, adding `onerror/onsuccess` to it, and returns a promise that rejects/resolves with the result.
+
+That works fine most of the time. The examples are at the lib page <https://github.com/jakearchibald/idb>.
+
+In few rare cases, when we need the original `request` object, we can access it as `promise.request` property of the promise:
+
+```js
+let promise = books.add(book); // get a promise (don't await for its result)
+
+let request = promise.request; // native request object
+let transaction = request.transaction; // native transaction object
+
+// ...do some native IndexedDB voodoo...
+
+let result = await promise; // if still needed
+```
+
+---
+
+## Summary
+
+IndexedDB can be thought of as a "localStorage on steroids". It's a simple key-value database, powerful enough for offline apps, yet simple to use.
+
+The best manual is the specification, [the current one](https://www.w3.org/TR/IndexedDB-2/) is 2.0, but few methods from [3.0](https://w3c.github.io/IndexedDB/) (it's not much different) are partially supported.
+
+The basic usage can be described with a few phrases:
+
+1. Get a promise wrapper like [idb](https://github.com/jakearchibald/idb).
+2. Open a database: `idb.openDb(name, version, onupgradeneeded)`
+    - Create object storages and indexes in `onupgradeneeded` handler or perform version update if needed.
+3. For requests:
+    - Create transaction `db.transaction('books')` (readwrite if needed).
+    - Get the object store `transaction.objectStore('books')`.
+4. Then, to search by a key, call methods on the object store directly.
+    - To search by an object field, create an index.
+5. If the data does not fit in memory, use a cursor.
