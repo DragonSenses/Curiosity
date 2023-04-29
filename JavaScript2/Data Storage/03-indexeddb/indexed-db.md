@@ -389,3 +389,69 @@ That's because `fetch` is an asynchronous operation, a macrotask. Transactions a
 Authors of IndexedDB spec believe that transactions should be short-lived. Mostly for performance reasons.
 
 Notably, `readwrite` transactions "lock" the stores for writing. So if one part of the application initiated `readwrite` on `books` object store, then another part that wants to do the same has to wait: the new transaction "hangs" till the first one is done. That can lead to strange delays if transactions take a long time.
+
+So, what to do?
+
+In the example above we could make a new `db.transaction` right before the new request `(*)`.
+
+But it will be even better, if we'd like to keep the operations together, in one transaction, to split apart IndexedDB transactions and "other" async stuff.
+
+First, make `fetch`, prepare the data if needed, afterwards create a transaction and perform all the database requests, it'll work then.
+
+To detect the moment of successful completion, we can listen to `transaction.oncomplete` event:
+
+```js
+let transaction = db.transaction("books", "readwrite");
+
+// ...perform operations...
+
+transaction.oncomplete = function() {
+  console.log("Transaction is complete");
+};
+```
+
+Only `complete` guarantees that the transaction is saved as a whole. Individual requests may succeed, but the final write operation may go wrong (e.g. I/O error or something).
+
+To manually abort the transaction, call:
+
+```js
+transaction.abort();
+```
+
+That cancels all modification made by the requests in it and triggers `transaction.onabort` event.
+
+## Error handling
+
+Write requests may fail.
+
+That's to be expected, not only because of possible errors at our side, but also for reasons not related to the transaction itself. For instance, the storage quota may be exceeded. So we must be ready to handle such case.
+
+**A failed request automatically aborts the transaction, canceling all its changes.**
+
+In some situations, we may want to handle the failure (e.g. try another request), without canceling existing changes, and continue the transaction. That's possible. The `request.onerror` handler is able to prevent the transaction abort by calling `event.preventDefault()`.
+
+In the example below a new book is added with the same key (`id`) as the existing one. The `store.add` method generates a `"ConstraintError"` in that case. We handle it without canceling the transaction:
+
+```js
+let transaction = db.transaction("books", "readwrite");
+
+let book = { id: 'js', price: 10 };
+
+let request = transaction.objectStore("books").add(book);
+
+request.onerror = function(event) {
+  // ConstraintError occurs when an object with the same id already exists
+  if (request.error.name == "ConstraintError") {
+    console.log("Book with such id already exists"); // handle the error
+    event.preventDefault(); // don't abort the transaction
+    // use another key for the book?
+  } else {
+    // unexpected error, can't handle it
+    // the transaction will abort
+  }
+};
+
+transaction.onabort = function() {
+  console.log("Error", transaction.error);
+};
+```
