@@ -740,3 +740,51 @@ request.onsuccess = function() {
 };
 ```
 
+## Promise wrapper
+
+Adding `onsuccess/onerror` to every request is quite a cumbersome task. Sometimes we can make our life easier by using event delegation, e.g. set handlers on the whole transactions, but `async/await` is much more convenient.
+
+Let's use a thin promise wrapper <https://github.com/jakearchibald/idb> further in this chapter. It creates a global `idb` object with [promisified](info:promisify) IndexedDB methods.
+
+Then, instead of `onsuccess/onerror` we can write like this:
+
+```js
+let db = await idb.openDB('store', 1, db => {
+  if (db.oldVersion == 0) {
+    // perform the initialization
+    db.createObjectStore('books', {keyPath: 'id'});
+  }
+});
+
+let transaction = db.transaction('books', 'readwrite');
+let books = transaction.objectStore('books');
+
+try {
+  await books.add(...);
+  await books.add(...);
+
+  await transaction.complete;
+
+  console.log('jsbook saved');
+} catch(err) {
+  console.log('error', err.message);
+}
+```
+
+So we have all the sweet "plain async code" and "try..catch" stuff.
+
+### Error handling
+
+If we don't catch an error, then it falls through, till the closest outer `try..catch`.
+
+An uncaught error becomes an "unhandled promise rejection" event on `window` object.
+
+We can handle such errors like this:
+
+```js
+window.addEventListener('unhandledrejection', event => {
+  let request = event.target; // IndexedDB native request object
+  let error = event.reason; //  Unhandled error object, same as request.error
+  ...report about the error...
+});
+```
