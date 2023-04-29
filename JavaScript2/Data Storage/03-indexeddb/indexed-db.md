@@ -304,3 +304,88 @@ Many `readonly` transactions are able to access the same store concurrently, but
 
 ---
 
+After the transaction is created, we can add an item to the store, like this:
+
+```js
+let transaction = db.transaction("books", "readwrite"); // (1)
+
+// get an object store to operate on it
+let books = transaction.objectStore("books"); // (2)
+
+let book = {
+  id: 'js',
+  price: 10,
+  created: new Date()
+};
+
+let request = books.add(book); // (3)
+
+request.onsuccess = function() { // (4)
+  console.log("Book added to the store", request.result);
+};
+
+request.onerror = function() {
+  console.log("Error", request.error);
+};
+```
+
+There were basically four steps:
+
+1. Create a transaction, mentioning all the stores it's going to access, at `(1)`.
+2. Get the store object using `transaction.objectStore(name)`, at `(2)`.
+3. Perform the request to the object store `books.add(book)`, at `(3)`.
+4. ...Handle request success/error `(4)`, then we can make other requests if needed, etc.
+
+Object stores support two methods to store a value:
+
+- **put(value, [key])**
+    Add the `value` to the store. The `key` is supplied only if the object store did not have `keyPath` or `autoIncrement` option. If there's already a value with the same key, it will be replaced.
+
+- **add(value, [key])**
+    Same as `put`, but if there's already a value with the same key, then the request fails, and an error with the name `"ConstraintError"` is generated.
+
+Similar to opening a database, we can send a request: `books.add(book)`, and then wait for `success/error` events.
+
+- The `request.result` for `add` is the key of the new object.
+- The error is in `request.error` (if any).
+
+---
+
+## Transactions' autocommit
+
+In the example above we started the transaction and made `add` request. But as we stated previously, a transaction may have multiple associated requests, that must either all succeed or all fail. How do we mark the transaction as finished, with no more requests to come?
+
+The short answer is: we don't.
+
+In the next version 3.0 of the specification, there will probably be a manual way to finish the transaction, but right now in 2.0 there isn't.
+
+**When all transaction requests are finished, and the [microtasks queue](info:microtask-queue) is empty, it is committed automatically.**
+
+Usually, we can assume that a transaction commits when all its requests are complete, and the current code finishes.
+
+So, in the example above no special call is needed to finish the transaction.
+
+Transactions auto-commit principle has an important side effect. We can't insert an async operation like `fetch`, `setTimeout` in the middle of a transaction. IndexedDB will not keep the transaction waiting till these are done.
+
+In the code below, `request2` in the line `(*)` fails, because the transaction is already committed, and can't make any request in it:
+
+```js
+let request1 = books.add(book);
+
+request1.onsuccess = function() {
+  fetch('/').then(response => {
+*!*
+    let request2 = books.add(anotherBook); // (*)
+*/!*
+    request2.onerror = function() {
+      console.log(request2.error.name); // TransactionInactiveError
+    };
+  });
+};
+```
+
+That's because `fetch` is an asynchronous operation, a macrotask. Transactions are closed before the browser starts doing macrotasks.
+
+Authors of IndexedDB spec believe that transactions should be short-lived. Mostly for performance reasons.
+
+Notably, `readwrite` transactions "lock" the stores for writing. So if one part of the application initiated `readwrite` on `books` object store, then another part that wants to do the same has to wait: the new transaction "hangs" till the first one is done. That can lead to strange delays if transactions take a long time.
