@@ -97,3 +97,29 @@ There's a mathematical formula for Bezier curves, but let's cover it a bit later
 | For `t=0.25`             | For `t=0.5`            |
 | ------------------------ | ---------------------- |
 | ![](bezier3-draw1.svg)   | ![](bezier3-draw2.svg) |
+
+4. Now in the <span style="color:#167490">blue</span> segment take a point on the distance proportional to the same value of `t`. That is, for `t=0.25` (the left picture) we have a point at the end of the left quarter of the segment, and for `t=0.5` (the right picture) -- in the middle of the segment. On pictures above that point is <span style="color:red">red</span>.
+
+5. As `t` runs from `0` to `1`, every value of `t` adds a point to the curve. The set of such points forms the Bezier curve. It's red and parabolic on the pictures above.
+
+That was a process for 3 points. But the same is for 4 points.
+
+
+The algorithm for 4 points:
+
+- Connect control points by segments: 1 -> 2, 2 -> 3, 3 -> 4. There will be 3 <span style="color:#825E28">brown</span> segments.
+- For each `t` in the interval from `0` to `1`:
+    - We take points on these segments on the distance proportional to `t` from the beginning. These points are connected, so that we have two <span style="color:#0A0">green segments</span>.
+    - On these segments we take points proportional to `t`. We get one <span style="color:#167490">blue segment</span>.
+    - On the blue segment we take a point proportional to `t`. On the example above it's <span style="color:red">red</span>.
+- These points together form the curve.
+
+The algorithm is recursive and can be generalized for any number of control points.
+
+Given N of control points:
+
+1. We connect them to get initially N-1 segments.
+2. Then for each `t` from `0` to `1`, we take a point on each segment on the distance proportional to `t` and connect them. There will be N-2 segments.
+3. Repeat step 2 until there is only one point.
+
+These points make the curve.
