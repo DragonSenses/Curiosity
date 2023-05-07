@@ -76,3 +76,20 @@ Here are some examples:
 ![](bezier-car.svg) ![](bezier-letter.svg) ![](bezier-vase.svg)
 
 ## De Casteljau's algorithm
+
+There's a mathematical formula for Bezier curves, but let's cover it a bit later, because
+[De Casteljau's algorithm](https://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm) is identical to the mathematical definition and visually shows how it is constructed.
+
+**De Casteljau's algorithm of building the 3-point bezier curve:**
+
+1. Draw control points. In the demo above they are labeled: `1`, `2`, `3`.
+2. Build segments between control points 1 -> 2 -> 3. In the demo above they are <span style="color:#825E28">brown</span>.
+3. The parameter `t` moves from `0` to `1`. In the example above the step `0.05` is used: the loop goes over `0, 0.05, 0.1, 0.15, ... 0.95, 1`.
+
+    For each of these values of `t`:
+
+    - On each <span style="color:#825E28">brown</span> segment we take a point located on the distance proportional to `t` from its beginning. As there are two segments, we have two points.
+
+        For instance, for `t=0` -- both points will be at the beginning of segments, and for `t=0.25` -- on the 25% of segment length from the beginning, for `t=0.5` -- 50%(the middle), for `t=1` -- in the end of segments.
+
+    - Connect the points. On the picture below the connecting segment is painted <span style="color:#167490">blue</span>.
