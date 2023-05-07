@@ -80,6 +80,14 @@ Here are some examples:
 There's a mathematical formula for Bezier curves, but let's cover it a bit later, because
 [De Casteljau's algorithm](https://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm) is identical to the mathematical definition and visually shows how it is constructed.
 
+First let's see the 3-points example.
+
+Here's the demo, and the explanation follow.
+
+Control points (1,2 and 3) can be moved by the mouse. Press the "play" button to run it.
+
+[iframe src="demo.svg?p=0,0,0.5,1,1,0&animate=1" height=370]
+
 **De Casteljau's algorithm of building the 3-point bezier curve:**
 
 1. Draw control points. In the demo above they are labeled: `1`, `2`, `3`.
@@ -104,6 +112,9 @@ There's a mathematical formula for Bezier curves, but let's cover it a bit later
 
 That was a process for 3 points. But the same is for 4 points.
 
+The demo for 4 points (points can be moved by a mouse):
+
+[iframe src="demo.svg?p=0,0,0.5,0,0.5,1,1,1&animate=1" height=370]
 
 The algorithm for 4 points:
 
