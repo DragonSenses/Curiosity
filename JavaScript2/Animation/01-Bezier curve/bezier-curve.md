@@ -123,3 +123,20 @@ Given N of control points:
 3. Repeat step 2 until there is only one point.
 
 These points make the curve.
+
+
+As the algorithm is recursive, we can build Bezier curves of any order, that is: using 5, 6 or more control points. But in practice many points are less useful. Usually we take 2-3 points, and for complex lines glue several curves together. That's simpler to develop and calculate.
+
+
+---
+
+### How to draw a curve *through* given points?
+
+To specify a Bezier curve, control points are used. As we can see, they are not on the curve, except the first and the last ones.
+
+Sometimes we have another task: to draw a curve *through several points*, so that all of them are on a single smooth curve. That task is called  [interpolation](https://en.wikipedia.org/wiki/Interpolation), and here we don't cover it.
+
+There are mathematical formulas for such curves, for instance [Lagrange polynomial](https://en.wikipedia.org/wiki/Lagrange_polynomial). In computer graphics [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation) is often used to build smooth curves that connect many points.
+
+---
+
