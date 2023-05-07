@@ -93,3 +93,7 @@ There's a mathematical formula for Bezier curves, but let's cover it a bit later
         For instance, for `t=0` -- both points will be at the beginning of segments, and for `t=0.25` -- on the 25% of segment length from the beginning, for `t=0.5` -- 50%(the middle), for `t=1` -- in the end of segments.
 
     - Connect the points. On the picture below the connecting segment is painted <span style="color:#167490">blue</span>.
+
+| For `t=0.25`             | For `t=0.5`            |
+| ------------------------ | ---------------------- |
+| ![](bezier3-draw1.svg)   | ![](bezier3-draw2.svg) |
