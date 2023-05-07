@@ -135,6 +135,23 @@ Given N of control points:
 
 These points make the curve.
 
+**Run and pause examples to clearly see the segments and how the curve is built.**
+
+A curve that looks like `y=1/t`:
+
+[iframe src="demo.svg?p=0,0,0,0.75,0.25,1,1,1&animate=1" height=370]
+
+Zig-zag control points also work fine:
+
+[iframe src="demo.svg?p=0,0,1,0.5,0,0.5,1,1&animate=1" height=370]
+
+Making a loop is possible:
+
+[iframe src="demo.svg?p=0,0,1,0.5,0,1,0.5,0&animate=1" height=370]
+
+A non-smooth Bezier curve (yeah, that's possible too):
+
+[iframe src="demo.svg?p=0,0,1,1,0,1,1,0&animate=1" height=370]
 
 As the algorithm is recursive, we can build Bezier curves of any order, that is: using 5, 6 or more control points. But in practice many points are less useful. Usually we take 2-3 points, and for complex lines glue several curves together. That's simpler to develop and calculate.
 
