@@ -21,3 +21,71 @@ But in the next chapter we'll do some JavaScript animations to cover more comple
 
 ---
 
+## CSS transitions [#css-transition]
+
+The idea of CSS transitions is simple. We describe a property and how its changes should be animated. When the property changes, the browser paints the animation.
+
+That is, all we need is to change the property, and the fluid transition will be done by the browser.
+
+For instance, the CSS below animates changes of `background-color` for 3 seconds:
+
+```css
+.animated {
+  transition-property: background-color;
+  transition-duration: 3s;
+}
+```
+
+Now if an element has `.animated` class, any change of `background-color` is animated during 3 seconds.
+
+Click the button below to animate the background:
+
+```html run autorun height=60
+<button id="color">Click me</button>
+
+<style>
+  #color {
+    transition-property: background-color;
+    transition-duration: 3s;
+  }
+</style>
+
+<script>
+  color.onclick = function() {
+    this.style.backgroundColor = 'red';
+  };
+</script>
+```
+
+There are 4 properties to describe CSS transitions:
+
+- `transition-property`
+- `transition-duration`
+- `transition-timing-function`
+- `transition-delay`
+
+We'll cover them in a moment, for now let's note that the common `transition` property allows declaring them together in the order: `property duration timing-function delay`, as well as animating multiple properties at once.
+
+For instance, this button animates both `color` and `font-size`:
+
+```html run height=80 autorun no-beautify
+<button id="growing">Click me</button>
+
+<style>
+#growing {
+*!*
+  transition: font-size 3s, color 2s;
+*/!*
+}
+</style>
+
+<script>
+growing.onclick = function() {
+  this.style.fontSize = '36px';
+  this.style.color = 'red';
+};
+</script>
+```
+
+Now, let's cover animation properties one by one.
+
