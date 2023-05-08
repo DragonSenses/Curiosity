@@ -105,7 +105,9 @@ In `transition-delay` we can specify the delay *before* the animation. For insta
 
 Negative values are also possible. Then the animation is shown immediately, but the starting point of the animation will be after given value (time). For example, if `transition-delay` is `-1s` and `transition-duration` is `2s`, then animation starts from the halfway point and total duration will be 1 second.
 
-Here the animation shifts numbers from `0` to `9` using CSS `translate` property: [See `digits`]
+Here the animation shifts numbers from `0` to `9` using CSS `translate` property:
+
+[See `digits`]
 
 The `transform` property is animated like this:
 
@@ -127,7 +129,7 @@ We could also start it from somewhere in the middle of the transition, from an e
 
 Here if you click the digit -- it starts the animation from the current second:
 
-[codetabs src="digits-negative-delay"]
+[See `digits-negative-delay`]
 
 JavaScript does it with an extra line:
 
