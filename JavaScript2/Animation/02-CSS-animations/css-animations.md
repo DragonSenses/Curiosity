@@ -213,3 +213,48 @@ CSS:
 There are several built-in curves: `linear`, `ease`, `ease-in`, `ease-out` and `ease-in-out`.
 
 The `linear` is a shorthand for `cubic-bezier(0, 0, 1, 1)` -- a straight line, which we described above.
+
+Other names are shorthands for the following `cubic-bezier`:
+
+| <code>ease</code><sup>*</sup> | <code>ease-in</code> | <code>ease-out</code> | <code>ease-in-out</code> |
+|-------------------------------|----------------------|-----------------------|--------------------------|
+| <code>(0.25, 0.1, 0.25, 1.0)</code> | <code>(0.42, 0, 1.0, 1.0)</code> | <code>(0, 0, 0.58, 1.0)</code> | <code>(0.42, 0, 0.58, 1.0)</code> |
+| ![ease, figure](ease.svg) | ![ease-in, figure](ease-in.svg) | ![ease-out, figure](ease-out.svg) | ![ease-in-out, figure](ease-in-out.svg) |
+
+`*` -- by default, if there's no timing function, `ease` is used.
+
+So we could use `ease-out` for our slowing down train:
+
+```css
+.train {
+  left: 0;
+  transition: left 5s ease-out;
+  /* same as transition: left 5s cubic-bezier(0, .5, .5, 1); */
+}
+```
+
+But it looks a bit differently.
+
+**A Bezier curve can make the animation exceed its range.**
+
+The control points on the curve can have any `y` coordinates: even negative or huge ones. Then the Bezier curve would also extend very low or high, making the animation go beyond its normal range.
+
+In the example below the animation code is:
+
+```css
+.train {
+  left: 100px;
+  transition: left 5s cubic-bezier(.5, -1, .5, 2);
+  /* click on a train sets left to 450px */
+}
+```
+
+The property `left` should animate from `100px` to `400px`.
+
+But if you click the train, you'll see that:
+
+- First, the train goes *back*: `left` becomes less than `100px`.
+- Then it goes forward, a little bit farther than `400px`.
+- And then back again -- to `400px`.
+
+[See `train-over`]
