@@ -89,3 +89,55 @@ growing.onclick = function() {
 
 Now, let's cover animation properties one by one.
 
+# transition-property
+
+In `transition-property`, we write a list of properties to animate, for instance: `left`, `margin-left`, `height`, `color`. Or we could write `all`, which means "animate all properties".
+
+Do note that, there are properties which can not be animated. However, [most of the generally used properties are animatable](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties).
+
+## transition-duration
+
+In `transition-duration` we can specify how long the animation should take. The time should be in [CSS time format](https://www.w3.org/TR/css3-values/#time): in seconds `s` or milliseconds `ms`.
+
+## transition-delay
+
+In `transition-delay` we can specify the delay *before* the animation. For instance, if `transition-delay` is `1s` and `transition-duration` is `2s`, then the animation starts 1 second after the property change and the total duration will be 2 seconds.
+
+Negative values are also possible. Then the animation is shown immediately, but the starting point of the animation will be after given value (time). For example, if `transition-delay` is `-1s` and `transition-duration` is `2s`, then animation starts from the halfway point and total duration will be 1 second.
+
+Here the animation shifts numbers from `0` to `9` using CSS `translate` property: [See `digits`]
+
+The `transform` property is animated like this:
+
+```css
+#stripe.animate {
+  transform: translate(-90%);
+  transition-property: transform;
+  transition-duration: 9s;
+}
+```
+
+In the example above JavaScript adds the class `.animate` to the element -- and the animation starts:
+
+```js
+stripe.classList.add('animate');
+```
+
+We could also start it from somewhere in the middle of the transition, from an exact number, e.g. corresponding to the current second, using a negative `transition-delay`.
+
+Here if you click the digit -- it starts the animation from the current second:
+
+[codetabs src="digits-negative-delay"]
+
+JavaScript does it with an extra line:
+
+```js
+stripe.onclick = function() {
+  let sec = new Date().getSeconds() % 10;
+*!*
+  // for instance, -3s here starts the animation from the 3rd second
+  stripe.style.transitionDelay = '-' + sec + 's';
+*/!*
+  stripe.classList.add('animate');
+};
+```
