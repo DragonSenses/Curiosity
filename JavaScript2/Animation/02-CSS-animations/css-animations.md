@@ -174,3 +174,25 @@ Here's how that curve looks:
 ...As we can see, it's just a straight line. As the time (`x`) passes, the completion (`y`) of the animation steadily goes from `0` to `1`.
 
 The train in the example below goes from left to right with the permanent speed (click it):
+
+[See `train-linear`]
+
+The CSS `transition` is based on that curve:
+
+```css
+.train {
+  left: 0;
+  transition: left 5s cubic-bezier(0, 0, 1, 1);
+  /* click on a train sets left to 450px, thus triggering the animation */
+}
+```
+
+...And how can we show a train slowing down?
+
+We can use another Bezier curve: `cubic-bezier(0.0, 0.5, 0.5 ,1.0)`.
+
+The graph:
+
+![](train-curve.svg)
+
+As we can see, the process starts fast: the curve soars up high, and then slower and slower.
