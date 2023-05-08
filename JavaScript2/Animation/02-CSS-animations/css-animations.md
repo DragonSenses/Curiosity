@@ -196,3 +196,20 @@ The graph:
 ![](train-curve.svg)
 
 As we can see, the process starts fast: the curve soars up high, and then slower and slower.
+
+Here's the timing function in action (click the train):
+
+[See `train`]
+
+CSS:
+```css
+.train {
+  left: 0;
+  transition: left 5s cubic-bezier(0, .5, .5, 1);
+  /* click on a train sets left to 450px, thus triggering the animation */
+}
+```
+
+There are several built-in curves: `linear`, `ease`, `ease-in`, `ease-out` and `ease-in-out`.
+
+The `linear` is a shorthand for `cubic-bezier(0, 0, 1, 1)` -- a straight line, which we described above.
