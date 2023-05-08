@@ -136,10 +136,41 @@ JavaScript does it with an extra line:
 ```js
 stripe.onclick = function() {
   let sec = new Date().getSeconds() % 10;
-*!*
   // for instance, -3s here starts the animation from the 3rd second
   stripe.style.transitionDelay = '-' + sec + 's';
-*/!*
   stripe.classList.add('animate');
 };
 ```
+
+## transition-timing-function
+
+The timing function describes how the animation process is distributed along its timeline. Will it start slowly and then go fast, or vice versa.
+
+It appears to be the most complicated property at first. But it becomes very simple if we devote a bit time to it.
+
+That property accepts two kinds of values: a Bezier curve or steps. Let's start with the curve, as it's used more often.
+
+### Bezier curve
+
+The timing function can be set as a [Bezier curve](/bezier-curve) with 4 control points that satisfy the conditions:
+
+1. First control point: `(0,0)`.
+2. Last control point: `(1,1)`.
+3. For intermediate points, the values of `x` must be in the interval `0..1`, `y` can be anything.
+
+The syntax for a Bezier curve in CSS: `cubic-bezier(x2, y2, x3, y3)`. Here we need to specify only 2nd and 3rd control points, because the 1st one is fixed to `(0,0)` and the 4th one is `(1,1)`.
+
+The timing function describes how fast the animation process goes.
+
+- The `x` axis is the time: `0` -- the start, `1` -- the end of `transition-duration`.
+- The `y` axis specifies the completion of the process: `0` -- the starting value of the property, `1` -- the final value.
+
+The simplest variant is when the animation goes uniformly, with the same linear speed. That can be specified by the curve `cubic-bezier(0, 0, 1, 1)`.
+
+Here's how that curve looks:
+
+![](bezier-linear.svg)
+
+...As we can see, it's just a straight line. As the time (`x`) passes, the completion (`y`) of the animation steadily goes from `0` to `1`.
+
+The train in the example below goes from left to right with the permanent speed (click it):
