@@ -348,3 +348,68 @@ So the process for `steps(9, end)` would go like this:
 Here's `steps(9, end)` in action (note the pause before the first digit change):
 
 [See `step-end`]
+
+---
+
+There are also some pre-defined shorthands for `steps(...)`:
+
+- `step-start` -- is the same as `steps(1, start)`. That is, the animation starts immediately and takes 1 step. So it starts and finishes immediately, as if there were no animation.
+- `step-end` -- the same as `steps(1, end)`: make the animation in a single step at the end of `transition-duration`.
+
+These values are rarely used, as they represent not a real animation, but rather a single-step change. We mention them here for completeness.
+
+---
+
+## Event: "transitionend"
+
+When the CSS animation finishes, the `transitionend` event triggers.
+
+It is widely used to do an action after the animation is done. Also we can join animations.
+
+For instance, the ship in the example below starts to sail there and back when clicked, each time farther and farther to the right:
+
+[See `boat`]
+
+The animation is initiated by the function `go` that re-runs each time the transition finishes, and flips the direction:
+
+```js
+boat.onclick = function() {
+  //...
+  let times = 1;
+
+  function go() {
+    if (times % 2) {
+      // sail to the right
+      boat.classList.remove('back');
+      boat.style.marginLeft = 100 * times + 200 + 'px';
+    } else {
+      // sail to the left
+      boat.classList.add('back');
+      boat.style.marginLeft = 100 * times - 200 + 'px';
+    }
+
+  }
+
+  go();
+
+  boat.addEventListener('transitionend', function() {
+    times++;
+    go();
+  });
+};
+```
+
+The event object for `transitionend` has a few specific properties:
+
+`event.propertyName`
+: The property that has finished animating. Can be good if we animate multiple properties simultaneously.
+
+`event.elapsedTime`
+: The time (in seconds) that the animation took, without `transition-delay`.
+
+## Keyframes
+
+We can join multiple simple animations together using the `@keyframes` CSS rule.
+
+It specifies the "name" of the animation and rules - what, when and where to animate. Then using the `animation` property, we can attach the animation to the element and specify additional parameters for it.
+
