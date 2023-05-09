@@ -278,3 +278,22 @@ But how do we make a Bezier curve for a specific task? There are many tools.
     3. CSS properties with a word `cubic-bezier` will have an icon before this word.
     4. Click this icon to edit the curve.
 
+---
+
+### Steps
+
+The timing function `steps(number of steps[, start/end])` allows splitting an transition into multiple steps.
+
+Let's see that in an example with digits.
+
+Here's a list of digits, without any animations, just as a source:
+
+[See `step-list`]
+
+In the HTML, a stripe of digits is enclosed into a fixed-length `<div id="digits">`:
+
+```html
+<div id="digit">
+  <div id="stripe">0123456789</div>
+</div>
+```
