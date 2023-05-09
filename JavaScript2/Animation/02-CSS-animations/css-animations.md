@@ -258,3 +258,23 @@ But if you click the train, you'll see that:
 - And then back again -- to `400px`.
 
 [See `train-over`]
+
+Why it happens is pretty obvious if we look at the graph of the given Bezier curve:
+
+![](bezier-train-over.svg)
+
+We moved the `y` coordinate of the 2nd point below zero, and for the 3rd point we made it over `1`, so the curve goes out of the "regular" quadrant. The `y` is out of the "standard" range `0..1`.
+
+As we know, `y` measures "the completion of the animation process". The value `y = 0` corresponds to the starting property value and `y = 1` -- the ending value. So values `y<0` move the property beyond the starting `left` and `y>1` -- past the final `left`.
+
+That's a "soft" variant for sure. If we put `y` values like `-99` and `99` then the train would jump out of the range much more.
+
+But how do we make a Bezier curve for a specific task? There are many tools.
+
+- For instance, we can do it on the site <https://cubic-bezier.com>.
+- Browser developer tools also have special support for Bezier curves in CSS:
+    1. Open the developer tools with `key:F12` (Mac: `key:Cmd+Opt+I`).
+    2. Select the `Elements` tab, then pay attention to the `Styles` sub-panel at the right side.
+    3. CSS properties with a word `cubic-bezier` will have an icon before this word.
+    4. Click this icon to edit the curve.
+
