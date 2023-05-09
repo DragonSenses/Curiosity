@@ -297,3 +297,28 @@ In the HTML, a stripe of digits is enclosed into a fixed-length `<div id="digits
   <div id="stripe">0123456789</div>
 </div>
 ```
+
+The `#digit` div has a fixed width and a border, so it looks like a red window.
+
+We'll make a timer: the digits will appear one by one, in a discrete way.
+
+To achieve that, we'll hide the `#stripe` outside of `#digit` using `overflow: hidden`, and then shift the `#stripe` to the left step-by-step.
+
+There will be 9 steps, a step-move for each digit:
+
+```css
+#stripe.animate  {
+  transform: translate(-90%);
+  transition: transform 9s *!*steps(9, start)*/!*;
+}
+```
+
+The first argument of `steps(9, start)` is the number of steps. The transform will be split into 9 parts (10% each). The time interval is automatically divided into 9 parts as well, so `transition: 9s` gives us 9 seconds for the whole animation – 1 second per digit.
+
+The second argument is one of two words: `start` or `end`.
+
+The `start` means that in the beginning of animation we need to make the first step immediately.
+
+In action:
+
+[See `step`]
