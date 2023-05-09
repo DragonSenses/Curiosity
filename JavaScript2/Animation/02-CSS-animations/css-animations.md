@@ -322,3 +322,29 @@ The `start` means that in the beginning of animation we need to make the first s
 In action:
 
 [See `step`]
+
+A click on the digit changes it to `1` (the first step) immediately, and then changes in the beginning of the next second.
+
+The process is progressing like this:
+
+- `0s` -- `-10%` (first change in the beginning of the 1st second, immediately)
+- `1s` -- `-20%`
+- ...
+- `8s` -- `-90%`
+- (the last second shows the final value).
+
+Here, the first change was immediate because of `start` in the `steps`.
+
+The alternative value `end` would mean that the change should be applied not in the beginning, but at the end of each second.
+
+So the process for `steps(9, end)` would go like this:
+
+- `0s` -- `0` (during the first second nothing changes)
+- `1s` -- `-10%` (first change at the end of the 1st second)
+- `2s` -- `-20%`
+- ...
+- `9s` -- `-90%`
+
+Here's `steps(9, end)` in action (note the pause before the first digit change):
+
+[See `step-end`]
