@@ -477,3 +477,53 @@ Changes (animations) of the `transform` property never trigger Layout and Paint 
 
 Luckily, the `transform` property is very powerful. By using `transform` on an element, you could rotate and flip it, stretch and shrink it, move it around, and [much more](https://developer.mozilla.org/docs/Web/CSS/transform#syntax). So instead of `left/margin-left` properties we can use `transform: translateX(…)`, use `transform: scale` for increasing element size, etc.
 
+The `opacity` property also never triggers Layout (also skips Paint in Mozilla Gecko). We can use it for show/hide or fade-in/fade-out effects.
+
+Paring `transform` with `opacity` can usually solve most of our needs, providing fluid, good-looking animations.
+
+For example, here clicking on the `#boat` element adds the class with `transform: translateX(300)` and `opacity: 0`, thus making it move `300px` to the right and disappear:
+
+```html run height=260 autorun no-beautify
+<img src="https://js.cx/clipart/boat.png" id="boat">
+
+<style>
+#boat {
+  cursor: pointer;
+  transition: transform 2s ease-in-out, opacity 2s ease-in-out;
+}
+
+.move {
+  transform: translateX(300px);
+  opacity: 0;
+}
+</style>
+<script>
+  boat.onclick = () => boat.classList.add('move');
+</script>
+```
+
+Here's a more complex example, with `@keyframes`:
+
+```html run height=80 autorun no-beautify
+<h2 onclick="this.classList.toggle('animated')">click me to start / stop</h2>
+<style>
+  .animated {
+    animation: hello-goodbye 1.8s infinite;
+    width: fit-content;
+  }
+  @keyframes hello-goodbye {
+    0% {
+      transform: translateY(-60px) rotateX(0.7turn);
+      opacity: 0;
+    }
+    50% {
+      transform: none;
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(230px) rotateZ(90deg) scale(0.5);
+      opacity: 0;
+    }
+  }
+</style>
+```
