@@ -413,3 +413,37 @@ We can join multiple simple animations together using the `@keyframes` CSS rule.
 
 It specifies the "name" of the animation and rules - what, when and where to animate. Then using the `animation` property, we can attach the animation to the element and specify additional parameters for it.
 
+Here's an example with explanations:
+
+```html run height=60 autorun="no-epub" no-beautify
+<div class="progress"></div>
+
+<style>
+  @keyframes go-left-right {        /* give it a name: "go-left-right" */
+    from { left: 0px; }             /* animate from left: 0px */
+    to { left: calc(100% - 50px); } /* animate to left: 100%-50px */
+  }
+
+  .progress {
+    animation: go-left-right 3s infinite alternate;
+    /* apply the animation "go-left-right" to the element
+       duration 3 seconds
+       number of times: infinite
+       alternate direction every time
+    */
+
+    position: relative;
+    border: 2px solid green;
+    width: 50px;
+    height: 20px;
+    background: lime;
+  }
+</style>
+```
+
+There are many articles about `@keyframes` and a [detailed specification](https://drafts.csswg.org/css-animations/).
+
+You probably won't need `@keyframes` often, unless everything is in constant motion on your sites.
+
+---
+
