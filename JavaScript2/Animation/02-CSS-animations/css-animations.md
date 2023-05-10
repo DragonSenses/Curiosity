@@ -447,3 +447,33 @@ You probably won't need `@keyframes` often, unless everything is in constant mot
 
 ---
 
+## Performance
+
+Most CSS properties can be animated, because most of them are numeric values. For instance, `width`, `color`, `font-size` are all numbers. When you animate them, the browser gradually changes these numbers frame by frame, creating a smooth effect.
+
+However, not all animations will look as smooth as you'd like, because different CSS properties cost differently to change.
+
+In more technical details, when there's a style change, the browser goes through 3 steps to render the new look:
+
+1. **Layout**: re-compute the geometry and position of each element, then
+2. **Paint**: re-compute how everything should look like at their places, including background, colors,
+3. **Composite**: render the final results into pixels on screen, apply CSS transforms if they exist.
+
+During a CSS animation, this process repeats every frame. However, CSS properties that never affect geometry or position, such as `color`, may skip the Layout step. If a `color` changes, the browser  doesn't calculate any new geometry, it goes to Paint -> Composite. And there are few properties that directly go to Composite. You can find a longer list of CSS properties and which stages they trigger at <https://csstriggers.com>.
+
+The calculations may take time, especially on pages with many elements and a complex layout. And the delays are actually visible on most devices, leading to "jittery", less fluid animations.
+
+Animations of properties that skip the Layout step are faster. It's even better if Paint is skipped too.
+
+The `transform` property is a great choice, because:
+- CSS transforms affect the target element box as a whole (rotate, flip, stretch, shift it).
+- CSS transforms never affect neighbour elements.
+
+...So browsers apply `transform` "on top" of existing Layout and Paint calculations, in the Composite stage.
+
+In other words, the browser calculates the Layout (sizes, positions), paints it with colors, backgrounds, etc at the Paint stage, and then applies `transform` to element boxes that need it.
+
+Changes (animations) of the `transform` property never trigger Layout and Paint steps. More than that, the browser  leverages the graphics accelerator (a special chip on the CPU or graphics card) for CSS transforms, thus making them very efficient.
+
+Luckily, the `transform` property is very powerful. By using `transform` on an element, you could rotate and flip it, stretch and shrink it, move it around, and [much more](https://developer.mozilla.org/docs/Web/CSS/transform#syntax). So instead of `left/margin-left` properties we can use `transform: translateX(…)`, use `transform: scale` for increasing element size, etc.
+
