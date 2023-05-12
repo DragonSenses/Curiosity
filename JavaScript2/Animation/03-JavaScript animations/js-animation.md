@@ -258,4 +258,26 @@ Let's animate the element `width` from `0` to `100%` using our function.
 
 Click on the element in the demo: see `2-demo-width`.
 
+The code for it:
 
+```js
+animate({
+  duration: 1000,
+  timing(timeFraction) {
+    return timeFraction;
+  },
+  draw(progress) {
+    elem.style.width = progress * 100 + '%';
+  }
+});
+```
+
+Unlike CSS animation, we can make any timing function and any drawing function here. The timing function is not limited by Bezier curves. And `draw` can go beyond properties, create new elements for like fireworks animation or something.
+
+## Timing functions
+
+We saw the simplest, linear timing function above.
+
+Let's see more of them. We'll try movement animations with different timing functions to see how they work.
+
+### Power of n
