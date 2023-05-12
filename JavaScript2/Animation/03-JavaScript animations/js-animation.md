@@ -95,7 +95,6 @@ To see demo look at `1-demo-move`:
 ```html
 <!DOCTYPE HTML>
 <html>
-
 <head>
   <style>
     #train {
@@ -104,12 +103,8 @@ To see demo look at `1-demo-move`:
     }
   </style>
 </head>
-
 <body>
-
   <img id="train" src="https://js.cx/clipart/train.gif">
-
-
   <script>
     train.onclick = function() {
       let start = Date.now();
@@ -124,9 +119,73 @@ To see demo look at `1-demo-move`:
       }, 20);
     }
   </script>
-
-
 </body>
-
 </html>
+```
+
+## Using requestAnimationFrame
+
+Let's imagine we have several animations running simultaneously.
+
+If we run them separately, then even though each one has `setInterval(..., 20)`, then the browser would have to repaint much more often than every `20ms`.
+
+That's because they have different starting time, so "every 20ms" differs between different animations. The intervals are not aligned. So we'll have several independent runs within `20ms`.
+
+In other words, this:
+
+```js
+setInterval(function() {
+  animate1();
+  animate2();
+  animate3();
+}, 20)
+```
+
+...Is lighter than three independent calls:
+
+```js
+setInterval(animate1, 20); // independent animations
+setInterval(animate2, 20); // in different places of the script
+setInterval(animate3, 20);
+```
+
+These several independent redraws should be grouped together, to make the redraw easier for the browser and hence load less CPU load and look smoother.
+
+There's one more thing to keep in mind. Sometimes CPU is overloaded, or there are other reasons to redraw less often (like when the browser tab is hidden), so we really shouldn't run it every `20ms`.
+
+But how do we know about that in JavaScript? There's a specification [Animation timing](https://www.w3.org/TR/animation-timing/) that provides the function `requestAnimationFrame`. It addresses all these issues and even more.
+
+The syntax:
+```js
+let requestId = requestAnimationFrame(callback)
+```
+
+That schedules the `callback` function to run in the closest time when the browser wants to do animation.
+
+If we do changes in elements in `callback` then they will be grouped together with other `requestAnimationFrame` callbacks and with CSS animations. So there will be one geometry recalculation and repaint instead of many.
+
+The returned value `requestId` can be used to cancel the call:
+```js
+// cancel the scheduled execution of callback
+cancelAnimationFrame(requestId);
+```
+
+The `callback` gets one argument -- the time passed from the beginning of the page load in milliseconds. This time can also be obtained by calling [performance.now()](mdn:api/Performance/now).
+
+Usually `callback` runs very soon, unless the CPU is overloaded or the laptop battery is almost discharged, or there's another reason.
+
+The code below shows the time between first 10 runs for `requestAnimationFrame`. Usually it's 10-20ms:
+
+```html run height=40 refresh
+<script>
+  let prev = performance.now();
+  let times = 0;
+
+  requestAnimationFrame(function measure(time) {
+    document.body.insertAdjacentHTML("beforeEnd", Math.floor(time - prev) + " ");
+    prev = time;
+
+    if (times++ < 10) requestAnimationFrame(measure);
+  })
+</script>
 ```
