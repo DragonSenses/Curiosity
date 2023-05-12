@@ -189,3 +189,67 @@ The code below shows the time between first 10 runs for `requestAnimationFrame`.
   })
 </script>
 ```
+
+---
+
+## Structured animation
+
+Now we can make a more universal animation function based on `requestAnimationFrame`:
+
+```js
+function animate({timing, draw, duration}) {
+
+  let start = performance.now();
+
+  requestAnimationFrame(function animate(time) {
+    // timeFraction goes from 0 to 1
+    let timeFraction = (time - start) / duration;
+    if (timeFraction > 1) timeFraction = 1;
+
+    // calculate the current animation state
+    let progress = timing(timeFraction)
+
+    draw(progress); // draw it
+
+    if (timeFraction < 1) {
+      requestAnimationFrame(animate);
+    }
+
+  });
+}
+```
+
+Function `animate` accepts 3 parameters that essentially describes the animation:
+
+`duration`
+: Total time of animation. Like, `1000`.
+
+`timing(timeFraction)`
+: Timing function, like CSS-property `transition-timing-function` that gets the fraction of time that passed (`0` at start, `1` at the end) and returns the animation completion (like `y` on the Bezier curve).
+
+For instance, a linear function means that the animation goes on uniformly with the same speed:
+
+```js
+function linear(timeFraction) {
+  return timeFraction;
+}
+```
+
+Its graph:
+![](linear.svg)
+
+That's just like `transition-timing-function: linear`. There are more interesting variants shown below.
+
+`draw(progress)`
+: The function that takes the animation completion state and draws it. The value `progress=0` denotes the beginning animation state, and `progress=1` -- the end state.
+
+This is that function that actually draws out the animation.
+
+It can move the element:
+```js
+function draw(progress) {
+  train.style.left = progress + 'px';
+}
+```
+
+...Or do anything else, we can animate anything, in any way.
