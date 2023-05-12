@@ -253,3 +253,9 @@ function draw(progress) {
 ```
 
 ...Or do anything else, we can animate anything, in any way.
+
+Let's animate the element `width` from `0` to `100%` using our function.
+
+Click on the element in the demo: see `2-demo-width`.
+
+
