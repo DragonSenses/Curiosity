@@ -308,4 +308,21 @@ Here's the graph for `progress` in the power `5`:
 
 In action: see `4-demo-quint`
 
+---
+
+### The arc
+
+Function:
+
+```js
+function circ(timeFraction) {
+  return 1 - Math.sin(Math.acos(timeFraction));
+}
+```
+
+The graph:
+
+![](circ.svg)
+
+In action: see `5-demo-circ`
 
