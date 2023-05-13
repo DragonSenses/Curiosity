@@ -326,3 +326,18 @@ The graph:
 
 In action: see `5-demo-circ`
 
+---
+
+### Back: bow shooting
+
+This function does the "bow shooting". First we "pull the bowstring", and then "shoot".
+
+Unlike previous functions, it depends on an additional parameter `x`, the "elasticity coefficient". The distance of "bowstring pulling" is defined by it.
+
+The code:
+
+```js
+function back(x, timeFraction) {
+  return Math.pow(timeFraction, 2) * ((x + 1) * timeFraction - x)
+}
+```
