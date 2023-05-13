@@ -295,3 +295,5 @@ function quad(timeFraction) {
 The graph:
 
 ![](quad.svg)
+
+In action: see `3-demo-quad`
