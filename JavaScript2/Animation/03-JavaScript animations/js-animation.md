@@ -281,3 +281,17 @@ We saw the simplest, linear timing function above.
 Let's see more of them. We'll try movement animations with different timing functions to see how they work.
 
 ### Power of n
+
+If we want to speed up the animation, we can use `progress` in the power `n`.
+
+For instance, a parabolic curve:
+
+```js
+function quad(timeFraction) {
+  return Math.pow(timeFraction, 2)
+}
+```
+
+The graph:
+
+![](quad.svg)
