@@ -297,3 +297,15 @@ The graph:
 ![](quad.svg)
 
 In action: see `3-demo-quad`
+
+---
+
+...Or the cubic curve or even greater `n`. Increasing the power makes it speed up faster.
+
+Here's the graph for `progress` in the power `5`:
+
+![](quint.svg)
+
+In action: see `4-demo-quint`
+
+
