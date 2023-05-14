@@ -393,3 +393,40 @@ See `8-demo-elastic`
 
 ---
 
+## Reversal: ease*
+
+So we have a collection of timing functions. Their direct application is called "easeIn".
+
+Sometimes we need to show the animation in the reverse order. That's done with the "easeOut" transform.
+
+### easeOut
+
+In the "easeOut" mode the `timing` function is put into a wrapper `timingEaseOut`:
+
+```js
+timingEaseOut(timeFraction) = 1 - timing(1 - timeFraction)
+```
+
+In other words, we have a "transform" function `makeEaseOut` that takes a "regular" timing function and returns the wrapper around it:
+
+```js
+// accepts a timing function, returns the transformed variant
+function makeEaseOut(timing) {
+  return function(timeFraction) {
+    return 1 - timing(1 - timeFraction);
+  }
+}
+```
+
+For instance, we can take the `bounce` function described above and apply it:
+
+```js
+let bounceEaseOut = makeEaseOut(bounce);
+```
+
+Then the bounce will be not in the beginning, but at the end of the animation.
+Looks even better:
+
+See `9-demo-bounce-easeout`.
+
+
