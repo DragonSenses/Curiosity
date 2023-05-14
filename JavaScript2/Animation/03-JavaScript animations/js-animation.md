@@ -429,4 +429,15 @@ Looks even better:
 
 See `9-demo-bounce-easeout`.
 
+Here we can see how the transform changes the behavior of the function:
 
+![](bounce-inout.svg)
+
+If there's an animation effect in the beginning, like bouncing -- it will be shown at the end.
+
+In the graph above the <span style="color:#EE6B47">regular bounce</span> has the red color, and the <span style="color:#62C0DC">easeOut bounce</span> is blue.
+
+- Regular bounce -- the object bounces at the bottom, then at the end sharply jumps to the top.
+- After `easeOut` -- it first jumps to the top, then bounces there.
+
+### easeInOut
