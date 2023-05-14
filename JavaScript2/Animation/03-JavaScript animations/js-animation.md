@@ -374,3 +374,22 @@ See `7-demo-bounce`
 
 ---
 
+### Elastic animation
+
+One more "elastic" function that accepts an additional parameter `x` for the "initial range".
+
+```js
+function elastic(x, timeFraction) {
+  return Math.pow(2, 10 * (timeFraction - 1)) * Math.cos(20 * Math.PI * x / 3 * timeFraction)
+}
+```
+
+**The graph for `x=1.5`:**
+![](elastic.svg)
+
+In action for `x=1.5`: 
+
+See `8-demo-elastic`
+
+---
+
