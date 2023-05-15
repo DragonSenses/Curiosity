@@ -484,3 +484,13 @@ The effect is clearly seen if we compare the graphs of `easeIn`, `easeOut` and `
 - <span style="color:#62C0DC">Blue</span> -- `easeInOut`.
 
 As we can see, the graph of the first half of the animation is the scaled down `easeIn`, and the second half is the scaled down `easeOut`. As a result, the animation starts and finishes with the same effect.
+
+---
+
+## More interesting "draw"
+
+Instead of moving the element we can do something else. All we need is to write the proper `draw`.
+
+Here's the animated "bouncing" text typing:
+
+See `11-demo-text`
