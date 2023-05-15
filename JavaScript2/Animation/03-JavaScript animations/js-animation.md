@@ -441,3 +441,46 @@ In the graph above the <span style="color:#EE6B47">regular bounce</span> has the
 - After `easeOut` -- it first jumps to the top, then bounces there.
 
 ### easeInOut
+
+We also can show the effect both in the beginning and the end of the animation. The transform is called "easeInOut".
+
+Given the timing function, we calculate the animation state like this:
+
+```js
+if (timeFraction <= 0.5) { // first half of the animation
+  return timing(2 * timeFraction) / 2;
+} else { // second half of the animation
+  return (2 - timing(2 * (1 - timeFraction))) / 2;
+}
+```
+
+The wrapper code:
+
+```js
+function makeEaseInOut(timing) {
+  return function(timeFraction) {
+    if (timeFraction < .5)
+      return timing(2 * timeFraction) / 2;
+    else
+      return (2 - timing(2 * (1 - timeFraction))) / 2;
+  }
+}
+
+bounceEaseInOut = makeEaseInOut(bounce);
+```
+
+In action, `bounceEaseInOut`:
+
+See `10-demo-bounce-easeinout`
+
+The "easeInOut" transform joins two graphs into one: `easeIn` (regular) for the first half of the animation and `easeOut` (reversed) -- for the second part.
+
+The effect is clearly seen if we compare the graphs of `easeIn`, `easeOut` and `easeInOut` of the `circ` timing function:
+
+![](circ-ease.svg)
+
+- <span style="color:#EE6B47">Red</span> is the regular variant of `circ` (`easeIn`).
+- <span style="color:#8DB173">Green</span> -- `easeOut`.
+- <span style="color:#62C0DC">Blue</span> -- `easeInOut`.
+
+As we can see, the graph of the first half of the animation is the scaled down `easeIn`, and the second half is the scaled down `easeOut`. As a result, the animation starts and finishes with the same effect.
