@@ -182,3 +182,64 @@ The `connectedCallback` triggers when the element is added to the document. Not 
 
 ---
 
+## Observing attributes
+
+In the current implementation of `<time-formatted>`, after the element is rendered, further attribute changes don't have any effect. That's strange for an HTML element. Usually, when we change an attribute, like `a.href`, we expect the change to be immediately visible. So let's fix this.
+
+We can observe attributes by providing their list in `observedAttributes()` static getter. For such attributes, `attributeChangedCallback` is called when they are modified. It doesn't trigger for other, unlisted attributes (that's for performance reasons).
+
+Here's a new `<time-formatted>`, that auto-updates when attributes change:
+
+```html run autorun="no-epub" height=50
+<script>
+class TimeFormatted extends HTMLElement {
+
+  render() { // (1)
+    let date = new Date(this.getAttribute('datetime') || Date.now());
+
+    this.innerHTML = new Intl.DateTimeFormat("default", {
+      year: this.getAttribute('year') || undefined,
+      month: this.getAttribute('month') || undefined,
+      day: this.getAttribute('day') || undefined,
+      hour: this.getAttribute('hour') || undefined,
+      minute: this.getAttribute('minute') || undefined,
+      second: this.getAttribute('second') || undefined,
+      timeZoneName: this.getAttribute('time-zone-name') || undefined,
+    }).format(date);
+  }
+
+  connectedCallback() { // (2)
+    if (!this.rendered) {
+      this.render();
+      this.rendered = true;
+    }
+  }
+
+  static get observedAttributes() { // (3)
+    return ['datetime', 'year', 'month', 'day', 'hour', 'minute', 'second', 'time-zone-name'];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) { // (4)
+    this.render();
+  }
+
+}
+
+customElements.define("time-formatted", TimeFormatted);
+</script>
+
+<time-formatted id="elem" hour="numeric" minute="numeric" second="numeric"></time-formatted>
+
+<script>
+setInterval(() => elem.setAttribute('datetime', new Date()), 1000); // (5)
+</script>
+```
+
+1. The rendering logic is moved to `render()` helper method.
+2. We call it once when the element is inserted into page.
+3. For a change of an attribute, listed in `observedAttributes()`, `attributeChangedCallback` triggers.
+4. ...and re-renders the element.
+5. At the end, we can easily make a live timer.
+
+---
+
