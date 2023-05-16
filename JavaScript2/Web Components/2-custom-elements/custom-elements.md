@@ -325,3 +325,57 @@ There's no built-in callback that triggers after nested elements are ready. If n
 
 ---
 
+## Customized built-in elements
+
+New elements that we create, such as `<time-formatted>`, don't have any associated semantics. They are unknown to search engines, and accessibility devices can't handle them.
+
+But such things can be important. E.g, a search engine would be interested to know that we actually show a time. And if we're making a special kind of button, why not reuse the existing `<button>` functionality?
+
+We can extend and customize built-in HTML elements by inheriting from their classes.
+
+For example, buttons are instances of `HTMLButtonElement`, let's build upon it.
+
+1. Extend `HTMLButtonElement` with our class:
+
+    ```js
+    class HelloButton extends HTMLButtonElement { /* custom element methods */ }
+    ```
+
+2. Provide the third argument to `customElements.define`, that specifies the tag:
+    ```js
+    customElements.define('hello-button', HelloButton, *!*{extends: 'button'}*/!*);
+    ```    
+
+    There may be different tags that share the same DOM-class, that's why specifying `extends` is needed.
+
+3. At the end, to use our custom element, insert a regular `<button>` tag, but add `is="hello-button"` to it:
+    ```html
+    <button is="hello-button">...</button>
+    ```
+
+Here's a full example:
+
+```html run autorun="no-epub"
+<script>
+// The button that says "hello" on click
+class HelloButton extends HTMLButtonElement {
+  constructor() {
+    super();
+    this.addEventListener('click', () => alert("Hello!"));
+  }
+}
+
+customElements.define('hello-button', HelloButton, {extends: 'button'});
+</script>
+
+<button is="hello-button">Click me</button>
+
+<button is="hello-button" disabled>Disabled</button>
+```
+
+Our new button extends the built-in one. So it keeps the same styles and standard features like `disabled` attribute.
+
+## References
+
+- HTML Living Standard: <https://html.spec.whatwg.org/#custom-elements>.
+- Compatiblity: <https://caniuse.com/#feat=custom-elementsv1>.
