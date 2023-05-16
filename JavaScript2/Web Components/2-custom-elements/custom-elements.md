@@ -100,8 +100,54 @@ customElements.define("my-element", MyElement);
 
 Now for any HTML elements with tag `<my-element>`, an instance of `MyElement` is created, and the aforementioned methods are called. We also can `document.createElement('my-element')` in JavaScript.
 
-```smart header="Custom element name must contain a hyphen `-`"
+---
+
+### Custom element name must contain a hyphen `-`
+
 Custom element name must have a hyphen `-`, e.g. `my-element` and `super-button` are valid names, but `myelement` is not.
 
 That's to ensure that there are no name conflicts between built-in and custom HTML elements.
+
+---
+
+## Example: "time-formatted"
+
+For example, there already exists `<time>` element in HTML, for date/time. But it doesn't do any formatting by itself.
+
+Let's create `<time-formatted>` element that displays the time in a nice, language-aware format:
+
+
+```html run height=50 autorun="no-epub"
+<script>
+class TimeFormatted extends HTMLElement { // (1)
+
+  connectedCallback() {
+    let date = new Date(this.getAttribute('datetime') || Date.now());
+
+    this.innerHTML = new Intl.DateTimeFormat("default", {
+      year: this.getAttribute('year') || undefined,
+      month: this.getAttribute('month') || undefined,
+      day: this.getAttribute('day') || undefined,
+      hour: this.getAttribute('hour') || undefined,
+      minute: this.getAttribute('minute') || undefined,
+      second: this.getAttribute('second') || undefined,
+      timeZoneName: this.getAttribute('time-zone-name') || undefined,
+    }).format(date);
+  }
+
+}
+
+customElements.define("time-formatted", TimeFormatted); // (2)
+</script>
+
+<!-- (3) -->
+<time-formatted datetime="2019-12-01"
+  year="numeric" month="long" day="numeric"
+  hour="numeric" minute="numeric" second="numeric"
+  time-zone-name="short"
+></time-formatted>
 ```
+
+1. The class has only one method `connectedCallback()` -- the browser calls it when `<time-formatted>` element is added to page (or when HTML parser detects it), and it uses the built-in [Intl.DateTimeFormat](mdn:/JavaScript/Reference/Global_Objects/DateTimeFormat) data formatter, well-supported across the browsers, to show a nicely formatted time.
+2. We need to register our new element by `customElements.define(tag, class)`.
+3. And then we can use it everywhere.
