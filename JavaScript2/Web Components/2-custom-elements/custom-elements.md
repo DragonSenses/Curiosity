@@ -151,3 +151,34 @@ customElements.define("time-formatted", TimeFormatted); // (2)
 1. The class has only one method `connectedCallback()` -- the browser calls it when `<time-formatted>` element is added to page (or when HTML parser detects it), and it uses the built-in [Intl.DateTimeFormat](mdn:/JavaScript/Reference/Global_Objects/DateTimeFormat) data formatter, well-supported across the browsers, to show a nicely formatted time.
 2. We need to register our new element by `customElements.define(tag, class)`.
 3. And then we can use it everywhere.
+
+---
+
+### Custom elements upgrade
+If the browser encounters any `<time-formatted>` elements before `customElements.define`, that's not an error. But the element is yet unknown, just like any non-standard tag.
+
+Such "undefined" elements can be styled with CSS selector `:not(:defined)`.
+
+When `customElement.define` is called, they are "upgraded": a new instance of `TimeFormatted`
+is created for each, and `connectedCallback` is called. They become `:defined`.
+
+To get the information about custom elements, there are methods:
+- `customElements.get(name)` -- returns the class for a custom element with the given `name`,
+- `customElements.whenDefined(name)` -- returns a promise that resolves (without value) when a custom element with the given `name` becomes defined.
+
+---
+
+### Rendering in `connectedCallback`, not in `constructor`
+
+In the example above, element content is rendered (created) in `connectedCallback`.
+
+Why not in the `constructor`?
+
+The reason is simple: when `constructor` is called, it's yet too early. The element is created, but the browser did not yet process/assign attributes at this stage: calls to `getAttribute` would return `null`. So we can't really render there.
+
+Besides, if you think about it, that's better performance-wise -- to delay the work until it's really needed.
+
+The `connectedCallback` triggers when the element is added to the document. Not just appended to another element as a child, but actually becomes a part of the page. So we can build detached DOM, create elements and prepare them for later use. They will only be actually rendered when they make it into the page.
+
+---
+
