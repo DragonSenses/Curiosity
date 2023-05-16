@@ -269,3 +269,59 @@ If you run it, the `alert` is empty.
 
 That's exactly because there are no children on that stage, the DOM is unfinished. HTML parser connected the custom element `<user-info>`, and is going to proceed to its children, but just didn't yet.
 
+#### If we'd like to pass information to custom element, we can use attributes. They are available immediately.
+
+Or, if we really need the children, we can defer access to them with zero-delay `setTimeout`.
+
+This works:
+
+```html run height=40
+<script>
+customElements.define('user-info', class extends HTMLElement {
+
+  connectedCallback() {
+    setTimeout(() => alert(this.innerHTML)); // John (*)
+  }
+
+});
+</script>
+
+<user-info>John</user-info>
+```
+
+Now the `alert` in line `(*)` shows "John", as we run it asynchronously, after the HTML parsing is complete. We can process children if needed and finish the initialization.
+
+On the other hand, this solution is also not perfect. If nested custom elements also use `setTimeout` to initialize themselves, then they queue up: the outer `setTimeout` triggers first, and then the inner one.
+
+So the outer element finishes the initialization before the inner one.
+
+Let's demonstrate that on example:
+
+```html run height=0
+<script>
+customElements.define('user-info', class extends HTMLElement {
+  connectedCallback() {
+    alert(`${this.id} connected.`);
+    setTimeout(() => alert(`${this.id} initialized.`));
+  }
+});
+</script>
+
+<user-info id="outer">
+  <user-info id="inner"></user-info>
+</user-info>
+```
+
+Output order:
+
+1. outer connected.
+2. inner connected.
+3. outer initialized.
+4. inner initialized.
+
+We can clearly see that the outer element finishes initialization `(3)` before the inner one `(4)`.
+
+There's no built-in callback that triggers after nested elements are ready. If needed, we can implement such thing on our own. For instance, inner elements can dispatch events like `initialized`, and outer ones can listen and react on them.
+
+---
+
