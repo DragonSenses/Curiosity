@@ -243,3 +243,29 @@ setInterval(() => elem.setAttribute('datetime', new Date()), 1000); // (5)
 
 ---
 
+## Rendering order
+
+When HTML parser builds the DOM, elements are processed one after another, parents before children. E.g. if we have `<outer><inner></inner></outer>`, then `<outer>` element is created and connected to DOM first, and then `<inner>`.
+
+That leads to important consequences for custom elements.
+
+For example, if a custom element tries to access `innerHTML` in `connectedCallback`, it gets nothing:
+
+```html run height=40
+<script>
+customElements.define('user-info', class extends HTMLElement {
+
+  connectedCallback() {
+    alert(this.innerHTML); // empty (*)
+  }
+
+});
+</script>
+
+<user-info>John</user-info>
+```
+
+If you run it, the `alert` is empty.
+
+That's exactly because there are no children on that stage, the DOM is unfinished. HTML parser connected the custom element `<user-info>`, and is going to proceed to its children, but just didn't yet.
+
