@@ -49,3 +49,63 @@ We can put styles and scripts into `<template>` as well:
 The browser considers `<template>` content "out of the document": styles are not applied, scripts are not executed, `<video autoplay>` is not run, etc.
 
 The content becomes live (styles apply, scripts run etc) when we insert it into the document.
+
+## Inserting template
+
+The template content is available in its `content` property as a `DocumentFragment` -- a special type of DOM node.
+
+We can treat it as any other DOM node, except one special property: when we insert it somewhere, its children are inserted instead.
+
+For example:
+
+```html run
+<template id="tmpl">
+  <script>
+    alert("Hello");
+  </script>
+  <div class="message">Hello, world!</div>
+</template>
+
+<script>
+  let elem = document.createElement('div');
+
+  // Clone the template content to reuse it multiple times
+  elem.append(tmpl.content.cloneNode(true));
+
+  document.body.append(elem);
+  // Now the script from <template> runs
+</script>
+```
+
+Let's rewrite a Shadow DOM example from the previous chapter using `<template>`:
+
+```html run untrusted autorun="no-epub" height=60
+<template id="tmpl">
+  <style> p { font-weight: bold; } </style>
+  <p id="message"></p>
+</template>
+
+<div id="elem">Click me</div>
+
+<script>
+  elem.onclick = function() {
+    elem.attachShadow({mode: 'open'});
+
+    elem.shadowRoot.append(tmpl.content.cloneNode(true)); // (*)
+
+    elem.shadowRoot.getElementById('message').innerHTML = "Hello from the shadows!";
+  };
+</script>
+```
+
+In the line `(*)` when we clone and insert `tmpl.content`, as its `DocumentFragment`, its children (`<style>`, `<p>`) are inserted instead.
+
+They form the shadow DOM:
+
+```html
+<div id="elem">
+  #shadow-root
+    <style> p { font-weight: bold; } </style>
+    <p id="message"></p>
+</div>
+```
