@@ -14,3 +14,38 @@ The `<template>` element does not feature any iteration mechanisms, data binding
 
 ---
 
+# Template element
+
+A built-in `<template>` element serves as a storage for HTML markup templates. The browser ignores its contents, only checks for syntax validity, but we can access and use it in JavaScript, to create other elements.
+
+In theory, we could create any invisible element somewhere in HTML for HTML markup storage purposes. What's special about `<template>`?
+
+First, its content can be any valid HTML, even if it normally requires a proper enclosing tag.
+
+For example, we can put there a table row `<tr>`:
+```html
+<template>
+  <tr>
+    <td>Contents</td>
+  </tr>
+</template>
+```
+
+Usually, if we try to put `<tr>` inside, say, a `<div>`, the browser detects the invalid DOM structure and "fixes" it, adds `<table>` around. That's not what we want. On the other hand, `<template>` keeps exactly what we place there.
+
+We can put styles and scripts into `<template>` as well:
+
+```html
+<template>
+  <style>
+    p { font-weight: bold; }
+  </style>
+  <script>
+    alert("Hello");
+  </script>
+</template>
+```
+
+The browser considers `<template>` content "out of the document": styles are not applied, scripts are not executed, `<video autoplay>` is not run, etc.
+
+The content becomes live (styles apply, scripts run etc) when we insert it into the document.
