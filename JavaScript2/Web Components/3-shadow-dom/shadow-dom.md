@@ -82,3 +82,72 @@ customElements.define('show-hello', class extends HTMLElement {
 
 <show-hello name="John"></show-hello>
 ```
+
+That's how the resulting DOM looks in Chrome dev tools, all the content is under "#shadow-root":
+
+![](shadow-dom-say-hello.png)
+
+First, the call to `elem.attachShadow({mode: …})` creates a shadow tree.
+
+There are two limitations:
+1. We can create only one shadow root per element.
+2. The `elem` must be either a custom element, or one of: "article", "aside", "blockquote", "body", "div", "footer", "h1..h6", "header", "main" "nav", "p", "section", or "span". Other elements, like `<img>`, can't host shadow tree.
+
+The `mode` option sets the encapsulation level. It must have any of two values:
+- `"open"` -- the shadow root is available as `elem.shadowRoot`.
+
+    Any code is able to access the shadow tree of `elem`.   
+- `"closed"` -- `elem.shadowRoot` is always `null`.
+
+    We can only access the shadow DOM by the reference returned by `attachShadow` (and probably hidden inside a class). Browser-native shadow trees, such as  `<input type="range">`, are closed. There's no way to access them.
+
+The [shadow root](https://dom.spec.whatwg.org/#shadowroot), returned by `attachShadow`, is like an element: we can use `innerHTML` or DOM methods, such as `append`, to populate it.
+
+The element with a shadow root is called a "shadow tree host", and is available as the shadow root `host` property:
+
+```js
+// assuming {mode: "open"}, otherwise elem.shadowRoot is null
+alert(elem.shadowRoot.host === elem); // true
+```
+
+## Encapsulation
+
+Shadow DOM is strongly delimited from the main document:
+
+1. Shadow DOM elements are not visible to `querySelector` from the light DOM. In particular,  Shadow DOM elements may have ids that conflict with those in the light DOM. They must be unique only within the shadow tree.
+2. Shadow DOM has own stylesheets. Style rules from the outer DOM don't get applied.
+
+For example:
+
+```html run untrusted height=40
+<style>
+  /* document style won't apply to the shadow tree inside #elem (1) */
+  p { color: red; }
+</style>
+
+<div id="elem"></div>
+
+<script>
+  elem.attachShadow({mode: 'open'});
+    // shadow tree has its own style (2)
+  elem.shadowRoot.innerHTML = `
+    <style> p { font-weight: bold; } </style>
+    <p>Hello, John!</p>
+  `;
+
+
+  // <p> is only visible from queries inside the shadow tree (3)
+  alert(document.querySelectorAll('p').length); // 0
+  alert(elem.shadowRoot.querySelectorAll('p').length); // 1
+</script>  
+```
+
+1. The style from the document does not affect the shadow tree.
+2. ...But the style from the inside works.
+3. To get elements in shadow tree, we must query from inside the tree.
+
+## References
+
+- DOM: <https://dom.spec.whatwg.org/#shadow-trees>
+- Compatibility: <https://caniuse.com/#feat=shadowdomv1>
+- Shadow DOM is mentioned in many other specifications, e.g. [DOM Parsing](https://w3c.github.io/DOM-Parsing/#the-innerhtml-mixin) specifies that shadow root has `innerHTML`.
