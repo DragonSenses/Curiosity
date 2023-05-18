@@ -50,3 +50,61 @@ We could try to analyze the element content and dynamically copy-rearrange DOM n
 
 Luckily, we don't have to. Shadow DOM supports `<slot>` elements, that are automatically filled by the content from light DOM.
 
+## Named slots
+
+Let's see how slots work on a simple example.
+
+Here, `<user-card>` shadow DOM provides two slots, filled from light DOM:
+
+```html run autorun="no-epub" untrusted height=80
+<script>
+customElements.define('user-card', class extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = `
+      <div>Name:
+*!*
+        <slot name="username"></slot>
+*/!*
+      </div>
+      <div>Birthday:
+*!*
+        <slot name="birthday"></slot>
+*/!*
+      </div>
+    `;
+  }
+});
+</script>
+
+<user-card>
+  <span *!*slot="username"*/!*>John Smith</span>
+  <span *!*slot="birthday"*/!*>01.01.2001</span>
+</user-card>
+```
+
+In the shadow DOM, `<slot name="X">` defines an "insertion point", a place where elements with `slot="X"` are rendered.
+
+Then the browser performs "composition": it takes elements from the light DOM and renders them in corresponding slots of the shadow DOM. At the end, we have exactly what we want -- a component that can be filled with data.
+
+Here's the DOM structure after the script, not taking composition into account:
+
+```html
+<user-card>
+  #shadow-root
+    <div>Name:
+      <slot name="username"></slot>
+    </div>
+    <div>Birthday:
+      <slot name="birthday"></slot>
+    </div>
+  <span slot="username">John Smith</span>
+  <span slot="birthday">01.01.2001</span>
+</user-card>
+```
+
+We created the shadow DOM, so here it is, under `#shadow-root`. Now the element has both light and shadow DOM.
+
+For rendering purposes, for each `<slot name="...">` in shadow DOM, the browser looks for `slot="..."` with the same name in the light DOM. These elements are rendered inside the slots:
+
+![](shadow-dom-user-card.svg)
