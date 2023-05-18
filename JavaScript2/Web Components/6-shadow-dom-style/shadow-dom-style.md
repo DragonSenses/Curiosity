@@ -198,3 +198,81 @@ customElements.define('user-card', class extends HTMLElement {
 });
 </script>
 ```
+
+Here `<p>John Smith</p>` becomes bold, because CSS inheritance is in effect between the `<slot>` and its contents. But in CSS itself not all properties are inherited.
+
+Another option is to use `::slotted(selector)` pseudo-class. It matches elements based on two conditions:
+
+1. That's a slotted element, that comes from the light DOM. Slot name doesn't matter. Just any slotted element, but only the element itself, not its children.
+2. The element matches the `selector`.
+
+In our example, `::slotted(div)` selects exactly `<div slot="username">`, but not its children:
+
+```html run autorun="no-epub" untrusted height=80
+<user-card>
+  <div slot="username">
+    <div>John Smith</div>
+  </div>
+</user-card>
+
+<script>
+customElements.define('user-card', class extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = `
+      <style>
+
+      ::slotted(div) { border: 1px solid red; }
+
+      </style>
+      Name: <slot name="username"></slot>
+    `;
+  }
+});
+</script>
+```
+
+Please note, `::slotted` selector can't descend any further into the slot. These selectors are invalid:
+
+```css
+::slotted(div span) {
+  /* our slotted <div> does not match this */
+}
+
+::slotted(div) p {
+  /* can't go inside light DOM */
+}
+```
+
+Also, `::slotted` can only be used in CSS. We can't use it in `querySelector`.
+
+## CSS hooks with custom properties
+
+How do we style internal elements of a component from the main document?
+
+Selectors like `:host` apply rules to `<custom-dialog>` element or `<user-card>`, but how to style shadow DOM elements inside them?
+
+There's no selector that can directly affect shadow DOM styles from the document. But just as we expose methods to interact with our component, we can expose CSS variables (custom CSS properties) to style it.
+
+**Custom CSS properties exist on all levels, both in light and shadow.**
+
+For example, in shadow DOM we can use `--user-card-field-color` CSS variable to  style fields, and the outer document can set its value:
+
+```html
+<style>
+  .field {
+    color: var(--user-card-field-color, black);
+    /* if --user-card-field-color is not defined, use black color */
+  }
+</style>
+<div class="field">Name: <slot name="username"></slot></div>
+<div class="field">Birthday: <slot name="birthday"></slot></div>
+```
+
+Then, we can declare this property in the outer document for `<user-card>`:
+
+```css
+user-card {
+  --user-card-field-color: green;
+}
+```
