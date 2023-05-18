@@ -108,3 +108,53 @@ We created the shadow DOM, so here it is, under `#shadow-root`. Now the element 
 For rendering purposes, for each `<slot name="...">` in shadow DOM, the browser looks for `slot="..."` with the same name in the light DOM. These elements are rendered inside the slots:
 
 ![](shadow-dom-user-card.svg)
+
+The result is called "flattened" DOM:
+
+```html
+<user-card>
+  #shadow-root
+    <div>Name:
+      <slot name="username">
+        <!-- slotted element is inserted into the slot -->
+        <span slot="username">John Smith</span>
+      </slot>
+    </div>
+    <div>Birthday:
+      <slot name="birthday">
+        <span slot="birthday">01.01.2001</span>
+      </slot>
+    </div>
+</user-card>
+```
+
+...But the flattened DOM exists only for rendering and event-handling purposes. It's kind of "virtual". That's how things are shown. But the nodes in the document are actually not moved around!
+
+That can be easily checked if we run `querySelectorAll`: nodes are still at their places.
+
+```js
+// light DOM <span> nodes are still at the same place, under `<user-card>`
+alert( document.querySelectorAll('user-card span').length ); // 2
+```
+
+So, the flattened DOM is derived from shadow DOM by inserting slots. The browser renders it and uses for style inheritance, event propagation (more about that later). But JavaScript still sees the document "as is", before flattening.
+
+---
+
+### Only top-level children may have slot=\"...\" attribute
+
+The `slot="..."` attribute is only valid for direct children of the shadow host (in our example, `<user-card>` element). For nested elements it's ignored.
+
+For example, the second `<span>` here is ignored (as it's not a top-level child of `<user-card>`):
+```html
+<user-card>
+  <span slot="username">John Smith</span>
+  <div>
+    <!-- invalid slot, must be direct child of user-card -->
+    <span slot="birthday">01.01.2001</span>
+  </div>
+</user-card>
+```
+
+---
+
