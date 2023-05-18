@@ -130,3 +130,68 @@ That's the similar principle as for other methods that work with shadow DOM. Int
 
 ---
 
+## event.composed
+
+Most events successfully bubble through a shadow DOM boundary. There are few events that do not.
+
+This is governed by the `composed` event object property. If it's `true`, then the event does cross the boundary. Otherwise, it only can be caught from inside the shadow DOM.
+
+If you take a look at [UI Events specification](https://www.w3.org/TR/uievents), most events have `composed: true`:
+
+- `blur`, `focus`, `focusin`, `focusout`,
+- `click`, `dblclick`,
+- `mousedown`, `mouseup` `mousemove`, `mouseout`, `mouseover`,
+- `wheel`,
+- `beforeinput`, `input`, `keydown`, `keyup`.
+
+All touch events and pointer events also have `composed: true`.
+
+There are some events that have `composed: false` though:
+
+- `mouseenter`, `mouseleave` (they do not bubble at all),
+- `load`, `unload`, `abort`, `error`,
+- `select`,
+- `slotchange`.
+
+These events can be caught only on elements within the same DOM, where the event target resides.
+
+## Custom events
+
+When we dispatch custom events, we need to set both `bubbles` and `composed` properties to `true` for it to bubble up and out of the component.
+
+For example, here we create `div#inner` in the shadow DOM of `div#outer` and trigger two events on it. Only the one with `composed: true` makes it outside to the document:
+
+```html run untrusted height=0
+<div id="outer"></div>
+
+<script>
+outer.attachShadow({mode: 'open'});
+
+let inner = document.createElement('div');
+outer.shadowRoot.append(inner);
+
+/*
+div(id=outer)
+  #shadow-dom
+    div(id=inner)
+*/
+
+document.addEventListener('test', event => alert(event.detail));
+
+inner.dispatchEvent(new CustomEvent('test', {
+  bubbles: true,
+
+  composed: true,
+
+  detail: "composed"
+}));
+
+inner.dispatchEvent(new CustomEvent('test', {
+  bubbles: true,
+
+  composed: false,
+
+  detail: "not composed"
+}));
+</script>
+```
