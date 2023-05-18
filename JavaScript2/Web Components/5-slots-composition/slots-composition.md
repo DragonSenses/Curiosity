@@ -63,14 +63,14 @@ customElements.define('user-card', class extends HTMLElement {
     this.attachShadow({mode: 'open'});
     this.shadowRoot.innerHTML = `
       <div>Name:
-*!*
+
         <slot name="username"></slot>
-*/!*
+
       </div>
       <div>Birthday:
-*!*
+
         <slot name="birthday"></slot>
-*/!*
+
       </div>
     `;
   }
@@ -78,8 +78,8 @@ customElements.define('user-card', class extends HTMLElement {
 </script>
 
 <user-card>
-  <span *!*slot="username"*/!*>John Smith</span>
-  <span *!*slot="birthday"*/!*>01.01.2001</span>
+  <span slot="username">John Smith</span>
+  <span slot="birthday">01.01.2001</span>
 </user-card>
 ```
 
@@ -158,3 +158,85 @@ For example, the second `<span>` here is ignored (as it's not a top-level child 
 
 ---
 
+If there are multiple elements in light DOM with the same slot name, they are appended into the slot, one after another.
+
+For example, this:
+
+```html
+<user-card>
+  <span slot="username">John</span>
+  <span slot="username">Smith</span>
+</user-card>
+```
+
+Gives this flattened DOM with two elements in `<slot name="username">`:
+
+```html
+<user-card>
+  #shadow-root
+    <div>Name:
+      <slot name="username">
+        <span slot="username">John</span>
+        <span slot="username">Smith</span>
+      </slot>
+    </div>
+    <div>Birthday:
+      <slot name="birthday"></slot>
+    </div>
+</user-card>
+```
+
+## Slot fallback content
+
+If we put something inside a `<slot>`, it becomes the fallback, "default" content. The browser shows it if there's no corresponding filler in light DOM.
+
+For example, in this piece of shadow DOM, `Anonymous` renders if there's no `slot="username"` in light DOM.
+
+```html
+<div>Name:
+  <slot name="username">Anonymous</slot>
+</div>
+```
+
+## Default slot: first unnamed
+
+The first `<slot>` in shadow DOM that doesn't have a name is a "default" slot. It gets all nodes from the light DOM that aren't slotted elsewhere.
+
+For example, let's add the default slot to our `<user-card>` that shows all unslotted information about the user:
+
+```html run autorun="no-epub" untrusted height=140
+<script>
+customElements.define('user-card', class extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = `
+    <div>Name:
+      <slot name="username"></slot>
+    </div>
+    <div>Birthday:
+      <slot name="birthday"></slot>
+    </div>
+    <fieldset>
+      <legend>Other information</legend>
+
+      <slot></slot>
+
+    </fieldset>
+    `;
+  }
+});
+</script>
+
+<user-card>
+
+  <div>I like to swim.</div>
+
+  <span slot="username">John Smith</span>
+  <span slot="birthday">01.01.2001</span>
+
+  <div>...And play volleyball too!</div>
+
+</user-card>
+```
+
+All the unslotted light DOM content gets into the "Other information" fieldset.
