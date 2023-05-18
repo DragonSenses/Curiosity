@@ -95,3 +95,38 @@ If a click happens on `"John Smith"`, for both inner and outer handlers the targ
 
 On the other hand, if the click occurs on an element originating from shadow DOM, e.g. on `<b>Name</b>`, then, as it bubbles out of the shadow DOM, its `event.target` is reset to `<user-card>`.
 
+## Bubbling, event.composedPath()
+
+For purposes of event bubbling, flattened DOM is used.
+
+So, if we have a slotted element, and an event occurs somewhere inside it, then it bubbles up to the `<slot>` and upwards.
+
+The full path to the original event target, with all the shadow elements, can be obtained using `event.composedPath()`. As we can see from the name of the method, that path is taken after the composition.
+
+In the example above, the flattened DOM is:
+
+```html
+<user-card id="userCard">
+  #shadow-root
+    <div>
+      <b>Name:</b>
+      <slot name="username">
+        <span slot="username">John Smith</span>
+      </slot>
+    </div>
+</user-card>
+```
+
+
+So, for a click on `<span slot="username">`, a call to `event.composedPath()` returns an array: [`span`, `slot`, `div`, `shadow-root`, `user-card`, `body`, `html`, `document`, `window`]. That's exactly the parent chain from the target element in the flattened DOM, after the composition.
+
+---
+
+### Shadow tree details are only provided for `{mode:'open'}` trees
+
+If the shadow tree was created with `{mode: 'closed'}`, then the composed path starts from the host: `user-card` and upwards.
+
+That's the similar principle as for other methods that work with shadow DOM. Internals of closed trees are completely hidden.
+
+---
+
