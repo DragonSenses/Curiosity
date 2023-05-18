@@ -25,3 +25,28 @@ Now, as we know how to show elements from light DOM in shadow DOM, let's see how
 
 ---
 
+# Shadow DOM slots, composition
+
+Many types of components, such as tabs, menus, image galleries, and so on, need the content to render.
+
+Just like built-in browser `<select>` expects `<option>` items, our `<custom-tabs>` may expect the actual tab content to be passed. And a `<custom-menu>` may expect menu items.
+
+The code that makes use of `<custom-menu>` can look like this:
+
+```html
+<custom-menu>
+  <title>Candy menu</title>
+  <item>Lollipop</item>
+  <item>Fruit Toast</item>
+  <item>Cup Cake</item>
+</custom-menu>
+```
+
+...Then our component should render it properly, as a nice menu with given title and items, handle menu events, etc.
+
+How to implement it?
+
+We could try to analyze the element content and dynamically copy-rearrange DOM nodes. That's possible, but if we're moving elements to shadow DOM, then CSS styles from the document do not apply in there, so the visual styling may be lost. Also that requires some coding.
+
+Luckily, we don't have to. Shadow DOM supports `<slot>` elements, that are automatically filled by the content from light DOM.
+
