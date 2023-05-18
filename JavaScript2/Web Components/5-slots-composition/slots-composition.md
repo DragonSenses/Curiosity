@@ -417,3 +417,41 @@ As we've seen before, JavaScript looks at the "real" DOM, without flattening. Bu
 - `slot.assignedElements({flatten: true/false})` -- DOM elements, assigned to the slot (same as above, but only element nodes).
 
 These methods are useful when we need not just show the slotted content, but also track it in JavaScript.
+
+For example, if `<custom-menu>` component wants to know, what it shows, then it could track `slotchange` and get the items from `slot.assignedElements`:
+
+```html run untrusted height=120
+<custom-menu id="menu">
+  <span slot="title">Candy menu</span>
+  <li slot="item">Lollipop</li>
+  <li slot="item">Fruit Toast</li>
+</custom-menu>
+
+<script>
+customElements.define('custom-menu', class extends HTMLElement {
+  items = []
+
+  connectedCallback() {
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = `<div class="menu">
+      <slot name="title"></slot>
+      <ul><slot name="item"></slot></ul>
+    </div>`;
+
+    // triggers when slot content changes
+    this.shadowRoot.firstElementChild.addEventListener('slotchange', e => {
+      let slot = e.target;
+      if (slot.name == 'item') {
+        this.items = slot.assignedElements().map(elem => elem.textContent);
+        alert("Items: " + this.items);
+      }
+    });
+  }
+});
+
+// items update after 1 second
+setTimeout(() => {
+  menu.insertAdjacentHTML('beforeEnd', '<li slot="item">Cup Cake</li>')
+}, 1000);
+</script>
+```
