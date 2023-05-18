@@ -346,3 +346,62 @@ customElements.define('custom-menu', class extends HTMLElement {
 
 Here's the full demo: see `1-demo-menu`.
 
+Of course, we can add more functionality to it: events, methods and so on.
+
+## Updating slots
+
+What if the outer code wants to add/remove menu items dynamically?
+
+**The browser monitors slots and updates the rendering if slotted elements are added/removed.**
+
+Also, as light DOM nodes are not copied, but just rendered in slots, the changes inside them immediately become visible.
+
+So we don't have to do anything to update rendering. But if the component code wants to know about slot changes, then `slotchange` event is available.
+
+For example, here the menu item is inserted dynamically after 1 second, and the title changes after 2 seconds:
+
+```html run untrusted height=80
+<custom-menu id="menu">
+  <span slot="title">Candy menu</span>
+</custom-menu>
+
+<script>
+customElements.define('custom-menu', class extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = `<div class="menu">
+      <slot name="title"></slot>
+      <ul><slot name="item"></slot></ul>
+    </div>`;
+
+    // shadowRoot can't have event handlers, so using the first child
+    this.shadowRoot.firstElementChild.addEventListener('slotchange',
+      e => alert("slotchange: " + e.target.name)
+    );
+  }
+});
+
+setTimeout(() => {
+  menu.insertAdjacentHTML('beforeEnd', '<li slot="item">Lollipop</li>')
+}, 1000);
+
+setTimeout(() => {
+  menu.querySelector('[slot="title"]').innerHTML = "New menu";
+}, 2000);
+</script>
+```
+
+The menu rendering updates each time without our intervention.
+
+There are two `slotchange` events here:
+
+1. At initialization:
+
+    `slotchange: title` triggers immediately, as the `slot="title"` from the light DOM gets into the corresponding slot.
+2. After 1 second:
+
+    `slotchange: item` triggers, when a new `<li slot="item">` is added.
+
+Please note: there's no `slotchange` event after 2 seconds, when the content of `slot="title"` is modified. That's because there's no slot change. We modify the content inside the slotted element, that's another thing.
+
+If we'd like to track internal modifications of light DOM from JavaScript, that's also possible using a more generic mechanism: [MutationObserver](info:mutation-observer).
