@@ -276,3 +276,43 @@ user-card {
   --user-card-field-color: green;
 }
 ```
+
+Custom CSS properties pierce through shadow DOM, they are visible everywhere, so the inner `.field` rule will make use of it.
+
+Here's the full example:
+
+```html run autorun="no-epub" untrusted height=80
+<style>
+
+  user-card {
+    --user-card-field-color: green;
+  }
+
+</style>
+
+<template id="tmpl">
+  <style>
+
+    .field {
+      color: var(--user-card-field-color, black);
+    }
+
+  </style>
+  <div class="field">Name: <slot name="username"></slot></div>
+  <div class="field">Birthday: <slot name="birthday"></slot></div>
+</template>
+
+<script>
+customElements.define('user-card', class extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.append(document.getElementById('tmpl').content.cloneNode(true));
+  }
+});
+</script>
+
+<user-card>
+  <span slot="username">John Smith</span>
+  <span slot="birthday">01.01.2001</span>
+</user-card>
+```
