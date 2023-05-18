@@ -344,3 +344,5 @@ customElements.define('custom-menu', class extends HTMLElement {
 });
 ```
 
+Here's the full demo: see `1-demo-menu`.
+
