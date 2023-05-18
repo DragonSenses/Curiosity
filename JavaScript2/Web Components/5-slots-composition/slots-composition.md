@@ -240,3 +240,107 @@ customElements.define('user-card', class extends HTMLElement {
 ```
 
 All the unslotted light DOM content gets into the "Other information" fieldset.
+
+Elements are appended to a slot one after another, so both unslotted pieces of information are in the default slot together.
+
+The flattened DOM looks like this:
+
+```html
+<user-card>
+  #shadow-root
+    <div>Name:
+      <slot name="username">
+        <span slot="username">John Smith</span>
+      </slot>
+    </div>
+    <div>Birthday:
+      <slot name="birthday">
+        <span slot="birthday">01.01.2001</span>
+      </slot>
+    </div>
+    <fieldset>
+      <legend>Other information</legend>
+
+      <slot>
+        <div>I like to swim.</div>
+        <div>...And play volleyball too!</div>
+      </slot>
+
+    </fieldset>
+</user-card>
+```
+
+## Menu example
+
+Now let's back to `<custom-menu>`, mentioned at the beginning of the chapter.
+
+We can use slots to distribute elements.
+
+Here's the markup for `<custom-menu>`:
+
+```html
+<custom-menu>
+  <span slot="title">Candy menu</span>
+  <li slot="item">Lollipop</li>
+  <li slot="item">Fruit Toast</li>
+  <li slot="item">Cup Cake</li>
+</custom-menu>
+```
+
+The shadow DOM template with proper slots:
+
+```html
+<template id="tmpl">
+  <style> /* menu styles */ </style>
+  <div class="menu">
+    <slot name="title"></slot>
+    <ul><slot name="item"></slot></ul>
+  </div>
+</template>
+```
+
+1. `<span slot="title">` goes into `<slot name="title">`.
+2. There are many `<li slot="item">` in the `<custom-menu>`, but only one `<slot name="item">` in the template. So all such `<li slot="item">` are appended to `<slot name="item">` one after another, thus forming the list.
+
+The flattened DOM becomes:
+
+```html
+<custom-menu>
+  #shadow-root
+    <style> /* menu styles */ </style>
+    <div class="menu">
+      <slot name="title">
+        <span slot="title">Candy menu</span>
+      </slot>
+      <ul>
+        <slot name="item">
+          <li slot="item">Lollipop</li>
+          <li slot="item">Fruit Toast</li>
+          <li slot="item">Cup Cake</li>
+        </slot>
+      </ul>
+    </div>
+</custom-menu>
+```
+
+One might notice that, in a valid DOM, `<li>` must be a direct child of `<ul>`. But that's flattened DOM, it describes how the component is rendered, such thing happens naturally here.
+
+We just need to add a `click` handler to open/close the list, and the `<custom-menu>` is ready:
+
+```js
+customElements.define('custom-menu', class extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({mode: 'open'});
+
+    // tmpl is the shadow DOM template (above)
+    this.shadowRoot.append( tmpl.content.cloneNode(true) );
+
+    // we can't select light DOM nodes, so let's handle clicks on the slot
+    this.shadowRoot.querySelector('slot[name="title"]').onclick = () => {
+      // open/close the menu
+      this.shadowRoot.querySelector('.menu').classList.toggle('closed');
+    };
+  }
+});
+```
+
