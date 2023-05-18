@@ -85,3 +85,116 @@ It's very convenient, as we can setup "default" component styles in its `:host` 
 
 The exception is when a local property is labelled `!important`, for such properties, local styles take precedence.
 
+## :host(selector)
+
+Same as `:host`, but applied only if the shadow host matches the `selector`.
+
+For example, we'd like to center the `<custom-dialog>` only if it has `centered` attribute:
+
+```html run autorun="no-epub" untrusted height=80
+<template id="tmpl">
+  <style>
+
+    :host([centered]) {
+
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-color: blue;
+    }
+
+    :host {
+      display: inline-block;
+      border: 1px solid red;
+      padding: 10px;
+    }
+  </style>
+  <slot></slot>
+</template>
+
+<script>
+customElements.define('custom-dialog', class extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({mode: 'open'}).append(tmpl.content.cloneNode(true));
+  }
+});
+</script>
+
+
+<custom-dialog centered>
+  Centered!
+</custom-dialog>
+
+<custom-dialog>
+  Not centered.
+</custom-dialog>
+```
+
+Now the additional centering styles are only applied to the first dialog: `<custom-dialog centered>`.
+
+To summarize, we can use `:host`-family of selectors to style the main element of the component. These styles (unless `!important`) can be overridden by the document.
+
+## Styling slotted content
+
+Now let's consider the situation with slots.
+
+Slotted elements come from light DOM, so they use document styles. Local styles do not affect slotted content.
+
+In the example below, slotted `<span>` is bold, as per document style, but does not take `background` from the local style:
+
+```html run autorun="no-epub" untrusted height=80
+<style>
+
+  span { font-weight: bold }
+
+</style>
+
+<user-card>
+  <div slot="username"><span>John Smith</span></div>
+</user-card>
+
+<script>
+customElements.define('user-card', class extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = `
+      <style>
+
+      span { background: red; }
+
+      </style>
+      Name: <slot name="username"></slot>
+    `;
+  }
+});
+</script>
+```
+
+The result is bold, but not red.
+
+If we'd like to style slotted elements in our component, there are two choices.
+
+First, we can style the `<slot>` itself and rely on CSS inheritance:
+
+```html run autorun="no-epub" untrusted height=80
+<user-card>
+  <div slot="username"><span>John Smith</span></div>
+</user-card>
+
+<script>
+customElements.define('user-card', class extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = `
+      <style>
+
+      slot[name="username"] { font-weight: bold; }
+
+      </style>
+      Name: <slot name="username"></slot>
+    `;
+  }
+});
+</script>
+```
