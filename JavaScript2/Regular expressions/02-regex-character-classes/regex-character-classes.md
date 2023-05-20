@@ -147,3 +147,66 @@ Please note that a dot means "any character", but not the "absence of a characte
 ```js run
 alert( "CS4".match(/CS.4/) ); // null, no match because there's no character for the dot
 ```
+
+### Dot as literally any character with "s" flag
+
+By default, a dot doesn't match the newline character `\n`.
+
+For instance, the regexp `pattern:A.B` matches `match:A`, and then `match:B` with any character between them, except a newline `\n`:
+
+```js run
+alert( "A\nB".match(/A.B/) ); // null (no match)
+```
+
+There are many situations when we'd like a dot to mean literally "any character", newline included.
+
+That's what flag `pattern:s` does. If a regexp has it, then a dot `pattern:.` matches literally any character:
+
+```js run
+alert( "A\nB".match(/A.B/s) ); // A\nB (match!)
+```
+
+---
+
+### **Warning**: Not supported in IE
+
+The `pattern:s` flag is not supported in IE.
+
+Luckily, there's an alternative, that works everywhere. We can use a regexp like `pattern:[\s\S]` to match "any character" (this pattern will be covered in the article <info:regexp-character-sets-and-ranges>).
+
+```js run
+alert( "A\nB".match(/A[\s\S]B/) ); // A\nB (match!)
+```
+
+The pattern `pattern:[\s\S]` literally says: "a space character OR not a space character". In other words, "anything". We could use another pair of complementary classes, such as `pattern:[\d\D]`, that doesn't matter. Or even the `pattern:[^]` -- as it means match any character except nothing.
+
+Also we can use this trick if we want both kind of "dots" in the same pattern: the actual dot `pattern:.` behaving the regular way ("not including a newline"), and also a way to match "any character" with `pattern:[\s\S]` or alike.
+
+---
+
+### **Warning**: Pay attention to spaces
+
+Usually we pay little attention to spaces. For us strings `subject:1-5` and `subject:1 - 5` are nearly identical.
+
+But if a regexp doesn't take spaces into account, it may fail to work.
+
+Let's try to find digits separated by a hyphen:
+
+```js run
+alert( "1 - 5".match(/\d-\d/) ); // null, no match!
+```
+
+Let's fix it adding spaces into the regexp `pattern:\d - \d`:
+
+```js run
+alert( "1 - 5".match(/\d - \d/) ); // 1 - 5, now it works
+// or we can use \s class:
+alert( "1 - 5".match(/\d\s-\s\d/) ); // 1 - 5, also works
+```
+
+**A space is a character. Equal in importance with any other character.**
+
+We can't add or remove spaces from a regular expression and expect it to work the same.
+
+In other words, in a regular expression all characters matter, spaces too.
+
