@@ -91,3 +91,59 @@ The match (each regexp character class has the corresponding result character):
 
 ---
 
+## Inverse classes
+
+For every character class there exists an "inverse class", denoted with the same letter, but uppercased.
+
+The "inverse" means that it matches all other characters, for instance:
+
+`pattern:\D`
+: Non-digit: any character except `pattern:\d`, for instance a letter.
+
+`pattern:\S`
+: Non-space: any character except `pattern:\s`, for instance a letter.
+
+`pattern:\W`
+: Non-wordly character: anything but `pattern:\w`, e.g a non-latin letter or a space.
+
+In the beginning of the chapter we saw how to make a number-only phone number from a string like `subject:+7(903)-123-45-67`: find all digits and join them.
+
+```js run
+let str = "+7(903)-123-45-67";
+
+alert( str.match(/\d/g).join('') ); // 79031234567
+```
+
+An alternative, shorter way is to find non-digits `pattern:\D` and remove them from the string:
+
+```js run
+let str = "+7(903)-123-45-67";
+
+alert( str.replace(/\D/g, "") ); // 79031234567
+```
+
+## A dot is "any character"
+
+A dot `pattern:.` is a special character class that matches "any character except a newline".
+
+For instance:
+
+```js run
+alert( "Z".match(/./) ); // Z
+```
+
+Or in the middle of a regexp:
+
+```js run
+let regexp = /CS.4/;
+
+alert( "CSS4".match(regexp) ); // CSS4
+alert( "CS-4".match(regexp) ); // CS-4
+alert( "CS 4".match(regexp) ); // CS 4 (space is also a character)
+```
+
+Please note that a dot means "any character", but not the "absence of a character". There must be a character to match it:
+
+```js run
+alert( "CS4".match(/CS.4/) ); // null, no match because there's no character for the dot
+```
