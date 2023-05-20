@@ -83,3 +83,57 @@ From here on the color scheme is:
 
 ---
 
+## Searching: str.match
+
+As mentioned previously, regular expressions are integrated with string methods.
+
+The method `str.match(regexp)` finds all matches of `regexp` in the string `str`.
+
+It has 3 working modes:
+
+1. If the regular expression has flag `pattern:g`, it returns an array of all matches:
+    ```js run
+    let str = "We will, we will rock you";
+
+    alert( str.match(/we/gi) ); // We,we (an array of 2 substrings that match)
+    ```
+    Please note that both `match:We` and `match:we` are found, because flag `pattern:i` makes the regular expression case-insensitive.
+
+2. If there's no such flag it returns only the first match in the form of an array, with the full match at index `0` and some additional details in properties:
+    ```js run
+    let str = "We will, we will rock you";
+
+    let result = str.match(/we/i); // without flag g
+
+    alert( result[0] );     // We (1st match)
+    alert( result.length ); // 1
+
+    // Details:
+    alert( result.index );  // 0 (position of the match)
+    alert( result.input );  // We will, we will rock you (source string)
+    ```
+    The array may have other indexes, besides `0` if a part of the regular expression is enclosed in parentheses. We'll cover that in the chapter  <info:regexp-groups>.
+
+3. And, finally, if there are no matches, `null` is returned (doesn't matter if there's flag `pattern:g` or not).
+
+    This a very important nuance. If there are no matches, we don't receive an empty array, but instead receive `null`. Forgetting about that may lead to errors, e.g.:
+
+    ```js run
+    let matches = "JavaScript".match(/HTML/); // = null
+
+    if (!matches.length) { // Error: Cannot read property 'length' of null
+      alert("Error in the line above");
+    }
+    ```
+
+    If we'd like the result to always be an array, we can write it this way:
+
+    ```js run
+    let matches = "JavaScript".match(/HTML/)*!* || []*/!*;
+
+    if (!matches.length) {
+      alert("No matches"); // now it works
+    }
+    ```
+
+## Replacing: str.replace
