@@ -66,3 +66,26 @@ And at the text end.
 
 ---
 
+## Searching for \n instead of ^ $
+
+To find a newline, we can use not only anchors `pattern:^` and `pattern:$`, but also the newline character `\n`.
+
+What's the difference? Let's see an example.
+
+Here we search for `pattern:\d\n` instead of `pattern:\d$`:
+
+```js run
+let str = `Winnie: 1
+Piglet: 2
+Eeyore: 3`;
+
+console.log( str.match(/\d\n/g) ); // 1\n,2\n
+```
+
+As we can see, there are 2 matches instead of 3.
+
+That's because there's no newline after `subject:3` (there's text end though, so it matches `pattern:$`).
+
+Another difference: now every match includes a newline character `match:\n`. Unlike the anchors `pattern:^` `pattern:$`, that only test the condition (start/end of a line), `\n` is a character, so it becomes a part of the result.
+
+So, a `\n` in the pattern is used when we need newline characters in the result, while anchors are used to find something at the beginning/end of a line.
