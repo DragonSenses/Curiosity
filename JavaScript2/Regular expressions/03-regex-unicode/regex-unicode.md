@@ -122,3 +122,46 @@ Unicode supports many different properties, their full list would require a lot 
 
 ---
 
+### Example: hexadecimal numbers
+
+For instance, let's look for hexadecimal numbers, written as `xFF`, where `F` is a hex digit (0..9 or A..F).
+
+A hex digit can be denoted as `pattern:\p{Hex_Digit}`:
+
+```js run
+let regexp = /x\p{Hex_Digit}\p{Hex_Digit}/u;
+
+alert("number: xAF".match(regexp)); // xAF
+```
+
+### Example: Chinese hieroglyphs
+
+Let's look for Chinese hieroglyphs.
+
+There's a Unicode property `Script` (a writing system), that may have a value: `Cyrillic`, `Greek`, `Arabic`, `Han` (Chinese) and so on, [here's the full list](https://en.wikipedia.org/wiki/Script_(Unicode)).
+
+To look for characters in a given writing system we should use `pattern:Script=<value>`, e.g. for Cyrillic letters: `pattern:\p{sc=Cyrillic}`, for Chinese hieroglyphs: `pattern:\p{sc=Han}`, and so on:
+
+```js run
+let regexp = /\p{sc=Han}/gu; // returns Chinese hieroglyphs
+
+let str = `Hello Привет 你好 123_456`;
+
+alert( str.match(regexp) ); // 你,好
+```
+
+### Example: currency
+
+Characters that denote a currency, such as `$`, `€`, `¥`, have Unicode property  `pattern:\p{Currency_Symbol}`, the short alias: `pattern:\p{Sc}`.
+
+Let's use it to look for prices in the format "currency, followed by a digit":
+
+```js run
+let regexp = /\p{Sc}\d/gu;
+
+let str = `Prices: $2, €1, ¥9`;
+
+alert( str.match(regexp) ); // $2,€1,¥9
+```
+
+Later, in `regex-quantifiers` we'll see how to look for numbers that contain many digits.
