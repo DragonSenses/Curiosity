@@ -162,3 +162,14 @@ An example with `pattern:$&`:
 ```js run
 console.log( "I love HTML".replace(/HTML/, "$& and JavaScript") ); // I love HTML and JavaScript
 ```
+
+## Testing: regexp.test
+
+The method `regexp.test(str)` looks for at least one match, if found, returns `true`, otherwise `false`.
+
+```js run
+let str = "I love JavaScript";
+let regexp = /LOVE/i;
+
+console.log( regexp.test(str) ); // true
+```
