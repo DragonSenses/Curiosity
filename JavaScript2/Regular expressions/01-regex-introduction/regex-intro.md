@@ -95,7 +95,7 @@ It has 3 working modes:
     ```js run
     let str = "We will, we will rock you";
 
-    alert( str.match(/we/gi) ); // We,we (an array of 2 substrings that match)
+    console.log( str.match(/we/gi) ); // We,we (an array of 2 substrings that match)
     ```
     Please note that both `match:We` and `match:we` are found, because flag `pattern:i` makes the regular expression case-insensitive.
 
@@ -105,12 +105,12 @@ It has 3 working modes:
 
     let result = str.match(/we/i); // without flag g
 
-    alert( result[0] );     // We (1st match)
-    alert( result.length ); // 1
+    console.log( result[0] );     // We (1st match)
+    console.log( result.length ); // 1
 
     // Details:
-    alert( result.index );  // 0 (position of the match)
-    alert( result.input );  // We will, we will rock you (source string)
+    console.log( result.index );  // 0 (position of the match)
+    console.log( result.input );  // We will, we will rock you (source string)
     ```
     The array may have other indexes, besides `0` if a part of the regular expression is enclosed in parentheses. We'll cover that in the chapter  <info:regexp-groups>.
 
@@ -122,7 +122,7 @@ It has 3 working modes:
     let matches = "JavaScript".match(/HTML/); // = null
 
     if (!matches.length) { // Error: Cannot read property 'length' of null
-      alert("Error in the line above");
+      console.log("Error in the line above");
     }
     ```
 
@@ -132,8 +132,33 @@ It has 3 working modes:
     let matches = "JavaScript".match(/HTML/)*!* || []*/!*;
 
     if (!matches.length) {
-      alert("No matches"); // now it works
+      console.log("No matches"); // now it works
     }
     ```
 
 ## Replacing: str.replace
+
+```js run
+// no flag g
+console.log( "We will, we will".replace(/we/i, "I") ); // I will, we will
+
+// with flag g
+console.log( "We will, we will".replace(/we/ig, "I") ); // I will, I will
+```
+
+The second argument is the `replacement` string. We can use special character combinations in it to insert fragments of the match:
+
+| Symbols | Action in the replacement string |
+|--------|--------|
+|`$&`|inserts the whole match|
+|<code>$&#096;</code>|inserts a part of the string before the match|
+|`$'`|inserts a part of the string after the match|
+|`$n`|if `n` is a 1-2 digit number, then it inserts the contents of n-th parentheses, more about it in the chapter <info:regexp-groups>|
+|`$<name>`|inserts the contents of the parentheses with the given `name`, more about it in the chapter <info:regexp-groups>|
+|`$$`|inserts character `$` |
+
+An example with `pattern:$&`:
+
+```js run
+console.log( "I love HTML".replace(/HTML/, "$& and JavaScript") ); // I love HTML and JavaScript
+```
