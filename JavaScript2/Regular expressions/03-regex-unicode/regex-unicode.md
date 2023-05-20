@@ -1,6 +1,6 @@
 # Summary | Unicode: flag "u" and class \p{...}
 
-Flag `pattern:u` enables the support of Unicode in regular expressions.
+Flag `u` enables the support of Unicode in regular expressions.
 
 That means two things:
 
@@ -165,3 +165,16 @@ alert( str.match(regexp) ); // $2,€1,¥9
 ```
 
 Later, in `regex-quantifiers` we'll see how to look for numbers that contain many digits.
+
+---
+
+## Summary
+
+Flag `u` enables the support of Unicode in regular expressions.
+
+That means two things:
+
+1. Characters of 4 bytes are handled correctly: as a single character, not two 2-byte characters.
+2. Unicode properties can be used in the search: `\p{…}`.
+
+With Unicode properties we can look for words in given languages, special characters (quotes, currencies) and so on.
