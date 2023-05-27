@@ -35,3 +35,20 @@ alert( "Hello, Java!".match(/\bJava\b/) );  // Java
 alert( "Hello, Java!".match(/\bHell\b/) );  // null (no match)
 alert( "Hello, Java!".match(/\bJava!\b/) ); // null (no match)
 ```
+
+We can use `pattern:\b` not only with words, but with digits as well.
+
+For example, the pattern `pattern:\b\d\d\b` looks for standalone 2-digit numbers. In other words, it looks for 2-digit numbers that are surrounded by characters different from `pattern:\w`, such as spaces or punctuation (or text start/end).
+
+```js run
+alert( "1 23 456 78".match(/\b\d\d\b/g) ); // 23,78
+alert( "12,34,56".match(/\b\d\d\b/g) ); // 12,34,56
+```
+
+---
+
+### Word boundary `pattern:\b` doesn't work for non-latin alphabets
+
+The word boundary test `pattern:\b` checks that there should be `pattern:\w` on the one side from the position and "not `pattern:\w`" - on the other side.
+
+But `pattern:\w` means a latin letter `a-z` (or a digit or an underscore), so the test doesn't work for other characters, e.g. cyrillic letters or hieroglyphs.
