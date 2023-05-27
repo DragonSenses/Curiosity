@@ -18,3 +18,20 @@ alert( "Hello, JavaScript!".match(/\bJava\b/) ); // null
 ```
 
 In the string `subject:Hello, Java!` following positions correspond to `pattern:\b`:
+
+![](hello-java-boundaries.svg)
+
+So, it matches the pattern `pattern:\bHello\b`, because:
+
+1. At the beginning of the string matches the first test `pattern:\b`.
+2. Then matches the word `pattern:Hello`.
+3. Then the test `pattern:\b` matches again, as we're between `subject:o` and a comma.
+
+So the pattern `pattern:\bHello\b` would match, but not `pattern:\bHell\b` (because there's no word boundary after `l`) and not `Java!\b` (because the exclamation sign is not a wordly character `pattern:\w`, so there's no word boundary after it).
+
+```js run
+alert( "Hello, Java!".match(/\bHello\b/) ); // Hello
+alert( "Hello, Java!".match(/\bJava\b/) );  // Java
+alert( "Hello, Java!".match(/\bHell\b/) );  // null (no match)
+alert( "Hello, Java!".match(/\bJava!\b/) ); // null (no match)
+```
