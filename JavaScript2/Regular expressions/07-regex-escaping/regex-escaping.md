@@ -40,3 +40,22 @@ If we're looking for a backslash `\`, it's a special character in both regular s
 alert( "1\\2".match(/\\/) ); // '\'
 ```
 
+---
+
+## A slash
+
+A slash symbol `'/'` is not a special character, but in JavaScript it is used to open and close the regexp: `pattern:/...pattern.../`, so we should escape it too.
+
+Here's what a search for a slash `'/'` looks like:
+
+```js run
+alert( "/".match(/\//) ); // '/'
+```
+
+On the other hand, if we're not using `pattern:/.../`, but create a regexp using `new RegExp`, then we don't need to escape it:
+
+```js run
+alert( "/".match(new RegExp("/")) ); // finds /
+```
+
+---
