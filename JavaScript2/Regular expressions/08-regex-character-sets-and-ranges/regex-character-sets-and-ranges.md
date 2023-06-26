@@ -87,7 +87,7 @@ let regexp = /[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]/gu;
 let str = `Hi 你好 12`;
 
 // finds all letters and digits:
-alert( str.match(regexp) ); // H,i,你,好,1,2
+console.log( str.match(regexp) ); // H,i,你,好,1,2
 ```
 
 Of course, we can edit this pattern: add Unicode properties or remove them. Unicode properties are covered in more details in the article `regex-unicode.md`.
@@ -117,7 +117,7 @@ For instance:
 The example below looks for any characters except letters, digits and spaces:
 
 ```js run
-alert( "alice15@gmail.com".match(/[^\d\sA-Z]/gi) ); // @ and .
+console.log( "alice15@gmail.com".match(/[^\d\sA-Z]/gi) ); // @ and .
 ```
 
 ## Escaping in […]
@@ -141,7 +141,7 @@ In the example below the regexp `pattern:[-().^+]` looks for one of the characte
 // No need to escape
 let regexp = /[-().^+]/g;
 
-alert( "1 + 2 - 3".match(regexp) ); // Matches +, -
+console.log( "1 + 2 - 3".match(regexp) ); // Matches +, -
 ```
 
 ...But if you decide to escape them "just in case", then there would be no harm:
@@ -150,7 +150,7 @@ alert( "1 + 2 - 3".match(regexp) ); // Matches +, -
 // Escaped everything
 let regexp = /[\-\(\)\.\^\+]/g;
 
-alert( "1 + 2 - 3".match(regexp) ); // also works: +, -
+console.log( "1 + 2 - 3".match(regexp) ); // also works: +, -
 ```
 
 ## Ranges and flag "u"
@@ -160,7 +160,7 @@ If there are surrogate pairs in the set, flag `pattern:u` is required for them t
 For instance, let's look for `pattern:[𝒳𝒴]` in the string `subject:𝒳`:
 
 ```js run
-alert( '𝒳'.match(/[𝒳𝒴]/) ); // shows a strange character, like [?]
+console.log( '𝒳'.match(/[𝒳𝒴]/) ); // shows a strange character, like [?]
 // (the search was performed incorrectly, half-character returned)
 ```
 
@@ -176,6 +176,31 @@ We can see their codes like this:
 
 ```js run
 for(let i=0; i<'𝒳𝒴'.length; i++) {
-  alert('𝒳𝒴'.charCodeAt(i)); // 55349, 56499, 55349, 56500
+  console.log('𝒳𝒴'.charCodeAt(i)); // 55349, 56499, 55349, 56500
 };
+```
+
+So, the example above finds and shows the left half of `𝒳`.
+
+If we add flag `pattern:u`, then the behavior will be correct:
+
+```js run
+console.log( '𝒳'.match(/[𝒳𝒴]/u) ); // 𝒳
+```
+
+The similar situation occurs when looking for a range, such as `[𝒳-𝒴]`.
+
+If we forget to add flag `pattern:u`, there will be an error:
+
+```js run
+'𝒳'.match(/[𝒳-𝒴]/); // Error: Invalid regular expression
+```
+
+The reason is that without flag `pattern:u` surrogate pairs are perceived as two characters, so `[𝒳-𝒴]` is interpreted as `[<55349><56499>-<55349><56500>]` (every surrogate pair is replaced with its codes). Now it's easy to see that the range `56499-55349` is invalid: its starting code `56499` is greater than the end `55349`. That's the formal reason for the error.
+
+With the flag `pattern:u` the pattern works correctly:
+
+```js run
+// look for characters from 𝒳 to 𝒵
+console.log( '𝒴'.match(/[𝒳-𝒵]/u) ); // 𝒴
 ```
