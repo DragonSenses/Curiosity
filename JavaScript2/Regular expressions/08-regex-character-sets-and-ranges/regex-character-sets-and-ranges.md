@@ -65,3 +65,29 @@ For instance:
 
 ---
 
+### Example: multi-language \w
+
+As the character class `pattern:\w` is a shorthand for `pattern:[a-zA-Z0-9_]`, it can't find Chinese hieroglyphs, Cyrillic letters, etc.
+
+We can write a more universal pattern, that looks for wordly characters in any language. That's easy with Unicode properties: `pattern:[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]`.
+
+Let's decipher it. Similar to `pattern:\w`, we're making a set of our own that includes characters with following Unicode properties:
+
+- `Alphabetic` (`Alpha`) - for letters,
+- `Mark` (`M`) - for accents,
+- `Decimal_Number` (`Nd`) - for digits,
+- `Connector_Punctuation` (`Pc`) - for the underscore `'_'` and similar characters,
+- `Join_Control` (`Join_C`) - two special codes `200c` and `200d`, used in ligatures, e.g. in Arabic.
+
+An example of use:
+
+```js run
+let regexp = /[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]/gu;
+
+let str = `Hi 你好 12`;
+
+// finds all letters and digits:
+alert( str.match(regexp) ); // H,i,你,好,1,2
+```
+
+Of course, we can edit this pattern: add Unicode properties or remove them. Unicode properties are covered in more details in the article `regex-unicode.md`.
