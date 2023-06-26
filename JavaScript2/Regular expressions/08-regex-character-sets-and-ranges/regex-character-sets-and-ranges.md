@@ -91,3 +91,31 @@ alert( str.match(regexp) ); // H,i,你,好,1,2
 ```
 
 Of course, we can edit this pattern: add Unicode properties or remove them. Unicode properties are covered in more details in the article `regex-unicode.md`.
+
+---
+
+### Unicode properties aren't supported in IE
+
+Unicode properties `pattern:p{…}` are not implemented in IE. If we really need them, we can use library [XRegExp](https://xregexp.com/).
+
+Or just use ranges of characters in a language that interests us, e.g.  `pattern:[а-я]` for Cyrillic letters.
+
+---
+
+## Excluding ranges
+
+Besides normal ranges, there are "excluding" ranges that look like `pattern:[^…]`.
+
+They are denoted by a caret character `^` at the start and match any character *except the given ones*.
+
+For instance:
+
+- `pattern:[^aeyo]` -- any character except  `'a'`, `'e'`, `'y'` or `'o'`.
+- `pattern:[^0-9]` -- any character except a digit, the same as `pattern:\D`.
+- `pattern:[^\s]` -- any non-space character, same as `\S`.
+
+The example below looks for any characters except letters, digits and spaces:
+
+```js run
+alert( "alice15@gmail.com".match(/[^\d\sA-Z]/gi) ); // @ and .
+```
