@@ -119,3 +119,36 @@ The example below looks for any characters except letters, digits and spaces:
 ```js run
 alert( "alice15@gmail.com".match(/[^\d\sA-Z]/gi) ); // @ and .
 ```
+
+## Escaping in […]
+
+Usually when we want to find exactly a special character, we need to escape it like `pattern:\.`. And if we need a backslash, then we use `pattern:\\`, and so on.
+
+In square brackets we can use the vast majority of special characters without escaping:
+
+- Symbols `pattern:. + ( )` never need escaping.
+- A hyphen `pattern:-` is not escaped in the beginning or the end (where it does not define a range).
+- A caret `pattern:^` is only escaped in the beginning (where it means exclusion).
+- The closing square bracket `pattern:]` is always escaped (if we need to look for that symbol).
+
+In other words, all special characters are allowed without escaping, except when they mean something for square brackets.
+
+A dot `.` inside square brackets means just a dot. The pattern `pattern:[.,]` would look for one of characters: either a dot or a comma.
+
+In the example below the regexp `pattern:[-().^+]` looks for one of the characters `-().^+`:
+
+```js run
+// No need to escape
+let regexp = /[-().^+]/g;
+
+alert( "1 + 2 - 3".match(regexp) ); // Matches +, -
+```
+
+...But if you decide to escape them "just in case", then there would be no harm:
+
+```js run
+// Escaped everything
+let regexp = /[\-\(\)\.\^\+]/g;
+
+alert( "1 + 2 - 3".match(regexp) ); // also works: +, -
+```
