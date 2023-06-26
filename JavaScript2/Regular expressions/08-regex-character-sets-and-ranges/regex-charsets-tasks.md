@@ -2,9 +2,26 @@
 
 We have a regexp `pattern:/Java[^script]/`.
 
-Does it match anything in the string `subject:Java`? In the string `subject:JavaScript`?
+1. Does it match anything in the string `Java`?
+2. Does it match anything in the string `JavaScript`?
 
 ## **Answer**:
+
+1. **no**
+
+- In the script `Java` it doesn't match anything, because `pattern:[^script]` means "any character except given ones". So the regexp looks for `"Java"` followed by one such symbol, but there's a string end, no symbols after it.
+
+    ```js run
+    alert( "Java".match(/Java[^script]/) ); // null
+    ```
+
+2. **yes**
+
+Yes, because the `pattern:[^script]` part matches the character `"S"`. It's not one of `pattern:script`. As the regexp is case-sensitive (no `pattern:i` flag), it treats `"S"` as a different character from `"s"`.
+
+    ```js run
+    alert( "JavaScript".match(/Java[^script]/) ); // "JavaS"
+    ```
 
 ---
 
