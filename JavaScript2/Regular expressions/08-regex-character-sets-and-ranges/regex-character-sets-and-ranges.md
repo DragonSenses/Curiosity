@@ -152,3 +152,30 @@ let regexp = /[\-\(\)\.\^\+]/g;
 
 alert( "1 + 2 - 3".match(regexp) ); // also works: +, -
 ```
+
+## Ranges and flag "u"
+
+If there are surrogate pairs in the set, flag `pattern:u` is required for them to work correctly.
+
+For instance, let's look for `pattern:[𝒳𝒴]` in the string `subject:𝒳`:
+
+```js run
+alert( '𝒳'.match(/[𝒳𝒴]/) ); // shows a strange character, like [?]
+// (the search was performed incorrectly, half-character returned)
+```
+
+The result is incorrect, because by default regular expressions "don't know" about surrogate pairs.
+
+The regular expression engine thinks that `[𝒳𝒴]` -- are not two, but four characters:
+1. left half of `𝒳` `(1)`,
+2. right half of `𝒳` `(2)`,
+3. left half of `𝒴` `(3)`,
+4. right half of `𝒴` `(4)`.
+
+We can see their codes like this:
+
+```js run
+for(let i=0; i<'𝒳𝒴'.length; i++) {
+  alert('𝒳𝒴'.charCodeAt(i)); // 55349, 56499, 55349, 56500
+};
+```
