@@ -78,3 +78,19 @@ There are shorthands for most used quantifiers:
     alert( str.match(/colou?r/g) ); // color, colour
     ```
 
+`pattern:*`
+: Means "zero or more", the same as `pattern:{0,}`. That is, the character may repeat any times or be absent.
+
+    For example, `pattern:\d0*` looks for a digit followed by any number of zeroes (may be many or none):
+
+    ```js run
+    alert( "100 10 1".match(/\d0*/g) ); // 100, 10, 1
+    ```
+
+    Compare it with `pattern:+` (one or more):
+
+    ```js run
+    alert( "100 10 1".match(/\d0+/g) ); // 100, 10
+    // 1 not matched, as 0+ requires at least one zero
+    ```
+
