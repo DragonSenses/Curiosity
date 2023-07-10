@@ -49,3 +49,32 @@ let numbers = str.match(/\d{1,}/g);
 
 alert(numbers); // 7,903,123,45,67
 ```
+
+## Shorthands
+
+There are shorthands for most used quantifiers:
+
+`pattern:+`
+: Means "one or more", the same as `pattern:{1,}`.
+
+    For instance, `pattern:\d+` looks for numbers:
+
+    ```js run
+    let str = "+7(903)-123-45-67";
+
+    alert( str.match(/\d+/g) ); // 7,903,123,45,67
+    ```
+
+`pattern:?`
+: Means "zero or one", the same as `pattern:{0,1}`. In other words, it makes the symbol optional.
+
+    For instance, the pattern `pattern:ou?r` looks for `match:o` followed by zero or one `match:u`, and then `match:r`.
+
+    So, `pattern:colou?r` finds both `match:color` and `match:colour`:
+
+    ```js run
+    let str = "Should I write color or colour?";
+
+    alert( str.match(/colou?r/g) ); // color, colour
+    ```
+
