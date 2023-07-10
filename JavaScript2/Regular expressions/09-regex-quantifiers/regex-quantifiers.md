@@ -126,3 +126,19 @@ alert( "0 1 12.345 7890".match(/\d+\.\d+/g) ); // 12.345
 **Regexp "opening or closing HTML-tag without attributes": `pattern:/<\/?[a-z][a-z0-9]*>/i`**
 
 We added an optional slash `pattern:/?` near the beginning of the pattern. Had to escape it with a backslash, otherwise JavaScript would think it is the pattern end.
+
+```js run
+alert( "<h1>Hi!</h1>".match(/<\/?[a-z][a-z0-9]*>/gi) ); // <h1>, </h1>
+```
+
+---
+
+### To make a regexp more precise, we often need make it more complex
+
+We can see one common rule in these examples: the more precise is the regular expression -- the longer and more complex it is.
+
+For instance, for HTML tags we could use a simpler regexp: `pattern:<\w+>`. But as HTML has stricter restrictions for a tag name, `pattern:<[a-z][a-z0-9]*>` is more reliable.
+
+Can we use `pattern:<\w+>` or we need `pattern:<[a-z][a-z0-9]*>`?
+
+In real life both variants are acceptable. Depends on how tolerant we can be to "extra" matches and whether it's difficult or not to remove them from the result by other means.
