@@ -237,4 +237,44 @@ Expected 2 arguments, but got 1.
 
 TypeScript is telling us we forgot to pass an argument to the `greet` function, and rightfully so. So far we’ve only written standard JavaScript, and yet type-checking was still able to find problems with our code.
 
-## 
+## Emitting with Errors
+
+One thing you might not have noticed from the last example was that our `hello.js` file changed again. If we open that file up then we’ll see that the contents still basically look the same as our input file. That might be a bit surprising given the fact that tsc reported an error about our code, but this is based on one of TypeScript’s core values: **much of the time, *you* will know better than TypeScript.**
+
+To reiterate from earlier, type-checking code limits the sorts of programs you can run, and so there’s a tradeoff on what sorts of things a type-checker finds acceptable. Most of the time that’s okay, but there are scenarios where those checks get in the way. For example, imagine yourself migrating JavaScript code over to TypeScript and introducing type-checking errors. Eventually you’ll get around to cleaning things up for the type-checker, but that original JavaScript code was already working! Why should converting it over to TypeScript stop you from running it?
+
+So TypeScript doesn’t get in your way. Of course, over time, you may want to be a bit more defensive against mistakes, and make TypeScript act a bit more strictly. 
+
+In that case, you can use the [noEmitOnError](https://www.typescriptlang.org/tsconfig#noEmitOnError) compiler option. Try changing your `hello.ts` file and running `tsc` with that flag:
+
+```sh
+tsc --noEmitOnError hello.ts
+```
+
+You’ll notice that `hello.js` never gets updated.
+
+## Explicit Types
+
+Up until now, we haven’t told TypeScript what `person` or `date` are. Let’s edit the code to tell TypeScript that `person` is a `string`, and that `date` should be a `Date` object. We’ll also use the `toDateString()` method on date.
+
+- JavaScript
+
+```js
+function greet(person, date) {
+  console.log(`Hello ${person}, today is ${date}!`);
+}
+```
+
+- TypeScript
+
+```ts
+function greet(person: string, date: Date) {
+  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+}
+```
+
+What we did was add **type annotations** on `person` and `date` to describe what types of values `greet` can be called with. 
+
+You can read that signature as: 
+-  `greet` takes a `person` of type `string`, and a `date` of type `Date`.
+
