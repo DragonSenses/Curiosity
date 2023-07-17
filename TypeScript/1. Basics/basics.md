@@ -5,7 +5,7 @@
 
 ---
 
-## Intro
+# The Basics
 
 Each and every value in JavaScript has a set of behaviors you can observe from running different operations.
 
@@ -66,4 +66,53 @@ Seen in this way, a *type* is the concept of describing which values can be pass
 
 The alternative is to use a *static* type system to make predictions about what code is expected *before* it runs.
 
-# Static type-checking
+## Static type-checking
+
+Think back to that `TypeError` we got earlier from trying to call a `string` as a function. Most people don’t like to get any sorts of errors when running their code - those are considered bugs! And when we write new code, we try our best to avoid introducing new bugs.
+
+If we add just a bit of code, save our file, re-run the code, and immediately see the error, we might be able to isolate the problem quickly; but that’s not always the case. We might not have tested the feature thoroughly enough, so we might never actually run into a potential error that would be thrown! Or if we were lucky enough to witness the error, we might have ended up doing large refactorings and adding a lot of different code that we’re forced to dig through.
+
+Ideally, we could have a tool that helps us find these bugs *before* our code runs. That’s what a static type-checker like TypeScript does. **Static types systems** describe the shapes and behaviors of what our values will be when we run our programs. A type-checker like TypeScript uses that information and tells us when things might be going off the rails.
+
+```ts
+const message = "hello!";
+ 
+message();
+This expression is not callable.
+  Type 'String' has no call signatures.
+```
+
+Running that last sample with TypeScript will give us an error message before we run the code in the first place.
+
+## Non-exception Failures
+
+So far we’ve been discussing certain things like runtime errors - cases where the JavaScript runtime tells us that it thinks something is nonsensical. Those cases come up because the [ECMAScript specification](https://tc39.github.io/ecma262/) has explicit instructions on how the language should behave when it runs into something unexpected.
+
+For example, the specification says that trying to call something that isn’t callable should throw an error. 
+
+Maybe that sounds like “obvious behavior”, but you could imagine that accessing a property that doesn’t exist on an object should throw an error too. 
+
+Instead, JavaScript gives us different behavior and returns the value `undefined`:
+
+```js
+const user = {
+  name: "Luna",
+  age: 20,
+};
+user.location; // returns undefined
+```
+
+Ultimately, a static type system has to make the call over what code should be flagged as an error in its system, even if it’s “valid” JavaScript that won’t immediately throw an error. In TypeScript, the following code produces an error about `location` not being defined:
+
+```ts
+const user = {
+  name: "Luna",
+  age: 20,
+};
+user.location; // returns undefined
+Property 'location' does not exist on type '{ name: string; age: number; }'.
+```
+
+While sometimes that implies a trade-off in what you can express, the intent is to catch legitimate bugs in our programs. And TypeScript catches a lot of legitimate bugs such as typos, uncalled functions, or basic logic errors.
+
+typos
