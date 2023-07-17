@@ -115,4 +115,71 @@ Property 'location' does not exist on type '{ name: string; age: number; }'.
 
 While sometimes that implies a trade-off in what you can express, the intent is to catch legitimate bugs in our programs. And TypeScript catches a lot of legitimate bugs such as typos, uncalled functions, or basic logic errors.
 
-typos
+Legitimate Bugs:
+
+- typos
+
+```ts
+const announcement = "Hello World!";
+ 
+// How quickly can you spot the typos?
+announcement.toLocaleLowercase();
+announcement.toLocalLowerCase();
+ 
+// We probably meant to write this...
+announcement.toLocaleLowerCase();
+```
+
+- uncalled functions
+
+```ts
+function flipCoin() {
+  // Meant to be Math.random()
+  return Math.random < 0.5;
+Operator '<' cannot be applied to types '() => number' and 'number'.
+}
+```
+
+- or basic logic errors
+
+```ts
+const value = Math.random() < 0.5 ? "a" : "b";
+if (value !== "a") {
+  // ...
+} else if (value === "b") {
+This comparison appears to be unintentional because the types '"a"' and '"b"' have no overlap.
+  // Oops, unreachable
+}
+```
+
+## Types for Tooling
+
+TypeScript can catch bugs when we make mistakes in our code. That’s great, but TypeScript can also prevent us from making those mistakes in the first place.
+
+The type-checker has information to check things like whether we’re accessing the right properties on variables and other properties. Once it has that information, it can also start suggesting which properties you might want to use.
+
+That means TypeScript can be leveraged for editing code too, and the core type-checker can provide error messages and code completion as you type in the editor. That’s part of what people often refer to when they talk about tooling in TypeScript.
+
+```js
+// @noErrors
+// @esModuleInterop
+import express from "express";
+const app = express();
+
+app.get("/", function (req, res) {
+  res.sen
+//       ^|
+});
+
+app.listen(3000);
+```
+
+Auto-complete options  for `res.sen` are:
+
+- send
+- sendDate
+- ~~sendfile~~
+- sendFile
+- sendStatus
+
+TypeScript takes tooling seriously, and that goes beyond completions and errors as you type. An editor that supports TypeScript can deliver “quick fixes” to automatically fix errors, refactorings to easily re-organize code, and useful navigation features for jumping to definitions of a variable, or finding all references to a given variable.
