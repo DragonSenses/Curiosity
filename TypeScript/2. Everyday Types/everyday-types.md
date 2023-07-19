@@ -421,3 +421,50 @@ const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
 ```
 
 > Reminder: Because type assertions are removed at compile-time, there is no runtime checking associated with a type assertion. There won’t be an exception or `null` generated if the type assertion is wrong.
+
+TypeScript only allows type assertions which convert to a more specific or less specific version of a type. This rule prevents “impossible” coercions like:
+
+```ts
+const x = "hello" as number;
+Conversion of type 'string' to type 'number' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+```
+
+Sometimes this rule can be too conservative and will disallow more complex coercions that might be valid. If this happens, you can use two assertions, first to `any` (or `unknown`, which we’ll introduce later), then to the desired type:
+
+```ts
+const a = (expr as any) as T;
+```
+
+## Literal Types
+
+In addition to the general types `string` and `number`, we can refer to specific strings and numbers in type positions.
+
+One way to think about this is to consider how JavaScript comes with different ways to declare a variable. Both `var` and `let` allow for changing what is held inside the variable, and `const` does not. This is reflected in how TypeScript creates types for literals.
+
+```ts
+let changingString = "Hello World";
+changingString = "Olá Mundo";
+// Because `changingString` can represent any possible string, that
+// is how TypeScript describes it in the type system
+changingString;
+// ^ let changingString: string
+ 
+const constantString = "Hello World";
+// Because `constantString` can only represent 1 possible string, it
+// has a literal type representation
+constantString;
+// ^ const constantString: "Hello World"
+```
+
+By themselves, literal types aren’t very valuable:
+
+```ts
+let x: "hello" = "hello";
+// OK
+x = "hello";
+// ...
+x = "howdy";
+Type '"howdy"' is not assignable to type '"hello"'.
+```
+
+It’s not much use to have a variable that can only have one value!
