@@ -313,3 +313,45 @@ function printCoord(pt: Point) {
  
 printCoord({ x: 100, y: 100 });
 ```
+
+Just like when we used a type alias above, the example works just as if we had used an anonymous object type. TypeScript is only concerned with the structure of the value we passed to `printCoord` - it only cares that it has the expected properties. Being concerned only with the structure and capabilities of types is why **we call TypeScript a *structurally typed* type system**.
+
+### Differences Between Type Aliases and Interfaces
+
+Type aliases and interfaces are very similar, and in many cases you can choose between them freely. Almost all features of an `interface` are available in `type`, the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable.
+
+Interface
+
+- Extending an Interface:
+  ```ts
+  interface Animal {
+    name: string;
+  }
+
+  interface Bear extends Animal {
+    honey: boolean;
+  }
+
+  const bear = getBear();
+  bear.name;
+  bear.honey;
+  ```
+
+Type
+
+- Extending a type via intersections
+  
+  ```ts
+  type Animal = {
+    name: string;
+  }
+
+  type Bear = Animal & { 
+    honey: boolean;
+  }
+
+  const bear = getBear();
+  bear.name;
+  bear.honey;
+  ```
+
