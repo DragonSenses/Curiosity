@@ -2,25 +2,25 @@
 
 ## The primitives: `string`, `number`, and `boolean`
 
-JavaScript has three very commonly used [primitives](https://developer.mozilla.org/en-US/docs/Glossary/Primitive): `string`, `number`, and `boolean`. Each has a corresponding type in TypeScript. As you might expect, these are the same names you’d see if you used the JavaScript `typeof` operator on a value of those types:
+JavaScript has three very commonly used [primitives](https://developer.mozilla.org/en-US/docs/Glossary/Primitive): `string`, `number`, and `boolean`. Each has a corresponding type in TypeScript. As you might expect, these are the same names you'd see if you used the JavaScript `typeof` operator on a value of those types:
 
 - `string` represents string values like `"Hello, world"`
-- `number` is for numbers like `42`. JavaScript does not have a special runtime value for integers, so there’s no equivalent to `int` or `float` - everything is simply number
+- `number` is for numbers like `42`. JavaScript does not have a special runtime value for integers, so there's no equivalent to `int` or `float` - everything is simply number
 - `boolean` is for the two values `true` and `false`
 
 > The type names `String`, `Number`, and `Boolean` (starting with capital letters) are legal, but refer to some special built-in types that will very rarely appear in your code. Always use string, number, or boolean for types.
 
 ## Arrays
 
-To specify the type of an array like `[1, 2, 3]`, you can use the syntax `number[]`; this syntax works for any type (e.g. `string[]` is an array of strings, and so on). You may also see this written as `Array<number>`, which means the same thing. We’ll learn more about the syntax `T<U>` when we cover generics.
+To specify the type of an array like `[1, 2, 3]`, you can use the syntax `number[]`; this syntax works for any type (e.g. `string[]` is an array of strings, and so on). You may also see this written as `Array<number>`, which means the same thing. We'll learn more about the syntax `T<U>` when we cover generics.
 
 > Note that [number] is a different thing; refer to the section on [Tuples](https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types).
 
 ## `any`
 
-TypeScript also has a special type, `any`, that you can use whenever you don’t want a particular value to cause typechecking errors.
+TypeScript also has a special type, `any`, that you can use whenever you don't want a particular value to cause typechecking errors.
 
-When a value is of type `any`, you can access any properties of it (which will in turn be of type `any`), call it like a function, assign it to (or from) a value of any type, or pretty much anything else that’s syntactically legal:
+When a value is of type `any`, you can access any properties of it (which will in turn be of type `any`), call it like a function, assign it to (or from) a value of any type, or pretty much anything else that's syntactically legal:
 
 ```ts
 let obj: any = { x: 0 };
@@ -34,13 +34,13 @@ obj = "hello";
 const n: number = obj;
 ```
 
-The `any` type is useful when you don’t want to write out a long type just to convince TypeScript that a particular line of code is okay.
+The `any` type is useful when you don't want to write out a long type just to convince TypeScript that a particular line of code is okay.
 
 ### `noImplicitAny`
 
-When you don’t specify a type, and TypeScript can’t infer it from context, the compiler will typically default to `any`.
+When you don't specify a type, and TypeScript can't infer it from context, the compiler will typically default to `any`.
 
-You usually want to avoid this, though, because `any` isn’t type-checked. Use the compiler flag [noImplicitAny](https://www.typescriptlang.org/tsconfig#noImplicitAny) to flag any implicit `any` as an error.
+You usually want to avoid this, though, because `any` isn't type-checked. Use the compiler flag [noImplicitAny](https://www.typescriptlang.org/tsconfig#noImplicitAny) to flag any implicit `any` as an error.
 
 ## Type Annotations on Variables
 
@@ -50,16 +50,16 @@ When you declare a variable using `const`, `var`, or `let`, you can optionally a
 let myName: string = "Alice";
 ```
 
-> TypeScript doesn’t use “types on the left”-style declarations like `int x = 0;` Type annotations will always go after the thing being typed.
+> TypeScript doesn't use "types on the left"-style declarations like `int x = 0;` Type annotations will always go after the thing being typed.
 
-In most cases, though, this isn’t needed. Wherever possible, TypeScript tries to automatically *infer* the types in your code. For example, the type of a variable is inferred based on the type of its initializer:
+In most cases, though, this isn't needed. Wherever possible, TypeScript tries to automatically *infer* the types in your code. For example, the type of a variable is inferred based on the type of its initializer:
 
 ```ts
 // No type annotation needed -- 'myName' inferred as type 'string'
 let myName = "Alice";
 ```
 
-For the most part you don’t need to explicitly learn the rules of inference. If you’re starting out, try using fewer type annotations than you think - you might be surprised how few you need for TypeScript to fully understand what’s going on.
+For the most part you don't need to explicitly learn the rules of inference. If you're starting out, try using fewer type annotations than you think - you might be surprised how few you need for TypeScript to fully understand what's going on.
 
 ## Functions
 
@@ -84,7 +84,7 @@ greet(42);
 Argument of type 'number' is not assignable to parameter of type 'string'.
 ```
 
-> Even if you don’t have type annotations on your parameters, TypeScript will still check that you passed the right number of arguments.
+> Even if you don't have type annotations on your parameters, TypeScript will still check that you passed the right number of arguments.
 
 ### Return Type Annotations
 
@@ -96,13 +96,13 @@ function getFavoriteNumber(): number {
 }
 ```
 
-Much like variable type annotations, you usually don’t need a return type annotation because TypeScript will infer the function’s return type based on its `return` statements. The type annotation in the above example doesn’t change anything. Some codebases will explicitly specify a return type for documentation purposes, to prevent accidental changes, or just for personal preference.
+Much like variable type annotations, you usually don't need a return type annotation because TypeScript will infer the function's return type based on its `return` statements. The type annotation in the above example doesn't change anything. Some codebases will explicitly specify a return type for documentation purposes, to prevent accidental changes, or just for personal preference.
 
 ### Anonymous Functionsv
 
-Anonymous functions are a little bit different from function declarations. When a function appears in a place where TypeScript can determine how it’s going to be called, the parameters of that function are automatically given types.
+Anonymous functions are a little bit different from function declarations. When a function appears in a place where TypeScript can determine how it's going to be called, the parameters of that function are automatically given types.
 
-Here’s an example:
+Here's an example:
 
 ```ts
 const names = ["Alice", "Bob", "Eve"];
@@ -118,17 +118,17 @@ names.forEach((s) => {
 });
 ```
 
-Even though the parameter `s` didn’t have a type annotation, TypeScript used the types of the `forEach` function, along with the inferred type of the array, to determine the type `s` will have.
+Even though the parameter `s` didn't have a type annotation, TypeScript used the types of the `forEach` function, along with the inferred type of the array, to determine the type `s` will have.
 
 **This process is called *contextual typing* because the context that the function occurred within informs what type it should have.**
 
-Similar to the inference rules, you don’t need to explicitly learn how this happens, but understanding that it does happen can help you notice when type annotations aren’t needed. Later, we’ll see more examples of how the context that a value occurs in can affect its type.
+Similar to the inference rules, you don't need to explicitly learn how this happens, but understanding that it does happen can help you notice when type annotations aren't needed. Later, we'll see more examples of how the context that a value occurs in can affect its type.
 
 ## Object Types
 
-Apart from primitives, the most common sort of type you’ll encounter is an `object` type. This refers to any JavaScript value with properties, which is almost all of them! To define an object type, we simply list its properties and their types.
+Apart from primitives, the most common sort of type you'll encounter is an `object` type. This refers to any JavaScript value with properties, which is almost all of them! To define an object type, we simply list its properties and their types.
 
-For example, here’s a function that takes a point-like object:
+For example, here's a function that takes a point-like object:
 
 ```ts
 // The parameter's type annotation is an object type
@@ -141,7 +141,7 @@ printCoord({ x: 3, y: 7 });
 
 Here, we annotated the parameter with a type with two properties - `x` and `y` - which are both of type `number`. You can use `,` or `;` to separate the properties, and the last separator is optional either way.
 
-The type part of each property is also optional. If you don’t specify a type, it will be assumed to be `any`.
+The type part of each property is also optional. If you don't specify a type, it will be assumed to be `any`.
 
 ### Optional Properties
 
@@ -156,7 +156,7 @@ printName({ first: "Bob" });
 printName({ first: "Alice", last: "Alisson" });
 ```
 
-In JavaScript, if you access a property that doesn’t exist, you’ll get the value `undefined` rather than a runtime error. Because of this, when you *read* from an optional property, you’ll have to check for `undefined` before using it.
+In JavaScript, if you access a property that doesn't exist, you'll get the value `undefined` rather than a runtime error. Because of this, when you *read* from an optional property, you'll have to check for `undefined` before using it.
 
 ```ts
 function printName(obj: { first: string; last?: string }) {
@@ -175,13 +175,13 @@ function printName(obj: { first: string; last?: string }) {
 
 ## Union Types
 
-TypeScript’s type system allows you to build new types out of existing ones using a large variety of operators. Now that we know how to write a few types, it’s time to start *combining* them in interesting ways.
+TypeScript's type system allows you to build new types out of existing ones using a large variety of operators. Now that we know how to write a few types, it's time to start *combining* them in interesting ways.
 
 ### Defining a Union Type
 
-The first way to combine types you might see is a union type. A union type is a type formed from two or more other types, representing values that may be any one of those types. We refer to each of these types as the union’s members.
+The first way to combine types you might see is a union type. A union type is a type formed from two or more other types, representing values that may be any one of those types. We refer to each of these types as the union's members.
 
-Let’s write a function that can operate on strings or numbers:
+Let's write a function that can operate on strings or numbers:
 
 ```ts
 function printId(id: number | string) {
@@ -198,9 +198,9 @@ Argument of type '{ myID: number; }' is not assignable to parameter of type 'str
 
 ### Working with Union Types
 
-It’s easy to provide a value matching a union type - simply provide a type matching any of the union’s members. If you have a value of a union type, how do you work with it?
+It's easy to provide a value matching a union type - simply provide a type matching any of the union's members. If you have a value of a union type, how do you work with it?
 
-TypeScript will only allow an operation if it is valid for every member of the union. For example, if you have the union `string | number`, you can’t use methods that are only available on `string`:
+TypeScript will only allow an operation if it is valid for every member of the union. For example, if you have the union `string | number`, you can't use methods that are only available on `string`:
 
 ```ts
 function printId(id: number | string) {
@@ -240,9 +240,9 @@ function welcomePeople(x: string[] | string) {
 }
 ```
 
-Notice that in the `else` branch, we don’t need to do anything special - if `x` wasn’t a `string[]`, then it must have been a `string`.
+Notice that in the `else` branch, we don't need to do anything special - if `x` wasn't a `string[]`, then it must have been a `string`.
 
-Sometimes you’ll have a union where all the members have something in common. For example, both arrays and strings have a `slice` method. If every member in a union has a property in common, you can use that property without narrowing:
+Sometimes you'll have a union where all the members have something in common. For example, both arrays and strings have a `slice` method. If every member in a union has a property in common, you can use that property without narrowing:
 
 ```ts
 // Return type is inferred as number[] | string
@@ -251,11 +251,11 @@ function getFirstThree(x: number[] | string) {
 }
 ```
 
-> It might be confusing that a union of types appears to have the intersection of those types’ properties. This is not an accident - the name union comes from type theory. The union number | string is composed by taking the union of the values from each type. Notice that given two sets with corresponding facts about each set, only the intersection of those facts applies to the union of the sets themselves. For example, if we had a room of tall people wearing hats, and another room of Spanish speakers wearing hats, after combining those rooms, the only thing we know about every person is that they must be wearing a hat.
+> It might be confusing that a union of types appears to have the intersection of those types' properties. This is not an accident - the name union comes from type theory. The union number | string is composed by taking the union of the values from each type. Notice that given two sets with corresponding facts about each set, only the intersection of those facts applies to the union of the sets themselves. For example, if we had a room of tall people wearing hats, and another room of Spanish speakers wearing hats, after combining those rooms, the only thing we know about every person is that they must be wearing a hat.
 
 ## Type Aliases
 
-We’ve been using object types and union types by writing them directly in type annotations. This is convenient, but it’s common to want to use the same type more than once and refer to it by a single name.
+We've been using object types and union types by writing them directly in type annotations. This is convenient, but it's common to want to use the same type more than once and refer to it by a single name.
 
 A **type alias** is exactly that - a name for any type. The syntax for a type alias is:
 
@@ -280,7 +280,7 @@ You can actually use a type alias to give a name to any type at all, not just an
 type ID = number | string;
 ```
 
-Note that aliases are *only* aliases - you cannot use type aliases to create different/distinct “versions” of the same type. When you use the alias, it’s exactly as if you had written the aliased type. In other words, this code might look illegal, but is OK according to TypeScript because both types are aliases for the same type:
+Note that aliases are *only* aliases - you cannot use type aliases to create different/distinct "versions" of the same type. When you use the alias, it's exactly as if you had written the aliased type. In other words, this code might look illegal, but is OK according to TypeScript because both types are aliases for the same type:
 
 ```ts
 type UserInputSanitizedString = string;
@@ -386,7 +386,7 @@ Type
   // Error: Duplicate identifier 'Window'.
   ```
 
-You’ll learn more about these concepts in later chapters, so don’t worry if you don’t understand all of these right away.
+You'll learn more about these concepts in later chapters, so don't worry if you don't understand all of these right away.
 
 - Prior to TypeScript version 4.2, type alias names [*may* appear in error messages](https://www.typescriptlang.org/play?#code/PTAEGEHsFsAcEsA2BTATqNrLusgzngIYDm+oA7koqIYuYQJ56gCueyoAUCKAC4AWHAHaFcoSADMaQ0PCG80EwgGNkALk6c5C1EtWgAsqOi1QAb06groEbjWg8vVHOKcAvpokshy3vEgyyMr8kEbQJogAFND2YREAlOaW1soBeJAoAHSIkMTRmbbI8e6aPMiZxJmgACqCGKhY6ABGyDnkFFQ0dIzMbBwCwqIccabcYLyQoKjIEmh8kwN8DLAc5PzwwbLMyAAeK77IACYaQSEjUWZWhfYAjABMAMwALA+gbsVjoADqgjKESytQPxCHghAByXigYgBfr8LAsYj8aQMUASbDQcRSExCeCwFiIQh+AKfAYyBiQFgOPyIaikSGLQo0Zj-aazaY+dSaXjLDgAGXgAC9CKhDqAALxJaw2Ib2RzOISuDycLw+ImBYKQflCkWRRD2LXCw6JCxS1JCdJZHJ5RAFIbFJU8ADKC3WzEcnVZaGYE1ABpFnFOmsFhsil2uoHuzwArO9SmAAEIsSFrZB-GgAjjA5gtVN8VCEc1o1C4Q4AGlR2AwO1EsBQoAAbvB-gJ4HhPgB5aDwem-Ph1TCV3AEEirTp4ELtRbTPD4vwKjOfAuioSQHuDXBcnmgACC+eCONFEs73YAPGGZVT5cRyyhiHh7AAON7lsG3vBggB8XGV3l8-nVISOgghxoLq9i7io-AHsayRWGaFrlFauq2rg9qaIGQHwCBqChtKdgRo8TxRjeyB3o+7xAA), sometimes in place of the equivalent anonymous type (which may or may not be desirable). Interfaces will always be named in error messages.
 
@@ -402,9 +402,9 @@ For the most part, you can choose based on personal preference, and TypeScript w
 
 ## Type Assertions
 
-Sometimes you will have information about the type of a value that TypeScript can’t know about.
+Sometimes you will have information about the type of a value that TypeScript can't know about.
 
-For example, if you’re using `document.getElementById`, TypeScript only knows that this will return some kind of `HTMLElement`, but you might know that your page will always have an `HTMLCanvasElement` with a given ID.
+For example, if you're using `document.getElementById`, TypeScript only knows that this will return some kind of `HTMLElement`, but you might know that your page will always have an `HTMLCanvasElement` with a given ID.
 
 In this situation, you can use a type assertion to specify a more specific type:
 
@@ -412,7 +412,7 @@ In this situation, you can use a type assertion to specify a more specific type:
 const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
 ```
 
-Like a type annotation, type assertions are removed by the compiler and won’t affect the runtime behavior of your code.
+Like a type annotation, type assertions are removed by the compiler and won't affect the runtime behavior of your code.
 
 You can also use the angle-bracket syntax (except if the code is in a `.tsx` file), which is equivalent:
 
@@ -420,16 +420,16 @@ You can also use the angle-bracket syntax (except if the code is in a `.tsx` fil
 const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
 ```
 
-> Reminder: Because type assertions are removed at compile-time, there is no runtime checking associated with a type assertion. There won’t be an exception or `null` generated if the type assertion is wrong.
+> Reminder: Because type assertions are removed at compile-time, there is no runtime checking associated with a type assertion. There won't be an exception or `null` generated if the type assertion is wrong.
 
-TypeScript only allows type assertions which convert to a more specific or less specific version of a type. This rule prevents “impossible” coercions like:
+TypeScript only allows type assertions which convert to a more specific or less specific version of a type. This rule prevents "impossible" coercions like:
 
 ```ts
 const x = "hello" as number;
 Conversion of type 'string' to type 'number' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
 ```
 
-Sometimes this rule can be too conservative and will disallow more complex coercions that might be valid. If this happens, you can use two assertions, first to `any` (or `unknown`, which we’ll introduce later), then to the desired type:
+Sometimes this rule can be too conservative and will disallow more complex coercions that might be valid. If this happens, you can use two assertions, first to `any` (or `unknown`, which we'll introduce later), then to the desired type:
 
 ```ts
 const a = (expr as any) as T;
@@ -456,7 +456,7 @@ constantString;
 // ^ const constantString: "Hello World"
 ```
 
-By themselves, literal types aren’t very valuable:
+By themselves, literal types aren't very valuable:
 
 ```ts
 let x: "hello" = "hello";
@@ -467,7 +467,7 @@ x = "howdy";
 Type '"howdy"' is not assignable to type '"hello"'.
 ```
 
-It’s not much use to have a variable that can only have one value!
+It's not much use to have a variable that can only have one value!
 
 But by combining literals into unions, you can express a much more useful concept - for example, functions that only accept a certain set of known values:
 
@@ -503,7 +503,7 @@ configure("automatic");
 Argument of type '"automatic"' is not assignable to parameter of type 'Options | "auto"'.
 ```
 
-There’s one more kind of literal type: **boolean literals**. There are only two boolean literal types, and as you might guess, they are the types `true` and `false`. The type `boolean` itself is actually just an alias for the union `true | false`.
+There's one more kind of literal type: **boolean literals**. There are only two boolean literal types, and as you might guess, they are the types `true` and `false`. The type `boolean` itself is actually just an alias for the union `true | false`.
 
 ### Literal Inference
 
@@ -516,7 +516,7 @@ if (someCondition) {
 }
 ```
 
-TypeScript doesn’t assume the assignment of `1` to a field which previously had `0` is an error. **Another way of saying this is that `obj.counter` must have the type `number`, not `0`, because types are used to determine both *reading* and *writing* behavior.**
+TypeScript doesn't assume the assignment of `1` to a field which previously had `0` is an error. **Another way of saying this is that `obj.counter` must have the type `number`, not `0`, because types are used to determine both *reading* and *writing* behavior.**
 
 The same applies to strings:
 
@@ -540,8 +540,8 @@ There are two ways to work around this.
   handleRequest(req.url, req.method as "GET");
   ```
 
-  - Change 1 means “I intend for `req.method` to always have the literal type `"GET"`”, preventing the possible assignment of `"GUESS"` to that field after.
-  - Change 2 means “I know for other reasons that `req.method` has the value `"GET"`“.
+  - Change 1 means "I intend for `req.method` to always have the literal type `"GET"`", preventing the possible assignment of `"GUESS"` to that field after.
+  - Change 2 means "I know for other reasons that `req.method` has the value `"GET"`".
 
 2. You can use `as const` to convert the entire object to be type literals:
 
@@ -560,7 +560,7 @@ TypeScript has two corresponding types by the same names. How these types behave
 
 ### `strictNullChecks` off
 
-With `strictNullChecks` **off**, values that might be `null` or `undefined` can still be accessed normally, and the values `null` and `undefined` can be assigned to a property of any type. This is similar to how languages without null checks (e.g. C#, Java) behave. The lack of checking for these values tends to be a major source of bugs; we always recommend people turn `strictNullChecks` on if it’s practical to do so in their codebase.
+With `strictNullChecks` **off**, values that might be `null` or `undefined` can still be accessed normally, and the values `null` and `undefined` can be assigned to a property of any type. This is similar to how languages without null checks (e.g. C#, Java) behave. The lack of checking for these values tends to be a major source of bugs; we always recommend people turn `strictNullChecks` on if it's practical to do so in their codebase.
 
 ### `strictNullChecks` on
 
@@ -578,7 +578,7 @@ function doSomething(x: string | null) {
 
 ### Non-null Assertion Operator (Postfix`!`)
 
-TypeScript also has a special syntax for removing `null` and `undefined` from a type without doing any explicit checking. Writing `!` after any expression is effectively a type assertion that the value isn’t `null` or `undefined`:
+TypeScript also has a special syntax for removing `null` and `undefined` from a type without doing any explicit checking. Writing `!` after any expression is effectively a type assertion that the value isn't `null` or `undefined`:
 
 ```ts
 function liveDangerously(x?: number | null) {
@@ -587,7 +587,7 @@ function liveDangerously(x?: number | null) {
 }
 ```
 
-**Just like other type assertions, this doesn’t change the runtime behavior of your code, so it’s important to only use ! when you know that the value can’t be `null` or `undefined`.**
+**Just like other type assertions, this doesn't change the runtime behavior of your code, so it's important to only use ! when you know that the value can't be `null` or `undefined`.**
 
 ## Enums
 
@@ -595,10 +595,40 @@ Enums are a feature added to JavaScript by TypeScript **which allows for describ
 
 - Unlike most TypeScript features, **this is not a type-level addition to JavaScript but something added to the language and runtime.** 
 
-- Because of this, it’s a feature which you should know exists, but maybe hold off on using unless you are sure.
+- Because of this, it's a feature which you should know exists, but maybe hold off on using unless you are sure.
 
 - You can read more about enums in the [Enum reference page](https://www.typescriptlang.org/docs/handbook/enums.html).
 
 ## Less Common Primitives
 
-It’s worth mentioning the rest of the primitives in JavaScript which are represented in the type system. Though we will not go into depth here.
+It's worth mentioning the rest of the primitives in JavaScript which are represented in the type system. Though we will not go into depth here.
+
+#### `bigint`
+
+From ES2020 onwards, there is a primitive in JavaScript used for very large integers, `BigInt`:
+
+```ts
+// Creating a bigint via the BigInt function
+const oneHundred: bigint = BigInt(100);
+ 
+// Creating a BigInt via the literal syntax
+const anotherHundred: bigint = 100n;
+```
+
+- You can learn more about BigInt in the [TypeScript 3.2 release notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-2.html#bigint).
+
+#### `symbol`
+
+There is a primitive in JavaScript used to create a globally unique reference via the function `Symbol()`:
+
+```ts
+const firstName = Symbol("name");
+const secondName = Symbol("name");
+ 
+if (firstName === secondName) {
+This comparison appears to be unintentional because the types 'typeof firstName' and 'typeof secondName' have no overlap.
+  // Can't ever happen
+}
+```
+
+- You can learn more about them in [Symbols reference page](https://www.typescriptlang.org/docs/handbook/symbols.html).
