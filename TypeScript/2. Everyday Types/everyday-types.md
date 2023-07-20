@@ -507,4 +507,26 @@ There’s one more kind of literal type: **boolean literals**. There are only tw
 
 ### Literal Inference
 
+When you initialize a variable with an object, TypeScript assumes that the properties of that object might change values later. For example, if you wrote code like this:
+
+```ts
+const obj = { counter: 0 };
+if (someCondition) {
+  obj.counter = 1;
+}
+```
+
+TypeScript doesn’t assume the assignment of `1` to a field which previously had `0` is an error. **Another way of saying this is that `obj.counter` must have the type `number`, not `0`, because types are used to determine both *reading* and *writing* behavior.**
+
+The same applies to strings:
+
+```ts
+declare function handleRequest(url: string, method: "GET" | "POST"): void;
+ 
+const req = { url: "https://example.com", method: "GET" };
+handleRequest(req.url, req.method);
+Argument of type 'string' is not assignable to parameter of type '"GET" | "POST"'.
+```
+
+In the above example `req.method` is inferred to be `string`, not `"GET"`. Because code can be evaluated between the creation of `req` and the call of `handleRequest` which could assign a new string like `"GUESS"` to `req.method`, TypeScript considers this code to have an error.
 
