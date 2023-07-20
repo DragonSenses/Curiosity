@@ -575,3 +575,30 @@ function doSomething(x: string | null) {
   }
 }
 ```
+
+### Non-null Assertion Operator (Postfix`!`)
+
+TypeScript also has a special syntax for removing `null` and `undefined` from a type without doing any explicit checking. Writing `!` after any expression is effectively a type assertion that the value isn’t `null` or `undefined`:
+
+```ts
+function liveDangerously(x?: number | null) {
+  // No error
+  console.log(x!.toFixed());
+}
+```
+
+**Just like other type assertions, this doesn’t change the runtime behavior of your code, so it’s important to only use ! when you know that the value can’t be `null` or `undefined`.**
+
+## Enums
+
+Enums are a feature added to JavaScript by TypeScript **which allows for describing a value which could be one of a set of possible named constants.** 
+
+- Unlike most TypeScript features, **this is not a type-level addition to JavaScript but something added to the language and runtime.** 
+
+- Because of this, it’s a feature which you should know exists, but maybe hold off on using unless you are sure.
+
+- You can read more about enums in the [Enum reference page](https://www.typescriptlang.org/docs/handbook/enums.html).
+
+## Less Common Primitives
+
+It’s worth mentioning the rest of the primitives in JavaScript which are represented in the type system. Though we will not go into depth here.
