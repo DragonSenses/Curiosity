@@ -445,3 +445,48 @@ interface Shape {
 ```
 
 Notice we’re using a union of string literal types: `"circle"` and `"square"` to tell us whether we should treat the shape as a circle or square respectively. By using `"circle" | "square"` instead of `string`, we can avoid misspelling issues.
+
+```ts
+function handleShape(shape: Shape) {
+  // oops!
+  if (shape.kind === "rect") {
+// This comparison appears to be unintentional because the types '"circle" | "square"' and '"rect"' have no overlap.
+    // ...
+  }
+}
+```
+
+We can write a `getArea` function that applies the right logic based on if it’s dealing with a circle or square. We’ll first try dealing with circles.
+
+```ts
+function getArea(shape: Shape) {
+  return Math.PI * shape.radius ** 2;
+// 'shape.radius' is possibly 'undefined'.
+}
+```
+
+Under [strictNullChecks](https://www.typescriptlang.org/tsconfig#strictNullChecks) that gives us an error - which is appropriate since `radius` might not be defined. But what if we perform the appropriate checks on the `kind` property?
+
+```ts
+function getArea(shape: Shape) {
+  if (shape.kind === "circle") {
+    return Math.PI * shape.radius ** 2;
+// 'shape.radius' is possibly 'undefined'.
+  }
+}
+```
+
+Hmm, TypeScript still doesn’t know what to do here. We’ve hit a point where we know more about our values than the type checker does. We could try to use a non-null assertion (a `!` after `shape.radius`) to say that `radius` is definitely present.
+
+```ts
+function getArea(shape: Shape) {
+  if (shape.kind === "circle") {
+    return Math.PI * shape.radius! ** 2;
+  }
+}
+```
+
+But this doesn’t feel ideal. We had to shout a bit at the type-checker with those non-null assertions (`!`) to convince it that `shape.radius` was defined, but those assertions are error-prone if we start to move code around. Additionally, outside of `strictNullChecks` we’re able to accidentally access any of those fields anyway (since optional properties are just assumed to always be present when reading them). We can definitely do better.
+
+The problem with this encoding of `Shape` is that the type-checker doesn’t have any way to know whether or not `radius` or `sideLength` are present based on the kind property. We need to communicate what we know to the type checker. With that in mind, let’s take another swing at defining `Shape`.
+
