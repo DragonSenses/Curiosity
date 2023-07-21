@@ -339,3 +339,45 @@ console.log(x);
            // let x: string | number
 ```
 
+## Control flow analysis
+
+Up until this point, we’ve gone through some basic examples of how TypeScript narrows within specific branches. But there’s a bit more going on than just walking up from every variable and looking for type guards in `if`s, `while`s, conditionals, etc. For example
+
+```ts
+function padLeft(padding: number | string, input: string) {
+  if (typeof padding === "number") {
+    return " ".repeat(padding) + input;
+  }
+  return padding + input;
+}
+```
+
+`padLeft` returns from within its first `if` block. TypeScript was able to analyze this code and see that the rest of the body (`return padding + input;`) is unreachable in the case where `padding` is a number. As a result, it was able to remove `number` from the type of `padding` (narrowing from `string | number` to `string`) for the rest of the function.
+
+**This analysis of code based on reachability is called *control flow analysis***, and TypeScript uses this flow analysis to narrow types as it encounters type guards and assignments. When a variable is analyzed, control flow can split off and re-merge over and over again, and that variable can be observed to have a different type at each point.
+
+```ts
+function example() {
+  let x: string | number | boolean;
+ 
+  x = Math.random() < 0.5;
+ 
+  console.log(x);
+             // let x: boolean
+ 
+  if (Math.random() < 0.5) {
+    x = "hello";
+    console.log(x);
+               // let x: string
+  } else {
+    x = 100;
+    console.log(x);
+               // let x: number
+  }
+ 
+  return x;
+        // let x: string | number
+}
+```
+
+## 
