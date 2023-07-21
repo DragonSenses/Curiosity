@@ -269,3 +269,37 @@ function move(animal: Fish | Bird) {
   return animal.fly();
 }
 ```
+
+To reiterate, optional properties will exist in both sides for narrowing. For example, a human could both swim and fly (with the right equipment) and thus should show up in both sides of the `in` check:
+
+```ts
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+type Human = { swim?: () => void; fly?: () => void };
+ 
+function move(animal: Fish | Bird | Human) {
+  if ("swim" in animal) {
+    animal;
+      // (parameter) animal: Fish | Human
+  } else {
+    animal;
+      // (parameter) animal: Bird | Human
+  }
+}
+```
+
+## `instanceof` narrowing
+
+JavaScript has an operator for checking whether or not a value is an “instance” of another value. More specifically, in JavaScript `x instanceof Foo` checks whether the *prototype* chain of `x` contains `Foo.prototype`. While we won’t dive deep here, and you’ll see more of this when we get into classes, they can still be useful for most values that can be constructed with `new`. As you might have guessed, `instanceof` is also a type guard, and TypeScript narrows in branches guarded by `instanceof`s.
+
+```ts
+function logValue(x: Date | string) {
+  if (x instanceof Date) {
+    console.log(x.toUTCString());
+               // (parameter) x: Date
+  } else {
+    console.log(x.toUpperCase());
+               // (parameter) x: string
+  }
+}
+```
