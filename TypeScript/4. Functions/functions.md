@@ -186,3 +186,53 @@ const arr = minimumLength([1, 2, 3], 6);
 console.log(arr.slice(0));
 ```
 
+### Specifying Type Arguments
+
+TypeScript can usually infer the intended type arguments in a generic call, but not always. For example, let’s say you wrote a function to combine two arrays:
+
+```ts
+function combine<Type>(arr1: Type[], arr2: Type[]): Type[] {
+  return arr1.concat(arr2);
+}
+```
+
+Normally it would be an error to call this function with mismatched arrays:
+
+```ts
+const arr = combine([1, 2, 3], ["hello"]);
+// Type 'string' is not assignable to type 'number'.
+```
+
+If you intended to do this, however, you could manually specify `Type`:
+
+```ts
+const arr = combine<string | number>([1, 2, 3], ["hello"]);
+```
+
+## Guidelines for Writing Good Generic Functions
+
+Writing generic functions is fun, and it can be easy to get carried away with type parameters. Having too many type parameters or using constraints where they aren’t needed can make inference less successful, frustrating callers of your function.
+
+### **Push Type Parameters Down**
+
+Here are two ways of writing a function that appear similar:
+
+```ts
+function firstElement1<Type>(arr: Type[]) {
+  return arr[0];
+}
+ 
+function firstElement2<Type extends any[]>(arr: Type) {
+  return arr[0];
+}
+ 
+// a: number (good)
+const a = firstElement1([1, 2, 3]);
+// b: any (bad)
+const b = firstElement2([1, 2, 3]);
+```
+
+These might seem identical at first glance, but `firstElement1` is a much better way to write this function. Its inferred return type is `Type`, but `firstElement2`’s inferred return type is `any` because TypeScript has to resolve the `arr[0]` expression using the constraint type, rather than “waiting” to resolve the element during a call.
+
+> Rule: When possible, use the type parameter itself rather than constraining it
+
