@@ -323,3 +323,48 @@ f(10);
 f(undefined);
 ```
 
+## Optional Parameters in Callbacks
+
+Once you’ve learned about optional parameters and function type expressions, it’s very easy to make the following mistakes when writing functions that invoke callbacks:
+
+```ts
+function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
+  for (let i = 0; i < arr.length; i++) {
+    callback(arr[i], i);
+  }
+}
+```
+
+What people usually intend when writing `index?` as an optional parameter is that they want both of these calls to be legal:
+
+```ts
+myForEach([1, 2, 3], (a) => console.log(a));
+myForEach([1, 2, 3], (a, i) => console.log(a, i));
+```
+
+What this actually means is that callback might get invoked with one argument. In other words, the function definition says that the implementation might look like this:
+
+```ts
+function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
+  for (let i = 0; i < arr.length; i++) {
+    // I don't feel like providing the index today
+    callback(arr[i]);
+  }
+}
+```
+
+In turn, TypeScript will enforce this meaning and issue errors that aren’t really possible:
+
+```ts
+myForEach([1, 2, 3], (a, i) => {
+  console.log(i.toFixed());
+// 'i' is possibly 'undefined'.
+});
+```
+
+In JavaScript, if you call a function with more arguments than there are parameters, the extra arguments are simply ignored. TypeScript behaves the same way. Functions with fewer parameters (of the same types) can always take the place of functions with more parameters.
+
+> Rule: When writing a function type for a callback, never write an optional parameter unless you intend to call the function without passing that argument
+
+## Function Overloads
+
