@@ -107,4 +107,44 @@ const n = firstElement([1, 2, 3]);
 const u = firstElement([]);
 ```
 
-### 
+### Inference
+
+Note that we didn’t have to specify `Type` in this sample. The type was inferred - chosen automatically - by TypeScript.
+
+We can use multiple type parameters as well. For example, a standalone version of `map` would look like this:
+
+```ts
+function map<Input, Output>(arr: Input[], func: (arg: Input) => Output): Output[] {
+  return arr.map(func);
+}
+ 
+// Parameter 'n' is of type 'string'
+// 'parsed' is of type 'number[]'
+const parsed = map(["1", "2", "3"], (n) => parseInt(n));
+```
+
+Note that in this example, TypeScript could infer both the type of the `Input` type parameter (from the given `string` array), as well as the Output type parameter based on the return value of the function expression (`number`).
+
+### Constraints
+
+We’ve written some generic functions that can work on any kind of value. Sometimes we want to relate two values, but can only operate on a certain subset of values. In this case, we can use a *constraint* to limit the kinds of types that a type parameter can accept.
+
+Let’s write a function that returns the longer of two values. To do this, we need a `length` property that’s a number. We *constrain* the type parameter to that type by writing an `extends` clause:
+
+```ts
+function longest<Type extends { length: number }>(a: Type, b: Type) {
+  if (a.length >= b.length) {
+    return a;
+  } else {
+    return b;
+  }
+}
+ 
+// longerArray is of type 'number[]'
+const longerArray = longest([1, 2], [1, 2, 3]);
+// longerString is of type 'alice' | 'bob'
+const longerString = longest("alice", "bob");
+// Error! Numbers don't have a 'length' property
+const notOK = longest(10, 100);
+// Argument of type 'number' is not assignable to parameter of type '{ length: number; }'.
+```
