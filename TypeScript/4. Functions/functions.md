@@ -281,3 +281,45 @@ Remember, type parameters are for *relating the types of multiple values*. If a 
 
 > Rule: If a type parameter only appears in one location, strongly reconsider if you actually need it
 
+## Optional Parameters
+
+Functions in JavaScript often take a variable number of arguments. For example, the `toFixed` method of `number` takes an optional digit count:
+
+```ts
+function f(n: number) {
+  console.log(n.toFixed()); // 0 arguments
+  console.log(n.toFixed(3)); // 1 argument
+}
+```
+
+We can model this in TypeScript by marking the parameter as *optional* with `?`:
+
+```ts
+function f(x?: number) {
+  // ...
+}
+f(); // OK
+f(10); // OK
+```
+
+Although the parameter is specified as type `number`, the `x` parameter will actually have the `type number | undefined` because unspecified parameters in JavaScript get the value `undefined`.
+
+You can also provide a parameter *default*:
+
+```ts
+function f(x = 10) {
+  // ...
+}
+```
+
+Now in the body of `f`, `x` will have type `number` because any `undefined` argument will be replaced with `10`. Note that when a parameter is optional, callers can always pass `undefined`, as this simply simulates a “missing” argument:
+
+```ts
+declare function f(x?: number): void;
+// cut
+// All OK
+f();
+f(10);
+f(undefined);
+```
+
