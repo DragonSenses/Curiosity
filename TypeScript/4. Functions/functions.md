@@ -678,3 +678,55 @@ function sum({ a, b, c }) {
 }
 sum({ a: 10, b: 3, c: 9 });
 ```
+
+The type annotation for the object goes after the destructuring syntax:
+
+```ts
+function sum({ a, b, c }: { a: number; b: number; c: number }) {
+  console.log(a + b + c);
+}
+```
+
+This can look a bit verbose, but you can use a named type here as well:
+
+```ts
+// Same as prior example
+type ABC = { a: number; b: number; c: number };
+function sum({ a, b, c }: ABC) {
+  console.log(a + b + c);
+}
+```
+
+## Assignability of Functions
+
+### Return type `void`
+
+The `void` return type for functions can produce some unusual, but expected behavior.
+
+Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`type voidFunc = () => void`), when implemented, can return any other value, but it will be ignored.
+
+Thus, the following implementations of the type `() => void` are valid:
+
+```ts
+type voidFunc = () => void;
+ 
+const f1: voidFunc = () => {
+  return true;
+};
+ 
+const f2: voidFunc = () => true;
+ 
+const f3: voidFunc = function () {
+  return true;
+};
+```
+
+And when the return value of one of these functions is assigned to another variable, it will retain the type of `void`:
+
+```ts
+const v1 = f1();
+ 
+const v2 = f2();
+ 
+const v3 = f3();
+```
