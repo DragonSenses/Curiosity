@@ -591,3 +591,45 @@ function fn(x: string | number) {
   }
 }
 ```
+
+### `Function`
+
+The global type `Function` describes properties like `bind`, `call`, `apply`, and others present on all function values in JavaScript. It also has the special property that values of type `Function` can always be called; these calls return `any`:
+
+```ts
+function doSomething(f: Function) {
+  return f(1, 2, 3);
+}
+```
+
+This is an untyped function call and is generally best avoided because of the unsafe `any` return type.
+
+If you need to accept an arbitrary function but don’t intend to call it, the type `() => void` is generally safer.
+
+## Rest Parameters and Arguments
+
+Background Reading:
+
+1. Rest Parameters
+  - [MDN - Rest Parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters)
+  - [javascript.info - Rest Parameters](https://javascript.info/rest-parameters-spread#rest-parameters)
+
+2. Spread Syntax
+  - [MDN - Spread Syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
+  - [javascript.info - Spread Syntax](https://javascript.info/rest-parameters-spread#spread-syntax)
+
+### Rest Parameters
+
+In addition to using optional parameters or overloads to make functions that can accept a variety of fixed argument counts, we can also define *functions that take an *unbounded* number of arguments using rest parameters.*
+
+A rest parameter appears after all other parameters, and uses the `...` syntax:
+
+```ts
+function multiply(n: number, ...m: number[]) {
+  return m.map((x) => n * x);
+}
+// 'a' gets value [10, 20, 30, 40]
+const a = multiply(10, 1, 2, 3, 4);
+```
+
+In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`, and any type annotation given must be of the form `Array<T>` or `T[]`, or a tuple type (which we’ll learn about later).
