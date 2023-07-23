@@ -470,3 +470,45 @@ function len(x: any[] | string) {
 This is much better! Callers can invoke this with either sort of value, and as an added bonus, we don’t have to figure out a correct implementation signature.
 
 > **Always prefer parameters with union types instead of overloads when possible**
+
+## Declaring `this` in a Function
+
+TypeScript will infer what the `this` should be in a function via code flow analysis, for example in the following:
+
+```ts
+const user = {
+  id: 123,
+ 
+  admin: false,
+  becomeAdmin: function () {
+    this.admin = true;
+  },
+};
+```
+
+TypeScript understands that the function `user.becomeAdmin` has a corresponding `this` which is the outer object user. `this` can be enough for a lot of cases, but there are a lot of cases where you need more control over what object `this` represents. The JavaScript specification states that you cannot have a parameter called `this`, and so TypeScript uses that syntax space to let you declare the type for `this` in the function body.
+
+```ts
+interface DB {
+  filterUsers(filter: (this: User) => boolean): User[];
+}
+ 
+const db = getDB();
+const admins = db.filterUsers(function (this: User) {
+  return this.admin;
+});
+```
+
+This pattern is common with callback-style APIs, where another object typically controls when your function is called. Note that you need to use `function` and not arrow functions to get this behavior:
+
+```ts
+interface DB {
+  filterUsers(filter: (this: User) => boolean): User[];
+}
+ 
+const db = getDB();
+const admins = db.filterUsers(() => this.admin);
+// The containing arrow function captures the global value of 'this'.
+// Element implicitly has an 'any' type because type 'typeof globalThis' has no index signature.
+```
+
