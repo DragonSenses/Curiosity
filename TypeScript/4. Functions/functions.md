@@ -368,3 +368,26 @@ In JavaScript, if you call a function with more arguments than there are paramet
 
 ## Function Overloads
 
+Some JavaScript functions can be called in a variety of argument counts and types. For example, you might write a function to produce a `Date` that takes either a timestamp (one argument) or a month/day/year specification (three arguments).
+
+In TypeScript, we can specify a function that can be called in different ways by writing *overload signatures*. To do this, write some number of function signatures (usually two or more), followed by the body of the function:
+
+```ts
+function makeDate(timestamp: number): Date;
+function makeDate(m: number, d: number, y: number): Date;
+function makeDate(mOrTimestamp: number, d?: number, y?: number): Date {
+  if (d !== undefined && y !== undefined) {
+    return new Date(y, mOrTimestamp, d);
+  } else {
+    return new Date(mOrTimestamp);
+  }
+}
+const d1 = makeDate(12345678);
+const d2 = makeDate(5, 5, 5);
+const d3 = makeDate(1, 3);
+// No overload expects 2 arguments, but overloads do exist that expect either 1 or 3 arguments.
+```
+
+In this example, we wrote two overloads: one accepting one argument, and another accepting three arguments. These first two signatures are called the **overload signatures**.
+
+Then, we wrote a function implementation with a compatible signature. Functions have an **implementation signature**, but this signature can’t be called directly. Even though we wrote a function with two optional parameters after the required one, it can’t be called with two parameters!
