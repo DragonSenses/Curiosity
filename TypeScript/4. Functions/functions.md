@@ -391,3 +391,42 @@ const d3 = makeDate(1, 3);
 In this example, we wrote two overloads: one accepting one argument, and another accepting three arguments. These first two signatures are called the **overload signatures**.
 
 Then, we wrote a function implementation with a compatible signature. Functions have an **implementation signature**, but this signature can’t be called directly. Even though we wrote a function with two optional parameters after the required one, it can’t be called with two parameters!
+
+### Overload Signatures and the Implementation Signature
+
+This is a common source of confusion. Often people will write code like this and not understand why there is an error:
+
+```ts
+function fn(x: string): void;
+function fn() {
+  // ...
+}
+// Expected to be able to call with zero arguments
+fn();
+// Expected 1 arguments, but got 0.
+```
+
+Again, the signature used to write the function body can’t be “seen” from the outside.
+
+> The signature of the implementation is not visible from the outside. When writing an overloaded function, you should always have two or more signatures above the implementation of the function.
+
+The implementation signature must also be compatible with the overload signatures. For example, these functions have errors because the implementation signature doesn’t match the overloads in a correct way:
+
+```ts
+function fn(x: boolean): void;
+// Argument type isn't right
+function fn(x: string): void;
+// This overload signature is not compatible with its implementation signature.
+function fn(x: boolean) {}
+```
+
+```ts
+function fn(x: string): string;
+// Return type isn't right
+function fn(x: number): boolean;
+// This overload signature is not compatible with its implementation signature.
+function fn(x: string | number) {
+  return "oops";
+}
+```
+
