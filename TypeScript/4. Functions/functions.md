@@ -1,6 +1,6 @@
 # More on Functions
 
-Functions are the basic building block of any application, whether they’re local functions, imported from another module, or methods on a class. They’re also values, and just like other values, TypeScript has many ways to describe how functions can be called. Let’s learn about how to write types that describe functions.
+Functions are the basic building block of any application, whether they're local functions, imported from another module, or methods on a class. They're also values, and just like other values, TypeScript has many ways to describe how functions can be called. Let's learn about how to write types that describe functions.
 
 ## Function Type Expressions
 
@@ -18,9 +18,9 @@ function printToConsole(s: string) {
 greeter(printToConsole)
 ```
 
-The syntax `(a: string) => void` means “a function with one parameter, named `a`, of type `string`, that doesn’t have a return value”. Just like with function declarations, if a parameter type isn’t specified, it’s implicitly `any`.
+The syntax `(a: string) => void` means "a function with one parameter, named `a`, of type `string`, that doesn't have a return value". Just like with function declarations, if a parameter type isn't specified, it's implicitly `any`.
 
-> Note that the parameter name is required. The function type (string) => void means “a function with a parameter named string of type any“!
+> Note that the parameter name is required. The function type (string) => void means "a function with a parameter named string of type any"!
 
 Of course, we can use a type alias to name a function type:
 
@@ -33,7 +33,7 @@ function greeter(fn: GreetFunction) {
 
 ## Call Signatures
 
-In JavaScript, functions can have properties in addition to being callable. However, the function type expression syntax doesn’t allow for declaring properties. If we want to describe something callable with properties, we can write a call signature in an object type:
+In JavaScript, functions can have properties in addition to being callable. However, the function type expression syntax doesn't allow for declaring properties. If we want to describe something callable with properties, we can write a call signature in an object type:
 
 ```ts
 type DescribableFunction = {
@@ -67,7 +67,7 @@ function fn(ctor: SomeConstructor) {
 }
 ```
 
-Some objects, like JavaScript’s `Date` object, can be called with or without `new`. You can combine call and construct signatures in the same type arbitrarily:
+Some objects, like JavaScript's `Date` object, can be called with or without `new`. You can combine call and construct signatures in the same type arbitrarily:
 
 ```ts
 interface CallOrConstruct {
@@ -78,7 +78,7 @@ interface CallOrConstruct {
 
 ## Generic Functions
 
-It’s common to write a function where the types of the input relate to the type of the output, or where the types of two inputs are related in some way. Let’s consider for a moment a function that returns the first element of an array:
+It's common to write a function where the types of the input relate to the type of the output, or where the types of two inputs are related in some way. Let's consider for a moment a function that returns the first element of an array:
 
 ```ts
 function firstElement(arr: any[]) {
@@ -86,7 +86,7 @@ function firstElement(arr: any[]) {
 }
 ```
 
-This function does its job, but unfortunately has the return type `any`. It’d be better if the function returned the type of the array element.
+This function does its job, but unfortunately has the return type `any`. It'd be better if the function returned the type of the array element.
 
 In TypeScript, generics are used when we want to describe a correspondence between two values. We do this by declaring a type parameter in the function signature:
 
@@ -96,7 +96,7 @@ function firstElement<Type>(arr: Type[]): Type | undefined {
 }
 ```
 
-By adding a type parameter Type to this function and using it in two places, we’ve created a link between the input of the function (the array) and the output (the return value). Now when we call it, a more specific type comes out:
+By adding a type parameter Type to this function and using it in two places, we've created a link between the input of the function (the array) and the output (the return value). Now when we call it, a more specific type comes out:
 
 ```ts
 // s is of type 'string'
@@ -109,7 +109,7 @@ const u = firstElement([]);
 
 ### Inference
 
-Note that we didn’t have to specify `Type` in this sample. The type was inferred - chosen automatically - by TypeScript.
+Note that we didn't have to specify `Type` in this sample. The type was inferred - chosen automatically - by TypeScript.
 
 We can use multiple type parameters as well. For example, a standalone version of `map` would look like this:
 
@@ -127,9 +127,9 @@ Note that in this example, TypeScript could infer both the type of the `Input` t
 
 ### Constraints
 
-We’ve written some generic functions that can work on any kind of value. Sometimes we want to relate two values, but can only operate on a certain subset of values. In this case, we can use a *constraint* to limit the kinds of types that a type parameter can accept.
+We've written some generic functions that can work on any kind of value. Sometimes we want to relate two values, but can only operate on a certain subset of values. In this case, we can use a *constraint* to limit the kinds of types that a type parameter can accept.
 
-Let’s write a function that returns the longer of two values. To do this, we need a `length` property that’s a number. We *constrain* the type parameter to that type by writing an `extends` clause:
+Let's write a function that returns the longer of two values. To do this, we need a `length` property that's a number. We *constrain* the type parameter to that type by writing an `extends` clause:
 
 ```ts
 function longest<Type extends { length: number }>(a: Type, b: Type) {
@@ -151,15 +151,15 @@ const notOK = longest(10, 100);
 
 There are a few interesting things to note in this example. We allowed TypeScript to infer the return type of `longest`. Return type inference also works on generic functions.
 
-Because we constrained `Type` to `{ length: number }`, we were allowed to access the `.length` property of the `a` and `b` parameters. Without the type constraint, we wouldn’t be able to access those properties because the values might have been some other type without a length property.
+Because we constrained `Type` to `{ length: number }`, we were allowed to access the `.length` property of the `a` and `b` parameters. Without the type constraint, we wouldn't be able to access those properties because the values might have been some other type without a length property.
 
 The types of `longerArray` and `longerString` were inferred based on the arguments. Remember, generics are all about relating two or more values with the same type!
 
-Finally, just as we’d like, the call to `longest(10, 100)` is rejected because the `number` type doesn’t have a `.length` property.
+Finally, just as we'd like, the call to `longest(10, 100)` is rejected because the `number` type doesn't have a `.length` property.
 
 ### Working with Constrained Values
 
-Here’s a common error when working with generic constraints:
+Here's a common error when working with generic constraints:
 
 ```ts
 function minimumLength<Type extends { length: number }>(
@@ -176,7 +176,7 @@ function minimumLength<Type extends { length: number }>(
 }
 ```
 
-It might look like this function is OK - `Type` is constrained to` { length: number }`, and the function either returns `Type` or a value matching that constraint. The problem is that the function promises to return the same kind of object as was passed in, not just some object matching the constraint. If this code were legal, you could write code that definitely wouldn’t work:
+It might look like this function is OK - `Type` is constrained to` { length: number }`, and the function either returns `Type` or a value matching that constraint. The problem is that the function promises to return the same kind of object as was passed in, not just some object matching the constraint. If this code were legal, you could write code that definitely wouldn't work:
 
 ```ts
 // 'arr' gets value { length: 6 }
@@ -188,7 +188,7 @@ console.log(arr.slice(0));
 
 ### Specifying Type Arguments
 
-TypeScript can usually infer the intended type arguments in a generic call, but not always. For example, let’s say you wrote a function to combine two arrays:
+TypeScript can usually infer the intended type arguments in a generic call, but not always. For example, let's say you wrote a function to combine two arrays:
 
 ```ts
 function combine<Type>(arr1: Type[], arr2: Type[]): Type[] {
@@ -211,7 +211,7 @@ const arr = combine<string | number>([1, 2, 3], ["hello"]);
 
 ## Guidelines for Writing Good Generic Functions
 
-Writing generic functions is fun, and it can be easy to get carried away with type parameters. Having too many type parameters or using constraints where they aren’t needed can make inference less successful, frustrating callers of your function.
+Writing generic functions is fun, and it can be easy to get carried away with type parameters. Having too many type parameters or using constraints where they aren't needed can make inference less successful, frustrating callers of your function.
 
 ### **Push Type Parameters Down**
 
@@ -232,13 +232,13 @@ const a = firstElement1([1, 2, 3]);
 const b = firstElement2([1, 2, 3]);
 ```
 
-These might seem identical at first glance, but `firstElement1` is a much better way to write this function. Its inferred return type is `Type`, but `firstElement2`’s inferred return type is `any` because TypeScript has to resolve the `arr[0]` expression using the constraint type, rather than “waiting” to resolve the element during a call.
+These might seem identical at first glance, but `firstElement1` is a much better way to write this function. Its inferred return type is `Type`, but `firstElement2`'s inferred return type is `any` because TypeScript has to resolve the `arr[0]` expression using the constraint type, rather than "waiting" to resolve the element during a call.
 
 > Rule: When possible, use the type parameter itself rather than constraining it
 
 ### **Use Fewer Type Parameters**
 
-Here’s another pair of similar functions:
+Here's another pair of similar functions:
 
 ```ts
 function filter1<Type>(arr: Type[], func: (arg: Type) => boolean): Type[] {
@@ -253,7 +253,7 @@ function filter2<Type, Func extends (arg: Type) => boolean>(
 }
 ```
 
-We’ve created a type parameter `Func` that doesn’t relate two values. That’s always a red flag, because it means callers wanting to specify type arguments have to manually specify an extra type argument for no reason. `Func` doesn’t do anything but make the function harder to read and reason about!
+We've created a type parameter `Func` that doesn't relate two values. That's always a red flag, because it means callers wanting to specify type arguments have to manually specify an extra type argument for no reason. `Func` doesn't do anything but make the function harder to read and reason about!
 
 > Rule: Always use as few type parameters as possible
 
@@ -277,7 +277,7 @@ function greet(s: string) {
 }
 ```
 
-Remember, type parameters are for *relating the types of multiple values*. If a type parameter is only used once in the function signature, it’s not relating anything. This includes the inferred return type; for example, if `Str` was part of the inferred return type of `greet`, it would be relating the argument and return types, so would be used twice despite appearing only once in the written code.
+Remember, type parameters are for *relating the types of multiple values*. If a type parameter is only used once in the function signature, it's not relating anything. This includes the inferred return type; for example, if `Str` was part of the inferred return type of `greet`, it would be relating the argument and return types, so would be used twice despite appearing only once in the written code.
 
 > Rule: If a type parameter only appears in one location, strongly reconsider if you actually need it
 
@@ -312,7 +312,7 @@ function f(x = 10) {
 }
 ```
 
-Now in the body of `f`, `x` will have type `number` because any `undefined` argument will be replaced with `10`. Note that when a parameter is optional, callers can always pass `undefined`, as this simply simulates a “missing” argument:
+Now in the body of `f`, `x` will have type `number` because any `undefined` argument will be replaced with `10`. Note that when a parameter is optional, callers can always pass `undefined`, as this simply simulates a "missing" argument:
 
 ```ts
 declare function f(x?: number): void;
@@ -325,7 +325,7 @@ f(undefined);
 
 ## Optional Parameters in Callbacks
 
-Once you’ve learned about optional parameters and function type expressions, it’s very easy to make the following mistakes when writing functions that invoke callbacks:
+Once you've learned about optional parameters and function type expressions, it's very easy to make the following mistakes when writing functions that invoke callbacks:
 
 ```ts
 function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
@@ -353,7 +353,7 @@ function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
 }
 ```
 
-In turn, TypeScript will enforce this meaning and issue errors that aren’t really possible:
+In turn, TypeScript will enforce this meaning and issue errors that aren't really possible:
 
 ```ts
 myForEach([1, 2, 3], (a, i) => {
@@ -390,7 +390,7 @@ const d3 = makeDate(1, 3);
 
 In this example, we wrote two overloads: one accepting one argument, and another accepting three arguments. These first two signatures are called the **overload signatures**.
 
-Then, we wrote a function implementation with a compatible signature. Functions have an **implementation signature**, but this signature can’t be called directly. Even though we wrote a function with two optional parameters after the required one, it can’t be called with two parameters!
+Then, we wrote a function implementation with a compatible signature. Functions have an **implementation signature**, but this signature can't be called directly. Even though we wrote a function with two optional parameters after the required one, it can't be called with two parameters!
 
 ### Overload Signatures and the Implementation Signature
 
@@ -406,11 +406,11 @@ fn();
 // Expected 1 arguments, but got 0.
 ```
 
-Again, the signature used to write the function body can’t be “seen” from the outside.
+Again, the signature used to write the function body can't be "seen" from the outside.
 
 > The signature of the implementation is not visible from the outside. When writing an overloaded function, you should always have two or more signatures above the implementation of the function.
 
-The implementation signature must also be compatible with the overload signatures. For example, these functions have errors because the implementation signature doesn’t match the overloads in a correct way:
+The implementation signature must also be compatible with the overload signatures. For example, these functions have errors because the implementation signature doesn't match the overloads in a correct way:
 
 ```ts
 function fn(x: boolean): void;
@@ -434,7 +434,7 @@ function fn(x: string | number) {
 
 Like generics, there are a few guidelines you should follow when using function overloads. Following these principles will make your function easier to call, easier to understand, and easier to implement.
 
-Let’s consider a function that returns the length of a string or an array:
+Let's consider a function that returns the length of a string or an array:
 
 ```ts
 function len(s: string): number;
@@ -444,7 +444,7 @@ function len(x: any) {
 }
 ```
 
-This function is fine; we can invoke it with strings or arrays. However, we can’t invoke it with a value that might be a string or an array, because TypeScript can only resolve a function call to a single overload:
+This function is fine; we can invoke it with strings or arrays. However, we can't invoke it with a value that might be a string or an array, because TypeScript can only resolve a function call to a single overload:
 
 ```ts
 len(""); // OK
@@ -467,7 +467,7 @@ function len(x: any[] | string) {
 }
 ```
 
-This is much better! Callers can invoke this with either sort of value, and as an added bonus, we don’t have to figure out a correct implementation signature.
+This is much better! Callers can invoke this with either sort of value, and as an added bonus, we don't have to figure out a correct implementation signature.
 
 > **Always prefer parameters with union types instead of overloads when possible**
 
@@ -514,11 +514,11 @@ const admins = db.filterUsers(() => this.admin);
 
 ## Other Types to Know About
 
-There are some additional types you’ll want to recognize that appear often when working with function types. Like all types, you can use them everywhere, but these are especially relevant in the context of functions.
+There are some additional types you'll want to recognize that appear often when working with function types. Like all types, you can use them everywhere, but these are especially relevant in the context of functions.
 
 ### `void`
 
-`void` represents the return value of functions which don’t return a value. It’s the inferred type any time a function doesn’t have any `return` statements, or doesn’t return any explicit value from those return statements:
+`void` represents the return value of functions which don't return a value. It's the inferred type any time a function doesn't have any `return` statements, or doesn't return any explicit value from those return statements:
 
 ```ts
 // The inferred return type is void
@@ -527,13 +527,13 @@ function noop() {
 }
 ```
 
-In JavaScript, a function that doesn’t return any value will implicitly return the value `undefined`. However, `void` and `undefined` are not the same thing in TypeScript. There are further details at the end of this chapter.
+In JavaScript, a function that doesn't return any value will implicitly return the value `undefined`. However, `void` and `undefined` are not the same thing in TypeScript. There are further details at the end of this chapter.
 
 > `void` is not the same as `undefined`.
 
 ### `object`
 
-The special type object refers to any value that isn’t a primitive (`string`, `number`, `bigint`, `boolean`, `symbol`, `null`, or `undefined`). This is different from the *empty object type* `{ }`, and also different from the global type `Object`. It’s very likely you will never use `Object`.
+The special type object refers to any value that isn't a primitive (`string`, `number`, `bigint`, `boolean`, `symbol`, `null`, or `undefined`). This is different from the *empty object type* `{ }`, and also different from the global type `Object`. It's very likely you will never use `Object`.
 
 > `object` is not `Object`. Always use `object`!
 
@@ -541,7 +541,7 @@ Note that in JavaScript, function values are objects: They have properties, have
 
 ### `unknown`
 
-The `unknown` type represents *any* value. This is similar to the `any` type, but is safer because it’s not legal to do anything with an `unknown` value:
+The `unknown` type represents *any* value. This is similar to the `any` type, but is safer because it's not legal to do anything with an `unknown` value:
 
 ```ts
 function f1(a: any) {
@@ -578,7 +578,7 @@ function fail(msg: string): never {
 
 The `never` type represents values which are never observed. In a return type, this means that the function throws an exception or terminates execution of the program.
 
-`never` also appears when TypeScript determines there’s nothing left in a union.
+`never` also appears when TypeScript determines there's nothing left in a union.
 
 ```ts
 function fn(x: string | number) {
@@ -604,7 +604,7 @@ function doSomething(f: Function) {
 
 This is an untyped function call and is generally best avoided because of the unsafe `any` return type.
 
-If you need to accept an arbitrary function but don’t intend to call it, the type `() => void` is generally safer.
+If you need to accept an arbitrary function but don't intend to call it, the type `() => void` is generally safer.
 
 ## Rest Parameters and Arguments
 
@@ -632,7 +632,7 @@ function multiply(n: number, ...m: number[]) {
 const a = multiply(10, 1, 2, 3, 4);
 ```
 
-In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`, and any type annotation given must be of the form `Array<T>` or `T[]`, or a tuple type (which we’ll learn about later).
+In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`, and any type annotation given must be of the form `Array<T>` or `T[]`, or a tuple type (which we'll learn about later).
 
 ### Rest Arguments
 
@@ -730,3 +730,32 @@ const v2 = f2();
  
 const v3 = f3();
 ```
+
+This behavior exists so that the following code is valid even though `Array.prototype.push` returns a number and the `Array.prototype.forEach` method expects a function with a return type of `void`.
+
+```ts
+const src = [1, 2, 3];
+const dst = [0];
+ 
+src.forEach((el) => dst.push(el));
+```
+
+There is one other special case to be aware of, when a literal function definition has a `void` return type, that function must **not** return anything.
+
+```ts
+function f2(): void {
+  // @ts-expect-error
+  return true;
+}
+ 
+const f3 = function (): void {
+  // @ts-expect-error
+  return true;
+};
+```
+
+For more on `void` please refer to these other documentation entries:
+
+- [v1 handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html#void)
+- [v2 handbook](https://www.typescriptlang.org/docs/handbook/2/functions.html#void)
+- [FAQ - "Why functions returning non-void assignable to function returning void?"](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)
