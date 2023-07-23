@@ -512,3 +512,30 @@ const admins = db.filterUsers(() => this.admin);
 // Element implicitly has an 'any' type because type 'typeof globalThis' has no index signature.
 ```
 
+## Other Types to Know About
+
+There are some additional types you’ll want to recognize that appear often when working with function types. Like all types, you can use them everywhere, but these are especially relevant in the context of functions.
+
+### `void`
+
+`void` represents the return value of functions which don’t return a value. It’s the inferred type any time a function doesn’t have any `return` statements, or doesn’t return any explicit value from those return statements:
+
+```ts
+// The inferred return type is void
+function noop() {
+  return;
+}
+```
+
+In JavaScript, a function that doesn’t return any value will implicitly return the value `undefined`. However, `void` and `undefined` are not the same thing in TypeScript. There are further details at the end of this chapter.
+
+> `void` is not the same as `undefined`.
+
+### `object`
+
+The special type object refers to any value that isn’t a primitive (`string`, `number`, `bigint`, `boolean`, `symbol`, `null`, or `undefined`). This is different from the *empty object type* `{ }`, and also different from the global type `Object`. It’s very likely you will never use `Object`.
+
+> `object` is not `Object`. Always use `object`!
+
+Note that in JavaScript, function values are objects: They have properties, have `Object.prototype` in their prototype chain, are `instanceof` `Object`, you can call `Object.keys` on them, and so on. For this reason, function types are considered to be `object`s in TypeScript.
+
