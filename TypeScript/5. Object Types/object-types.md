@@ -274,3 +274,43 @@ myArray[2] = "Mallory";
 ```
 
 You can’t set `myArray[2]` because the index signature is `readonly`.
+
+## Excess Property Checks
+
+Where and how an object is assigned a type can make a difference in the type system. One of the key examples of this is in excess property checking, which validates the object more thoroughly when it is created and assigned to an object type during creation.
+
+```ts
+interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+ 
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
+}
+ 
+let mySquare = createSquare({ colour: "red", width: 100 });
+// Argument of type '{ colour: string; width: number; }' is not assignable to parameter of type 'SquareConfig'.
+//   Object literal may only specify known properties, but 'colour' does not exist in type 'SquareConfig'. Did you mean to write 'color'?
+```
+
+Notice the given argument to `createSquare` is spelled `colour` instead of `color`. In plain JavaScript, this sort of thing fails silently.
+
+You could argue that this program is correctly typed, since the `width` properties are compatible, there’s no `color` property present, and the extra `colour` property is insignificant.
+
+However, TypeScript takes the stance that there’s probably a bug in this code. Object literals get special treatment and undergo *excess property checking* when assigning them to other variables, or passing them as arguments. If an object literal has any properties that the “target type” doesn’t have, you’ll get an error:
+
+```ts
+let mySquare = createSquare({ colour: "red", width: 100 });
+// Argument of type '{ colour: string; width: number; }' is not assignable to parameter of type 'SquareConfig'.
+  // Object literal may only specify known properties, but 'colour' does not exist in type 'SquareConfig'. Did you mean to write 'color'?
+```
+
+Getting around these checks is actually really simple. The easiest method is to just use a type assertion:
+
+```ts
+let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
+```
