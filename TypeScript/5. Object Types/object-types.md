@@ -309,8 +309,43 @@ let mySquare = createSquare({ colour: "red", width: 100 });
   // Object literal may only specify known properties, but 'colour' does not exist in type 'SquareConfig'. Did you mean to write 'color'?
 ```
 
+### Excess Property Checks Workarounds
+
 Getting around these checks is actually really simple. The easiest method is to just use a type assertion:
 
 ```ts
 let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
 ```
+
+However, a better approach might be to add a string index signature if you’re sure that the object can have some extra properties that are used in some special way. If `SquareConfig` can have `color` and `width` properties with the above types, but could also have any number of other properties, then we could define it like so:
+
+```ts
+interface SquareConfig {
+  color?: string;
+  width?: number;
+  [propName: string]: any;
+}
+```
+
+We’ll discuss index signatures in a bit, but here we’re saying a `SquareConfig` can have any number of properties, and as long as they aren’t `color` or `width`, their types don’t matter.
+
+One final way to get around these checks, which might be a bit surprising, is to assign the object to another variable: Since assigning `squareOptions` won’t undergo excess property checks, the compiler won’t give you an error:
+
+```ts
+let squareOptions = { colour: "red", width: 100 };
+let mySquare = createSquare(squareOptions);
+```
+
+The above workaround will work as long as you have a common property between `squareOptions` and `SquareConfig`. In this example, it was the property `width`. It will however, fail if the variable does not have any common object property. For example:
+
+```ts
+let squareOptions = { colour: "red" };
+let mySquare = createSquare(squareOptions);
+// Type '{ colour: string; }' has no properties in common with type 'SquareConfig'.
+```
+
+Keep in mind that for simple code like above, you probably shouldn’t be trying to “get around” these checks. For more complex object literals that have methods and hold state, you might need to keep these techniques in mind, but a majority of excess property errors are actually bugs.
+
+That means if you’re running into excess property checking problems for something like option bags, you might need to revise some of your type declarations. In this instance, if it’s okay to pass an object with both a `color` or `colour` property to `createSquare`, you should fix up the definition of `SquareConfig` to reflect that.
+
+## 
