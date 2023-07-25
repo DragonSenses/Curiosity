@@ -647,3 +647,27 @@ interface Array<Type> {
 Modern JavaScript also provides other data structures which are generic, like `Map<K, V>`, `Set<T>`, and `Promise<T>`. All this really means is that because of how `Map`, `Set`, and `Promise` behave, they can work with any sets of types.
 
 ### The `ReadonlyArray` Type
+
+The `ReadonlyArray` is a special type that describes arrays that shouldn’t be changed.
+
+```ts
+function doStuff(values: ReadonlyArray<string>) {
+  // We can read from 'values'...
+  const copy = values.slice();
+  console.log(`The first value is ${values[0]}`);
+ 
+  // ...but we can't mutate 'values'.
+  values.push("hello!");
+// Property 'push' does not exist on type 'readonly string[]'.
+}
+```
+
+Much like the `readonly` modifier for properties, it’s mainly a tool we can use for intent. When we see a function that returns `ReadonlyArray`s, it tells us we’re not meant to change the contents at all, and when we see a function that consumes `ReadonlyArray`s, it tells us that we can pass any array into that function without worrying that it will change its contents.
+
+Unlike `Array`, there isn’t a `ReadonlyArray` constructor that we can use.
+
+```ts
+new ReadonlyArray("red", "green", "blue");
+// 'ReadonlyArray' only refers to a type, but is being used as a value here.
+```
+
