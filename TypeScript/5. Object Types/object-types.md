@@ -541,11 +541,65 @@ interface StringBox {
  
 let boxA: Box<string> = { contents: "hello" };
 boxA.contents;
-        
-(property) Box<string>.contents: string
+        // (property) Box<string>.contents: string
  
 let boxB: StringBox = { contents: "world" };
 boxB.contents;
-        
-(property) StringBox.contents: string
+        // (property) StringBox.contents: string
 ```
+
+`Box` is reusable in that `Type` can be substituted with anything. That means that when we need a box for a new type, we don’t need to declare a new `Box` type at all (though we certainly could if we wanted to).
+
+```ts
+interface Box<Type> {
+  contents: Type;
+}
+ 
+interface Apple {
+  // ....
+}
+ 
+// Same as '{ contents: Apple }'.
+type AppleBox = Box<Apple>;
+```
+
+This also means that we can avoid overloads entirely by instead using [generic functions](https://www.typescriptlang.org/docs/handbook/2/functions.html#generic-functions).
+
+```ts
+function setContents<Type>(box: Box<Type>, newContents: Type) {
+  box.contents = newContents;
+}
+```
+
+It is worth noting that type aliases can also be generic. We could have defined our new `Box<Type>` interface, which was:
+
+```ts
+interface Box<Type> {
+  contents: Type;
+}
+```
+
+by using a type alias instead:
+
+```ts
+type Box<Type> = {
+  contents: Type;
+};
+```
+
+Since type aliases, unlike interfaces, can describe more than just object types, we can also use them to write other kinds of generic helper types.
+
+```ts
+type OrNull<Type> = Type | null;
+ 
+type OneOrMany<Type> = Type | Type[];
+ 
+type OneOrManyOrNull<Type> = OrNull<OneOrMany<Type>>;
+           // type OneOrManyOrNull<Type> = OneOrMany<Type> | null
+ 
+type OneOrManyOrNullStrings = OneOrManyOrNull<string>;
+               // type OneOrManyOrNullStrings = OneOrMany<string> | null
+```
+
+We’ll circle back to type aliases in just a little bit.
+
