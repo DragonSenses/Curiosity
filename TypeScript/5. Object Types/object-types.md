@@ -691,3 +691,21 @@ function doStuff(values: readonly string[]) {
 }
 ```
 
+One last thing to note is that unlike the `readonly` property modifier, assignability isn’t bidirectional between regular `Array`s and `ReadonlyArray`s.
+
+```ts
+let x: readonly string[] = [];
+let y: string[] = [];
+ 
+x = y;
+y = x;
+// The type 'readonly string[]' is 'readonly' and cannot be assigned to the mutable type 'string[]'.
+```
+
+### Tuple Types
+
+A tuple type is another sort of `Array` type that knows exactly how many elements it contains, and exactly which types it contains at specific positions.
+
+```ts
+type StringNumberPair = [string, number];
+```
