@@ -709,3 +709,46 @@ A tuple type is another sort of `Array` type that knows exactly how many element
 ```ts
 type StringNumberPair = [string, number];
 ```
+
+Here, StringNumberPair is a tuple type of string and number. Like ReadonlyArray, it has no representation at runtime, but is significant to TypeScript. To the type system, StringNumberPair describes arrays whose 0 index contains a string and whose 1 index contains a number.
+
+```ts
+function doSomething(pair: [string, number]) {
+  const a = pair[0];
+       
+const a: string
+  const b = pair[1];
+       
+const b: number
+  // ...
+}
+ 
+doSomething(["hello", 42]);
+```
+
+If we try to index past the number of elements, we’ll get an error.
+
+```ts
+function doSomething(pair: [string, number]) {
+  // ...
+ 
+  const c = pair[2];
+Tuple type '[string, number]' of length '2' has no element at index '2'.
+}
+```
+
+We can also destructure tuples using JavaScript’s array destructuring.
+
+```ts
+function doSomething(stringHash: [string, number]) {
+  const [inputString, hash] = stringHash;
+ 
+  console.log(inputString);
+                  
+const inputString: string
+ 
+  console.log(hash);
+               
+const hash: number
+}
+```
