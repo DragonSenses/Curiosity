@@ -501,3 +501,51 @@ interface BooleanBox {
   contents: boolean;
 }
 ```
+
+But that means we’ll have to create different functions, or overloads of functions, to operate on these types.
+
+```ts
+function setContents(box: StringBox, newContents: string): void;
+function setContents(box: NumberBox, newContents: number): void;
+function setContents(box: BooleanBox, newContents: boolean): void;
+function setContents(box: { contents: any }, newContents: any) {
+  box.contents = newContents;
+}
+```
+
+That’s a lot of boilerplate. Moreover, we might later need to introduce new types and overloads. This is frustrating, since our box types and overloads are all effectively the same.
+
+Instead, we can make a generic `Box` type which declares a type parameter.
+
+```ts
+interface Box<Type> {
+  contents: Type;
+}
+```
+
+You might read this as “A `Box` of Type is something whose `contents` have type `Type`”. Later on, when we refer to `Box`, we have to give a type argument in place of `Type`.
+
+```ts
+let box: Box<string>;
+```
+
+Think of `Box` as a template for a real type, where Type is a placeholder that will get replaced with some other type. When TypeScript sees `Box<string>`, it will replace every instance of `Type` in `Box<Type>` with `string`, and end up working with something like `{ contents: string }`. In other words, `Box<string>` and our earlier `StringBox` work identically.
+
+```ts
+interface Box<Type> {
+  contents: Type;
+}
+interface StringBox {
+  contents: string;
+}
+ 
+let boxA: Box<string> = { contents: "hello" };
+boxA.contents;
+        
+(property) Box<string>.contents: string
+ 
+let boxB: StringBox = { contents: "world" };
+boxB.contents;
+        
+(property) StringBox.contents: string
+```
