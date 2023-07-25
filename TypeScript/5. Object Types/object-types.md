@@ -715,11 +715,9 @@ Here, StringNumberPair is a tuple type of string and number. Like ReadonlyArray,
 ```ts
 function doSomething(pair: [string, number]) {
   const a = pair[0];
-       
-const a: string
+       // const a: string
   const b = pair[1];
-       
-const b: number
+       // const b: number
   // ...
 }
  
@@ -733,11 +731,11 @@ function doSomething(pair: [string, number]) {
   // ...
  
   const c = pair[2];
-Tuple type '[string, number]' of length '2' has no element at index '2'.
+// Tuple type '[string, number]' of length '2' has no element at index '2'.
 }
 ```
 
-We can also destructure tuples using JavaScript’s array destructuring.
+We can also [destructure tuples](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Array_destructuring) using JavaScript’s array destructuring.
 
 ```ts
 function doSomething(stringHash: [string, number]) {
@@ -750,5 +748,37 @@ const inputString: string
   console.log(hash);
                
 const hash: number
+}
+```
+
+> Tuple types are useful in heavily convention-based APIs, where each element’s meaning is “obvious”. This gives us flexibility in whatever we want to name our variables when we destructure them. In the above example, we were able to name elements `0` and `1` to whatever we wanted.
+
+> However, since not every user holds the same view of what’s obvious, it may be worth reconsidering whether using objects with descriptive property names may be better for your API.
+
+Other than those length checks, simple tuple types like these are equivalent to types which are versions of `Array`s that declare properties for specific indexes, and that declare `length` with a numeric literal type.
+
+```ts
+interface StringNumberPair {
+  // specialized properties
+  length: 2;
+  0: string;
+  1: number;
+ 
+  // Other 'Array<string | number>' members...
+  slice(start?: number, end?: number): Array<string | number>;
+}
+```
+
+Another thing you may be interested in is that tuples can have optional properties by writing out a question mark (`?` after an element’s type). Optional tuple elements can only come at the end, and also affect the type of `length`.
+
+```ts
+type Either2dOr3d = [number, number, number?];
+ 
+function setCoordinate(coord: Either2dOr3d) {
+  const [x, y, z] = coord;
+              // const z: number | undefined
+ 
+  console.log(`Provided coordinates had ${coord.length} dimensions`);
+                                                  // (property) length: 2 | 3
 }
 ```
