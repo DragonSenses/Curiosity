@@ -454,4 +454,50 @@ With interfaces, we could use an `extends` clause to extend from other types, an
 
 **The principal difference between the two is *how conflicts are handled*, and that difference is typically one of the main reasons why you’d pick one over the other between an interface and a type alias of an intersection type.**
 
-## 
+## Generic Object Types
+
+Let’s imagine a `Box` type that can contain any value - `string`s, `number`s, `Giraffe`s, whatever.
+
+```ts
+interface Box {
+  contents: any;
+}
+```
+
+Right now, the `contents` property is typed as any, which works, but can lead to accidents down the line.
+
+We could instead use `unknown`, but that would mean that in cases where we already know the type of `contents`, we’d need to do precautionary checks, or use error-prone type assertions.
+
+```ts
+interface Box {
+  contents: unknown;
+}
+ 
+let x: Box = {
+  contents: "hello world",
+};
+ 
+// we could check 'x.contents'
+if (typeof x.contents === "string") {
+  console.log(x.contents.toLowerCase());
+}
+ 
+// or we could use a type assertion
+console.log((x.contents as string).toLowerCase());
+```
+
+One type safe approach would be to instead scaffold out different `Box` types for every type of `contents`.
+
+```ts
+interface NumberBox {
+  contents: number;
+}
+ 
+interface StringBox {
+  contents: string;
+}
+ 
+interface BooleanBox {
+  contents: boolean;
+}
+```
