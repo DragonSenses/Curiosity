@@ -88,3 +88,50 @@ function loggingIdentity<Type>(arg: Type[]): Type[] {
   return arg;
 }
 ```
+
+You can read the type of `loggingIdentity` as “the generic function `loggingIdentity` takes a type parameter `Type`, and an argument `arg` which is an array of `Type`s, and returns an array of `Type`s.” If we passed in an array of numbers, we’d get an array of numbers back out, as `Type` would bind to `number`. This allows us to use our generic type variable `Type` as part of the types we’re working with, rather than the whole type, giving us greater flexibility.
+
+We can alternatively write the sample example this way:
+
+```ts
+function loggingIdentity<Type>(arg: Array<Type>): Array<Type> {
+  console.log(arg.length); // Array has a .length, so no more error
+  return arg;
+}
+```
+
+You may already be familiar with this style of type from other languages. In the next section, we’ll cover how you can create your own generic types like `Array<Type>`.
+
+## Generic Types
+
+In previous sections, we created generic identity functions that worked over a range of types. In this section, we’ll explore the type of the functions themselves and how to create generic interfaces.
+
+The type of generic functions is just like those of non-generic functions, with the type parameters listed first, similarly to function declarations:
+
+```ts
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
+ 
+let myIdentity: <Type>(arg: Type) => Type = identity;
+```
+
+We could also have used a different name for the generic type parameter in the type, so long as the number of type variables and how the type variables are used line up.
+
+```ts
+function identity<Input>(arg: Input): Input {
+  return arg;
+}
+ 
+let myIdentity: <Input>(arg: Input) => Input = identity;
+```
+
+We can also write the generic type as a call signature of an object literal type:
+
+```ts
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
+ 
+let myIdentity: { <Type>(arg: Type): Type } = identity;
+```
