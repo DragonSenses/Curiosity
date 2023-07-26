@@ -4,7 +4,7 @@ A major part of software engineering is building components that not only have w
 
 In languages like C# and Java, one of the main tools in the toolbox for creating reusable components is generics, that is, being able to create a component that can work over a variety of types rather than a single one. This allows users to consume these components and use their own types.
 
-# Hello World of Generics
+## Hello World of Generics
 
 To start off, let’s do the “hello world” of generics: the identity function. The identity function is a function that will return back whatever is passed in. You can think of this in a similar way to the `echo` command.
 
@@ -56,3 +56,35 @@ let output = identity("myString");
 
 Notice that we didn’t have to explicitly pass the type in the angle brackets (`<>`); the compiler just looked at the value `"myString"`, and set `Type` to its type. While type argument inference can be a helpful tool to keep code shorter and more readable, you may need to explicitly pass in the type arguments as we did in the previous example when the compiler fails to infer the type, as may happen in more complex examples.
 
+## Working with Generic Type Variables
+
+When you begin to use generics, you’ll notice that when you create generic functions like `identity`, the compiler will enforce that you use any generically typed parameters in the body of the function correctly. That is, that you actually treat these parameters as if they could be any and all types.
+
+Let’s take our `identity` function from earlier:
+
+```ts
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
+```
+
+What if we want to also log the length of the argument `arg` to the console with each call? We might be tempted to write this:
+
+```ts
+function loggingIdentity<Type>(arg: Type): Type {
+  console.log(arg.length);
+// Property 'length' does not exist on type 'Type'.
+  return arg;
+}
+```
+
+When we do, the compiler will give us an error that we’re using the `.length `member of `arg`, but nowhere have we said that arg has this member. Remember, we said earlier that these type variables stand in for any and all types, so someone using this function could have passed in a num`ber instead, which does not have a `.length` member.
+
+Let’s say that we’ve actually intended this function to work on arrays of `Type` rather than `Type` directly. Since we’re working with arrays, the `.length` member should be available. We can describe this just like we would create arrays of other types:
+
+```ts
+function loggingIdentity<Type>(arg: Type[]): Type[] {
+  console.log(arg.length);
+  return arg;
+}
+```
