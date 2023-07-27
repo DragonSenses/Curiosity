@@ -6,7 +6,7 @@ In languages like C# and Java, one of the main tools in the toolbox for creating
 
 ## Hello World of Generics
 
-To start off, let’s do the “hello world” of generics: the identity function. The identity function is a function that will return back whatever is passed in. You can think of this in a similar way to the `echo` command.
+To start off, let's do the "hello world" of generics: the identity function. The identity function is a function that will return back whatever is passed in. You can think of this in a similar way to the `echo` command.
 
 Without generics, we would either have to give the identity function a specific type:
 
@@ -34,11 +34,11 @@ function identity<Type>(arg: Type): Type {
 }
 ```
 
-We’ve now added a type variable `Type` to the identity function. This `Type` allows us to capture the type the user provides (e.g. `number`), so that we can use that information later. Here, we use `Type` again as the return type. On inspection, we can now see the same type is used for the argument and the return type. This allows us to traffic that type information in one side of the function and out the other.
+We've now added a type variable `Type` to the identity function. This `Type` allows us to capture the type the user provides (e.g. `number`), so that we can use that information later. Here, we use `Type` again as the return type. On inspection, we can now see the same type is used for the argument and the return type. This allows us to traffic that type information in one side of the function and out the other.
 
-We say that this version of the `identity` function is generic, as it works over a range of types. Unlike using `any`, it’s also just as precise (i.e., it doesn’t lose any information) as the first `identity` function that used numbers for the argument and return type.
+We say that this version of the `identity` function is generic, as it works over a range of types. Unlike using `any`, it's also just as precise (i.e., it doesn't lose any information) as the first `identity` function that used numbers for the argument and return type.
 
-Once we’ve written the generic identity function, we can call it in one of two ways. The first way is to pass all of the arguments, including the type argument, to the function:
+Once we've written the generic identity function, we can call it in one of two ways. The first way is to pass all of the arguments, including the type argument, to the function:
 
 ```ts
 let output = identity<string>("myString");
@@ -54,13 +54,13 @@ let output = identity("myString");
       // let output: string
 ```
 
-Notice that we didn’t have to explicitly pass the type in the angle brackets (`<>`); the compiler just looked at the value `"myString"`, and set `Type` to its type. While type argument inference can be a helpful tool to keep code shorter and more readable, you may need to explicitly pass in the type arguments as we did in the previous example when the compiler fails to infer the type, as may happen in more complex examples.
+Notice that we didn't have to explicitly pass the type in the angle brackets (`<>`); the compiler just looked at the value `"myString"`, and set `Type` to its type. While type argument inference can be a helpful tool to keep code shorter and more readable, you may need to explicitly pass in the type arguments as we did in the previous example when the compiler fails to infer the type, as may happen in more complex examples.
 
 ## Working with Generic Type Variables
 
-When you begin to use generics, you’ll notice that when you create generic functions like `identity`, the compiler will enforce that you use any generically typed parameters in the body of the function correctly. That is, that you actually treat these parameters as if they could be any and all types.
+When you begin to use generics, you'll notice that when you create generic functions like `identity`, the compiler will enforce that you use any generically typed parameters in the body of the function correctly. That is, that you actually treat these parameters as if they could be any and all types.
 
-Let’s take our `identity` function from earlier:
+Let's take our `identity` function from earlier:
 
 ```ts
 function identity<Type>(arg: Type): Type {
@@ -78,9 +78,9 @@ function loggingIdentity<Type>(arg: Type): Type {
 }
 ```
 
-When we do, the compiler will give us an error that we’re using the `.length `member of `arg`, but nowhere have we said that arg has this member. Remember, we said earlier that these type variables stand in for any and all types, so someone using this function could have passed in a num`ber instead, which does not have a `.length` member.
+When we do, the compiler will give us an error that we're using the `.length `member of `arg`, but nowhere have we said that arg has this member. Remember, we said earlier that these type variables stand in for any and all types, so someone using this function could have passed in a num`ber instead, which does not have a `.length` member.
 
-Let’s say that we’ve actually intended this function to work on arrays of `Type` rather than `Type` directly. Since we’re working with arrays, the `.length` member should be available. We can describe this just like we would create arrays of other types:
+Let's say that we've actually intended this function to work on arrays of `Type` rather than `Type` directly. Since we're working with arrays, the `.length` member should be available. We can describe this just like we would create arrays of other types:
 
 ```ts
 function loggingIdentity<Type>(arg: Type[]): Type[] {
@@ -89,7 +89,7 @@ function loggingIdentity<Type>(arg: Type[]): Type[] {
 }
 ```
 
-You can read the type of `loggingIdentity` as “the generic function `loggingIdentity` takes a type parameter `Type`, and an argument `arg` which is an array of `Type`s, and returns an array of `Type`s.” If we passed in an array of numbers, we’d get an array of numbers back out, as `Type` would bind to `number`. This allows us to use our generic type variable `Type` as part of the types we’re working with, rather than the whole type, giving us greater flexibility.
+You can read the type of `loggingIdentity` as "the generic function `loggingIdentity` takes a type parameter `Type`, and an argument `arg` which is an array of `Type`s, and returns an array of `Type`s." If we passed in an array of numbers, we'd get an array of numbers back out, as `Type` would bind to `number`. This allows us to use our generic type variable `Type` as part of the types we're working with, rather than the whole type, giving us greater flexibility.
 
 We can alternatively write the sample example this way:
 
@@ -100,11 +100,11 @@ function loggingIdentity<Type>(arg: Array<Type>): Array<Type> {
 }
 ```
 
-You may already be familiar with this style of type from other languages. In the next section, we’ll cover how you can create your own generic types like `Array<Type>`.
+You may already be familiar with this style of type from other languages. In the next section, we'll cover how you can create your own generic types like `Array<Type>`.
 
 ## Generic Types
 
-In previous sections, we created generic identity functions that worked over a range of types. In this section, we’ll explore the type of the functions themselves and how to create generic interfaces.
+In previous sections, we created generic identity functions that worked over a range of types. In this section, we'll explore the type of the functions themselves and how to create generic interfaces.
 
 The type of generic functions is just like those of non-generic functions, with the type parameters listed first, similarly to function declarations:
 
@@ -136,7 +136,7 @@ function identity<Type>(arg: Type): Type {
 let myIdentity: { <Type>(arg: Type): Type } = identity;
 ```
 
-Which leads us to writing our first generic interface. Let’s take the object literal from the previous example and move it to an interface:
+Which leads us to writing our first generic interface. Let's take the object literal from the previous example and move it to an interface:
 
 ```ts
 interface GenericIdentityFn {
@@ -150,7 +150,7 @@ function identity<Type>(arg: Type): Type {
 let myIdentity: GenericIdentityFn = identity;
 ```
 
-In a similar example, we may want to move the generic parameter to be a parameter of the whole interface. This lets us see what type(s) we’re generic over (e.g. `Dictionary<string>` rather than just `Dictionary`). This makes the type parameter visible to all the other members of the interface.
+In a similar example, we may want to move the generic parameter to be a parameter of the whole interface. This lets us see what type(s) we're generic over (e.g. `Dictionary<string>` rather than just `Dictionary`). This makes the type parameter visible to all the other members of the interface.
 
 ```ts
 interface GenericIdentityFn<Type> {
@@ -199,11 +199,11 @@ console.log(stringNumeric.add(stringNumeric.zeroValue, "test"));
 
 Just as with interface, putting the type parameter on the class itself lets us make sure all of the properties of the class are working with the same type.
 
-As we cover in [our section on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html), a class has two sides to its type: the static side and the instance side. Generic classes are only generic over their instance side rather than their static side, so when working with classes, static members can not use the class’s type parameter.
+As we cover in [our section on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html), a class has two sides to its type: the static side and the instance side. Generic classes are only generic over their instance side rather than their static side, so when working with classes, static members can not use the class's type parameter.
 
 ## Generic Constraints
 
-If you remember from an earlier example, you may sometimes want to write a generic function that works on a set of types where you have some knowledge about what capabilities that set of types will have. In our `loggingIdentity` example, we wanted to be able to access the `.length` property of `arg`, but the compiler could not prove that every type had a `.length` property, so it warns us that we can’t make this assumption.
+If you remember from an earlier example, you may sometimes want to write a generic function that works on a set of types where you have some knowledge about what capabilities that set of types will have. In our `loggingIdentity` example, we wanted to be able to access the `.length` property of `arg`, but the compiler could not prove that every type had a `.length` property, so it warns us that we can't make this assumption.
 
 ```ts
 function loggingIdentity<Type>(arg: Type): Type {
@@ -213,9 +213,9 @@ function loggingIdentity<Type>(arg: Type): Type {
 }
 ```
 
-Instead of working with any and all types, we’d like to constrain this function to work with any and all types that also  have the `.length` property. As long as the type has this member, we’ll allow it, but it’s required to have at least this member. To do so, we must list our requirement as a constraint on what `Type` can be.
+Instead of working with any and all types, we'd like to constrain this function to work with any and all types that also  have the `.length` property. As long as the type has this member, we'll allow it, but it's required to have at least this member. To do so, we must list our requirement as a constraint on what `Type` can be.
 
-To do so, we’ll create an interface that describes our constraint. Here, we’ll create an interface that has a single `.length` property and then we’ll use this interface and the extends keyword to denote our constraint:
+To do so, we'll create an interface that describes our constraint. Here, we'll create an interface that has a single `.length` property and then we'll use this interface and the extends keyword to denote our constraint:
 
 ```ts
 interface Lengthwise {
@@ -243,7 +243,7 @@ loggingIdentity({ length: 10, value: 3 });
 
 ## Using Type Parameters in Generic Constraints
 
-You can declare a type parameter that is constrained by another type parameter. For example, here we’d like to get a property from an object given its name. We’d like to ensure that we’re not accidentally grabbing a property that does not exist on the `obj`, so we’ll place a constraint between the two types:
+You can declare a type parameter that is constrained by another type parameter. For example, here we'd like to get a property from an object given its name. We'd like to ensure that we're not accidentally grabbing a property that does not exist on the `obj`, so we'll place a constraint between the two types:
 
 ```ts
 function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key) {
@@ -303,7 +303,7 @@ This pattern is used to power the [mixins](https://www.typescriptlang.org/docs/h
 
 ## Generic Parameter Defaults
 
-Consider a function that creates a new `HTMLElement`. Calling the function with no arguments generates a `Div`; calling it with an element as the first argument generates an element of the argument’s type. You can optionally pass a list of children as well. Previously you would have to define it as:
+Consider a function that creates a new `HTMLElement`. Calling the function with no arguments generates a `Div`; calling it with an element as the first argument generates an element of the argument's type. You can optionally pass a list of children as well. Previously you would have to define it as:
 
 ```ts
 declare function create(): Container<HTMLDivElement, HTMLDivElement[]>;
