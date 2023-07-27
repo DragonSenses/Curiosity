@@ -169,3 +169,35 @@ Notice that our example has changed to be something slightly different. Instead 
 In addition to generic interfaces, we can also create generic classes. Note that it is not possible to create generic enums and namespaces.
 
 ## Generic Classes
+
+A generic class has a similar shape to a generic interface. Generic classes have a generic type parameter list in angle brackets (`<>`) following the name of the class.
+
+```ts
+class GenericNumber<NumType> {
+  zeroValue: NumType;
+  add: (x: NumType, y: NumType) => NumType;
+}
+ 
+let myGenericNumber = new GenericNumber<number>();
+myGenericNumber.zeroValue = 0;
+myGenericNumber.add = function (x, y) {
+  return x + y;
+};
+```
+
+This is a pretty literal use of the `GenericNumber` class, but you may have noticed that nothing is restricting it to only use the `number` type. We could have instead used `string` or even more complex objects.
+
+```ts
+let stringNumeric = new GenericNumber<string>();
+stringNumeric.zeroValue = "";
+stringNumeric.add = function (x, y) {
+  return x + y;
+};
+ 
+console.log(stringNumeric.add(stringNumeric.zeroValue, "test"));
+```
+
+Just as with interface, putting the type parameter on the class itself lets us make sure all of the properties of the class are working with the same type.
+
+As we cover in [our section on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html), a class has two sides to its type: the static side and the instance side. Generic classes are only generic over their instance side rather than their static side, so when working with classes, static members can not use the class’s type parameter.
+
