@@ -75,3 +75,47 @@ let b = createLabel(2.8);
 let c = createLabel(Math.random() ? "hello" : 42);
 // let c: NameLabel | IdLabel
 ```
+
+## Conditional Type Constraints
+
+Often, the checks in a conditional type will provide us with some new information. Just like narrowing with type guards can give us a more specific type, the true branch of a conditional type will further constrain generics by the type we check against.
+
+For example, let’s take the following:
+
+```ts
+type MessageOf<T> = T["message"];
+// Type '"message"' cannot be used to index type 'T'.
+```
+
+In this example, TypeScript errors because `T` isn’t known to have a property called `message`. We could constrain T, and TypeScript would no longer complain:
+
+```ts
+type MessageOf<T extends { message: unknown }> = T["message"];
+ 
+interface Email {
+  message: string;
+}
+ 
+type EmailMessageContents = MessageOf<Email>;
+              // type EmailMessageContents = string
+```
+
+However, what if we wanted `MessageOf` to take any type, and default to something like `never` if a `message` property isn’t available? We can do this by moving the constraint out and introducing a conditional type:
+
+```ts
+type MessageOf<T> = T extends { message: unknown } ? T["message"] : never;
+ 
+interface Email {
+  message: string;
+}
+ 
+interface Dog {
+  bark(): void;
+}
+ 
+type EmailMessageContents = MessageOf<Email>;
+              // type EmailMessageContents = string
+ 
+type DogMessageContents = MessageOf<Dog>;
+             // type DogMessageContents = never
+```
