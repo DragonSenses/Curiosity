@@ -147,3 +147,33 @@ Conditional types provide us with a way to infer from types we compare against i
 ```ts
 type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
 ```
+
+Here, we used the `infer` keyword to declaratively introduce a new generic type variable named `Item` instead of specifying how to retrieve the element type of `Type` within the true branch. This frees us from having to think about how to dig through and probing apart the structure of the types we’re interested in.
+
+We can write some useful helper type aliases using the `infer` keyword. For example, for simple cases, we can extract the return type out from function types:
+
+```ts
+type GetReturnType<Type> = Type extends (...args: never[]) => infer Return
+  ? Return
+  : never;
+ 
+type Num = GetReturnType<() => number>;
+     // type Num = number
+ 
+type Str = GetReturnType<(x: string) => string>;
+     // type Str = string
+ 
+type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
+      // type Bools = boolean[]
+```
+
+When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the last signature (which, presumably, is the most permissive catch-all case). It is not possible to perform overload resolution based on a list of argument types.
+
+```ts
+declare function stringOrNum(x: string): number;
+declare function stringOrNum(x: number): string;
+declare function stringOrNum(x: string | number): string | number;
+ 
+type T1 = ReturnType<typeof stringOrNum>;
+     // type T1 = string | number
+```
