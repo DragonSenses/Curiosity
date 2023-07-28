@@ -119,3 +119,31 @@ type EmailMessageContents = MessageOf<Email>;
 type DogMessageContents = MessageOf<Dog>;
              // type DogMessageContents = never
 ```
+
+Within the true branch, TypeScript knows that `T` will have a message property.
+
+As another example, we could also write a type called `Flatten` that flattens array types to their element types, but leaves them alone otherwise:
+
+```ts
+type Flatten<T> = T extends any[] ? T[number] : T;
+ 
+// Extracts out the element type.
+type Str = Flatten<string[]>;
+     // type Str = string
+ 
+// Leaves the type alone.
+type Num = Flatten<number>;
+     // type Num = number
+```
+
+When Flatten is given an array type, it uses an indexed access with `number` to fetch out `string[]`’s element type. Otherwise, it just returns the type it was given.
+
+## Inferring Within Conditional Types
+
+We just found ourselves using conditional types to apply constraints and then extract out types. This ends up being such a common operation that conditional types make it easier.
+
+Conditional types provide us with a way to infer from types we compare against in the true branch using the `infer` keyword. For example, we could have inferred the element type in `Flatten` instead of fetching it out “manually” with an indexed access type:
+
+```ts
+type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
+```
