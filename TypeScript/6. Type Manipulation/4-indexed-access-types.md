@@ -39,18 +39,16 @@ const MyArray = [
 ];
  
 type Person = typeof MyArray[number];
-       
-type Person = {
-    name: string;
-    age: number;
-}
+       /* type Person = {
+            name: string;
+            age: number;
+          } 
+       */
 type Age = typeof MyArray[number]["age"];
-     
-type Age = number
+     // type Age = number
 // Or
 type Age2 = Person["age"];
-      
-type Age2 = number
+      // type Age2 = number
 ```
 
 You can only use types when indexing, meaning you can’t use a const to make a variable reference:
@@ -58,8 +56,8 @@ You can only use types when indexing, meaning you can’t use a const to make a 
 ```ts
 const key = "age";
 type Age = Person[key];
-Type 'key' cannot be used as an index type.
-'key' refers to a value, but is being used as a type here. Did you mean 'typeof key'?
+/* Type 'key' cannot be used as an index type.
+'key' refers to a value, but is being used as a type here. Did you mean 'typeof key'? */
 ```
 
 However, you can use a type alias for a similar style of refactor:
