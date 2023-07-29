@@ -75,13 +75,37 @@ class GoodGreeter {
 }
 ```
 
-Note that the field needs to be initialized in the constructor itself. TypeScript does not analyze methods you invoke from the constructor to detect initializations, because a derived class might override those methods and fail to initialize the members.
+Note that the field needs to be initialized *in the constructor itself*. TypeScript does not analyze methods you invoke from the constructor to detect initializations, because a derived class might override those methods and fail to initialize the members.
 
-If you intend to definitely initialize a field through means other than the constructor (for example, maybe an external library is filling in part of your class for you), you can use the definite assignment assertion operator, !:
+If you intend to definitely initialize a field through means other than the constructor (for example, maybe an external library is filling in part of your class for you), you can use the ***definite assignment assertion operator***, `!`:
 
 ```ts
 class OKGreeter {
   // Not initialized, but no error
   name!: string;
 }
+```
+
+### `readonly`
+
+Fields may be prefixed with the readonly modifier. This prevents assignments to the field outside of the constructor.
+
+```ts
+class Greeter {
+  readonly name: string = "world";
+ 
+  constructor(otherName?: string) {
+    if (otherName !== undefined) {
+      this.name = otherName;
+    }
+  }
+ 
+  err() {
+    this.name = "not ok";
+Cannot assign to 'name' because it is a read-only property.
+  }
+}
+const g = new Greeter();
+g.name = "also not ok";
+Cannot assign to 'name' because it is a read-only property.
 ```
