@@ -57,7 +57,7 @@ The `callback` function, when called:
 
 - Should have `void` return type (for simplicity of demonstration)
 
-The naive function signature of `on()` might thus be: `on(eventName: string, callback: (newValue: any) => void)`. However, in the preceding description, we identified important type constraints that we’d like to document in our code. Template Literal types let us bring these constraints into our code.
+The naive function signature of `on()` might thus be: `on(eventName: string, callback: (newValue: any) => void)`. However, in the preceding description, we identified important type constraints that we'd like to document in our code. Template Literal types let us bring these constraints into our code.
 
 ```ts
 const person = makeWatchedObject({
@@ -73,7 +73,7 @@ person.on("firstNameChanged", (newValue) => {
 });
 ```
 
-Notice that on listens on the event `"firstNameChanged"`, not just `"firstName"`. Our naive specification of `on()` could be made more robust if we were to ensure that the set of eligible event names was constrained by the union of attribute names in the watched object with “Changed” added at the end. While we are comfortable with doing such a calculation in JavaScript i.e. `Object.keys(passedObject).map(x => `${x}Changed`)`, template literals inside the type system provide a similar approach to string manipulation:
+Notice that on listens on the event `"firstNameChanged"`, not just `"firstName"`. Our naive specification of `on()` could be made more robust if we were to ensure that the set of eligible event names was constrained by the union of attribute names in the watched object with "Changed" added at the end. While we are comfortable with doing such a calculation in JavaScript i.e. `Object.keys(passedObject).map(x => `${x}Changed`)`, template literals inside the type system provide a similar approach to string manipulation:
 
 ```ts
 type PropEventSource<Type> = {
@@ -107,7 +107,7 @@ person.on("frstNameChanged", () => {});
 
 ## Inference with Template Literals
 
-Notice that we did not benefit from all the information provided in the original passed object. Given change of a `firstName` (i.e. a `firstNameChanged` event), we should expect that the callback will receive an argument of type `string`. Similarly, the callback for a change to `age` should receive a `number` argument. We’re naively using `any` to type the `callback`’s argument. Again, template literal types make it possible to ensure an attribute’s data type will be the same type as that attribute’s callback’s first argument.
+Notice that we did not benefit from all the information provided in the original passed object. Given change of a `firstName` (i.e. a `firstNameChanged` event), we should expect that the callback will receive an argument of type `string`. Similarly, the callback for a change to `age` should receive a `number` argument. We're naively using `any` to type the `callback`'s argument. Again, template literal types make it possible to ensure an attribute's data type will be the same type as that attribute's callback's first argument.
 
 The key insight that makes this possible is this: we can use a function with a generic such that:
 
@@ -115,7 +115,7 @@ The key insight that makes this possible is this: we can use a function with a g
 
 2. That literal type can be validated as being in the union of valid attributes in the generic
 
-3. The type of the validated attribute can be looked up in the generic’s structure using Indexed Access
+3. The type of the validated attribute can be looked up in the generic's structure using Indexed Access
 
 4. This typing information can then be applied to ensure the argument to the callback function is of the same type
 
@@ -154,7 +154,7 @@ Inference can be combined in different ways, often to deconstruct strings, and r
 
 ## Intrinsic String Manipulation Types
 
-To help with string manipulation, TypeScript includes a set of types which can be used in string manipulation. These types come built-in to the compiler for performance and can’t be found in the `.d.ts` files included with TypeScript.
+To help with string manipulation, TypeScript includes a set of types which can be used in string manipulation. These types come built-in to the compiler for performance and can't be found in the `.d.ts` files included with TypeScript.
 
 ### `Uppercase<StringType>`
 
@@ -168,4 +168,56 @@ type ShoutyGreeting = Uppercase<Greeting>
 type ASCIICacheKey<Str extends string> = `ID-${Uppercase<Str>}`
 type MainID = ASCIICacheKey<"my_app">
        // type MainID = "ID-MY_APP"
+```
+
+### `Lowercase<StringType>`
+
+- Converts each character in the string to the lowercase equivalent.
+
+```ts
+type Greeting = "Hello, world"
+type QuietGreeting = Lowercase<Greeting>
+          // type QuietGreeting = "hello, world"
+ 
+type ASCIICacheKey<Str extends string> = `id-${Lowercase<Str>}`
+type MainID = ASCIICacheKey<"MY_APP">
+       // type MainID = "id-my_app"
+```
+
+### `Capitalize<StringType>`
+
+- Converts the first character in the string to an uppercase equivalent.
+
+```ts
+type LowercaseGreeting = "hello, world";
+type Greeting = Capitalize<LowercaseGreeting>;
+        // type Greeting = "Hello, world"
+```
+
+### `Uncapitalize<StringType>`
+
+Converts the first character in the string to a lowercase equivalent.
+
+```ts
+type UppercaseGreeting = "HELLO WORLD";
+type UncomfortableGreeting = Uncapitalize<UppercaseGreeting>;
+              // type UncomfortableGreeting = "hELLO WORLD"
+```
+
+---
+
+## Technical details on the intrinsic string manipulation types
+
+The code, as of TypeScript 4.1, for these intrinsic functions uses the JavaScript string runtime functions directly for manipulation and are not locale aware.
+
+```ts
+function applyStringMapping(symbol: Symbol, str: string) {
+    switch (intrinsicTypeKinds.get(symbol.escapedName as string)) {
+        case IntrinsicTypeKind.Uppercase: return str.toUpperCase();
+        case IntrinsicTypeKind.Lowercase: return str.toLowerCase();
+        case IntrinsicTypeKind.Capitalize: return str.charAt(0).toUpperCase() + str.slice(1);
+        case IntrinsicTypeKind.Uncapitalize: return str.charAt(0).toLowerCase() + str.slice(1);
+    }
+    return str;
+}
 ```
