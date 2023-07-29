@@ -58,3 +58,49 @@ The `callback` function, when called:
 - Should have `void` return type (for simplicity of demonstration)
 
 The naive function signature of `on()` might thus be: `on(eventName: string, callback: (newValue: any) => void)`. However, in the preceding description, we identified important type constraints that we’d like to document in our code. Template Literal types let us bring these constraints into our code.
+
+```ts
+const person = makeWatchedObject({
+  firstName: "Saoirse",
+  lastName: "Ronan",
+  age: 26,
+});
+ 
+// makeWatchedObject has added `on` to the anonymous Object
+ 
+person.on("firstNameChanged", (newValue) => {
+  console.log(`firstName was changed to ${newValue}!`);
+});
+```
+
+Notice that on listens on the event `"firstNameChanged"`, not just `"firstName"`. Our naive specification of `on()` could be made more robust if we were to ensure that the set of eligible event names was constrained by the union of attribute names in the watched object with “Changed” added at the end. While we are comfortable with doing such a calculation in JavaScript i.e. `Object.keys(passedObject).map(x => `${x}Changed`)`, template literals inside the type system provide a similar approach to string manipulation:
+
+```ts
+type PropEventSource<Type> = {
+    on(eventName: `${string & keyof Type}Changed`, callback: (newValue: any) => void): void;
+};
+ 
+/// Create a "watched object" with an `on` method
+/// so that you can watch for changes to properties.
+declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type>;
+```
+
+With this, we can build something that errors when given the wrong property:
+
+```ts
+const person = makeWatchedObject({
+  firstName: "Saoirse",
+  lastName: "Ronan",
+  age: 26
+});
+ 
+person.on("firstNameChanged", () => {});
+ 
+// Prevent easy human error (using the key instead of the event name)
+person.on("firstName", () => {});
+// Argument of type '"firstName"' is not assignable to parameter of type '"firstNameChanged" | "lastNameChanged" | "ageChanged"'.
+ 
+// It's typo-resistant
+person.on("frstNameChanged", () => {});
+// Argument of type '"frstNameChanged"' is not assignable to parameter of type '"firstNameChanged" | "lastNameChanged" | "ageChanged"'.
+```
