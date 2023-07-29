@@ -1,6 +1,6 @@
 # Mapped Types
 
-When you don’t want to repeat yourself, sometimes a type needs to be based on another type.
+When you don't want to repeat yourself, sometimes a type needs to be based on another type.
 
 Mapped types build on the syntax for index signatures, which are used to declare the types of properties which have not been declared ahead of time:
 
@@ -43,7 +43,7 @@ type FeatureOptions = OptionsFlags<Features>;
 
 There are two additional modifiers which can be applied during mapping: `readonly` and `?` which affect mutability and optionality respectively.
 
-You can remove or add these modifiers by prefixing with `-` or `+`. If you don’t add a prefix, then `+` is assumed.
+You can remove or add these modifiers by prefixing with `-` or `+`. If you don't add a prefix, then `+` is assumed.
 
 ```ts
 // Removes 'readonly' attributes from a type's properties
@@ -152,5 +152,27 @@ type Config = EventConfig<SquareEvent | CircleEvent>
 /* type Config = {
     square: (event: SquareEvent) => void;
     circle: (event: CircleEvent) => void;
+} */
+```
+
+## Further Exploration
+
+Mapped types work well with other features in this type manipulation section, for example here is [a mapped type using a conditional type](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html) which returns either a `true` or `false` depending on whether an object has the property `pii` set to the literal `true`:
+
+```ts
+type ExtractPII<Type> = {
+  [Property in keyof Type]: Type[Property] extends { pii: true } ? true : false;
+};
+ 
+type DBFields = {
+  id: { format: "incrementing" };
+  name: { type: string; pii: true };
+};
+ 
+type ObjectsNeedingGDPRDeletion = ExtractPII<DBFields>;
+                 
+/* type ObjectsNeedingGDPRDeletion = {
+    id: false;
+    name: true;
 } */
 ```
