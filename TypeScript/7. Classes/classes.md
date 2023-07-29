@@ -53,3 +53,35 @@ const pt = new Point();
 pt.x = "0";
 // Type 'string' is not assignable to type 'number'.
 ```
+
+### **--strictPropertyInitialization**
+
+The [strictPropertyInitialization](https://www.typescriptlang.org/tsconfig#strictPropertyInitialization) setting controls whether class fields need to be initialized in the constructor.
+
+```ts
+class BadGreeter {
+  name: string;
+// Property 'name' has no initializer and is not definitely assigned in the constructor.
+}
+```
+
+```ts
+class GoodGreeter {
+  name: string;
+ 
+  constructor() {
+    this.name = "hello";
+  }
+}
+```
+
+Note that the field needs to be initialized in the constructor itself. TypeScript does not analyze methods you invoke from the constructor to detect initializations, because a derived class might override those methods and fail to initialize the members.
+
+If you intend to definitely initialize a field through means other than the constructor (for example, maybe an external library is filling in part of your class for you), you can use the definite assignment assertion operator, !:
+
+```ts
+class OKGreeter {
+  // Not initialized, but no error
+  name!: string;
+}
+```
