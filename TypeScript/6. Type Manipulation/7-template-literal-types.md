@@ -46,3 +46,15 @@ const passedObject = {
   age: 26,
 };
 ```
+
+The `on` function that will be added to the base object expects two arguments, an `eventName` (a `string`) and a `callback` (a `function`).
+
+The `eventName` should be of the form `attributeInThePassedObject + "Changed"`; thus, `firstNameChanged` as derived from the attribute `firstName` in the base object.
+
+The `callback` function, when called:
+
+- Should be passed a value of the type associated with the name `attributeInThePassedObject`; thus, since `firstName` is typed as `string`, the callback for the `firstNameChanged` event expects a `string` to be passed to it at call time. Similarly events associated with `age` should expect to be called with a `number` argument
+
+- Should have `void` return type (for simplicity of demonstration)
+
+The naive function signature of `on()` might thus be: `on(eventName: string, callback: (newValue: any) => void)`. However, in the preceding description, we identified important type constraints that we’d like to document in our code. Template Literal types let us bring these constraints into our code.
