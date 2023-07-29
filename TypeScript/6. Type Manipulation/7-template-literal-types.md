@@ -143,10 +143,29 @@ person.on("ageChanged", newAge => {
     if (newAge < 0) {
         console.warn("warning! negative age");
     }
-})```
+})
+```
 
 Here we made `on` into a generic method.
 
-When a user calls with the string "firstNameChanged", TypeScript will try to infer the right type for Key. To do that, it will match Key against the content before "Changed" and infer the string "firstName". Once TypeScript figures that out, the on method can fetch the type of firstName on the original object, which is string in this case. Similarly, when called with "ageChanged", TypeScript finds the type for the property age which is number.
+When a user calls with the string `"firstNameChanged"`, TypeScript will try to infer the right type for `Key`. To do that, it will match Key against the content before `"Changed"` and infer the string `"firstName"`. Once TypeScript figures that out, the `on` method can fetch the type of `firstName` on the original object, which is `string` in this case. Similarly, when called with `"ageChanged"`, TypeScript finds the type for the property `age` which is `number`.
 
 Inference can be combined in different ways, often to deconstruct strings, and reconstruct them in different ways.
+
+## Intrinsic String Manipulation Types
+
+To help with string manipulation, TypeScript includes a set of types which can be used in string manipulation. These types come built-in to the compiler for performance and can’t be found in the `.d.ts` files included with TypeScript.
+
+### `Uppercase<StringType>`
+
+- Converts each character in the string to the uppercase version.
+
+```ts
+type Greeting = "Hello, world"
+type ShoutyGreeting = Uppercase<Greeting>
+           // type ShoutyGreeting= "HELLO, WORLD"
+ 
+type ASCIICacheKey<Str extends string> = `ID-${Uppercase<Str>}`
+type MainID = ASCIICacheKey<"my_app">
+       // type MainID = "ID-MY_APP"
+```
