@@ -88,7 +88,7 @@ class OKGreeter {
 
 ### `readonly`
 
-Fields may be prefixed with the readonly modifier. This prevents assignments to the field outside of the constructor.
+Fields may be prefixed with the `readonly` modifier. This prevents assignments to the field outside of the constructor.
 
 ```ts
 class Greeter {
@@ -102,10 +102,40 @@ class Greeter {
  
   err() {
     this.name = "not ok";
-Cannot assign to 'name' because it is a read-only property.
+// Cannot assign to 'name' because it is a read-only property.
   }
 }
 const g = new Greeter();
 g.name = "also not ok";
-Cannot assign to 'name' because it is a read-only property.
+// Cannot assign to 'name' because it is a read-only property.
+```
+
+### Constructors
+
+[Constructor (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor)
+
+Class constructors are very similar to functions. You can add parameters with type annotations, default values, and overloads:
+
+```ts
+class Point {
+  x: number;
+  y: number;
+ 
+  // Normal signature with defaults
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
+}
+```
+
+```ts
+class Point {
+  // Overloads
+  constructor(x: number, y: string);
+  constructor(s: string);
+  constructor(xs: any, y?: any) {
+    // TBD
+  }
+}
 ```
