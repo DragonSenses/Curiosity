@@ -97,3 +97,60 @@ type MappedTypeWithNewProperties<Type> = {
 
 You can leverage features like [template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) to create new property names from prior ones:
 
+```ts
+type Getters<Type> = {
+    [Property in keyof Type as `get${Capitalize<string & Property>}`]: () => Type[Property]
+};
+ 
+interface Person {
+    name: string;
+    age: number;
+    location: string;
+}
+ 
+type LazyPerson = Getters<Person>;
+         
+/* type LazyPerson = {
+    getName: () => string;
+    getAge: () => number;
+    getLocation: () => string;
+} */
+```
+
+You can filter out keys by producing `never` via a conditional type:
+
+```ts
+// Remove the 'kind' property
+type RemoveKindField<Type> = {
+    [Property in keyof Type as Exclude<Property, "kind">]: Type[Property]
+};
+ 
+interface Circle {
+    kind: "circle";
+    radius: number;
+}
+ 
+type KindlessCircle = RemoveKindField<Circle>;
+           
+/* type KindlessCircle = {
+    radius: number;
+} */
+```
+
+You can map over arbitrary unions, not just unions of `string | number | symbol`, but unions of any type:
+
+```ts
+type EventConfig<Events extends { kind: string }> = {
+    [E in Events as E["kind"]]: (event: E) => void;
+}
+ 
+type SquareEvent = { kind: "square", x: number, y: number };
+type CircleEvent = { kind: "circle", radius: number };
+ 
+type Config = EventConfig<SquareEvent | CircleEvent>
+       
+/* type Config = {
+    square: (event: SquareEvent) => void;
+    circle: (event: CircleEvent) => void;
+} */
+```
