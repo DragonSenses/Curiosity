@@ -45,3 +45,55 @@ There are two additional modifiers which can be applied during mapping: `readonl
 
 You can remove or add these modifiers by prefixing with `-` or `+`. If you don’t add a prefix, then `+` is assumed.
 
+```ts
+// Removes 'readonly' attributes from a type's properties
+type CreateMutable<Type> = {
+  -readonly [Property in keyof Type]: Type[Property];
+};
+ 
+type LockedAccount = {
+  readonly id: string;
+  readonly name: string;
+};
+ 
+type UnlockedAccount = CreateMutable<LockedAccount>;
+           
+/* type UnlockedAccount = {
+    id: string;
+    name: string;
+} */
+```
+
+```ts
+// Removes 'optional' attributes from a type's properties
+type Concrete<Type> = {
+  [Property in keyof Type]-?: Type[Property];
+};
+ 
+type MaybeUser = {
+  id: string;
+  name?: string;
+  age?: number;
+};
+ 
+type User = Concrete<MaybeUser>;
+      
+/* type User = {
+    id: string;
+    name: string;
+    age: number;
+} */
+```
+
+## Key Remapping via `as`
+
+In TypeScript 4.1 and onwards, you can re-map keys in mapped types with an as clause in a mapped type:
+
+```ts
+type MappedTypeWithNewProperties<Type> = {
+    [Properties in keyof Type as NewKeyType]: Type[Properties]
+}
+```
+
+You can leverage features like [template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) to create new property names from prior ones:
+
