@@ -435,7 +435,7 @@ b.greet();
 
 ### **Type-only Field Declarations**
 
-When target >= ES2022 or useDefineForClassFields is true, class fields are initialized after the parent class constructor completes, overwriting any value set by the parent class. This can be a problem when you only want to re-declare a more accurate type for an inherited field. To handle these cases, you can write declare to indicate to TypeScript that there should be no runtime effect for this field declaration.
+When `target >= ES2022` or [useDefineForClassFields](https://www.typescriptlang.org/tsconfig#useDefineForClassFields) is `true`, class fields are initialized after the parent class constructor completes, overwriting any value set by the parent class. This can be a problem when you only want to re-declare a more accurate type for an inherited field. To handle these cases, you can write `declare` to indicate to TypeScript that there should be no runtime effect for this field declaration.
 
 ```ts
 interface Animal {
@@ -487,9 +487,58 @@ What happened here?
 
 The order of class initialization, as defined by JavaScript, is:
 
-The base class fields are initialized
-The base class constructor runs
-The derived class fields are initialized
-The derived class constructor runs
+- The base class fields are initialized
+- The base class constructor runs
+- The derived class fields are initialized
+- The derived class constructor runs
+
 This means that the base class constructor saw its own value for name during its own constructor, because the derived class field initializations hadn’t run yet.
+
+### **Inheriting Built-in Types**
+
+> Note: If you don’t plan to inherit from built-in types like `Array`, `Error`, `Map`, etc. or your compilation target is explicitly set to `ES6/ES2015` or above, you may skip this section
+
+In ES2015, constructors which return an object implicitly substitute the value of `this` for any callers of `super(...)`. It is necessary for generated constructor code to capture any potential return value of `super(...)` and replace it with `this`.
+
+As a result, subclassing `Error`, `Array`, and others may no longer work as expected. This is due to the fact that constructor functions for `Error`, `Array`, and the like use ECMAScript 6’s `new.target` to adjust the prototype chain; however, there is no way to ensure a value for `new.target` when invoking a constructor in ECMAScript 5. Other downlevel compilers generally have the same limitation by default.
+
+For a subclass like the following:
+
+```ts
+class MsgError extends Error {
+  constructor(m: string) {
+    super(m);
+  }
+  sayHello() {
+    return "hello " + this.message;
+  }
+}
+```
+
+you may find that:
+
+- methods may be `undefined` on objects returned by constructing these subclasses, so calling `sayHello` will result in an error.
+
+- `instanceof` will be broken between instances of the subclass and their instances, so `(new MsgError()) instanceof MsgError` will return `false`.
+
+As a recommendation, you can manually adjust the prototype immediately after any `super(...)` calls.
+
+```ts
+class MsgError extends Error {
+  constructor(m: string) {
+    super(m);
+ 
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, MsgError.prototype);
+  }
+ 
+  sayHello() {
+    return "hello " + this.message;
+  }
+}
+```
+
+However, any subclass of `MsgError` will have to manually set the prototype as well. For runtimes that don’t support [Object.setPrototypeOf](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf), you may instead be able to use [__proto__](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto).
+
+Unfortunately, [these workarounds will not work on Internet Explorer 10 and prior](https://msdn.microsoft.com/en-us/library/s4esdbwz(v=vs.94).aspx). One can manually copy methods from the prototype onto the instance itself (i.e. `MsgError.prototype` onto `this`), but the prototype chain itself cannot be fixed.
 
