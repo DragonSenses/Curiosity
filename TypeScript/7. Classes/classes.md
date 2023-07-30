@@ -304,3 +304,35 @@ Classes may also implement multiple interfaces, e.g. `class C implements A, B {`
 
 It’s important to understand that an `implements` clause is only a check that the class can be treated as the interface type. It doesn’t change the type of the class or its methods at all. A common source of error is to assume that an `implements` clause will change the class type - it doesn’t!
 
+```ts
+interface Checkable {
+  check(name: string): boolean;
+}
+ 
+class NameChecker implements Checkable {
+  check(s) {
+// Parameter 's' implicitly has an 'any' type.
+    // Notice no error here
+    return s.toLowerCase() === "ok";
+                 
+any
+  }
+}
+```
+
+In this example, we perhaps expected that `s`’s type would be influenced by the `name: string` parameter of `check`. It is not - `implements` clauses don’t change how the class body is checked or its type inferred.
+
+Similarly, implementing an interface with an optional property doesn’t create that property:
+
+```ts
+interface A {
+  x: number;
+  y?: number;
+}
+class C implements A {
+  x = 0;
+}
+const c = new C();
+c.y = 10;
+// Property 'y' does not exist on type 'C'.
+```
