@@ -405,3 +405,30 @@ const b: Base = d;
 // No problem
 b.greet();
 ```
+
+What if `Derived` didn’t follow `Base`’s contract?
+
+```ts
+class Base {
+  greet() {
+    console.log("Hello, world!");
+  }
+}
+ 
+class Derived extends Base {
+  // Make this parameter required
+  greet(name: string) {
+// Property 'greet' in type 'Derived' is not assignable to the same property in base type 'Base'.
+  Type '(name: string) => void' is not assignable to type '() => void'.
+    console.log(`Hello, ${name.toUpperCase()}`);
+  }
+}
+```
+
+If we compiled this code despite the error, this sample would then crash:
+
+```ts
+const b: Base = new Derived();
+// Crashes because "name" will be undefined
+b.greet();
+```
