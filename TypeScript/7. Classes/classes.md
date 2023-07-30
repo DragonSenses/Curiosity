@@ -275,3 +275,32 @@ Because the index signature type needs to also capture the types of methods, it�
 Like other languages with object-oriented features, classes in JavaScript can inherit from base classes.
 
 ### `implements` Clauses
+
+You can use an `implements` clause to check that a class satisfies a particular `interface`. An error will be issued if a class fails to correctly implement it:
+
+```ts
+interface Pingable {
+  ping(): void;
+}
+ 
+class Sonar implements Pingable {
+  ping() {
+    console.log("ping!");
+  }
+}
+ 
+class Ball implements Pingable {
+// Class 'Ball' incorrectly implements interface 'Pingable'.
+  Property 'ping' is missing in type 'Ball' but required in type 'Pingable'.
+  pong() {
+    console.log("pong!");
+  }
+}
+```
+
+Classes may also implement multiple interfaces, e.g. `class C implements A, B {`.
+
+### **Cautions**
+
+It’s important to understand that an `implements` clause is only a check that the class can be treated as the interface type. It doesn’t change the type of the class or its methods at all. A common source of error is to assume that an `implements` clause will change the class type - it doesn’t!
+
