@@ -168,3 +168,37 @@ class Derived extends Base {
 Forgetting to call `super` is an easy mistake to make in JavaScript, but TypeScript will tell you when it’s necessary.
 
 ### Methods
+
+[Method definitions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions)
+
+A function property on a class is called a *method*. Methods can use all the same type annotations as functions and constructors:
+
+```ts
+class Point {
+  x = 10;
+  y = 10;
+ 
+  scale(n: number): void {
+    this.x *= n;
+    this.y *= n;
+  }
+}
+```
+
+Other than the standard type annotations, TypeScript doesn’t add anything else new to methods.
+
+Note that inside a method body, it is still mandatory to access fields and other methods via `this.`. An unqualified name in a method body will always refer to something in the enclosing scope:
+
+```ts
+let x: number = 0;
+ 
+class C {
+  x: string = "hello";
+ 
+  m() {
+    // This is trying to modify 'x' from line 1, not the class property
+    x = "world";
+// Type 'string' is not assignable to type 'number'.
+  }
+}
+```
