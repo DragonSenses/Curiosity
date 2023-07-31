@@ -813,7 +813,7 @@ class S {
 
 ### Why No Static Classes?
 
-TypeScript (and JavaScript) don’t have a construct called static class the same way as, for example, C# does.
+TypeScript (and JavaScript) don’t have a construct called `static class` the same way as, for example, C# does.
 
 Those constructs only exist because those languages force all data and functions to be inside a class; because that restriction doesn’t exist in TypeScript, there’s no need for them. A class with only a single instance is typically just represented as a normal object in JavaScript/TypeScript.
 
@@ -833,3 +833,46 @@ const MyHelperObject = {
   dosomething() {},
 };
 ```
+
+## `static` Blocks in Classes
+
+Static blocks allow you to write a sequence of statements with their own scope that can access private fields within the containing class. This means that we can write initialization code with all the capabilities of writing statements, no leakage of variables, and full access to our class’s internals.
+
+```ts
+class Foo {
+    static #count = 0;
+ 
+    get count() {
+        return Foo.#count;
+    }
+ 
+    static {
+        try {
+            const lastInstances = loadLastInstances();
+            Foo.#count += lastInstances.length;
+        }
+        catch {}
+    }
+}
+```
+
+## Generic Classes
+
+Classes, much like interfaces, can be generic. When a generic class is instantiated with new, its type parameters are inferred the same way as in a function call:
+
+```ts
+class Box<Type> {
+  contents: Type;
+  constructor(value: Type) {
+    this.contents = value;
+  }
+}
+ 
+const b = new Box("hello!");
+     
+const b: Box<string>
+```
+
+Classes can use generic constraints and defaults the same way as interfaces.
+
+### Type Parameters in Static Members
