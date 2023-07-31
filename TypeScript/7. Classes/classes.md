@@ -673,9 +673,9 @@ class Derived extends Base {
 
 ### Cross-instance private access
 
-Different OOP languages disagree about whether different instances of the same class may access each others’ private members. While languages like Java, C#, C++, Swift, and PHP allow this, Ruby does not.
+Different OOP languages disagree about whether different instances of the same class may access each others’ `private` members. While languages like Java, C#, C++, Swift, and PHP allow this, Ruby does not.
 
-TypeScript does allow cross-instance private access:
+TypeScript does allow cross-instance `private` access:
 
 ```ts
 class A {
@@ -690,6 +690,36 @@ class A {
 
 ### Caveats
 
-Like other aspects of TypeScript’s type system, private and protected are only enforced during type checking.
+Like other aspects of TypeScript’s type system, `private` and `protected` are [only enforced during type checking](https://www.typescriptlang.org/play?removeComments=true&target=99&ts=4.3.4#code/PTAEGMBsEMGddAEQPYHNQBMCmVoCcsEAHPASwDdoAXLUAM1K0gwQFdZSA7dAKWkoDK4MkSoByBAGJQJLAwAeAWABQIUH0HDSoiTLKUaoUggAW+DHorUsAOlABJcQlhUy4KpACeoLJzrI8cCwMGxU1ABVPIiwhESpMZEJQTmR4lxFQaQxWMm4IZABbIlIYKlJkTlDlXHgkNFAAbxVQTIAjfABrAEEC5FZOeIBeUAAGAG5mmSw8WAroSFIqb2GAIjMiIk8VieVJ8Ar01ncAgAoASkaAXxVr3dUwGoQAYWpMHBgCYn1rekZmNg4eUi0Vi2icoBWJCsNBWoA6WE8AHcAiEwmBgTEtDovtDaMZQLM6PEoQZbA5wSk0q5SO4vD4-AEghZoJwLGYEIRwNBoqAzFRwCZCFUIlFMXECdSiAhId8YZgclx0PsiiVqOVOAAaUAFLAsxWgKiC35MFigfC0FKgSAVVDTSyk+W5dB4fplHVVR6gF7xJrKFotEk-HXIRE9PoDUDDcaTAPTWaceaLZYQlmoPBbHYx-KcQ7HPDnK43FQqfY5+IMDDISPJLCIuqoc47UsuUCofAME3Vzi1r3URvF5QV5A2STtPDdXqunZDgDaYlHnTDrrEAF0dm28B3mDZg6HJwN1+2-hg57ulwNV2NQGoZbjYfNrYiENBwEFaojFiZQK08C-4fFKTVCozWfTgfFgLkeT5AUqiAA).
 
-This means that JavaScript runtime constructs like in or simple property lookup can still access a private or protected member:
+This means that JavaScript runtime constructs like `in` or simple property lookup can still access a `private` or `protected` member:
+
+```ts
+class MySafe {
+  private secretKey = 12345;
+}
+```
+
+```js
+// In a JavaScript file...
+const s = new MySafe();
+// Will print 12345
+console.log(s.secretKey);
+```
+
+`private` also allows access using bracket notation during type checking. This makes `private`-declared fields potentially easier to access for things like unit tests, with the drawback that these fields are soft private and don’t strictly enforce privacy.
+
+```ts
+class MySafe {
+  private secretKey = 12345;
+}
+ 
+const s = new MySafe();
+ 
+// Not allowed during type checking
+console.log(s.secretKey);
+// Property 'secretKey' is private and only accessible within class 'MySafe'.
+ 
+// OK
+console.log(s["secretKey"]);
+```
