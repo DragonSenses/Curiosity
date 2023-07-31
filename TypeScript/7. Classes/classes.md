@@ -636,7 +636,7 @@ See also [Why Can’t I Access A Protected Member From A Derived Class?](https:/
 
 ### `private`
 
-private is like protected, but doesn’t allow access to the member even from subclasses:
+`private` is like `protected`, but doesn’t allow access to the member even from subclasses:
 
 ```ts
 class Base {
@@ -645,7 +645,7 @@ class Base {
 const b = new Base();
 // Can't access from outside the class
 console.log(b.x);
-Property 'x' is private and only accessible within class 'Base'.
+// Property 'x' is private and only accessible within class 'Base'.
 ```
 
 ```ts
@@ -653,20 +653,43 @@ class Derived extends Base {
   showX() {
     // Can't access in subclasses
     console.log(this.x);
-Property 'x' is private and only accessible within class 'Base'.
+// Property 'x' is private and only accessible within class 'Base'.
   }
 }
 ```
 
-Because private members aren’t visible to derived classes, a derived class can’t increase their visibility:
+Because `private` members aren’t visible to derived classes, a derived class can’t increase their visibility:
 
 ```ts
 class Base {
   private x = 0;
 }
 class Derived extends Base {
-Class 'Derived' incorrectly extends base class 'Base'.
-  Property 'x' is private in type 'Base' but not in type 'Derived'.
+// Class 'Derived' incorrectly extends base class 'Base'.
+  // Property 'x' is private in type 'Base' but not in type 'Derived'.
   x = 1;
 }
 ```
+
+### Cross-instance private access
+
+Different OOP languages disagree about whether different instances of the same class may access each others’ private members. While languages like Java, C#, C++, Swift, and PHP allow this, Ruby does not.
+
+TypeScript does allow cross-instance private access:
+
+```ts
+class A {
+  private x = 10;
+ 
+  public sameAs(other: A) {
+    // No error
+    return other.x === this.x;
+  }
+}
+```
+
+### Caveats
+
+Like other aspects of TypeScript’s type system, private and protected are only enforced during type checking.
+
+This means that JavaScript runtime constructs like in or simple property lookup can still access a private or protected member:
