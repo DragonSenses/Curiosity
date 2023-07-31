@@ -588,3 +588,49 @@ g.getName();
 // Property 'getName' is protected and only accessible within class 'Greeter' and its subclasses.
 ```
 
+### Exposure of `protected` members
+
+Derived classes need to follow their base class contracts, but may choose to expose a subtype of base class with more capabilities. This includes making `protected` members `public`:
+
+```ts
+class Base {
+  protected m = 10;
+}
+class Derived extends Base {
+  // No modifier, so default is 'public'
+  m = 15;
+}
+const d = new Derived();
+console.log(d.m); // OK
+```
+
+Note that `Derived` was already able to freely read and write `m`, so this doesn’t meaningfully alter the “security” of this situation. The main thing to note here is that in the derived class, we need to be careful to repeat the `protected` modifier if this exposure isn’t intentional.
+
+### Cross-hierarchy protected access
+
+Different OOP languages disagree about whether it’s legal to access a `protected` member through a base class reference:
+
+```ts
+class Base {
+  protected x: number = 1;
+}
+class Derived1 extends Base {
+  protected x: number = 5;
+}
+class Derived2 extends Base {
+  f1(other: Derived2) {
+    other.x = 10;
+  }
+  f2(other: Base) {
+    other.x = 10;
+// Property 'x' is protected and only accessible through an instance of class 'Derived2'. This is an instance of class 'Base'.
+  }
+}
+```
+
+Java, for example, considers this to be legal. On the other hand, C# and C++ chose that this code should be illegal.
+
+TypeScript sides with C# and C++ here, because accessing `x` in `Derived2` should only be legal from `Derived2`’s subclasses, and `Derived1` isn’t one of them. Moreover, if accessing `x` through a `Derived1` reference is illegal (which it certainly should be!), then accessing it through a base class reference should never improve the situation.
+
+See also [Why Can’t I Access A Protected Member From A Derived Class?](https://blogs.msdn.microsoft.com/ericlippert/2005/11/09/why-cant-i-access-a-protected-member-from-a-derived-class/) which explains more of C#‘s reasoning.
+
