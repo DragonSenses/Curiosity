@@ -760,3 +760,42 @@ _Dog_barkAmount = new WeakMap();
 
 If you need to protect values in your class from malicious actors, you should use mechanisms that offer hard runtime privacy, such as closures, WeakMaps, or private fields. Note that these added privacy checks during runtime could affect performance.
 
+## Static Members
+
+[Static Members (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static)
+
+Classes may have static members. These members aren’t associated with a particular instance of the class. They can be accessed through the class constructor object itself:
+
+```ts
+class MyClass {
+  static x = 0;
+  static printX() {
+    console.log(MyClass.x);
+  }
+}
+console.log(MyClass.x);
+MyClass.printX();
+```
+
+Static members can also use the same public, protected, and private visibility modifiers:
+
+```ts
+class MyClass {
+  private static x = 0;
+}
+console.log(MyClass.x);
+Property 'x' is private and only accessible within class 'MyClass'.
+```
+
+Static members are also inherited:
+
+```ts
+class Base {
+  static getGreeting() {
+    return "Hello world";
+  }
+}
+class Derived extends Base {
+  myGreeting = Derived.getGreeting();
+}
+```
