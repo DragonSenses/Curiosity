@@ -634,3 +634,39 @@ TypeScript sides with C# and C++ here, because accessing `x` in `Derived2` shoul
 
 See also [Why Can’t I Access A Protected Member From A Derived Class?](https://blogs.msdn.microsoft.com/ericlippert/2005/11/09/why-cant-i-access-a-protected-member-from-a-derived-class/) which explains more of C#‘s reasoning.
 
+### `private`
+
+private is like protected, but doesn’t allow access to the member even from subclasses:
+
+```ts
+class Base {
+  private x = 0;
+}
+const b = new Base();
+// Can't access from outside the class
+console.log(b.x);
+Property 'x' is private and only accessible within class 'Base'.
+```
+
+```ts
+class Derived extends Base {
+  showX() {
+    // Can't access in subclasses
+    console.log(this.x);
+Property 'x' is private and only accessible within class 'Base'.
+  }
+}
+```
+
+Because private members aren’t visible to derived classes, a derived class can’t increase their visibility:
+
+```ts
+class Base {
+  private x = 0;
+}
+class Derived extends Base {
+Class 'Derived' incorrectly extends base class 'Base'.
+  Property 'x' is private in type 'Base' but not in type 'Derived'.
+  x = 1;
+}
+```
