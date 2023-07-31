@@ -723,3 +723,40 @@ console.log(s.secretKey);
 // OK
 console.log(s["secretKey"]);
 ```
+
+Unlike TypeScripts’s `private`, JavaScript’s [private fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) (`#`) remain private after compilation and do not provide the previously mentioned escape hatches like bracket notation access, making them hard private.
+
+```ts
+class Dog {
+  #barkAmount = 0;
+  personality = "happy";
+ 
+  constructor() {}
+}
+```
+
+```ts
+"use strict";
+class Dog {
+    #barkAmount = 0;
+    personality = "happy";
+    constructor() { }
+}
+```
+
+When compiling to ES2021 or less, TypeScript will use WeakMaps in place of `#`.
+
+```ts
+"use strict";
+var _Dog_barkAmount;
+class Dog {
+    constructor() {
+        _Dog_barkAmount.set(this, 0);
+        this.personality = "happy";
+    }
+}
+_Dog_barkAmount = new WeakMap();
+```
+
+If you need to protect values in your class from malicious actors, you should use mechanisms that offer hard runtime privacy, such as closures, WeakMaps, or private fields. Note that these added privacy checks during runtime could affect performance.
+
