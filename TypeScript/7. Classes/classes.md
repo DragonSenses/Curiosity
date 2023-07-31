@@ -542,3 +542,49 @@ However, any subclass of `MsgError` will have to manually set the prototype as w
 
 Unfortunately, [these workarounds will not work on Internet Explorer 10 and prior](https://msdn.microsoft.com/en-us/library/s4esdbwz(v=vs.94).aspx). One can manually copy methods from the prototype onto the instance itself (i.e. `MsgError.prototype` onto `this`), but the prototype chain itself cannot be fixed.
 
+## Member Visibility
+
+You can use TypeScript to control whether certain methods or properties are visible to code outside the class.
+
+### `public`
+
+The default visibility of class members is `public`. A `public` member can be accessed anywhere:
+
+```ts
+class Greeter {
+  public greet() {
+    console.log("hi!");
+  }
+}
+const g = new Greeter();
+g.greet();
+```
+
+Because `public` is already the default visibility modifier, you don’t ever need to write it on a class member, but might choose to do so for style/readability reasons.
+
+### `protected`
+
+`protected` members are only visible to subclasses of the class they’re declared in.
+
+```ts
+class Greeter {
+  public greet() {
+    console.log("Hello, " + this.getName());
+  }
+  protected getName() {
+    return "hi";
+  }
+}
+ 
+class SpecialGreeter extends Greeter {
+  public howdy() {
+    // OK to access protected member here
+    console.log("Howdy, " + this.getName());
+  }
+}
+const g = new SpecialGreeter();
+g.greet(); // OK
+g.getName();
+// Property 'getName' is protected and only accessible within class 'Greeter' and its subclasses.
+```
+
