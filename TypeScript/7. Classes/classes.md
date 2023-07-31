@@ -858,7 +858,7 @@ class Foo {
 
 ## Generic Classes
 
-Classes, much like interfaces, can be generic. When a generic class is instantiated with new, its type parameters are inferred the same way as in a function call:
+Classes, much like interfaces, can be generic. When a generic class is instantiated with `new`, its type parameters are inferred the same way as in a function call:
 
 ```ts
 class Box<Type> {
@@ -869,10 +869,58 @@ class Box<Type> {
 }
  
 const b = new Box("hello!");
-     
-const b: Box<string>
+     // const b: Box<string>
 ```
 
 Classes can use generic constraints and defaults the same way as interfaces.
 
 ### Type Parameters in Static Members
+
+This code isn’t legal, and it may not be obvious why:
+
+```ts
+class Box<Type> {
+  static defaultValue: Type;
+// Static members cannot reference class type parameters.
+}
+```
+
+Remember that types are always fully erased!
+
+At runtime, there’s only one `Box.defaultValue` property slot. 
+
+This means that setting `Box<string>.defaultValue` (if that were possible) would also change `Box<number>.defaultValue` - not good.
+
+The `static` members of a generic class can never refer to the class’s type parameters.
+
+## `this` at Runtime in Classes
+
+[`this` keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
+
+It’s important to remember that TypeScript doesn’t change the runtime behavior of JavaScript, and that JavaScript is somewhat famous for having some peculiar runtime behaviors.
+
+JavaScript’s handling of `this` is indeed unusual:
+
+```ts
+class MyClass {
+  name = "MyClass";
+  getName() {
+    return this.name;
+  }
+}
+const c = new MyClass();
+const obj = {
+  name: "obj",
+  getName: c.getName,
+};
+ 
+// Prints "obj", not "MyClass"
+console.log(obj.getName());
+```
+
+Long story short, by default, the value of `this` inside a function ***depends on how the function was called***. 
+
+In this example, because the function was called through the `obj` reference, its value of `this` was `obj` rather than the class instance.
+
+This is rarely what you want to happen! TypeScript provides some ways to mitigate or prevent this kind of error.
+
