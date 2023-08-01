@@ -1237,3 +1237,40 @@ class Derived extends Base {
   // forgot to do anything
 }
 ```
+
+## Abstract Construct Signatures
+
+Sometimes you want to accept some class constructor function that produces an instance of a class which derives from some abstract class.
+
+For example, you might want to write this code:
+
+```ts
+function greet(ctor: typeof Base) {
+  const instance = new ctor();
+// Cannot create an instance of an abstract class.
+  instance.printName();
+}
+```
+
+TypeScript is correctly telling you that you’re trying to instantiate an abstract class. After all, given the definition of `greet`, it’s perfectly legal to write this code, which would end up constructing an abstract class:
+
+```ts
+// Bad!
+greet(Base);
+```
+
+Instead, you want to write a function that accepts something with a construct signature:
+
+```ts
+function greet(ctor: new () => Base) {
+  const instance = new ctor();
+  instance.printName();
+}
+greet(Derived);
+greet(Base);
+// Argument of type 'typeof Base' is not assignable to parameter of type 'new () => Base'.
+  // Cannot assign an abstract constructor type to a non-abstract constructor type.
+```
+
+Now TypeScript correctly tells you about which class constructor functions can be invoked - `Derived` can because it’s concrete, but `Base` cannot.
+
