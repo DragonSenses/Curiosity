@@ -1149,4 +1149,46 @@ console.log(a.z);
 // Property 'z' is private and only accessible within class 'Params'.
 ```
 
-## 
+## Class Expressions
+
+[Class Expressions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/class)
+
+Class expressions are very similar to class declarations. The only real difference is that class expressions don’t need a name, though we can refer to them via whatever identifier they ended up bound to:
+
+```ts
+const someClass = class<Type> {
+  content: Type;
+  constructor(value: Type) {
+    this.content = value;
+  }
+};
+ 
+const m = new someClass("Hello, world");
+     // const m: someClass<string>
+```
+
+## Constructor Signatures
+
+JavaScript classes are instantiated with the `new` operator. Given the type of a class itself, the [InstanceType](https://www.typescriptlang.org/docs/handbook/utility-types.html#instancetypetype) utility type models this operation.
+
+```ts
+class Point {
+  createdAt: number;
+  x: number;
+  y: number
+  constructor(x: number, y: number) {
+    this.createdAt = Date.now()
+    this.x = x;
+    this.y = y;
+  }
+}
+type PointInstance = InstanceType<typeof Point>
+ 
+function moveRight(point: PointInstance) {
+  point.x += 5;
+}
+ 
+const point = new Point(3, 4);
+moveRight(point);
+point.x; // => 8
+```
