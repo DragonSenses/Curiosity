@@ -1036,3 +1036,73 @@ class Box {
   }
 }
 ```
+
+This is different from writing `other: Box` — if you have a derived class, its `sameAs` method will now only accept other instances of that same derived class:
+
+```ts
+class Box {
+  content: string = "";
+  sameAs(other: this) {
+    return other.content === this.content;
+  }
+}
+ 
+class DerivedBox extends Box {
+  otherContent: string = "?";
+}
+ 
+const base = new Box();
+const derived = new DerivedBox();
+derived.sameAs(base);
+// Argument of type 'Box' is not assignable to parameter of type 'DerivedBox'.
+  // Property 'otherContent' is missing in type 'Box' but required in type 'DerivedBox'.
+```
+
+### `this` -based type guards
+
+You can use `this is Type` in the return position for methods in classes and interfaces. When mixed with a type narrowing (e.g. `if` statements) the type of the target object would be narrowed to the specified `Type`.
+
+```ts
+class FileSystemObject {
+  isFile(): this is FileRep {
+    return this instanceof FileRep;
+  }
+  isDirectory(): this is Directory {
+    return this instanceof Directory;
+  }
+  isNetworked(): this is Networked & this {
+    return this.networked;
+  }
+  constructor(public path: string, private networked: boolean) {}
+}
+ 
+class FileRep extends FileSystemObject {
+  constructor(path: string, public content: string) {
+    super(path, false);
+  }
+}
+ 
+class Directory extends FileSystemObject {
+  children: FileSystemObject[];
+}
+ 
+interface Networked {
+  host: string;
+}
+ 
+const fso: FileSystemObject = new FileRep("foo/bar.txt", "foo");
+ 
+if (fso.isFile()) {
+  fso.content;
+  
+const fso: FileRep
+} else if (fso.isDirectory()) {
+  fso.children;
+  
+const fso: Directory
+} else if (fso.isNetworked()) {
+  fso.host;
+  
+const fso: Networked & FileSystemObject
+}
+```
