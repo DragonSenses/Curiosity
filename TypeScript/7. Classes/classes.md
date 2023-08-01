@@ -943,3 +943,28 @@ const g = c.getName;
 console.log(g());
 ```
 
+This has some trade-offs:
+
+- The `this` value is guaranteed to be correct at runtime, even for code not checked with TypeScript
+
+- This will use more memory, because each class instance will have its own copy of each function defined this way
+
+- You can’t use `super.getName` in a derived class, because there’s no entry in the prototype chain to fetch the base class method from
+
+### `this` parameters
+
+In a method or function definition, an initial parameter named `this` has special meaning in TypeScript. These parameters are erased during compilation:
+
+```ts
+// TypeScript input with 'this' parameter
+function fn(this: SomeType, x: number) {
+  /* ... */
+}
+```
+
+```ts
+// TypeScript input with 'this' parameter
+function fn(this: SomeType, x: number) {
+  /* ... */
+}
+```
