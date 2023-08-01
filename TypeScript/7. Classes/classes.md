@@ -997,3 +997,42 @@ This method makes the opposite trade-offs of the arrow function approach:
 - Base method definitions can still be called via super.
 
 ## `this` Types
+
+In classes, a special type called `this` refers *dynamically* to the type of the current class. Let’s see how this is useful:
+
+```ts
+class Box {
+  contents: string = "";
+  set(value: string) {
+  
+(method) Box.set(value: string): this
+    this.contents = value;
+    return this;
+  }
+}
+```
+
+Here, TypeScript inferred the return type of `set` to be `this`, rather than `Box`. Now let’s make a subclass of `Box`:
+
+```ts
+class ClearableBox extends Box {
+  clear() {
+    this.contents = "";
+  }
+}
+ 
+const a = new ClearableBox();
+const b = a.set("hello");
+     // const b: ClearableBox
+```
+
+You can also use `this` in a parameter type annotation:
+
+```ts
+class Box {
+  content: string = "";
+  sameAs(other: this) {
+    return other.content === this.content;
+  }
+}
+```
