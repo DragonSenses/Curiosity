@@ -968,3 +968,32 @@ function fn(this: SomeType, x: number) {
   /* ... */
 }
 ```
+
+TypeScript checks that calling a function with a `this` parameter is done so with a correct context. Instead of using an arrow function, we can add a this parameter to method definitions to statically enforce that the method is called correctly:
+
+```ts
+class MyClass {
+  name = "MyClass";
+  getName(this: MyClass) {
+    return this.name;
+  }
+}
+const c = new MyClass();
+// OK
+c.getName();
+ 
+// Error, would crash
+const g = c.getName;
+console.log(g());
+// The 'this' context of type 'void' is not assignable to method's 'this' of type 'MyClass'.
+```
+
+This method makes the opposite trade-offs of the arrow function approach:
+
+- JavaScript callers might still use the class method incorrectly without realizing it
+
+- Only one function per class definition gets allocated, rather than one per class instance
+
+- Base method definitions can still be called via super.
+
+## `this` Types
