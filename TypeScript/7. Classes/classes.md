@@ -924,3 +924,22 @@ In this example, because the function was called through the `obj` reference, it
 
 This is rarely what you want to happen! TypeScript provides some ways to mitigate or prevent this kind of error.
 
+### Arrow Functions
+
+[Arrow functions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+
+If you have a function that will often be called in a way that loses its `this` context, it can make sense to use an arrow function property instead of a method definition:
+
+```ts
+class MyClass {
+  name = "MyClass";
+  getName = () => {
+    return this.name;
+  };
+}
+const c = new MyClass();
+const g = c.getName;
+// Prints "MyClass" instead of crashing
+console.log(g());
+```
+
