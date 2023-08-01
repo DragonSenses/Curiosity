@@ -1094,15 +1094,59 @@ const fso: FileSystemObject = new FileRep("foo/bar.txt", "foo");
  
 if (fso.isFile()) {
   fso.content;
-  
-const fso: FileRep
+  // const fso: FileRep
 } else if (fso.isDirectory()) {
   fso.children;
-  
-const fso: Directory
+  // const fso: Directory
 } else if (fso.isNetworked()) {
   fso.host;
-  
-const fso: Networked & FileSystemObject
+  // const fso: Networked & FileSystemObject
 }
 ```
+
+A common use-case for a this-based type guard is to allow for lazy validation of a particular field. For example, this case removes an `undefined` from the value held inside box when `hasValue` has been verified to be true:
+
+```ts
+class Box<T> {
+  value?: T;
+ 
+  hasValue(): this is { value: T } {
+    return this.value !== undefined;
+  }
+}
+ 
+const box = new Box();
+box.value = "Gameboy";
+ 
+box.value;
+     // (property) Box<unknown>.value?: unknown
+ 
+if (box.hasValue()) {
+  box.value;
+       // (property) value: unknown
+}
+```
+
+## Parameter Properties
+
+TypeScript offers special syntax for turning a constructor parameter into a class property with the same name and value. These are called parameter properties and are created by prefixing a constructor argument with one of the visibility modifiers `public`, `private`, `protected`, or `readonly`. The resulting field gets those modifier(s):
+
+```ts
+class Params {
+  constructor(
+    public readonly x: number,
+    protected y: number,
+    private z: number
+  ) {
+    // No body necessary
+  }
+}
+const a = new Params(1, 2, 3);
+console.log(a.x);
+             
+(property) Params.x: number
+console.log(a.z);
+// Property 'z' is private and only accessible within class 'Params'.
+```
+
+## 
