@@ -187,3 +187,30 @@ export type Animals = Cat | Dog;
 import type { createCatName } from "./animal.js";
 const name = createCatName();
 ```
+
+### `Inline type imports`
+
+TypeScript 4.5 also allows for individual imports to be prefixed with `type` to indicate that the imported reference is a type:
+
+```ts
+// @filename: app.ts
+import { createCatName, type Cat, type Dog } from "./animal.js";
+ 
+export type Animals = Cat | Dog;
+const name = createCatName();
+```
+
+Together these allow a non-TypeScript transpiler like Babel, swc or esbuild to know what imports can be safely removed.
+
+## ES Module Syntax with CommonJS Behavior
+
+TypeScript has ES Module syntax which directly correlates to a CommonJS and AMD require. Imports using ES Module are for most cases the same as the require from those environments, but this syntax ensures you have a 1 to 1 match in your TypeScript file with the CommonJS output:
+
+```ts
+import fs = require("fs");
+const code = fs.readFileSync("hello.ts", "utf8");
+```
+
+You can learn more about this syntax in the modules reference page.
+
+##
