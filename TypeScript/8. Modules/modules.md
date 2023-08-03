@@ -17,8 +17,30 @@ Modules are executed within their own scope, not in the global scope. This means
 
 ## Non-modules
 
-Before we start, it’s important to understand what TypeScript considers a module. The JavaScript specification declares that any JavaScript files without an import declaration, export, or top-level await should be considered a script and not a module.
+Before we start, it’s important to understand what TypeScript considers a module. The JavaScript specification declares that any JavaScript files without an `import` declaration, `export`, or top-level `await` should be considered a script and not a module.
 
-Inside a script file variables and types are declared to be in the shared global scope, and it’s assumed that you’ll either use the outFile compiler option to join multiple input files into one output file, or use multiple <script> tags in your HTML to load these files (in the correct order!).
+Inside a script file variables and types are declared to be in the shared global scope, and it’s assumed that you’ll either use the outFile compiler option to join multiple input files into one [output](https://www.typescriptlang.org/tsconfig#outFile) file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
 
-If you have a file that doesn’t currently have any imports or exports, but you want to be treated as a module, add the line:
+If you have a file that doesn’t currently have any `import`s or `export`s, but you want to be treated as a module, add the line:
+
+```ts
+export {};
+```
+
+which will change the file to be a module exporting nothing. This syntax works regardless of your module target.
+
+# Modules in TypeScript
+
+#### Addtional Reading
+
+[Impatient JS (Modules)](https://exploringjs.com/impatient-js/ch_modules.html#overview-syntax-of-ecmascript-modules)
+
+[MDN: JavaScript Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
+
+---
+
+There are three main things to consider when writing module-based code in TypeScript:
+
+- Syntax: What syntax do I want to use to import and export things?
+Module Resolution: What is the relationship between module names (or paths) and files on disk?
+Module Output Target: What should my emitted JavaScript module look like?
