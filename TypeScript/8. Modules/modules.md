@@ -204,13 +204,51 @@ Together these allow a non-TypeScript transpiler like Babel, swc or esbuild to k
 
 ## ES Module Syntax with CommonJS Behavior
 
-TypeScript has ES Module syntax which directly correlates to a CommonJS and AMD require. Imports using ES Module are for most cases the same as the require from those environments, but this syntax ensures you have a 1 to 1 match in your TypeScript file with the CommonJS output:
+TypeScript has ES Module syntax which *directly* correlates to a CommonJS and AMD `require`. Imports using ES Module are for most cases the same as the `require` from those environments, but this syntax ensures you have a 1 to 1 match in your TypeScript file with the CommonJS output:
 
 ```ts
 import fs = require("fs");
 const code = fs.readFileSync("hello.ts", "utf8");
 ```
 
-You can learn more about this syntax in the modules reference page.
+You can learn more about this syntax in the [modules reference page](https://www.typescriptlang.org/docs/handbook/modules.html#export--and-import--require).
 
-##
+## CommonJS Syntax
+
+CommonJS is the format which most modules on npm are delivered in. Even if you are writing using the ES Modules syntax above, having a brief understanding of how CommonJS syntax works will help you debug easier.
+
+### **Exporting**
+
+CommonJS is the format which most modules on npm are delivered in. Even if you are writing using the ES Modules syntax above, having a brief understanding of how CommonJS syntax works will help you debug easier.
+
+Identifiers are exported via setting the `exports` property on a global called `module`.
+
+```ts
+function absolute(num: number) {
+  if (num < 0) return num * -1;
+  return num;
+}
+ 
+module.exports = {
+  pi: 3.14,
+  squareTwo: 1.41,
+  phi: 1.61,
+  absolute,
+};
+```
+
+Then these files can be imported via a require statement:
+
+```ts
+const maths = require("./maths");
+maths.pi;
+      // any
+```
+
+Or you can simplify a bit using the destructuring feature in JavaScript:
+
+```ts
+const { squareTwo } = require("./maths");
+squareTwo;
+   // const squareTwo: any
+```
