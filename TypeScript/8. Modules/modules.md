@@ -149,3 +149,41 @@ console.log("3.14");
 In this case, the `import` does nothing. However, all of the code in `maths.ts` was evaluated, which could trigger side-effects which affect other objects.
 
 ## **TypeScript Specific ES Module Syntax**
+
+Types can be exported and imported using the same syntax as JavaScript values:
+
+```ts
+// @filename: animal.ts
+export type Cat = { breed: string; yearOfBirth: number };
+ 
+export interface Dog {
+  breeds: string[];
+  yearOfBirth: number;
+}
+ 
+// @filename: app.ts
+import { Cat, Dog } from "./animal.js";
+type Animals = Cat | Dog;
+```
+
+TypeScript has extended the `import` syntax with two concepts for declaring an import of a type:
+
+### `import type`
+
+Which is an import statement which can ***only*** import types:
+
+```ts
+// @filename: animal.ts
+export type Cat = { breed: string; yearOfBirth: number };
+// 'createCatName' cannot be used as a value because it was imported using 'import type'.
+export type Dog = { breeds: string[]; yearOfBirth: number };
+export const createCatName = () => "fluffy";
+ 
+// @filename: valid.ts
+import type { Cat, Dog } from "./animal.js";
+export type Animals = Cat | Dog;
+ 
+// @filename: app.ts
+import type { createCatName } from "./animal.js";
+const name = createCatName();
+```
