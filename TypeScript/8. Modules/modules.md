@@ -79,3 +79,43 @@ export function absolute(num: number) {
   return num;
 }
 ```
+
+These can be used in another file via the `import` syntax:
+
+```ts
+import { pi, phi, absolute } from "./maths.js";
+ 
+console.log(pi);
+const absPhi = absolute(phi);
+        // const absPhi: number
+```
+
+### Additional Import Syntax
+
+An import can be renamed using a format like `import {old as new}`:
+
+```ts
+import { pi as π } from "./maths.js";
+ 
+console.log(π);
+           // (alias) var π: number
+           // import π
+```
+
+You can mix and match the above syntax into a single `import`:
+
+```ts
+// @filename: maths.ts
+export const pi = 3.14;
+export default class RandomNumberGenerator {}
+ 
+// @filename: app.ts
+import RandomNumberGenerator, { pi as π } from "./maths.js";
+ 
+RandomNumberGenerator;
+         // (alias) class RandomNumberGenerator// import RandomNumberGenerator
+ 
+console.log(π);
+           // (alias) const π: 3.14
+           // import π
+```
