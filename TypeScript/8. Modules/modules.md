@@ -266,3 +266,19 @@ There are many TSConfig flags which influence the module strategy within TypeScr
 
 For the full details on how these strategies work, you can consult the [Module Resolution](https://www.typescriptlang.org/docs/handbook/module-resolution.html).
 
+## TypeScript’s Module Output Options
+
+
+There are two options which affect the emitted JavaScript output:
+
+- [`target`](https://www.typescriptlang.org/tsconfig#target) which determines which JS features are downleveled (converted to run in older JavaScript runtimes) and which are left intact
+
+- [`module`](https://www.typescriptlang.org/docs/handbook/2/modules.html#typescripts-module-output-options:~:text=There%20are%20two,with%20each%20other) which determines what code is used for modules to interact with each other
+
+Which [`target`](https://www.typescriptlang.org/tsconfig#target) you use is determined by the features available in the JavaScript runtime you expect to run the TypeScript code in. That could be: the oldest web browser you support, the lowest version of Node.js you expect to run on or could come from unique constraints from your runtime - like Electron for example.
+
+All communication between modules happens via a module loader, the compiler option [`module`](https://www.typescriptlang.org/docs/handbook/2/modules.html#typescripts-module-output-options:~:text=There%20are%20two,with%20each%20other) determines which one is used. At runtime the module loader is responsible for locating and executing all dependencies of a module before executing it.
+
+
+
+
