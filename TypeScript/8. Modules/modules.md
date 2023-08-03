@@ -41,6 +41,41 @@ which will change the file to be a module exporting nothing. This syntax works r
 
 There are three main things to consider when writing module-based code in TypeScript:
 
-- Syntax: What syntax do I want to use to import and export things?
-Module Resolution: What is the relationship between module names (or paths) and files on disk?
-Module Output Target: What should my emitted JavaScript module look like?
+- **Syntax**: What syntax do I want to use to import and export things?
+
+- **Module Resolution**: What is the relationship between module names (or paths) and files on disk?
+- **Module Output Target**: What should my emitted JavaScript module look like?
+
+## ES Module Syntax
+
+A file can declare a main export via `export default`:
+
+```ts
+// @filename: hello.ts
+export default function helloWorld() {
+  console.log("Hello, world!");
+}
+```
+
+This is then imported via:
+
+```ts
+import helloWorld from "./hello.js";
+helloWorld();
+```
+
+In addition to the default export, you can have more than one export of variables and functions via the `export` by omitting `default`:
+
+```ts
+// @filename: maths.ts
+export var pi = 3.14;
+export let squareTwo = 1.41;
+export const phi = 1.61;
+ 
+export class RandomNumberGenerator {}
+ 
+export function absolute(num: number) {
+  if (num < 0) return num * -1;
+  return num;
+}
+```
