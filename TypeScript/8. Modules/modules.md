@@ -92,6 +92,8 @@ const absPhi = absolute(phi);
 
 ### Additional Import Syntax
 
+### `import {old as new}`
+
 An import can be renamed using a format like `import {old as new}`:
 
 ```ts
@@ -119,3 +121,31 @@ console.log(π);
            // (alias) const π: 3.14
            // import π
 ```
+
+#### `* as name`
+
+You can take all of the exported objects and put them into a single namespace using `* as name`:
+
+```ts
+// @filename: app.ts
+import * as math from "./maths.js";
+ 
+console.log(math.pi);
+const positivePhi = math.absolute(math.phi);
+          // const positivePhi: number
+```
+
+#### `import "./file"`
+
+You can import a file and not include any variables into your current module via `import "./file"`:
+
+```ts
+// @filename: app.ts
+import "./maths.js";
+ 
+console.log("3.14");
+```
+
+In this case, the `import` does nothing. However, all of the code in `maths.ts` was evaluated, which could trigger side-effects which affect other objects.
+
+## **TypeScript Specific ES Module Syntax**
