@@ -70,3 +70,9 @@ These common words do not make it obvious why the regexp fails, so let's elabora
 
     ![](witch_greedy2.svg)
 
+3. Then the dot repeats because of the quantifier `pattern:.+`. The regular expression engine adds to the match one character after another.
+
+    ...Until when? All characters match the dot, so it only stops when it reaches the end of the string:
+
+    ![](witch_greedy3.svg)
+
