@@ -12,3 +12,37 @@ Enabled by the question mark `pattern:?` after the quantifier. The regexp engine
 
 As we've seen, the lazy mode is not a "panacea" from the greedy search. An alternative is a "fine-tuned" greedy search, with exclusions, as in the pattern `pattern:"[^"]+"`.
 
+---
+
+# Greedy and lazy quantifiers
+
+Quantifiers are very simple from the first sight, but in fact they can be tricky.
+
+We should understand how the search works very well if we plan to look for something more complex than `pattern:/\d+/`.
+
+Let's take the following task as an example.
+
+We have a text and need to replace all quotes `"..."` with guillemet marks: `«...»`. They are preferred for typography in many countries.
+
+For instance: `"Hello, world"` should become `«Hello, world»`. There exist other quotes, such as `„Witaj, świecie!”` (Polish) or `「你好，世界」` (Chinese), but for our task let's choose `«...»`.
+
+The first thing to do is to locate quoted strings, and then we can replace them.
+
+A regular expression like `pattern:/".+"/g` (a quote, then something, then the other quote) may seem like a good fit, but it isn't!
+
+Let's try it:
+
+```js run
+let regexp = /".+"/g;
+
+let str = 'a "witch" and her "broom" is one';
+
+alert( str.match(regexp) ); // "witch" and her "broom"
+```
+
+...We can see that it works not as intended!
+
+Instead of finding two matches `match:"witch"` and `match:"broom"`, it finds one: `match:"witch" and her "broom"`.
+
+That can be described as "greediness is the cause of all evil".
+
