@@ -46,3 +46,21 @@ Instead of finding two matches `match:"witch"` and `match:"broom"`, it finds one
 
 That can be described as "greediness is the cause of all evil".
 
+## Greedy search
+
+To find a match, the regular expression engine uses the following algorithm:
+
+- For every position in the string
+    - Try to match the pattern at that position.
+    - If there's no match, go to the next position.
+
+These common words do not make it obvious why the regexp fails, so let's elaborate how the search works for the pattern `pattern:".+"`.
+
+1. The first pattern character is a quote `pattern:"`.
+
+    The regular expression engine tries to find it at the zero position of the source string `subject:a "witch" and her "broom" is one`, but there's `subject:a` there, so there's immediately no match.
+
+    Then it advances: goes to the next positions in the source string and tries to find the first character of the pattern there, fails again, and finally finds the quote at the 3rd position:
+
+    ![](witch_greedy1.svg)
+
