@@ -279,6 +279,49 @@ Which [`target`](https://www.typescriptlang.org/tsconfig#target) you use is dete
 
 All communication between modules happens via a module loader, the compiler option [`module`](https://www.typescriptlang.org/docs/handbook/2/modules.html#typescripts-module-output-options:~:text=There%20are%20two,with%20each%20other) determines which one is used. At runtime the module loader is responsible for locating and executing all dependencies of a module before executing it.
 
+For example, here is a TypeScript file using ES Modules syntax, showcasing a few different options for [module](https://www.typescriptlang.org/tsconfig#module):
 
+```ts
+import { valueOfPi } from "./constants.js";
+ 
+export const twoPi = valueOfPi * 2;
+```
 
+### **ES2020**
 
+```ts
+import { valueOfPi } from "./constants.js";
+export const twoPi = valueOfPi * 2;
+```
+
+### **CommonJS**
+
+```ts
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.twoPi = void 0;
+const constants_js_1 = require("./constants.js");
+exports.twoPi = constants_js_1.valueOfPi * 2;
+```
+
+### **UMD**
+
+```ts
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./constants.js"], factory);
+    }
+})(function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.twoPi = void 0;
+    const constants_js_1 = require("./constants.js");
+    exports.twoPi = constants_js_1.valueOfPi * 2;
+});
+```
+
+> Note that ES2020 is effectively the same as the original `index.ts`.
