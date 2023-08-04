@@ -64,3 +64,9 @@ These common words do not make it obvious why the regexp fails, so let's elabora
 
     ![](witch_greedy1.svg)
 
+2. The quote is detected, and then the engine tries to find a match for the rest of the pattern. It tries to see if the rest of the subject string conforms to `pattern:.+"`.
+
+    In our case the next pattern character is `pattern:.` (a dot). It denotes "any character except a newline", so the next string letter `match:'w'` fits:
+
+    ![](witch_greedy2.svg)
+
