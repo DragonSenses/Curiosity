@@ -17,11 +17,11 @@ Modules are executed within their own scope, not in the global scope. This means
 
 ## Non-modules
 
-Before we start, it’s important to understand what TypeScript considers a module. The JavaScript specification declares that any JavaScript files without an `import` declaration, `export`, or top-level `await` should be considered a script and not a module.
+Before we start, it's important to understand what TypeScript considers a module. The JavaScript specification declares that any JavaScript files without an `import` declaration, `export`, or top-level `await` should be considered a script and not a module.
 
-Inside a script file variables and types are declared to be in the shared global scope, and it’s assumed that you’ll either use the outFile compiler option to join multiple input files into one [output](https://www.typescriptlang.org/tsconfig#outFile) file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
+Inside a script file variables and types are declared to be in the shared global scope, and it's assumed that you'll either use the outFile compiler option to join multiple input files into one [output](https://www.typescriptlang.org/tsconfig#outFile) file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
 
-If you have a file that doesn’t currently have any `import`s or `export`s, but you want to be treated as a module, add the line:
+If you have a file that doesn't currently have any `import`s or `export`s, but you want to be treated as a module, add the line:
 
 ```ts
 export {};
@@ -256,7 +256,7 @@ squareTwo;
 There is a mis-match in features between CommonJS and ES Modules regarding the distinction between a default import and a module namespace object import. TypeScript has a compiler flag to reduce the friction between the two different sets of constraints with [esModuleInterop](https://www.typescriptlang.org/tsconfig#esModuleInterop).
 
 
-## TypeScript’s Module Resolution Options
+## TypeScript's Module Resolution Options
 
 Module resolution is the process of taking a string from the `import` or `require` statement, and determining what file that string refers to.
 
@@ -266,7 +266,7 @@ There are many TSConfig flags which influence the module strategy within TypeScr
 
 For the full details on how these strategies work, you can consult the [Module Resolution](https://www.typescriptlang.org/docs/handbook/module-resolution.html).
 
-## TypeScript’s Module Output Options
+## TypeScript's Module Output Options
 
 
 There are two options which affect the emitted JavaScript output:
@@ -325,3 +325,10 @@ exports.twoPi = constants_js_1.valueOfPi * 2;
 ```
 
 > Note that ES2020 is effectively the same as the original `index.ts`.
+
+You can see all of the available options and what their emitted JavaScript code looks like in the [TSConfig Reference for module](https://www.typescriptlang.org/tsconfig#module).
+
+# TypeScript namespaces
+
+TypeScript has its own module format called `namespaces` which pre-dates the ES Modules standard. This syntax has a lot of useful features for creating complex definition files, and still sees active use in [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped). While not deprecated, the majority of the features in namespaces exist in ES Modules and we recommend you use that to align with JavaScript's direction. You can learn more about namespaces in the [namespaces reference page](https://www.typescriptlang.org/docs/handbook/namespaces.html).
+
