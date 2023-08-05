@@ -97,3 +97,15 @@ These common words do not make it obvious why the regexp fails, so let's elabora
 6. The engine keep backtracking: it decreases the count of repetition for `pattern:'.'` until the rest of the pattern (in our case `pattern:'"'`) matches:
 
     ![](witch_greedy6.svg)
+
+7. The match is complete.
+
+8. So the first match is `match:"witch" and her "broom"`. If the regular expression has flag `pattern:g`, then the search will continue from where the first match ends. There are no more quotes in the rest of the string `subject:is one`, so no more results.
+
+That's probably not what we expected, but that's how it works.
+
+**In the greedy mode (by default) a quantified character is repeated as many times as possible.**
+
+The regexp engine adds to the match as many characters as it can for `pattern:.+`, and then shortens that one by one, if the rest of the pattern doesn't match.
+
+For our task we want another thing. That's where a lazy mode can help.
