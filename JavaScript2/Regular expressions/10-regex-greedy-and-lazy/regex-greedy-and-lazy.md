@@ -294,3 +294,36 @@ alert( str.match(regexp) ); // <a href="link1" class="wrong">... <p style="" cla
 Now it fails. The match includes not just a link, but also a lot of text after it, including `<p...>`.
 
 Why?
+
+### Tracing the steps
+
+That's what's going on:
+
+1. First the regexp finds a link start `match:<a href="`.
+2. Then it looks for `pattern:.*?`: takes one character (lazily!), check if there's a match for `pattern:" class="doc">` (none).
+3. Then takes another character into `pattern:.*?`, and so on... until it finally reaches `match:" class="doc">`.
+
+But the problem is: that's already beyond the link `<a...>`, in another tag `<p>`. Not what we want.
+
+Here's the picture of the match aligned with the text:
+
+```html
+<a href="..................................." class="doc">
+<a href="link1" class="wrong">... <p style="" class="doc">
+```
+
+So, we need the pattern to look for `<a href="...something..." class="doc">`, but both greedy and lazy variants have problems.
+
+The correct variant can be: `pattern:href="[^"]*"`. It will take all characters inside the `href` attribute till the nearest quote, just what we need.
+
+A working example:
+
+```js run
+let str1 = '...<a href="link1" class="wrong">... <p style="" class="doc">...';
+let str2 = '...<a href="link1" class="doc">... <a href="link2" class="doc">...';
+let regexp = /<a href="[^"]*" class="doc">/g;
+
+// Works!
+alert( str1.match(regexp) ); // null, no matches, that's correct
+alert( str2.match(regexp) ); // <a href="link1" class="doc">, <a href="link2" class="doc">
+```
