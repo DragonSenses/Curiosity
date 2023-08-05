@@ -190,3 +190,15 @@ alert( "123 456".match(/\d+ \d+?/) ); // 123 4
 
     The lazy mode doesn't repeat anything without a need. The pattern finished, so we're done. We have a match `match:123 4`.
 
+---
+
+### **Optimizations**
+
+Modern regular expression engines can optimize internal algorithms to work faster. So they may work a bit differently from the described algorithm.
+
+But to understand how regular expressions work and to build regular expressions, we don't need to know about that. They are only used internally to optimize things.
+
+Complex regular expressions are hard to optimize, so the search may work exactly as described as well.
+
+---
+
