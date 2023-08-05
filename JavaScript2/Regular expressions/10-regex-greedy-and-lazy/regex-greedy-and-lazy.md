@@ -141,3 +141,8 @@ To clearly understand the change, let's trace the search step by step.
 1. The first step is the same: it finds the pattern start `pattern:'"'` at the 3rd position:
 
 ![](witch_greedy1.svg)
+
+2. The next step is also similar: the engine finds a match for the dot `pattern:'.'`:
+
+    ![](witch_greedy2.svg)
+
