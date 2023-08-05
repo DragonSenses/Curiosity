@@ -158,3 +158,7 @@ To clearly understand the change, let's trace the search step by step.
 
     Failure again. Then the number of repetitions is increased again and again...
 
+5. ...Till the match for the rest of the pattern is found:
+
+    ![](witch_lazy5.svg)
+
