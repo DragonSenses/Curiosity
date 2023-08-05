@@ -76,3 +76,15 @@ These common words do not make it obvious why the regexp fails, so let's elabora
 
     ![](witch_greedy3.svg)
 
+4. Now the engine finished repeating `pattern:.+` and tries to find the next character of the pattern. It's the quote `pattern:"`. But there's a problem: the string has finished, there are no more characters!
+
+    The regular expression engine understands that it took too many `pattern:.+` and starts to *backtrack*.
+
+    In other words, it shortens the match for the quantifier by one character:
+
+    ![](witch_greedy4.svg)
+
+    Now it assumes that `pattern:.+` ends one character before the string end and tries to match the rest of the pattern from that position.
+
+    If there were a quote there, then the search would end, but the last character is `subject:'e'`, so there's no match.
+
