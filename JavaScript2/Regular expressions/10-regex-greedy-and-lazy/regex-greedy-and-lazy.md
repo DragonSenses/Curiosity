@@ -88,3 +88,8 @@ These common words do not make it obvious why the regexp fails, so let's elabora
 
     If there were a quote there, then the search would end, but the last character is `subject:'e'`, so there's no match.
 
+5. ...So the engine decreases the number of repetitions of `pattern:.+` by one more character:
+
+    ![](witch_greedy5.svg)
+
+    The quote `pattern:'"'` does not match `subject:'n'`.
