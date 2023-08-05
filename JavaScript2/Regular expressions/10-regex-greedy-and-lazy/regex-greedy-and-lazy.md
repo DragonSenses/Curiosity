@@ -120,3 +120,24 @@ To make things clear: usually a question mark `pattern:?` is a quantifier by its
 
 The regexp `pattern:/".+?"/g` works as intended: it finds `match:"witch"` and `match:"broom"`:
 
+```js run
+let regexp = /".+?"/g;
+
+let str = 'a "witch" and her "broom" is one';
+
+alert( str.match(regexp) ); // "witch", "broom"
+```
+
+```js run
+let regexp = /".+?"/g;
+
+let str = 'a "witch" and her "broom" is one';
+
+alert( str.match(regexp) ); // "witch", "broom"
+```
+
+To clearly understand the change, let's trace the search step by step.
+
+1. The first step is the same: it finds the pattern start `pattern:'"'` at the 3rd position:
+
+![](witch_greedy1.svg)
