@@ -165,3 +165,28 @@ To clearly understand the change, let's trace the search step by step.
 6. The next search starts from the end of the current match and yield one more result:
 
     ![](witch_lazy6.svg)
+
+---
+
+In this example we saw how the lazy mode works for `pattern:+?`. Quantifiers `pattern:*?` and `pattern:??` work the similar way -- the regexp engine increases the number of repetitions only if the rest of the pattern can't match on the given position.
+
+**Laziness is only enabled for the quantifier with `?`**
+
+Other quantifiers remain greedy.
+
+For instance:
+
+```js run
+alert( "123 456".match(/\d+ \d+?/) ); // 123 4
+```
+
+1. The pattern `pattern:\d+` tries to match as many digits as it can (greedy mode), so it finds  `match:123` and stops, because the next character is a space `pattern:' '`.
+
+2. Then there's a space in the pattern, it matches.
+
+3. Then there's `pattern:\d+?`. The quantifier is in lazy mode, so it finds one digit `match:4` and tries to check if the rest of the pattern matches from there.
+
+    ...But there's nothing in the pattern after `pattern:\d+?`.
+
+    The lazy mode doesn't repeat anything without a need. The pattern finished, so we're done. We have a match `match:123 4`.
+
