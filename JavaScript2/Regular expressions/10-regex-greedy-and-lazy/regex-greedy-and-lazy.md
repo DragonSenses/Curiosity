@@ -202,3 +202,27 @@ Complex regular expressions are hard to optimize, so the search may work exactly
 
 ---
 
+## Alternative approach
+
+With regexps, there's often more than one way to do the same thing.
+
+In our case we can find quoted strings without lazy mode using the regexp `pattern:"[^"]+"`:
+
+```js run
+let regexp = /"[^"]+"/g;
+
+let str = 'a "witch" and her "broom" is one';
+
+alert( str.match(regexp) ); // "witch", "broom"
+```
+
+The regexp `pattern:"[^"]+"` gives correct results, because it looks for a quote `pattern:'"'` followed by one or more non-quotes `pattern:[^"]`, and then the closing quote.
+
+When the regexp engine looks for `pattern:[^"]+` it stops the repetitions when it meets the closing quote, and we're done.
+
+Please note, that this logic does not replace lazy quantifiers!
+
+It is just different. There are times when we need one or another.
+
+### Example where lazy quantifiers fail
+
