@@ -150,3 +150,11 @@ To clearly understand the change, let's trace the search step by step.
 
     ![](witch_lazy3.svg)
 
+    If there were a quote there, then the search would end, but there's `'i'`, so there's no match.
+
+4. Then the regular expression engine increases the number of repetitions for the dot and tries one more time:
+
+    ![](witch_lazy4.svg)
+
+    Failure again. Then the number of repetitions is increased again and again...
+
