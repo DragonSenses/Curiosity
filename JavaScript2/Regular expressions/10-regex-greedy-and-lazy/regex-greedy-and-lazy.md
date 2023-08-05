@@ -262,4 +262,35 @@ The match looks like this:
 <a href="link1" class="doc">... <a href="link2" class="doc">
 ```
 
-### 
+### Fix: Modify the quantifier in the pattern to lazy
+
+Let's modify the pattern by making the quantifier `pattern:.*?` lazy:
+
+```js run
+let str = '...<a href="link1" class="doc">... <a href="link2" class="doc">...';
+let regexp = /<a href=".*?" class="doc">/g;
+
+// Works!
+alert( str.match(regexp) ); // <a href="link1" class="doc">, <a href="link2" class="doc">
+```
+
+Now it seems to work, there are two matches:
+
+```html
+<a href="....." class="doc">    <a href="....." class="doc">
+<a href="link1" class="doc">... <a href="link2" class="doc">
+```
+
+...But let's test it on one more text input:
+
+```js run
+let str = '...<a href="link1" class="wrong">... <p style="" class="doc">...';
+let regexp = /<a href=".*?" class="doc">/g;
+
+// Wrong match!
+alert( str.match(regexp) ); // <a href="link1" class="wrong">... <p style="" class="doc">
+```
+
+Now it fails. The match includes not just a link, but also a lot of text after it, including `<p...>`.
+
+Why?
