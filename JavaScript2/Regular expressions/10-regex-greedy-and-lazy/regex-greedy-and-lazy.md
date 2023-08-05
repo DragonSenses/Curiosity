@@ -93,3 +93,7 @@ These common words do not make it obvious why the regexp fails, so let's elabora
     ![](witch_greedy5.svg)
 
     The quote `pattern:'"'` does not match `subject:'n'`.
+
+6. The engine keep backtracking: it decreases the count of repetition for `pattern:'.'` until the rest of the pattern (in our case `pattern:'"'`) matches:
+
+    ![](witch_greedy6.svg)
