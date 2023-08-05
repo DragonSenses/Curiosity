@@ -226,3 +226,40 @@ It is just different. There are times when we need one or another.
 
 ### Example where lazy quantifiers fail
 
+**Let's see an example where lazy quantifiers fail and this variant works right.**
+
+For instance, we want to find links of the form `<a href="..." class="doc">`, with any `href`.
+
+Which regular expression to use?
+
+The first idea might be: `pattern:/<a href=".*" class="doc">/g`.
+
+Let's check it:
+```js run
+let str = '...<a href="link" class="doc">...';
+let regexp = /<a href=".*" class="doc">/g;
+
+// Works!
+alert( str.match(regexp) ); // <a href="link" class="doc">
+```
+
+It worked. But let's see what happens if there are many links in the text?
+
+```js run
+let str = '...<a href="link1" class="doc">... <a href="link2" class="doc">...';
+let regexp = /<a href=".*" class="doc">/g;
+
+// Whoops! Two links in one match!
+alert( str.match(regexp) ); // <a href="link1" class="doc">... <a href="link2" class="doc">
+```
+
+Now the result is wrong for the same reason as our "witches" example. The quantifier `pattern:.*` took too many characters.
+
+The match looks like this:
+
+```html
+<a href="....................................." class="doc">
+<a href="link1" class="doc">... <a href="link2" class="doc">
+```
+
+### 
