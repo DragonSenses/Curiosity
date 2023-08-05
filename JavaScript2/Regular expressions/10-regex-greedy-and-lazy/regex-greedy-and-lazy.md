@@ -162,3 +162,6 @@ To clearly understand the change, let's trace the search step by step.
 
     ![](witch_lazy5.svg)
 
+6. The next search starts from the end of the current match and yield one more result:
+
+    ![](witch_lazy6.svg)
