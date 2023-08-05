@@ -146,3 +146,7 @@ To clearly understand the change, let's trace the search step by step.
 
     ![](witch_greedy2.svg)
 
+3. And now the search goes differently. Because we have a lazy mode for `pattern:+?`, the engine doesn't try to match a dot one more time, but stops and tries to match the rest of the pattern  `pattern:'"'` right now:
+
+    ![](witch_lazy3.svg)
+
