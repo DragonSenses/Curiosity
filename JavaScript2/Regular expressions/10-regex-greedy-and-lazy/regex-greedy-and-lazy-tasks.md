@@ -6,8 +6,6 @@ What's the match here?
 alert( "123 456".match(/\d+? \d+?/g) ); // ?
 ```
 
----
-
 ## ***Answer***:
 
 The result is: `match:123 4`.
@@ -32,7 +30,6 @@ let str = `... <!-- My -- comment
 alert( str.match(regexp) ); // '<!-- My -- comment \n test -->', '<!---->'
 ```
 
-
 ## ***Answer***:
 
 We need to find the beginning of the comment `match:<!--`, then everything till the end of `match:-->`.
@@ -51,4 +48,23 @@ let str = `... <!-- My -- comment
 alert( str.match(regexp) ); // '<!-- My -- comment \n test -->', '<!---->'
 ```
 
+---
+
+# Find HTML tags
+
+Create a regular expression to find all (opening and closing) HTML tags with their attributes.
+
+An example of use:
+
+```js run
+let regexp = /your regexp/g;
+
+let str = '<> <a href="/"> <input type="radio" checked> <b>';
+
+alert( str.match(regexp) ); // '<a href="/">', '<input type="radio" checked>', '<b>'
+```
+
+Here we assume that tag attributes may not contain `<` and `>` (inside quotes too), that simplifies things a bit.
+
+## ***Answer***:
 
