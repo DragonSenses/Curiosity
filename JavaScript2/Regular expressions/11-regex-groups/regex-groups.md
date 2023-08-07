@@ -177,3 +177,26 @@ alert( match[2] ); // c
 ```
 
 The array length is permanent: `3`. But there's nothing for the group `pattern:(z)?`, so the result is `["ac", undefined, "c"]`.
+
+## Searching for all matches with groups: `matchAll`
+
+### `matchAll` is a new method, polyfill may be needed
+
+The method `matchAll` is not supported in old browsers.
+
+A polyfill may be required, such as <https://github.com/ljharb/String.prototype.matchAll>.
+
+---
+
+When we search for all matches (flag `pattern:g`), the `match` method does not return contents for groups.
+
+For example, let's find all tags in a string:
+
+```js run
+let str = '<h1> <h2>';
+
+let tags = str.match(/<(.*?)>/g);
+
+alert( tags ); // <h1>,<h2>
+```
+
