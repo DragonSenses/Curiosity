@@ -136,3 +136,12 @@ alert(result[2]); // span
 alert(result[3]); // class="my"
 ```
 
+The zero index of `result` always holds the full match.
+
+Then groups, numbered from left to right by an opening paren. The first group is returned as `result[1]`. Here it encloses the whole tag content.
+
+Then in `result[2]` goes the group from the second opening paren `pattern:([a-z]+)` - tag name, then in `result[3]` the tag: `pattern:([^>]*)`.
+
+The contents of every group in the string:
+
+![](regexp-nested-groups-matches.svg)
