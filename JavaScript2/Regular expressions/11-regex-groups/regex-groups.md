@@ -200,3 +200,30 @@ let tags = str.match(/<(.*?)>/g);
 alert( tags ); // <h1>,<h2>
 ```
 
+The result is an array of matches, but without details about each of them. But in practice we usually need contents of capturing groups in the result.
+
+To get them, we should search using the method `str.matchAll(regexp)`.
+
+It was added to JavaScript language long after `match`, as its "new and improved version".
+
+Just like `match`, it looks for matches, but there are 3 differences:
+
+1. It returns not an array, but an iterable object.
+2. When the flag `pattern:g` is present, it returns every match as an array with groups.
+3. If there are no matches, it returns not `null`, but an empty iterable object.
+
+For instance:
+
+```js run
+let results = '<h1> <h2>'.matchAll(/<(.*?)>/gi);
+
+// results - is not an array, but an iterable object
+alert(results); // [object RegExp String Iterator]
+
+alert(results[0]); // undefined (*)
+
+results = Array.from(results); // let's turn it into array
+
+alert(results[0]); // <h1>,h1 (1st tag)
+alert(results[1]); // <h2>,h2 (2nd tag)
+```
