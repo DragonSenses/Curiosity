@@ -260,3 +260,36 @@ alert( tag1[1] ); // h1
 alert( tag1.index ); // 0
 alert( tag1.input ); // <h1> <h2>
 ```
+
+---
+
+### Why is a result of `matchAll` an iterable object, not an array?
+
+Why is the method designed like that? The reason is simple - for the **optimization**.
+
+The call to `matchAll` does not perform the search. Instead, it returns an iterable object, without the results initially. The search is performed each time we iterate over it, e.g. in the loop.
+
+So, there will be found as many results as needed, not more.
+
+E.g. there are potentially 100 matches in the text, but in a `for..of` loop we found 5 of them, then decided it's enough and made a `break`. Then the engine won't spend time finding other 95 matches.
+
+---
+
+## Named groups
+
+Remembering groups by their numbers is hard. For simple patterns it's doable, but for more complex ones counting parentheses is inconvenient. We have a much better option: give names to parentheses.
+
+That's done by putting `pattern:?<name>` immediately after the opening paren.
+
+For example, let's look for a date in the format "year-month-day":
+
+```js run
+let dateRegexp = /(?<year>[0-9]{4})-(?<month>[0-9]{2})-(?<day>[0-9]{2})/;
+let str = "2019-04-30";
+
+let groups = str.match(dateRegexp).groups;
+
+alert(groups.year); // 2019
+alert(groups.month); // 04
+alert(groups.day); // 30
+```
