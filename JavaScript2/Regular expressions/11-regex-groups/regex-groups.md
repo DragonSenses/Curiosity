@@ -105,3 +105,34 @@ let tag = str.match(/<(.*?)>/);
 alert( tag[0] ); // <h1>
 alert( tag[1] ); // h1
 ```
+
+### Nested groups
+
+Parentheses can be nested. In this case the numbering also goes from left to right.
+
+For instance, when searching a tag in `subject:<span class="my">` we may be interested in:
+
+1. The tag content as a whole: `match:span class="my"`.
+2. The tag name: `match:span`.
+3. The tag attributes: `match:class="my"`.
+
+Let's add parentheses for them: `pattern:<(([a-z]+)\s*([^>]*))>`.
+
+Here's how they are numbered (left to right, by the opening paren):
+
+![](regexp-nested-groups-pattern.svg)
+
+In action:
+
+```js run
+let str = '<span class="my">';
+
+let regexp = /<(([a-z]+)\s*([^>]*))>/;
+
+let result = str.match(regexp);
+alert(result[0]); // <span class="my">
+alert(result[1]); // span class="my"
+alert(result[2]); // span
+alert(result[3]); // class="my"
+```
+
