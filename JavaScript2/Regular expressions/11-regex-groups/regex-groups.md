@@ -86,3 +86,22 @@ Parentheses are numbered from left to right. The search engine memorizes the con
 
 The method `str.match(regexp)`, if `regexp` has no flag `g`, looks for the first match and returns it as an array:
 
+1. At index `0`: the full match.
+2. At index `1`: the contents of the first parentheses.
+3. At index `2`: the contents of the second parentheses.
+4. ...and so on...
+
+For instance, we'd like to find HTML tags `pattern:<.*?>`, and process them. It would be convenient to have tag content (what's inside the angles), in a separate variable.
+
+Let's wrap the inner content into parentheses, like this: `pattern:<(.*?)>`.
+
+Now we'll get both the tag as a whole `match:<h1>` and its contents `match:h1` in the resulting array:
+
+```js run
+let str = '<h1>Hello, world!</h1>';
+
+let tag = str.match(/<(.*?)>/);
+
+alert( tag[0] ); // <h1>
+alert( tag[1] ); // h1
+```
