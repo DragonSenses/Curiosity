@@ -63,3 +63,26 @@ alert( "site.com my.site.com".match(regexp) ); // site.com,my.site.com
 The search works, but the pattern can't match a domain with a hyphen, e.g. `my-site.com`, because the hyphen does not belong to class `pattern:\w`.
 
 We can fix it by replacing `pattern:\w` with `pattern:[\w-]` in every word except the last one: `pattern:([\w-]+\.)+\w+`.
+
+### Example: email
+
+The previous example can be extended. We can create a regular expression for emails based on it.
+
+The email format is: `name@domain`. Any word can be the name, hyphens and dots are allowed. In regular expressions that's `pattern:[-.\w]+`.
+
+The pattern:
+
+```js run
+let regexp = /[-.\w]+@([\w-]+\.)+[\w-]+/g;
+
+alert("my@mail.com @ his@site.com.uk".match(regexp)); // my@mail.com, his@site.com.uk
+```
+
+That regexp is not perfect, but mostly works and helps to fix accidental mistypes. The only truly reliable check for an email can only be done by sending a letter.
+
+## Parentheses contents in the match
+
+Parentheses are numbered from left to right. The search engine memorizes the content matched by each of them and allows to get it in the result.
+
+The method `str.match(regexp)`, if `regexp` has no flag `g`, looks for the first match and returns it as an array:
+
