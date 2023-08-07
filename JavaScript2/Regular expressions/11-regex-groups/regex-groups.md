@@ -23,3 +23,43 @@ That has two effects:
 
 1. It allows to get a part of the match as a separate item in the result array.
 2. If we put a quantifier after the parentheses, it applies to the parentheses as a whole.
+
+## Examples
+
+Let's see how parentheses work in examples.
+
+### Example: gogogo
+
+Without parentheses, the pattern `pattern:go+` means `subject:g` character, followed by `subject:o` repeated one or more times. For instance, `match:goooo` or `match:gooooooooo`.
+
+Parentheses group characters together, so `pattern:(go)+` means `match:go`, `match:gogo`, `match:gogogo` and so on.
+
+```js run
+alert( 'Gogogo now!'.match(/(go)+/ig) ); // "Gogogo"
+```
+
+### Example: domain
+
+Let's make something more complex -- a regular expression to search for a website domain.
+
+For example:
+
+```
+mail.com
+users.mail.com
+smith.users.mail.com
+```
+
+As we can see, a domain consists of repeated words, a dot after each one except the last one.
+
+In regular expressions that's `pattern:(\w+\.)+\w+`:
+
+```js run
+let regexp = /(\w+\.)+\w+/g;
+
+alert( "site.com my.site.com".match(regexp) ); // site.com,my.site.com
+```
+
+The search works, but the pattern can't match a domain with a hyphen, e.g. `my-site.com`, because the hyphen does not belong to class `pattern:\w`.
+
+We can fix it by replacing `pattern:\w` with `pattern:[\w-]` in every word except the last one: `pattern:([\w-]+\.)+\w+`.
