@@ -145,3 +145,35 @@ Then in `result[2]` goes the group from the second opening paren `pattern:([a-z]
 The contents of every group in the string:
 
 ![](regexp-nested-groups-matches.svg)
+
+### Optional groups
+
+Even if a group is optional and doesn't exist in the match (e.g. has the quantifier `pattern:(...)?`), the corresponding `result` array item is present and equals `undefined`.
+
+For instance, let's consider the regexp `pattern:a(z)?(c)?`. It looks for `"a"` optionally followed by `"z"` optionally followed by `"c"`.
+
+If we run it on the string with a single letter `subject:a`, then the result is:
+
+```js run
+let match = 'a'.match(/a(z)?(c)?/);
+
+alert( match.length ); // 3
+alert( match[0] ); // a (whole match)
+alert( match[1] ); // undefined
+alert( match[2] ); // undefined
+```
+
+The array has the length of `3`, but all groups are empty.
+
+And here's a more complex match for the string `subject:ac`:
+
+```js run
+let match = 'ac'.match(/a(z)?(c)?/)
+
+alert( match.length ); // 3
+alert( match[0] ); // ac (whole match)
+alert( match[1] ); // undefined, because there's nothing for (z)?
+alert( match[2] ); // c
+```
+
+The array length is permanent: `3`. But there's nothing for the group `pattern:(z)?`, so the result is `["ac", undefined, "c"]`.
