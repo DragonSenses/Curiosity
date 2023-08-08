@@ -315,3 +315,30 @@ for(let result of results) {
   // second: 01.01.2020
 }
 ```
+
+## Capturing groups in replacement
+
+Method `str.replace(regexp, replacement)` that replaces all matches with `regexp` in `str` allows to use parentheses contents in the `replacement` string. That's done using `pattern:$n`, where `pattern:n` is the group number.
+
+For example,
+
+```js run
+let str = "John Bull";
+let regexp = /(\w+) (\w+)/;
+
+alert( str.replace(regexp, '$2, $1') ); // Bull, John
+```
+
+For named parentheses the reference will be `pattern:$<name>`.
+
+For example, let's reformat dates from "year-month-day" to "day.month.year":
+
+```js run
+let regexp = /(?<year>[0-9]{4})-(?<month>[0-9]{2})-(?<day>[0-9]{2})/g;
+
+let str = "2019-10-30, 2020-01-01";
+
+alert( str.replace(regexp, '$<day>.$<month>.$<year>') );
+// 30.10.2019, 01.01.2020
+```
+
