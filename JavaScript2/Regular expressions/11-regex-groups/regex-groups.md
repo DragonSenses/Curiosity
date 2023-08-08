@@ -342,3 +342,25 @@ alert( str.replace(regexp, '$<day>.$<month>.$<year>') );
 // 30.10.2019, 01.01.2020
 ```
 
+## Non-capturing groups with ?:
+
+Sometimes we need parentheses to correctly apply a quantifier, but we don't want their contents in results.
+
+A group may be excluded by adding `pattern:?:` in the beginning.
+
+For instance, if we want to find `pattern:(go)+`, but don't want the parentheses contents (`go`) as a separate array item, we can write: `pattern:(?:go)+`.
+
+In the example below we only get the name `match:John` as a separate member of the match:
+
+```js run
+let str = "Gogogo John!";
+
+// ?: excludes 'go' from capturing
+let regexp = /(?:go)+ (\w+)/i;
+
+let result = str.match(regexp);
+
+alert( result[0] ); // Gogogo John (full match)
+alert( result[1] ); // John
+alert( result.length ); // 2 (no more items in the array)
+```
