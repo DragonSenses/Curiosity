@@ -92,3 +92,31 @@ alert( str.match(regexp) ); // #3f3 #AA00ef
 
 ---
 
+# Find all numbers
+
+Write a regexp that looks for all decimal numbers including integer ones, with the floating point and negative ones.
+
+An example of use:
+
+```js
+let regexp = /your regexp/g;
+
+let str = "-1.5 0 2 -123.4.";
+
+alert( str.match(regexp) ); // -1.5, 0, 2, -123.4
+```
+
+A positive number with an optional decimal part is: `pattern:\d+(\.\d+)?`.
+
+Let's add the optional `pattern:-` in the beginning:
+
+```js run
+let regexp = /-?\d+(\.\d+)?/g;
+
+let str = "-1.5 0 2 -123.4.";
+
+alert( str.match(regexp) );   // -1.5, 0, 2, -123.4
+```
+
+---
+
