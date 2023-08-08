@@ -293,3 +293,25 @@ alert(groups.year); // 2019
 alert(groups.month); // 04
 alert(groups.day); // 30
 ```
+
+As you can see, the groups reside in the `.groups` property of the match.
+
+To look for all dates, we can add flag `pattern:g`.
+
+We'll also need `matchAll` to obtain full matches, together with groups:
+
+```js run
+let dateRegexp = /(?<year>[0-9]{4})-(?<month>[0-9]{2})-(?<day>[0-9]{2})/g;
+
+let str = "2019-10-30 2020-01-01";
+
+let results = str.matchAll(dateRegexp);
+
+for(let result of results) {
+  let {year, month, day} = result.groups;
+
+  alert(`${day}.${month}.${year}`);
+  // first alert: 30.10.2019
+  // second: 01.01.2020
+}
+```
