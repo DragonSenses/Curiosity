@@ -255,3 +255,29 @@ consistent way
 on the design of a site in a
 consistent way
 
+Possible Layouts:
+
+- 960 Pixel wide, 12 Column Grid
+
+![](960_12_grid1.png)
+
+![](960_12_grid2.png)
+
+Above images illustrate a 960
+pixel wide, 12 column grid. 
+
+They demonstrate how it is possible
+to create a wide range of column
+layouts using this one grid.
+
+The page is 960 pixels wide and
+there are 12 equal sized columns
+(shown in gray), each of which is
+is 60 pixels wide.
+
+Each column has a margin set
+to 10 pixels, which creates a
+gap of 20 pixels between each
+column and 10 pixels to the left
+and right-hand sides of the page.
+
