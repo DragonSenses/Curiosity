@@ -54,4 +54,27 @@ typography, layout, forms,
 tables, even different styles for
 each sub-section of a site.
 
+There are two ways to add
+multiple style sheets to a page:
+
+1: Your HTML page can link
+to one style sheet and that
+stylesheet can use the @import
+rule to import other style sheets.
+
+2: In the HTML you can use a
+separate <link> element for
+each style sheet.
+
+The example on this page
+uses one <link> element in
+the HTML to link to a style
+sheet called styles.css. This
+stylesheet then uses the
+@import rule to import the
+typography.css and tables.css files.
+
+If a stylesheet uses the @import
+rule, it should appear before the
+other rules.
 -->
