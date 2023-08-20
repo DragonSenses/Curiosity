@@ -212,3 +212,21 @@ Because liquid layouts can stretch the entire width of the browser, resulting in
 of text that are hard to read, some liquid layouts only let part of the page expand and contract.
 
 Other parts of the page have minimum and maximum widths.
+
+# Layout Grids
+
+Composition in any visual art (such as design, painting, or photography) is the placement or arrangement of visual elements — how they are organized on a page. Many designers use a grid structure to help them position items on a page, and the same is true for web designers.
+
+Below, you can see a set of
+thick vertical lines superimposed
+over the top of a newspaper
+website to show you how the
+page was designed according to
+a grid. 
+
+This grid is called the **960
+pixel grid** and is widely used by
+web designers.
+
+![](example_grid.png)
+
