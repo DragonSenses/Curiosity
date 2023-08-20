@@ -230,3 +230,28 @@ web designers.
 
 ![](example_grid.png)
 
+Grids set consistent proportions
+and spaces between items which
+helps to create a professional
+looking design.
+
+It is possible to create many
+different layouts using this one
+versatile grid.
+
+While a grid might seem like a
+restriction, in actual fact it:
+
+- Creates a continuity between
+different pages which may
+use different designs
+- Helps users predict where to
+find information on various
+pages
+- Makes it easier to add new
+content to the site in a
+consistent way
+- Helps people collaborate
+on the design of a site in a
+consistent way
+
