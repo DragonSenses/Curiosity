@@ -281,3 +281,19 @@ gap of 20 pixels between each
 column and 10 pixels to the left
 and right-hand sides of the page.
 
+---
+
+# CSS Frameworks
+
+CSS frameworks aim to make your life easier by providing the code for common tasks, such as creating layout grids, styling forms, creating
+printer-friendly versions of pages and so on. You can include the CSS framework code in your projects rather than writing the CSS from scratch.
+
+
+|Advantages|Disadvantages|
+|----------|-------------|
+|- They save you from repeatedly writing code for the same tasks.| - They often require that you use class names in your HTML code that only control the presentation of the page (rather than describe its content). 
+| - Well tested across different browser versions (which helps avoid browser bugs). | - In order to satisfy a wide variety of needs, they often contain more code than you need for your particular web page (commonly referred to as code *bloat*). |
+
+
+
+
