@@ -7,7 +7,42 @@ Create a regexp that finds them in the string `subject:Java JavaScript PHP C++ C
 ```js
 let regexp = /your regexp/g;
 
-alert("Java JavaScript PHP C++ C".match(regexp)); // Java JavaScript PHP C++ C
+console.log("Java JavaScript PHP C++ C".match(regexp)); // Java JavaScript PHP C++ C
+```
+
+## Find programming languages | Answer
+
+The first idea can be to list the languages with `|` in-between.
+
+But that doesn't work right:
+
+```js run
+let regexp = /Java|JavaScript|PHP|C|C\+\+/g;
+
+let str = "Java, JavaScript, PHP, C, C++";
+
+console.log( str.match(regexp) ); // Java,Java,PHP,C,C
+```
+
+The regular expression engine looks for alternations one-by-one. That is: first it checks if we have  `match:Java`, otherwise -- looks for `match:JavaScript` and so on.
+
+As a result, `match:JavaScript` can never be found, just because `match:Java` is checked first.
+
+The same with `match:C` and `match:C++`.
+
+There are two solutions for that problem:
+
+1. Change the order to check the longer match first: `pattern:JavaScript|Java|C\+\+|C|PHP`.
+2. Merge variants with the same start: `pattern:Java(Script)?|C(\+\+)?|PHP`.
+
+In action:
+
+```js run
+let regexp = /Java(Script)?|C(\+\+)?|PHP/g;
+
+let str = "Java, JavaScript, PHP, C, C++";
+
+console.log( str.match(regexp) ); // Java,JavaScript,PHP,C,C++
 ```
 
 ---
@@ -49,7 +84,7 @@ For instance:
 let regexp = /your regexp/flags;
 
 let str = "..[url]http://google.com[/url]..";
-alert( str.match(regexp) ); // [url]http://google.com[/url]
+console.log( str.match(regexp) ); // [url]http://google.com[/url]
 ```
 
 If tags are nested, then we need the outer tag (if we want we can continue the search in its content):
@@ -58,7 +93,32 @@ If tags are nested, then we need the outer tag (if we want we can continue the s
 let regexp = /your regexp/flags;
 
 let str = "..[url][b]http://google.com[/b][/url]..";
-alert( str.match(regexp) ); // [url][b]http://google.com[/b][/url]
+console.log( str.match(regexp) ); // [url][b]http://google.com[/b][/url]
 ```
+
+## Find bbtag paris - Answer
+
+Opening tag is `pattern:\[(b|url|quote)]`.
+
+Then to find everything till the closing tag -- let's use the pattern `pattern:.*?` with flag `pattern:s` to match any character including the newline and then add a backreference to the closing tag.
+
+The full pattern: `pattern:\[(b|url|quote)\].*?\[/\1]`.
+
+In action:
+
+```js run
+let regexp = /\[(b|url|quote)].*?\[\/\1]/gs;
+
+let str = `
+  [b]hello![/b]
+  [quote]
+    [url]http://google.com[/url]
+  [/quote]
+`;
+
+console.log( str.match(regexp) ); // [b]hello![/b],[quote][url]http://google.com[/url][/quote]
+```
+
+Please note that besides escaping `pattern:[`, we had to escape a slash for the closing tag `pattern:[\/\1]`, because normally the slash closes the pattern.
 
 ---
