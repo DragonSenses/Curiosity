@@ -158,6 +158,24 @@ console.log(str); //  .. "test me" .. "Say \"Hello\"!" .. "\\ \"" ..
 
 ## Find quoted strings - Answer
 
+The solution: `pattern:/"(\\.|[^"\\])*"/g`.
+
+Step by step:
+
+- First we look for an opening quote `pattern:"`
+- Then if we have a backslash `pattern:\\` (we have to double it in the pattern because it is a special character), then any character is fine after it (a dot).
+- Otherwise we take any character except a quote (that would mean the end of the string) and a backslash (to prevent lonely backslashes, the backslash is only used with some other symbol after it): `pattern:[^"\\]`
+- ...And so on till the closing quote.
+
+In action:
+
+```js run
+let regexp = /"(\\.|[^"\\])*"/g;
+let str = ' .. "test me" .. "Say \\"Hello\\"!" .. "\\\\ \\"" .. ';
+
+console.log( str.match(regexp) ); // "test me","Say \"Hello\"!","\\ \""
+```
+
 ---
 
 # Find the full tag
@@ -176,4 +194,18 @@ console.log( '<style> <styler> <style test="...">'.match(regexp) ); // <style>, 
 
 ## Find the full tag - Answer
 
+The pattern start is obvious: `pattern:<style`.
 
+...But then we can't simply write `pattern:<style.*?>`, because `match:<styler>` would match it.
+
+We need either a space after `match:<style` and then optionally something else or the ending `match:>`.
+
+In the regexp language: `pattern:<style(>|\s.*?>)`.
+
+In action:
+
+```js run
+let regexp = /<style(>|\s.*?>)/g;
+
+console.log( '<style> <styler> <style test="...">'.match(regexp) ); // <style>, <style test="...">
+```
