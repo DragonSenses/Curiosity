@@ -15,7 +15,7 @@ let regexp = /html|php|css|java(script)?/gi;
 
 let str = "First HTML appeared, then CSS, then JavaScript";
 
-alert( str.match(regexp) ); // 'HTML', 'CSS', 'JavaScript'
+console.log( str.match(regexp) ); // 'HTML', 'CSS', 'JavaScript'
 ```
 
 We already saw a similar thing -- square brackets. They allow to choose between multiple characters, for instance `pattern:gr[ae]y` matches `match:gray` or `match:grey`.
@@ -47,4 +47,24 @@ We can write both variants in a regexp using alternation: `pattern:[01]\d|2[0-3]
 
 Next, minutes must be from `00` to `59`. In the regular expression language that can be written as `pattern:[0-5]\d`: the first digit `0-5`, and then any digit.
 
-If we glue hours and minutes together, we get the pattern: `pattern:[01]\d|2[0-3]:[0-5]\
+If we glue hours and minutes together, we get the pattern: `pattern:[01]\d|2[0-3]:[0-5]\d`.
+
+We're almost done, but there's a problem. The alternation `pattern:|` now happens to be between `pattern:[01]\d` and `pattern:2[0-3]:[0-5]\d`.
+
+That is: minutes are added to the second alternation variant, here's a clear picture:
+
+```
+[01]\d  |  2[0-3]:[0-5]\d
+```
+
+That pattern looks for `pattern:[01]\d` or `pattern:2[0-3]:[0-5]\d`.
+
+But that's wrong, the alternation should only be used in the "hours" part of the regular expression, to allow `pattern:[01]\d` OR `pattern:2[0-3]`. Let's correct that by enclosing "hours" into parentheses: `pattern:([01]\d|2[0-3]):[0-5]\d`.
+
+The final solution:
+
+```js run
+let regexp = /([01]\d|2[0-3]):[0-5]\d/g;
+
+console.log("00:00 10:10 23:59 25:99 1:2".match(regexp)); // 00:00,10:10,23:59
+```
