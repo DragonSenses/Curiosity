@@ -10,7 +10,7 @@ let regexp = /your regexp/g;
 console.log("Java JavaScript PHP C++ C".match(regexp)); // Java JavaScript PHP C++ C
 ```
 
-## Find programming languages | Answer
+## Find programming languages - Answer
 
 The first idea can be to list the languages with `|` in-between.
 
@@ -122,3 +122,58 @@ console.log( str.match(regexp) ); // [b]hello![/b],[quote][url]http://google.com
 Please note that besides escaping `pattern:[`, we had to escape a slash for the closing tag `pattern:[\/\1]`, because normally the slash closes the pattern.
 
 ---
+
+# Find quoted strings
+
+Create a regexp to find strings in double quotes `subject:"..."`.
+
+The strings should support escaping, the same way as JavaScript strings do. For instance, quotes can be inserted as `subject:\"` a newline as `subject:\n`, and the backslash itself as `subject:\\`.
+
+```js
+let str = "Just like \"here\".";
+```
+
+Please note, in particular, that an escaped quote `subject:\"` does not end a string.
+
+So we should search from one quote to the other ignoring escaped quotes on the way.
+
+That's the essential part of the task, otherwise it would be trivial.
+
+Examples of strings to match:
+```js
+.. *!*"test me"*/!* ..  
+.. *!*"Say \"Hello\"!"*/!* ... (escaped quotes inside)
+.. *!*"\\"*/!* ..  (double backslash inside)
+.. *!*"\\ \""*/!* ..  (double backslash and an escaped quote inside)
+```
+
+In JavaScript we need to double the backslashes to pass them right into the string, like this:
+
+```js run
+let str = ' .. "test me" .. "Say \\"Hello\\"!" .. "\\\\ \\"" .. ';
+
+// the in-memory string
+console.log(str); //  .. "test me" .. "Say \"Hello\"!" .. "\\ \"" ..
+```
+
+## Find quoted strings - Answer
+
+---
+
+# Find the full tag
+
+Write a regexp to find the tag `<style...>`. It should match the full tag: it may have no attributes  `<style>` or have several of them `<style type="..." id="...">`.
+
+...But the regexp should not match `<styler>`!
+
+For instance:
+
+```js
+let regexp = /your regexp/g;
+
+console.log( '<style> <styler> <style test="...">'.match(regexp) ); // <style>, <style test="...">
+```
+
+## Find the full tag - Answer
+
+
