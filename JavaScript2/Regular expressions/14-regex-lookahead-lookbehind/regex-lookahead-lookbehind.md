@@ -36,7 +36,7 @@ For an integer number followed by `subject:€`, the regexp will be `pattern:\d+
 ```js run
 let str = "1 turkey costs 30€";
 
-alert( str.match(/\d+(?=€)/) ); // 30, the number 1 is ignored, as it's not followed by €
+console.log( str.match(/\d+(?=€)/) ); // 30, the number 1 is ignored, as it's not followed by €
 ```
 
 Please note: the lookahead is merely a test, the contents of the parentheses `pattern:(?=...)` is not included in the result `match:30`.
@@ -59,7 +59,7 @@ For example, `pattern:\d+(?=\s)(?=.*30)` looks for `pattern:\d+` that is followe
 ```js run
 let str = "1 turkey costs 30€";
 
-alert( str.match(/\d+(?=\s)(?=.*30)/) ); // 1
+console.log( str.match(/\d+(?=\s)(?=.*30)/) ); // 1
 ```
 
 In our string that exactly matches the number `1`.
@@ -75,14 +75,16 @@ The syntax is: `pattern:X(?!Y)`, it means "search `pattern:X`, but only if not f
 ```js run
 let str = "2 turkeys cost 60€";
 
-alert( str.match(/\d+\b(?!€)/g) ); // 2 (the price is not matched)
+console.log( str.match(/\d+\b(?!€)/g) ); // 2 (the price is not matched)
 ```
 
 ## Lookbehind
 
-```warn header="Lookbehind browser compatibility"
+### Warning: Lookbehind browser compatibility
+
 Please Note: Lookbehind is not supported in non-V8 browsers, such as Safari, Internet Explorer.
-```
+
+---
 
 Lookahead allows to add a condition for "what follows".
 
@@ -98,7 +100,7 @@ For example, let's change the price to US dollars. The dollar sign is usually be
 let str = "1 turkey costs $30";
 
 // the dollar sign is escaped \$
-alert( str.match(/(?<=\$)\d+/) ); // 30 (skipped the sole number)
+console.log( str.match(/(?<=\$)\d+/) ); // 30 (skipped the sole number)
 ```
 
 And, if we need the quantity -- a number, not preceded by `subject:$`, then we can use a negative lookbehind `pattern:(?<!\$)\d+`:
@@ -106,5 +108,31 @@ And, if we need the quantity -- a number, not preceded by `subject:$`, then we c
 ```js run
 let str = "2 turkeys cost $60";
 
-alert( str.match(/(?<!\$)\b\d+/g) ); // 2 (the price is not matched)
+console.log( str.match(/(?<!\$)\b\d+/g) ); // 2 (the price is not matched)
+```
+
+## Capturing groups
+
+Generally, the contents inside lookaround parentheses does not become a part of the result.
+
+E.g. in the pattern `pattern:\d+(?=€)`, the `pattern:€` sign doesn't get captured as a part of the match. That's natural: we look for a number `pattern:\d+`, while `pattern:(?=€)` is just a test that it should be followed by `subject:€`.
+
+But in some situations we might want to capture the lookaround expression as well, or a part of it. That's possible. Just wrap that part into additional parentheses.
+
+In the example below the currency sign `pattern:(€|kr)` is captured, along with the amount:
+
+```js run
+let str = "1 turkey costs 30€";
+let regexp = /\d+(?=(€|kr))/; // extra parentheses around €|kr
+
+console.log( str.match(regexp) ); // 30, €
+```
+
+And here's the same for lookbehind:
+
+```js run
+let str = "1 turkey costs $30";
+let regexp = /(?<=(\$|£))\d+/;
+
+console.log( str.match(regexp) ); // 30, $
 ```
