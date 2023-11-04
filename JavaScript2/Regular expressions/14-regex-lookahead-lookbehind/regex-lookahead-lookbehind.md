@@ -43,4 +43,23 @@ Please note: the lookahead is merely a test, the contents of the parentheses `pa
 
 When we look for `pattern:X(?=Y)`, the regular expression engine finds `pattern:X` and then checks if there's `pattern:Y` immediately after it. If it's not so, then the potential match is skipped, and the search continues.
 
+More complex tests are possible, e.g. `pattern:X(?=Y)(?=Z)` means:
 
+1. Find `pattern:X`.
+2. Check if `pattern:Y` is immediately after `pattern:X` (skip if isn't).
+3. Check if `pattern:Z` is also immediately after `pattern:X` (skip if isn't).
+4. If both tests passed, then the `pattern:X` is a match, otherwise continue searching.
+
+In other words, such pattern means that we're looking for `pattern:X` followed by `pattern:Y` and `pattern:Z` at the same time.
+
+That's only possible if patterns `pattern:Y` and `pattern:Z` aren't mutually exclusive.
+
+For example, `pattern:\d+(?=\s)(?=.*30)` looks for `pattern:\d+` that is followed by a space `pattern:(?=\s)`, and there's `30` somewhere after it `pattern:(?=.*30)`:
+
+```js run
+let str = "1 turkey costs 30€";
+
+alert( str.match(/\d+(?=\s)(?=.*30)/) ); // 1
+```
+
+In our string that exactly matches the number `1`.
