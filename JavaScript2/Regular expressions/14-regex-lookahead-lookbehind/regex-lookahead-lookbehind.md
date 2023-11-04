@@ -63,3 +63,48 @@ alert( str.match(/\d+(?=\s)(?=.*30)/) ); // 1
 ```
 
 In our string that exactly matches the number `1`.
+
+## Negative lookahead
+
+Let's say that we want a quantity instead, not a price from the same string. That's a number `pattern:\d+`, NOT followed by `subject:€`.
+
+For that, a negative lookahead can be applied.
+
+The syntax is: `pattern:X(?!Y)`, it means "search `pattern:X`, but only if not followed by `pattern:Y`".
+
+```js run
+let str = "2 turkeys cost 60€";
+
+alert( str.match(/\d+\b(?!€)/g) ); // 2 (the price is not matched)
+```
+
+## Lookbehind
+
+```warn header="Lookbehind browser compatibility"
+Please Note: Lookbehind is not supported in non-V8 browsers, such as Safari, Internet Explorer.
+```
+
+Lookahead allows to add a condition for "what follows".
+
+Lookbehind is similar, but it looks behind. That is, it allows to match a pattern only if there's something before it.
+
+The syntax is:
+- Positive lookbehind: `pattern:(?<=Y)X`, matches `pattern:X`, but only if there's  `pattern:Y` before it.
+- Negative lookbehind: `pattern:(?<!Y)X`, matches `pattern:X`, but only if there's no `pattern:Y` before it.
+
+For example, let's change the price to US dollars. The dollar sign is usually before the number, so to look for `$30` we'll use `pattern:(?<=\$)\d+` -- an amount preceded by `subject:$`:
+
+```js run
+let str = "1 turkey costs $30";
+
+// the dollar sign is escaped \$
+alert( str.match(/(?<=\$)\d+/) ); // 30 (skipped the sole number)
+```
+
+And, if we need the quantity -- a number, not preceded by `subject:$`, then we can use a negative lookbehind `pattern:(?<!\$)\d+`:
+
+```js run
+let str = "2 turkeys cost $60";
+
+alert( str.match(/(?<!\$)\b\d+/g) ); // 2 (the price is not matched)
+```
