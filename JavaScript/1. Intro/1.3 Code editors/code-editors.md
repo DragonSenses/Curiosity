@@ -2,6 +2,8 @@
 
 A code editor is the place where programmers spend most of their time.
 
+The choice of an editor, like any other tool, is individual and depends on your projects, habits, and personal preferences.
+
 There are two main types of code editors: IDEs and lightweight editors. Many people use one tool of each type.
 
 ## IDE
@@ -18,3 +20,19 @@ If you haven't selected an IDE yet, consider the following options:
 For Windows, there's also "Visual Studio", not to be confused with "Visual Studio Code". "Visual Studio" is a paid and mighty Windows-only editor, well-suited for the .NET platform. It's also good at JavaScript. There's also a free version [Visual Studio Community](https://www.visualstudio.com/vs/community/).
 
 Many IDEs are paid, but have a trial period. Their cost is usually negligible compared to a qualified developer's salary, so just choose the best one for you.
+
+## Lightweight editors
+
+"Lightweight editors" are not as powerful as IDEs, but they're fast, elegant and simple.
+
+They are mainly used to open and edit a file instantly.
+
+The main difference between a "lightweight editor" and an "IDE" is that an IDE works on a project-level, so it loads much more data on start, analyzes the project structure if needed and so on. A lightweight editor is much faster if we need only one file.
+
+In practice, lightweight editors may have a lot of plugins including directory-level syntax analyzers and autocompleters, so there's no strict border between a lightweight editor and an IDE.
+
+There are many options, for instance:
+
+- [Vim](https://www.vim.org/) and [Emacs](https://www.gnu.org/software/emacs/)
+- [Notepad++](https://notepad-plus-plus.org/) (Windows, free).
+- [Sublime Text](https://www.sublimetext.com/) (cross-platform, shareware).
