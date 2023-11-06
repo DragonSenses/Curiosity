@@ -13,3 +13,23 @@ To read about new bleeding-edge features, including those that are "almost stand
 
 Also, if you're developing for the browser, then there are other specifications covered in the [second part](info:browser-environment) of the tutorial.
 
+## Manuals
+
+- **MDN (Mozilla) JavaScript Reference** is the main manual with examples and other information. It's great to get in-depth information about individual language functions, methods etc.
+
+    You can find it at <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference>.
+
+Although, it's often best to use an internet search instead. Just use "MDN [term]" in the query, e.g. <https://google.com/search?q=MDN+parseInt> to search for the `parseInt` function.
+
+## Compatibility tables
+
+JavaScript is a developing language, new features get added regularly.
+
+To see their support among browser-based and other engines, see:
+
+- <https://caniuse.com> - per-feature tables of support, e.g. to see which engines support modern cryptography functions: <https://caniuse.com/#feat=cryptography>.
+- <https://kangax.github.io/compat-table> - a table with language features and engines that support those or don't support.
+
+All these resources are useful in real-life development, as they contain valuable information about language details, their support, etc.
+
+Please remember them (or this page) for the cases when you need in-depth information about a particular feature.
