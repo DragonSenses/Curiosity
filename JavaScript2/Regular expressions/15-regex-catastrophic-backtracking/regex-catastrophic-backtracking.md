@@ -64,4 +64,48 @@ Indeed, the regexp is artificial; we got it by simplifying the previous example.
 
 What happens during the search of `pattern:^(\d+)*$` in the line `subject:123456789z` (shortened a bit for clarity, please note a non-digit character `subject:z` at the end, it's important), why does it take so long?
 
+Here's what the regexp engine does:
 
+1. First, the regexp engine tries to find the content of the parentheses: the number `pattern:\d+`. The plus `pattern:+` is greedy by default, so it consumes all digits:
+
+    ```
+    \d+.......
+    (123456789)z
+    ```
+
+    After all digits are consumed, `pattern:\d+` is considered found (as `match:123456789`).
+
+    Then the star quantifier `pattern:(\d+)*` applies. But there are no more digits in the text, so the star doesn't give anything.
+
+    The next character in the pattern is the string end `pattern:$`. But in the text we have `subject:z` instead, so there's no match:
+
+    ```
+               X
+    \d+........$
+    (123456789)z
+    ```
+
+2. As there's no match, the greedy quantifier `pattern:+` decreases the count of repetitions, backtracks one character back.
+
+    Now `pattern:\d+` takes all digits except the last one (`match:12345678`):
+    ```
+    \d+.......
+    (12345678)9z
+    ```
+3. Then the engine tries to continue the search from the next position (right after `match:12345678`).
+
+    The star `pattern:(\d+)*` can be applied -- it gives one more match of `pattern:\d+`, the number `match:9`:
+
+    ```
+
+    \d+.......\d+
+    (12345678)(9)z
+    ```
+
+    The engine tries to match `pattern:$` again, but fails, because it meets `subject:z` instead:
+
+    ```
+                 X
+    \d+.......\d+
+    (12345678)(9)z
+    ```
