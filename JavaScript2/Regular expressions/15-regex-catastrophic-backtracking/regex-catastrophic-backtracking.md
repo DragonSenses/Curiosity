@@ -148,3 +148,38 @@ Here's what the regexp engine does:
 
     ...And so on.
 
+There are many ways to split a sequence of digits `123456789` into numbers. To be precise, there are <code>2<sup>n</sup>-1</code>, where `n` is the length of the sequence.
+
+- For `123456789` we have `n=9`, that gives 511 combinations.
+- For a longer sequence with `n=20` there are about one million (1048575) combinations.
+- For `n=30` - a thousand times more (1073741823 combinations).
+
+Trying each of them is exactly the reason why the search takes so long.
+
+## Back to words and strings
+
+The similar thing happens in our first example, when we look for words by pattern `pattern:^(\w+\s?)*$` in the string `subject:An input that hangs!`.
+
+The reason is that a word can be represented as one `pattern:\w+` or many:
+
+```
+(input)
+(inpu)(t)
+(inp)(u)(t)
+(in)(p)(ut)
+...
+```
+
+For a human, it's obvious that there may be no match, because the string ends with an exclamation sign `!`, but the regular expression expects a wordly character `pattern:\w` or a space `pattern:\s` at the end. But the engine doesn't know that.
+
+It tries all combinations of how the regexp `pattern:(\w+\s?)*` can "consume" the string, including variants with spaces `pattern:(\w+\s)*` and without them `pattern:(\w+)*` (because spaces `pattern:\s?` are optional). As there are many such combinations (we've seen it with digits), the search takes a lot of time.
+
+What to do?
+
+Should we turn on the lazy mode?
+
+Unfortunately, that won't help: if we replace `pattern:\w+` with `pattern:\w+?`, the regexp will still hang. The order of combinations will change, but not their total count.
+
+Some regular expression engines have tricky tests and finite automations that allow to avoid going through all combinations or make it much faster, but most engines don't, and it doesn't always help.
+
+## How to fix?
