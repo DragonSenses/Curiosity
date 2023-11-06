@@ -109,3 +109,42 @@ Here's what the regexp engine does:
     \d+.......\d+
     (12345678)(9)z
     ```
+
+  4. There's no match, so the engine will continue backtracking, decreasing the number of repetitions. Backtracking generally works like this: the last greedy quantifier decreases the number of repetitions until it reaches the minimum. Then the previous greedy quantifier decreases, and so on.
+
+    All possible combinations are attempted. Here are their examples.
+
+    The first number `pattern:\d+` has 7 digits, and then a number of 2 digits:
+
+    ```
+                 X
+    \d+......\d+
+    (1234567)(89)z
+    ```
+
+    The first number has 7 digits, and then two numbers of 1 digit each:
+
+    ```
+                   X
+    \d+......\d+\d+
+    (1234567)(8)(9)z
+    ```
+
+    The first number has 6 digits, and then a number of 3 digits:
+
+    ```
+                 X
+    \d+.......\d+
+    (123456)(789)z
+    ```
+
+    The first number has 6 digits, and then 2 numbers:
+
+    ```
+                   X
+    \d+.....\d+ \d+
+    (123456)(78)(9)z
+    ```
+
+    ...And so on.
+
