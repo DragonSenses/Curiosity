@@ -35,3 +35,27 @@
 		</div>
 	</body>
 </html>
+
+<!-- Multiple Style Sheets - link
+
+  On this page you can see the other technique for including multiple style 
+sheets. Inside the <head> element is a separate <link> element for each style
+sheet.
+
+  The contents of `site.css` are identical to `styles.css` in 
+`multiple-style-sheets-import`, except the code does not contain 
+@import rules.
+
+As with all style sheets, if two rules apply to the same element
+then rules that appear later in a document will take precedence 
+over previous rules.
+
+In this example `multiple-style-sheets-link.html`, any rules in `typography.css` 
+would take precedence over rules in `site.css` (because the typography rules 
+are included after the other rules).
+
+In the previous example `multiple-style-sheets-import.html`, the rules in 
+`styles.css` would take precedence over the rules in `typography.css`. 
+This is because when the `@import` rule is used, that is the point at
+which the browser considers the rules live.
+-->
