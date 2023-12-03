@@ -67,7 +67,6 @@ Here is a layout that is quite common (patricularly on blog sites).
 
 ```html
 <!DOCTYPE html>
-<html lang="en">
 <body>
   <div id="page">
 
@@ -97,3 +96,53 @@ Here is a layout that is quite common (patricularly on blog sites).
 
 - When coding a site like this, developers would usually put these main sections of the page inside `<div>` elements and use the `class` or `id` attributes to indicate the purpose of that part of the page.
 
+## HTML5 Layout - Semantic Elements
+
+HTML5 introduces a semantic elements that allow you to divide up the parts of a page. The names of these elements indicate the kind of content you will find in them.
+
+[Semantic elements](https://developer.mozilla.org/en-US/docs/Glossary/Semantics#semantic_elements) are elements that describe their **meaning** and **purpose** to both the browser and the developer, rather than just using generic elements like `<div>` and `<span>`.
+
+We can use semantic elements like this:
+
+```html
+<!DOCTYPE html>
+<body>
+  <div id="page">
+
+    <header>
+      <nav></nav>
+    </header>
+
+    <div id="content">
+      <article></article>
+      <article></article>
+    </div>
+
+    <aside></aside>
+
+    <footer></footer>
+
+  </div>
+</body>
+</html>
+```
+
+It has the same structure as the traditional HTML layout but many of the `div` elements have been replaced by semantic elements.
+
+- For example, the header sits
+inside a `<header>` element,
+the navigation in a `<nav>`
+element, and the articles are in
+individual `<article>` elements.
+
+The point of creating these new elements is so that web page authors can use them to help describe the structure of the page. 
+
+For example, screen reader software might allow users to ignore headers and footers and get straight to the content. 
+
+Similarly, search engines might place more weight on the content in an `<article>` element than that in the `<header>` or `<footer>` elements.
+
+Semantic elements improve:
+
+- Code readability
+- Accessibility
+- Search Engine Optimization
