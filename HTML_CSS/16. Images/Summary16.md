@@ -13,3 +13,17 @@
 - To reduce the number of images your browser has to load, you can create image sprites.
 
 ---
+
+## Images
+
+Controlling the size and alignment of your images using CSS keeps rules that affect the presentation of your page in the CSS and out of the HTML markup.
+
+You can also achieve several interesting effects using background images.
+
+- Specify the size and alignment of an image using
+- Add background images to boxes
+- Create image rollovers in CSS
+
+## Contrast of Background Images
+
+If you want to overlay text on a background image, the image must be low contrast in order for the text to be legible.
