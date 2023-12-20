@@ -59,7 +59,7 @@ let regexp = /^(\d+)*$/;
 let str = "012345678901234567890123456789z";
 
 // will take a very long time (careful!)
-alert( regexp.test(str) );
+console.log( regexp.test(str) );
 ```
 
 So what's wrong with the regexp?
@@ -202,7 +202,7 @@ This regexp is equivalent to the previous one (matches the same) and works well:
 let regexp = /^(\w+\s)*\w*$/;
 let str = "An input string that takes a long time or even makes this regex hang!";
 
-alert( regexp.test(str) ); // false
+console.log( regexp.test(str) ); // false
 ```
 
 Why did the problem disappear?
@@ -277,8 +277,8 @@ For instance, in the word `subject:JavaScript` it may not only match `match:Java
 Here's the comparison of two patterns:
 
 ```js run
-alert( "JavaScript".match(/\w+Script/)); // JavaScript
-alert( "JavaScript".match(/(?=(\w+))\1Script/)); // null
+console.log( "JavaScript".match(/\w+Script/)); // JavaScript
+console.log( "JavaScript".match(/(?=(\w+))\1Script/)); // null
 ```
 
 1. In the first variant `pattern:\w+` first captures the whole word `subject:JavaScript` but then `pattern:+` backtracks character by character, to try to match the rest of the pattern, until it finally succeeds (when `pattern:\w+` matches `match:Java`).
@@ -291,11 +291,11 @@ Let's rewrite the first example using lookahead to prevent backtracking:
 ```js run
 let regexp = /^((?=(\w+))\2\s?)*$/;
 
-alert( regexp.test("A good string") ); // true
+console.log( regexp.test("A good string") ); // true
 
 let str = "An input string that takes a long time or even makes this regex hang!";
 
-alert( regexp.test(str) ); // false, works and fast!
+console.log( regexp.test(str) ); // false, works and fast!
 ```
 
 Here `pattern:\2` is used instead of `pattern:\1`, because there are additional outer parentheses. To avoid messing up with the numbers, we can give the parentheses a name, e.g. `pattern:(?<word>\w+)`.
@@ -306,9 +306,9 @@ let regexp = /^((?=(?<word>\w+))\k<word>\s?)*$/;
 
 let str = "An input string that takes a long time or even makes this regex hang!";
 
-alert( regexp.test(str) ); // false
+console.log( regexp.test(str) ); // false
 
-alert( regexp.test("A correct string") ); // true
+console.log( regexp.test("A correct string") ); // true
 ```
 
 The problem described in this article is called "catastrophic backtracking".
@@ -316,3 +316,7 @@ The problem described in this article is called "catastrophic backtracking".
 We covered two ways how to solve it:
 - Rewrite the regexp to lower the possible combinations count.
 - Prevent backtracking.
+
+#### Extra references, please note: 
+
+There's more about the relation between possessive quantifiers and lookahead in articles [Regex: Emulate Atomic Grouping (and Possessive Quantifiers) with LookAhead](https://instanceof.me/post/52245507631/regex-emulate-atomic-grouping-with-lookahead) and [Mimicking Atomic Groups](https://blog.stevenlevithan.com/archives/mimic-atomic-groups).
