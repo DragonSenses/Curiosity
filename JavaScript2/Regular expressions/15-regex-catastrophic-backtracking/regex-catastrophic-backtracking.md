@@ -215,3 +215,23 @@ So `subject:input` could be matched as two repetitions of `pattern:\w+`, like th
 The new pattern is different: `pattern:(\w+\s)*` specifies repetitions of words followed by a space! The `subject:input` string can't be matched as two repetitions of `pattern:\w+\s`, because the space is mandatory.
 
 The time needed to try a lot of (actually most of) combinations is now saved.
+
+## Preventing backtracking
+
+It's not always convenient to rewrite a regexp though. In the example above it was easy, but it's not always obvious how to do it.
+
+Besides, a rewritten regexp is usually more complex, and that's not good. Regexps are complex enough without extra efforts.
+
+Luckily, there's an alternative approach. We can forbid backtracking for the quantifier.
+
+The root of the problem is that the regexp engine tries many combinations that are obviously wrong for a human.
+
+E.g. in the regexp `pattern:(\d+)*$` it's obvious for a human, that `pattern:+` shouldn't backtrack. If we replace one `pattern:\d+` with two separate `pattern:\d+\d+`, nothing changes:
+
+```
+\d+........
+(123456789)!
+
+\d+...\d+....
+(1234)(56789)!
+```
