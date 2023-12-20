@@ -247,3 +247,23 @@ There are also so-called "atomic capturing groups" - a way to disable backtracki
 ...But the bad news is that, unfortunately, in JavaScript they are not supported.
 
 We can emulate them though using a "lookahead transform".
+
+### Lookahead to the rescue!
+
+So we've come to real advanced topics. We'd like a quantifier, such as `pattern:+` not to backtrack, because sometimes backtracking makes no sense.
+
+The pattern to take as many repetitions of `pattern:\w` as possible without backtracking is: `pattern:(?=(\w+))\1`. Of course, we could take another pattern instead of `pattern:\w`.
+
+That may seem odd, but it's actually a very simple transform.
+
+Let's decipher it:
+
+- Lookahead `pattern:?=` looks forward for the longest word `pattern:\w+` starting at the current position.
+- The contents of parentheses with `pattern:?=...` isn't memorized by the engine, so wrap `pattern:\w+` into parentheses. Then the engine will memorize their contents
+- ...And allow us to reference it in the pattern as `pattern:\1`.
+
+That is: we look ahead - and if there's a word `pattern:\w+`, then match it as `pattern:\1`.
+
+Why? That's because the lookahead finds a word `pattern:\w+` as a whole and we capture it into the pattern with `pattern:\1`. So we essentially implemented a possessive plus `pattern:+` quantifier. It captures only the whole word `pattern:\w+`, not a part of it.
+
+For instance, in the word `subject:JavaScript` it may not only match `match:Java`, but leave out `match:Script` to match the rest of the pattern.
