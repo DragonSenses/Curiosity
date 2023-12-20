@@ -1,5 +1,11 @@
 # Catastrophic backtracking
 
+In this article we'll cover two ways how to solve "catastrophic backtracking":
+
+1. Rewrite the regexp to lower the possible combinations count.
+
+2. Prevent backtracking.
+
 Some regular expressions are looking simple, but can execute a veeeeeery long time, and even "hang" the JavaScript engine.
 
 Sooner or later most developers occasionally face such behavior. The typical symptom -- a regular expression works fine sometimes, but for certain strings it "hangs", consuming 100% of CPU.
@@ -279,3 +285,34 @@ alert( "JavaScript".match(/(?=(\w+))\1Script/)); // null
 2. In the second variant `pattern:(?=(\w+))` looks ahead and finds the word  `subject:JavaScript`, that is included into the pattern as a whole by `pattern:\1`, so there remains no way to find `subject:Script` after it.
 
 We can put a more complex regular expression into `pattern:(?=(\w+))\1` instead of `pattern:\w`, when we need to forbid backtracking for `pattern:+` after it.
+
+Let's rewrite the first example using lookahead to prevent backtracking:
+
+```js run
+let regexp = /^((?=(\w+))\2\s?)*$/;
+
+alert( regexp.test("A good string") ); // true
+
+let str = "An input string that takes a long time or even makes this regex hang!";
+
+alert( regexp.test(str) ); // false, works and fast!
+```
+
+Here `pattern:\2` is used instead of `pattern:\1`, because there are additional outer parentheses. To avoid messing up with the numbers, we can give the parentheses a name, e.g. `pattern:(?<word>\w+)`.
+
+```js run
+// parentheses are named ?<word>, referenced as \k<word>
+let regexp = /^((?=(?<word>\w+))\k<word>\s?)*$/;
+
+let str = "An input string that takes a long time or even makes this regex hang!";
+
+alert( regexp.test(str) ); // false
+
+alert( regexp.test("A correct string") ); // true
+```
+
+The problem described in this article is called "catastrophic backtracking".
+
+We covered two ways how to solve it:
+- Rewrite the regexp to lower the possible combinations count.
+- Prevent backtracking.
