@@ -183,3 +183,20 @@ Unfortunately, that won't help: if we replace `pattern:\w+` with `pattern:\w+?`,
 Some regular expression engines have tricky tests and finite automations that allow to avoid going through all combinations or make it much faster, but most engines don't, and it doesn't always help.
 
 ## How to fix?
+
+There are two main approaches to fixing the problem.
+
+The first is to lower the number of possible combinations.
+
+Let's make the space non-optional by rewriting the regular expression as `pattern:^(\w+\s)*\w*$` - we'll look for any number of words followed by a space `pattern:(\w+\s)*`, and then (optionally) a final word `pattern:\w*`.
+
+This regexp is equivalent to the previous one (matches the same) and works well:
+
+```js run
+let regexp = /^(\w+\s)*\w*$/;
+let str = "An input string that takes a long time or even makes this regex hang!";
+
+alert( regexp.test(str) ); // false
+```
+
+Why did the problem disappear?
