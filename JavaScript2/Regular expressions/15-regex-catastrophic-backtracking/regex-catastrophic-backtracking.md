@@ -200,3 +200,18 @@ alert( regexp.test(str) ); // false
 ```
 
 Why did the problem disappear?
+
+That's because now the space is mandatory.
+
+The previous regexp, if we omit the space, becomes `pattern:(\w+)*`, leading to many combinations of `\w+` within a single word
+
+So `subject:input` could be matched as two repetitions of `pattern:\w+`, like this:
+
+```
+\w+  \w+
+(inp)(ut)
+```
+
+The new pattern is different: `pattern:(\w+\s)*` specifies repetitions of words followed by a space! The `subject:input` string can't be matched as two repetitions of `pattern:\w+\s`, because the space is mandatory.
+
+The time needed to try a lot of (actually most of) combinations is now saved.
