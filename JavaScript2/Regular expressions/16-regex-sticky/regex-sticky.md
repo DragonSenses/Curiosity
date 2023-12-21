@@ -82,11 +82,34 @@ let str = 'let varName = "value"';
 
 let regexp = /\w+/g; // without flag "g", property lastIndex is ignored
 
-*!*
 regexp.lastIndex = 4;
-*/!*
 
 let word = regexp.exec(str);
 alert(word); // varName
 ```
 
+We performed a search of `pattern:\w+`, starting from position `regexp.lastIndex = 4`.
+
+The result is correct.
+
+Hooray! Problem solved! 
+
+...But wait, not so fast.
+
+Please note: the `regexp.exec` call starts searching at position `lastIndex` and then goes further. If there's no word at position `lastIndex`, but it's somewhere after it, then it will be found:
+
+```js run
+let str = 'let varName = "value"';
+
+let regexp = /\w+/g;
+
+// start the search from position 3
+regexp.lastIndex = 3;
+
+let word = regexp.exec(str); 
+// found the match at position 4
+alert(word[0]); // varName
+alert(word.index); // 4
+```
+
+For some tasks, including the lexical analysis, that's just wrong. We need to find a match exactly at the given position at the text, not somewhere after it. And that's what the flag `y` is for.
