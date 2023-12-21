@@ -18,7 +18,6 @@ Recalling the basic concept of the *reachability principle* from the garbage col
 
 For example:
 
-
 ```js
 //  the user variable holds a strong reference to the object
 let user = { name: "John" };
@@ -46,4 +45,23 @@ user = null;
 
 // the object is still reachable through the admin variable
 ```
-The object `{ name: "John" }` would only be deleted from memory if there were no strong references to it (if we also overwrote the value of the `admin` variable).  
+The object `{ name: "John" }` would only be deleted from memory if there were no strong references to it (if we also overwrote the value of the `admin` variable).
+
+In JavaScript, there is a concept called `WeakRef`, which behaves slightly differently in this case.
+
+#### Terms: **Strong reference**, **Weak reference**
+
+**Strong reference** - is a reference to an object or value, that prevents them from being deleted by the garbage collector. Thereby, keeping the object or value in memory, to which it points.  
+
+This means, that the object or value remains in memory and is not collected by the garbage collector as long, as there are active strong references to it.  
+
+In JavaScript, ordinary references to objects are strong references. For example:
+
+```js
+// the user variable holds a strong reference to this object
+let user = { name: "John" };
+```
+**Weak reference** - is a reference to an object or value, that does *not* prevent them from being deleted by the garbage collector.
+An object or value can be deleted by the garbage collector if, the only remaining references to them are weak references.
+````
+
