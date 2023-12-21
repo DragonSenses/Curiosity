@@ -32,3 +32,40 @@ For a `regexp` without flags `pattern:g` and `pattern:y`, this method looks only
 In other words, `regexp.lastIndex` serves as a starting point for the search, that each `regexp.exec(str)` call resets to the new value ("after the last match"). That's only if there's `pattern:g` flag, of course.
 
 So, successive calls to `regexp.exec(str)` return matches one after another.
+
+**Here's an example of such calls:**
+
+```js run
+let str = 'let varName'; // Let's find all words in this string
+let regexp = /\w+/g;
+
+alert(regexp.lastIndex); // 0 (initially lastIndex=0)
+
+let word1 = regexp.exec(str);
+alert(word1[0]); // let (1st word)
+alert(regexp.lastIndex); // 3 (position after the match)
+
+let word2 = regexp.exec(str);
+alert(word2[0]); // varName (2nd word)
+alert(regexp.lastIndex); // 11 (position after the match)
+
+let word3 = regexp.exec(str);
+alert(word3); // null (no more matches)
+alert(regexp.lastIndex); // 0 (resets at search end)
+```
+
+We can get all matches in the loop:
+
+```js run
+let str = 'let varName';
+let regexp = /\w+/g;
+
+let result;
+
+while (result = regexp.exec(str)) {
+  alert( `Found ${result[0]} at position ${result.index}` );
+  // Found let at position 0, then
+  // Found varName at position 4
+}
+```
+
