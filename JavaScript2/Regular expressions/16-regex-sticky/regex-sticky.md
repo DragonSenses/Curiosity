@@ -69,3 +69,24 @@ while (result = regexp.exec(str)) {
 }
 ```
 
+Such use of `regexp.exec` is an alternative to method `str.matchAll`, with a bit more control over the process.
+
+Let's go back to our task.
+
+We can manually set `lastIndex` to `4`, to start the search from the given position!
+
+Like this:
+
+```js run
+let str = 'let varName = "value"';
+
+let regexp = /\w+/g; // without flag "g", property lastIndex is ignored
+
+*!*
+regexp.lastIndex = 4;
+*/!*
+
+let word = regexp.exec(str);
+alert(word); // varName
+```
+
