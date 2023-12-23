@@ -116,7 +116,6 @@ At this point, to get the object from the `WeakRef` instance, we will use its `d
 
 The `deref()` method returns the referent-object that the `WeakRef` points to, if the object is still in memory. If the object has been deleted by the garbage collector, then the `deref()` method will return `undefined`:
 
-
 ```js
 let ref = admin.deref();
 
@@ -126,3 +125,11 @@ if (ref) {
   // the object has been collected by the garbage collector
 }
 ```
+
+## WeakRef use cases
+
+`WeakRef` is typically used to create caches or [associative arrays](https://en.wikipedia.org/wiki/Associative_array) that store resource-intensive objects.
+This allows one to avoid preventing these objects from being collected by the garbage collector solely based on their presence in the cache or associative array.  
+
+One of the primary examples - is a situation when we have numerous binary image objects (for instance, represented as `ArrayBuffer` or `Blob`), and we want to associate a name or path with each image.
+Existing data structures are not quite suitable for these purposes:
