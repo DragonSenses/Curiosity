@@ -133,3 +133,16 @@ This allows one to avoid preventing these objects from being collected by the ga
 
 One of the primary examples - is a situation when we have numerous binary image objects (for instance, represented as `ArrayBuffer` or `Blob`), and we want to associate a name or path with each image.
 Existing data structures are not quite suitable for these purposes:
+
+- Using `Map` to create associations between names and images, or vice versa, will keep the image objects in memory since they are present in the `Map` as keys or values.
+- `WeakMap` is ineligible for this goal either: because the objects represented as `WeakMap` keys use weak references, and are not protected from deletion by the garbage collector.
+
+But, in this situation, we need a data structure that would use weak references in its values.
+
+For this purpose, we can use a `Map` collection, whose values are `WeakRef` instances referring to the large objects we need.
+Consequently, we will not keep these large and unnecessary objects in memory longer than they should be.  
+
+Otherwise, this is a way to get the image object from the cache if it is still reachable.
+If it has been garbage collected, we will re-generate or re-download it again.  
+
+This way, less memory is used in some situations.  
