@@ -146,3 +146,36 @@ Otherwise, this is a way to get the image object from the cache if it is still r
 If it has been garbage collected, we will re-generate or re-download it again.  
 
 This way, less memory is used in some situations.  
+
+## Example 1 - using WeakRef for caching
+
+Below is a code snippet that demonstrates the technique of using `WeakRef`.  
+
+In short, we use a `Map` with string keys and `WeakRef` objects as their values.
+If the `WeakRef` object has not been collected by the garbage collector, we get it from the cache.
+Otherwise, we re-download it again and put it in the cache for further possible reuse:  
+
+```js
+function fetchImg() {
+    // abstract function for downloading images...
+}
+
+function weakRefCache(fetchImg) { // (1)
+    const imgCache = new Map(); // (2)
+
+    return (imgName) => { // (3)
+        const cachedImg = imgCache.get(imgName); // (4)
+
+        if (cachedImg?.deref()) { // (5)
+            return cachedImg?.deref();
+        }
+
+        const newImg = fetchImg(imgName); // (6)
+        imgCache.set(imgName, new WeakRef(newImg)); // (7)
+
+        return newImg;
+    };
+}
+
+const getCachedImg = weakRefCache(fetchImg);
+```  
