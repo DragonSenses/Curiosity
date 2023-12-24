@@ -385,3 +385,28 @@ function weakRefCache(fetchImg) {
 
 const getCachedImg = weakRefCache(fetchImg);
 ```
+
+1. To manage the cleanup of "dead" cache entries, when the associated `WeakRef` objects are collected by the garbage collector, we create a `FinalizationRegistry` cleanup registry.
+
+   The important point here is, that in the cleanup callback, it should be checked, if the entry was deleted by the garbage collector and not re-added, in order not to delete a "live" entry.
+2. Once the new value (image) is downloaded and put into the cache, we register it in the finalizer registry to track the `WeakRef` object.
+
+This implementation contains only actual or "live" key/value pairs.
+In this case, each `WeakRef` object is registered in the `FinalizationRegistry`.
+And after the objects are cleaned up by the garbage collector, the cleanup callback will delete all `undefined` values.
+
+Here is a visual representation of the updated code:  
+
+![](weakref-finalizationregistry-05.svg)
+
+A key aspect of the updated implementation is that finalizers allow parallel processes to be created between the "main" program and cleanup callbacks.
+In the context of JavaScript, the "main" program - is our JavaScript-code, that runs and executes in our application or web page.  
+
+Hence, from the moment an object is marked for deletion by the garbage collector, and to the actual execution of the cleanup callback, there may be a certain time gap.
+It is important to understand that during this time gap, the main program can make any changes to the object or even bring it back to memory.  
+
+That's why, in the cleanup callback, we must check to see if an entry has been added back to the cache by the main program to avoid deleting "live" entries.
+Similarly, when searching for a key in the cache, there is a chance that the value has been deleted by the garbage collector, but the cleanup callback has not been executed yet.  
+
+Such situations require special attention if you are working with `FinalizationRegistry`.
+
