@@ -410,3 +410,19 @@ Similarly, when searching for a key in the cache, there is a chance that the val
 
 Such situations require special attention if you are working with `FinalizationRegistry`.
 
+## Using WeakRef and FinalizationRegistry in practice
+
+Moving from theory to practice, imagine a real-life scenario, where a user synchronizes their photos on a mobile device with some cloud service
+(such as [iCloud](https://en.wikipedia.org/wiki/ICloud) or [Google Photos](https://en.wikipedia.org/wiki/Google_Photos)),
+and wants to view them from other devices. In addition to the basic functionality of viewing photos, such services offer a lot of additional features, for example:  
+
+- Photo editing and video effects.
+- Creating "memories" and albums.
+- Video montage from a series of photos.
+
+Here, as an example, we will use a fairly primitive implementation of such a service.
+The main point - is to show a possible scenario of using `WeakRef` and `FinalizationRegistry` together in real life.
+
+Here is what it looks like:
+
+![](weakref-finalizationregistry-demo-01.png)
