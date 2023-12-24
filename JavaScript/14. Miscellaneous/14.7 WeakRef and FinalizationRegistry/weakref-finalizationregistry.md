@@ -147,7 +147,7 @@ If it has been garbage collected, we will re-generate or re-download it again.
 
 This way, less memory is used in some situations.  
 
-## Example 1 - using WeakRef for caching
+## Example 1: using WeakRef for caching
 
 Below is a code snippet that demonstrates the technique of using `WeakRef`.  
 
@@ -204,3 +204,22 @@ But, this implementation has its drawbacks: over time, `Map` will be filled with
 
 One way to handle this problem - is to periodically scavenge the cache and clear out "dead" entries.
 Another way - is to use finalizers, which we will explore next.  
+
+## Example 2: Using WeakRef to track DOM objects
+
+Another use case for `WeakRef` - is tracking DOM objects.  
+
+Let's imagine a scenario where some third-party code or library interacts with elements on our page as long as they exist in the DOM.
+For example, it could be an external utility for monitoring and notifying about the system's state (commonly so-called "logger" – a program that sends informational messages called "logs").
+
+See **weakref-dom** for the interactive example.
+
+When the "Start sending messages" button is clicked, in the so-called "logs display window" (an element with the `.window__body` class), messages (logs) start to appear.  
+
+But, as soon as this element is deleted from the DOM, the logger should stop sending messages.
+To reproduce the removal of this element, just click the "Close" button in the top right corner.  
+
+In order not to complicate our work, and not to notify third-party code every time our DOM-element is available, and when it is not, it will be enough to create a weak reference to it using `WeakRef`.    
+
+Once the element is removed from the DOM, the logger will notice it and stop sending messages.
+
