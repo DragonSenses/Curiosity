@@ -344,3 +344,44 @@ For example:
   If the object that creates the `FinalizationRegistry` instance goes out of scope or is deleted, the cleanup callbacks registered in that registry might also not be invoked.
 
 
+## Caching with FinalizationRegistry
+
+Returning to our *weak* cache example, we can notice the following:
+- Even though the values wrapped in the `WeakRef` have been collected by the garbage collector, there is still an issue of "memory leakage" in the form of the remaining keys, whose values have been collected by the garbage collector.
+
+Here is an improved caching example using `FinalizationRegistry`:
+
+```js
+function fetchImg() {
+  // abstract function for downloading images...
+}
+
+function weakRefCache(fetchImg) {
+  const imgCache = new Map();
+
+  *!*
+  const registry = new FinalizationRegistry((imgName) => { // (1)
+    const cachedImg = imgCache.get(imgName);
+    if (cachedImg && !cachedImg.deref()) imgCache.delete(imgName);
+  });
+  */!*
+
+  return (imgName) => {
+    const cachedImg = imgCache.get(imgName);
+    
+    if (cachedImg?.deref()) {
+      return cachedImg?.deref();
+    }
+
+    const newImg = fetchImg(imgName);
+    imgCache.set(imgName, new WeakRef(newImg));
+    *!*
+    registry.register(newImg, imgName); // (2)
+    */!*
+
+    return newImg;
+  };
+}
+
+const getCachedImg = weakRefCache(fetchImg);
+```
