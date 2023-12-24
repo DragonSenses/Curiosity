@@ -194,3 +194,13 @@ Now we have a `Map` collection, where the keys - are image names as strings, and
 This technique helps to avoid allocating a large amount of memory for resource-intensive objects, that nobody uses anymore.
 It also saves memory and time in case of reusing cached objects.
 
+Here is a visual representation of what this code looks like:  
+
+![](weakref-finalizationregistry-03.svg) 
+
+But, this implementation has its drawbacks: over time, `Map` will be filled with strings as keys, that point to a `WeakRef`, whose referent-object has already been garbage collected:  
+
+![](weakref-finalizationregistry-04.svg)
+
+One way to handle this problem - is to periodically scavenge the cache and clear out "dead" entries.
+Another way - is to use finalizers, which we will explore next.  
