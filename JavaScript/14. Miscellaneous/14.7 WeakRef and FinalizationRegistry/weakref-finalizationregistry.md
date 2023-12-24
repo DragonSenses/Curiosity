@@ -270,3 +270,28 @@ const startMessages = (element) => {
 
 
   This functionality is supported in most modern browsers. After the actions are taken, the `alert` will trigger immediately.
+
+## FinalizationRegistry
+
+Now it is time to talk about finalizers. Before we move on, let's clarify the terminology:  
+
+**Cleanup callback (finalizer)** - is a function that is executed, when an object, registered in the `FinalizationRegistry`, is deleted from memory by the garbage collector.  
+
+Its purpose - is to provide the ability to perform additional operations, related to the object, after it has been finally deleted from memory.  
+
+**Registry** (or `FinalizationRegistry`) - is a special object in JavaScript that manages the registration and unregistration of objects and their cleanup callbacks.  
+
+This mechanism allows registering an object to track and associate a cleanup callback with it.
+Essentially it is a structure that stores information about registered objects and their cleanup callbacks, and then automatically invokes those callbacks when the objects are deleted from memory.  
+
+To create an instance of the `FinalizationRegistry`, it needs to call its constructor, which takes a single argument - the cleanup callback (finalizer).  
+
+Syntax:
+
+```js
+function cleanupCallback(heldValue) { 
+  // cleanup callback code 
+}
+
+const registry = new FinalizationRegistry(cleanupCallback);
+```
