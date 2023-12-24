@@ -178,4 +178,19 @@ function weakRefCache(fetchImg) { // (1)
 }
 
 const getCachedImg = weakRefCache(fetchImg);
-```  
+```
+
+Let's delve into the details of what happened here:
+1. `weakRefCache` - is a higher-order function that takes another function, `fetchImg`, as an argument. In this example, we can neglect a detailed description of the `fetchImg` function, since it can be any logic for downloading images.
+2. `imgCache` - is a cache of images, that stores cached results of the `fetchImg` function, in the form of string keys (image name) and `WeakRef` objects as their values.
+3. Return an anonymous function that takes the image name as an argument. This argument will be used as a key for the cached image.
+4. Trying to get the cached result from the cache, using the provided key (image name).
+5. If the cache contains a value for the specified key, and the `WeakRef` object has not been deleted by the garbage collector, return the cached result.
+6. If there is no entry in the cache with the requested key, or `deref()` method returns `undefined` (meaning that the `WeakRef` object has been garbage collected), the `fetchImg` function downloads the image again.
+7. Put the downloaded image into the cache as a `WeakRef` object.  
+
+Now we have a `Map` collection, where the keys - are image names as strings, and values - are `WeakRef` objects containing the images themselves.
+
+This technique helps to avoid allocating a large amount of memory for resource-intensive objects, that nobody uses anymore.
+It also saves memory and time in case of reusing cached objects.
+
