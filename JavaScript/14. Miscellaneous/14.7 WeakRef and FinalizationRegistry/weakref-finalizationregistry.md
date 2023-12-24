@@ -251,3 +251,22 @@ const startMessages = (element) => {
     }, 1000);
 };
 ```
+
+1. Get the DOM-element of the "Start sending messages" button.
+2. Get the DOM-element of the "Close" button.
+3. Get the DOM-element of the logs display window using the `new WeakRef()` constructor. This way, the `windowElementRef` variable holds a weak reference to the DOM-element.
+4. Add an event listener on the "Start sending messages" button, responsible for starting the logger when clicked.
+5. Add an event listener on the "Close" button, responsible for closing the logs display window when clicked.
+6. Use `setInterval` to start displaying a new message every second.
+7. If the DOM-element of the logs display window is still accessible and kept in memory, create and send a new message.
+8. If the `deref()` method returns `undefined`, it means that the DOM-element has been deleted from memory. In this case, the logger stops displaying messages and clears the timer.
+9. `alert`, which will be called, after the DOM-element of the logs display window is deleted from memory (i.e. after clicking the "Close" button). **Note, that deletion from memory may not happen immediately, as it depends only on the internal mechanisms of the garbage collector.**
+
+   We cannot control this process directly from the code. However, despite this, we still have the option to force garbage collection from the browser.
+
+ In Google Chrome, for example, to do this, you need to open the developer tools (`[Ctrl]` + `[Shift]` + `[J]` on Windows/Linux or `[Option]` + `[key]` + `[J]` on macOS), go to the "Performance" tab, and click on the bin icon button – "Collect garbage":
+
+   ![](google-chrome-developer-tools.png)
+
+
+  This functionality is supported in most modern browsers. After the actions are taken, the `alert` will trigger immediately.
