@@ -295,3 +295,52 @@ function cleanupCallback(heldValue) {
 
 const registry = new FinalizationRegistry(cleanupCallback);
 ```
+
+Here:
+
+- `cleanupCallback` - a cleanup callback that will be automatically called when a registered object is deleted from memory.
+- `heldValue` - the value that is passed as an argument to the cleanup callback. If `heldValue` is an object, the registry keeps a strong reference to it.
+- `registry` - an instance of `FinalizationRegistry`.
+
+`FinalizationRegistry` methods:
+
+- `register(target, heldValue [, unregisterToken])` - used to register objects in the registry.
+
+  `target` - the object being registered for tracking. If the `target` is garbage collected, the cleanup callback will be called with `heldValue` as its argument.
+
+  Optional `unregisterToken` – an unregistration token. It can be passed to unregister an object before the garbage collector deletes it. Typically, the `target` object is used as `unregisterToken`, which is the standard practice.
+- `unregister(unregisterToken)` - the `unregister` method is used to unregister an object from the registry. It takes one argument - `unregisterToken` (the unregister token that was obtained when registering the object).  
+
+Now let's move on to a simple example. Let's use the already-known `user` object and create an instance of `FinalizationRegistry`:  
+
+```js
+let user = { name: "John" };
+
+const registry = new FinalizationRegistry((heldValue) => {
+  console.log(`${heldValue} has been collected by the garbage collector.`);
+});
+```
+
+Then, we will register the object, that requires a cleanup callback by calling the `register` method:
+
+```js
+registry.register(user, user.name);
+```
+
+The registry does not keep a strong reference to the object being registered, as this would defeat its purpose. If the registry kept a strong reference, then the object would never be garbage collected.  
+
+If the object is deleted by the garbage collector, our cleanup callback may be called at some point in the future, with the `heldValue` passed to it:
+
+```js
+// When the user object is deleted by the garbage collector, the following message will be printed in the console:
+"John has been collected by the garbage collector."
+```
+
+There are also situations where, even in implementations that use a cleanup callback, there is a chance that it will not be called.
+
+For example:
+- When the program fully terminates its operation (for example, when closing a tab in a browser).
+- When the `FinalizationRegistry` instance itself is no longer reachable to JavaScript code.
+  If the object that creates the `FinalizationRegistry` instance goes out of scope or is deleted, the cleanup callbacks registered in that registry might also not be invoked.
+
+
