@@ -434,3 +434,64 @@ Then, the resulting collage can be downloaded as an image.
 To increase page loading speed, it would be reasonable to download and display photo thumbnails in *compressed* quality.
 But, to create a collage from selected photos, download and use them in *full-size* quality.  
 
+Below, we can see, that the intrinsic size of the thumbnails is 240x240 pixels.
+The size was chosen on purpose to increase loading speed.
+Moreover, we do not need full-size photos in preview mode.
+
+![](weakref-finalizationregistry-demo-02.png)
+
+Let's assume, that we need to create a collage of 4 photos: we select them, and then click the "Create collage" button.
+At this stage, the already known to us <code>weakRefCache</code> function checks whether the required image is in the cache.
+If not, it downloads it from the cloud and puts it in the cache for further use.
+This happens for each selected image:
+
+![](weakref-finalizationregistry-demo-03.gif)
+
+Paying attention to the output in the console, you can see, which of the photos were downloaded from the cloud - this is indicated by <span style="background-color:#133159;color:white;font-weight:500">FETCHED_IMAGE</span>.
+Since this is the first attempt to create a collage, this means, that at this stage the "weak cache" was still empty, and all the photos were downloaded from the cloud and put in it.
+
+But, along with the process of downloading images, there is also a process of memory cleanup by the garbage collector.
+This means, that the object stored in the cache, which we refer to, using a weak reference, is deleted by the garbage collector.
+And our finalizer executes successfully, thereby deleting the key, by which the image was stored in the cache.
+<span style="background-color:#901e30;color:white;font-weight:500;">CLEANED_IMAGE</span> notifies us about it:
+
+![](weakref-finalizationregistry-demo-04.jpg)
+
+Next, we realize that we do not like the resulting collage, and decide to change one of the images and create a new one.
+To do this, just deselect the unnecessary image, select another one, and click the "Create collage" button again:
+
+![](weakref-finalizationregistry-demo-05.gif)
+
+But this time not all images were downloaded from the network, and one of them was taken from the weak cache: the <span style="background-color:#385950;color:white;font-weight:500;">CACHED_IMAGE</span> message tells us about it.
+This means that at the time of collage creation, the garbage collector had not yet deleted our image, and we boldly took it from the cache,
+thereby reducing the number of network requests and speeding up the overall time of the collage creation process:
+
+![](weakref-finalizationregistry-demo-06.jpg)
+
+Let's "play around" a little more, by replacing one of the images again and creating a new collage:
+
+
+![](weakref-finalizationregistry-demo-07.gif)
+
+This time the result is even more impressive. Of the 4 images selected, 3 of them were taken from the weak cache, and only one had to be downloaded from the network.
+The reduction in network load was about 75%. Impressive, isn't it?
+
+![](weakref-finalizationregistry-demo-08.jpg)
+
+Of course, it is important to remember, that such behavior is not guaranteed, and depends on the specific implementation and operation of the garbage collector.  
+
+Based on this, a completely logical question immediately arises: why do not we use an ordinary cache, where we can manage its entities ourselves, instead of relying on the garbage collector?
+That's right, in the vast majority of cases there is no need to use `WeakRef` and `FinalizationRegistry`.  
+
+Here, we simply demonstrated an alternative implementation of similar functionality, using a non-trivial approach with interesting language features.
+Still, we cannot rely on this example, if we need a constant and predictable result.
+
+See **example-weakref-finalization-registry**
+
+## Summary
+
+`WeakRef` - designed to create weak references to objects, allowing them to be deleted from memory by the garbage collector if there are no longer strong references to them.
+This is beneficial for addressing excessive memory usage and optimizing the utilization of system resources in applications.
+
+`FinalizationRegistry` - is a tool for registering callbacks, that are executed when objects that are no longer strongly referenced, are destroyed.
+This allows releasing resources associated with the object or performing other necessary operations before deleting the object from memory.
