@@ -36,9 +36,9 @@ Or a similar, but slightly more complicated code with two strong references:
 let user = { name: "John" };
 
 // copied the strong reference to the object into the admin variable
-*!*
+
 let admin = user;
-*/!*
+
 
 // let's overwrite the value of the user variable
 user = null;
@@ -88,9 +88,9 @@ In our case — this is the `user` variable:
 let user = { name: "John" };
 
 //  the admin variable holds a weak reference to the object
-*!*
+
 let admin = new WeakRef(user);
-*/!*
+
 
 ```
 
@@ -359,12 +359,12 @@ function fetchImg() {
 function weakRefCache(fetchImg) {
   const imgCache = new Map();
 
-  *!*
+  
   const registry = new FinalizationRegistry((imgName) => { // (1)
     const cachedImg = imgCache.get(imgName);
     if (cachedImg && !cachedImg.deref()) imgCache.delete(imgName);
   });
-  */!*
+  
 
   return (imgName) => {
     const cachedImg = imgCache.get(imgName);
@@ -375,9 +375,9 @@ function weakRefCache(fetchImg) {
 
     const newImg = fetchImg(imgName);
     imgCache.set(imgName, new WeakRef(newImg));
-    *!*
+    
     registry.register(newImg, imgName); // (2)
-    */!*
+    
 
     return newImg;
   };
@@ -426,3 +426,11 @@ The main point - is to show a possible scenario of using `WeakRef` and `Finaliza
 Here is what it looks like:
 
 ![](weakref-finalizationregistry-demo-01.png)
+
+On the left side, there is a cloud library of photos (they are displayed as thumbnails).
+We can select the images we need and create a collage, by clicking the "Create collage" button on the right side of the page.
+Then, the resulting collage can be downloaded as an image.
+
+To increase page loading speed, it would be reasonable to download and display photo thumbnails in *compressed* quality.
+But, to create a collage from selected photos, download and use them in *full-size* quality.  
+
