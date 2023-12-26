@@ -52,3 +52,38 @@ It has 3 modes:
     ```js
     let result = str.match(regexp) || [];
     ```
+
+## str.matchAll(regexp)
+
+A recent addition to the language. So old browsers may need polyfills.
+
+The method `str.matchAll(regexp)` is a "newer, improved" variant of `str.match`.
+
+It's used mainly to search for all matches with all groups.
+
+There are 3 differences from `match`:
+
+1. It returns an iterable object with matches instead of an array. We can make a regular array from it using `Array.from`.
+2. Every match is returned as an array with capturing groups (the same format as `str.match` without flag `pattern:g`).
+3. If there are no results, it returns an empty iterable object instead of `null`.
+
+Usage example:
+
+```js run
+let str = '<h1>Hello, world!</h1>';
+let regexp = /<(.*?)>/g;
+
+let matchAll = str.matchAll(regexp);
+
+alert(matchAll); // [object RegExp String Iterator], not array, but an iterable
+
+matchAll = Array.from(matchAll); // array now
+
+let firstMatch = matchAll[0];
+alert( firstMatch[0] );  // <h1>
+alert( firstMatch[1] );  // h1
+alert( firstMatch.index );  // 0
+alert( firstMatch.input );  // <h1>Hello, world!</h1>
+```
+
+If we use `for..of` to loop over `matchAll` matches, then we don't need `Array.from` any more.
