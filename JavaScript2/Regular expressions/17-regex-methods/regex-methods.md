@@ -24,3 +24,31 @@ It has 3 modes:
     alert( result.input );  // I love JavaScript (source string)
     ```
 
+2. If the `regexp` has flag `pattern:g`, then it returns an array of all matches as strings, without capturing groups and other details.
+    ```js run
+    let str = "I love JavaScript";
+
+    let result = str.match(/Java(Script)/g);
+
+    alert( result[0] ); // JavaScript
+    alert( result.length ); // 1
+    ```
+
+3. If there are no matches, no matter if there's flag `pattern:g` or not, `null` is returned.
+
+    That's an important nuance. If there are no matches, we don't get an empty array, but `null`. It's easy to make a mistake forgetting about it, e.g.:
+
+    ```js run
+    let str = "I love JavaScript";
+
+    let result = str.match(/HTML/);
+
+    alert(result); // null
+    alert(result.length); // Error: Cannot read property 'length' of null
+    ```
+
+    If we want the result to be an array, we can write like this:
+
+    ```js
+    let result = str.match(regexp) || [];
+    ```
