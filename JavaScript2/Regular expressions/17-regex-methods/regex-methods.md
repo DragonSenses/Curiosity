@@ -15,13 +15,13 @@ It has 3 modes:
 
     let result = str.match(/Java(Script)/);
 
-    alert( result[0] );     // JavaScript (full match)
-    alert( result[1] );     // Script (first capturing group)
-    alert( result.length ); // 2
+    console.log( result[0] );     // JavaScript (full match)
+    console.log( result[1] );     // Script (first capturing group)
+    console.log( result.length ); // 2
 
     // Additional information:
-    alert( result.index );  // 7 (match position)
-    alert( result.input );  // I love JavaScript (source string)
+    console.log( result.index );  // 7 (match position)
+    console.log( result.input );  // I love JavaScript (source string)
     ```
 
 2. If the `regexp` has flag `pattern:g`, then it returns an array of all matches as strings, without capturing groups and other details.
@@ -30,8 +30,8 @@ It has 3 modes:
 
     let result = str.match(/Java(Script)/g);
 
-    alert( result[0] ); // JavaScript
-    alert( result.length ); // 1
+    console.log( result[0] ); // JavaScript
+    console.log( result.length ); // 1
     ```
 
 3. If there are no matches, no matter if there's flag `pattern:g` or not, `null` is returned.
@@ -43,8 +43,8 @@ It has 3 modes:
 
     let result = str.match(/HTML/);
 
-    alert(result); // null
-    alert(result.length); // Error: Cannot read property 'length' of null
+    console.log(result); // null
+    console.log(result.length); // Error: Cannot read property 'length' of null
     ```
 
     If we want the result to be an array, we can write like this:
@@ -75,15 +75,15 @@ let regexp = /<(.*?)>/g;
 
 let matchAll = str.matchAll(regexp);
 
-alert(matchAll); // [object RegExp String Iterator], not array, but an iterable
+console.log(matchAll); // [object RegExp String Iterator], not array, but an iterable
 
 matchAll = Array.from(matchAll); // array now
 
 let firstMatch = matchAll[0];
-alert( firstMatch[0] );  // <h1>
-alert( firstMatch[1] );  // h1
-alert( firstMatch.index );  // 0
-alert( firstMatch.input );  // <h1>Hello, world!</h1>
+console.log( firstMatch[0] );  // <h1>
+console.log( firstMatch[1] );  // h1
+console.log( firstMatch.index );  // 0
+console.log( firstMatch.input );  // <h1>Hello, world!</h1>
 ```
 
 If we use `for..of` to loop over `matchAll` matches, then we don't need `Array.from` any more.
@@ -95,11 +95,25 @@ Splits the string using the regexp (or a substring) as a delimiter.
 We can use `split` with strings, like this:
 
 ```js run
-alert('12-34-56'.split('-')) // array of ['12', '34', '56']
+console.log('12-34-56'.split('-')) // array of ['12', '34', '56']
 ```
 
 But we can split by a regular expression, the same way:
 
 ```js run
-alert('12, 34, 56'.split(/,\s*/)) // array of ['12', '34', '56']
+console.log('12, 34, 56'.split(/,\s*/)) // array of ['12', '34', '56']
 ```
+
+## str.search(regexp)
+
+The method `str.search(regexp)` returns the position of the first match or `-1` if none found:
+
+```js run
+let str = "A drop of ink may make a million think";
+
+console.log( str.search( /ink/i ) ); // 10 (first match position)
+```
+
+**The important limitation: `search` only finds the first match.**
+
+If we need positions of further matches, we should use other means, such as finding them all with `str.matchAll(regexp)`.
