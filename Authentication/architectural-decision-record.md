@@ -60,6 +60,13 @@ Some design decisions will favor neuroplasticity (i.e., learning new things) and
 - Unauthenticated users **cannot** view *secrets*
 - User can Create, Read, Update, Delete *secrets*
 
+## Tech used
+
+- Express
+- EJS
+- MongoDB
+  - Mongoose
+
 ## Project Structure
 
 -app
@@ -94,9 +101,11 @@ Install packages:
 - [Express](https://expressjs.com/en/starter/installing.html)
 - [body parser](https://expressjs.com/en/resources/middleware/body-parser.html)
 - [EJS](https://ejs.co/#install)
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [mongoose](https://www.npmjs.com/package/mongoose)
 
 ```sh
-npm i express ejs body-parser
+npm i express ejs body-parser dotenv mongoose
 ```
 
 ### Add "type": "module" to your package.json file.
@@ -121,6 +130,34 @@ Also configure `ESLint`'s config file `.eslintrc` by specifying `sourceType` as 
       "sourceType": "module",
       "ecmaVersion": 2022
   }
+```
+
+### Create environment variables to protect sensitive data
+
+Since we are using database, we are going to have sensitive data. 
+
+Install `dotenv`
+
+```sh
+npm i dotenv
+```
+
+Create `.env` file at root of project. Make sure `.env` is added in the `.gitignore`.
+
+Now we can create  variables in the `.env` file and use them to refer to sensitive data such as connection strings for databases, or API keys.
+
+```.env
+YOUR_SECRET_KEY="SECRET_KEY_GOES_HERE"
+```
+
+Next in our app we can import and configure dotenv. And then can interpolate the variable using `process.env.YOUR_SECRET_KEY`;
+
+```js
+import 'dotenv/config'
+
+function connectToDatabase(){
+  connect(process.env.YOUR_SECRET_KEY);
+}
 ```
 
 ## Develop `app.js` express server
@@ -176,4 +213,70 @@ app.get("/register", (req, res) => {
 
 With routes in place we can start adding security.
 
-## Level 1: Basic Account creation
+# Level 1: Basic account creation
+
+Basic account creation on a website is a process that allows you to register as a user and access the features and content of that website. 
+
+Usually, you need to provide some information about yourself, such as your name, email address, and password, and agree to the terms and conditions of the website. Some websites may also ask you to verify your email address or phone number, or answer some security questions.
+
+Steps for the user to sign-up and register
+
+1. Click sign-up or register button
+2. Fill out registration form. User must make sure to use a valid email adress and strong password.
+3. Submit form and check your email for a confirmation link or code. Click on the link or enter the code to activate your account.
+4. Log in to your account with your email and password. You can now access the website’s features and content, and edit your profile settings.
+
+For our app, we will simply have them sign-up with just email and password without validation. There won't be a follow-up email with a confirmation link. We will also store this information in the database (although it is a security risk to store passwords as-is) and check for every subsequent login attempt if the password matches.
+
+We can certainly improve this process with:
+
+- form validation
+- follow-up email with confirmation link
+- hash passwords
+
+But we will discuss these in higher levels of security, we we will abstain only for now so as to not lose focus on the first level of security of account creation.
+
+## User Database
+
+We are going to setup the database. We will be using MongoDB. Going to store the databse on MongoDB's database service : Atlas.
+
+Make an account if you do not have one, then connect to the Cluster.
+
+1. Select your driver and version
+
+Node.js
+Version 4.1 or later
+
+2. Install your driver
+
+```sh
+npm install mongodb@4.1
+```
+
+3. Add your connection string into your application code
+
+Save the connection string inside the `.env` file to a variable.
+
+Then install mongoose if you haven't already.
+
+```sh
+npm i mongoose
+```
+
+Now in our `app.js` we can connect to the database like so:
+
+```js
+// ...imports
+import 'dotenv/config';
+import mongoose from 'mongoose';
+
+/* Connect to Database */
+mongoose.connect(process.env.MongoDB_Connection_String, {useNewUrlParser: true});
+```
+
+- `mongoose` library is a MongoDB object modeling tool that helps you work with MongoDB in an asynchronouse environment
+- `mongoose.connect()` is a function that establishes a connection to a MongoDB database. It takes two parameters: a connection and an options object
+- `process.env.MongoDB_Connection_String` is a variable that stores the connection string, which is a URI that specifies the location and credentials of the database. The connection string is stored in an environment variable, which is a way of hiding sensitive information from the code
+- `{useNewUrlParser: true} `is an options object that passes some configuration settings to the mongoose.connect function. In this case, the option useNewUrlParser tells mongoose to use a new URL parser that is more secure and robust
+
+For more see [Getting Started with MongoDB & Mongoose](https://www.mongodb.com/developer/languages/javascript/getting-started-with-mongodb-and-mongoose/)
