@@ -2,6 +2,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import ejs from 'ejs'; // eslint-disable-line no-unused-vars
+import 'dotenv/config';
+import mongoose from 'mongoose';
 
 /* Constant variables */
 const port = 3000; // Define port number for the server
@@ -13,6 +15,18 @@ app.set('view engine', 'ejs'); // Sets view engine to EJS
 app.use(bodyParser.urlencoded({ // Parses incoming request bodies
   extended: true // Allow parsing of nested objects
 }));
+
+/* Connect to Database */
+mongoose.connect(process.env.MongoDB_Connection_String);
+
+// Define a schema for user documents
+const userSchema = {
+  email: String,
+  password: String,
+};
+
+// Create a model for user collection
+const User = new mongoose.model("User", userSchema);
 
 /* Routes */
 app.get("/", (req, res) => {
@@ -26,6 +40,7 @@ app.get("/login", (req, res) => {
 app.get("/register", (req, res) => {
   res.render("register");
 });
+
 
 /* Starts the server & listens for requests on the specified port */
 app.listen(port, () => {
