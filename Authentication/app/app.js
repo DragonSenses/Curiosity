@@ -41,6 +41,27 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
+app.post("/register", (req, res) => {
+  // Create a new user document with the email & password from the request body
+  const newUser = new User({
+    email: req.body.username,
+    password: req.body.password
+  });
+
+  // Save the new user to the database
+  newUser.save()
+    .then(() => {
+      res.render("secrets");
+      // Do something with user document, such as sending a response or redirecting
+      // res.status(201).send("User created");
+    })
+    .catch(err => { 
+      // Log the error to the console or a file
+      console.error(err);
+      // Send an error response or redirect to an error page
+      res.status(500).send("Something went wrong");
+    });
+});
 
 /* Starts the server & listens for requests on the specified port */
 app.listen(port, () => {
