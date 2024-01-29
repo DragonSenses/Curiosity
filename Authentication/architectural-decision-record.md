@@ -49,7 +49,16 @@ For building authentication for self-hosting and from the ground-up, I covered t
 
 # Developing an App with authentication as the main learning focus
 
-Going to be building an app that will gradually gain more layers of security as we go. Some design decisions will favor neuroplasticity (i.e., learning new things) and ease of building such as using EJS (a templating language with HTML markup with plain JS) over React.
+Going to be building an app that will gradually gain more layers of security as we go. 
+
+Some design decisions will favor neuroplasticity (i.e., learning new things) and ease of building such as using EJS (a templating language with HTML markup with plain JS) over React.
+
+## Specifications
+
+- User can Sign-Up, Log-In and Sign-out the website
+- User can log-in and access protected routes to view "*secrets*"
+- Unauthenticated users **cannot** view *secrets*
+- User can Create, Read, Update, Delete *secrets*
 
 ## Project Structure
 
@@ -114,28 +123,57 @@ Also configure `ESLint`'s config file `.eslintrc` by specifying `sourceType` as 
   }
 ```
 
-### Develop `app.js` express server
+## Develop `app.js` express server
+
+Set up express, ejs, and bodyParser in node project
+
+This commit sets up the express, ejs, and bodyParser packages in the node project. Express is used to create a web server and handle routing. Ejs is used to render dynamic HTML views. BodyParser is used to parse incoming request bodies. The commit also sets up the port, the static folder, and the view engine for the app. The app listens for requests and logs the port number or any errors to the console.
 
 Let's start with the basic template:
 
 ```js
+//jshint esversion:6
 import express from 'express';
-import bodyParser from 'bodyParser';
-import ejs from 'ejs';
+import bodyParser from 'body-parser';
+import ejs from 'ejs'; // eslint-disable-line no-unused-vars
 
 const port = 3000;
 const app = express();
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlEncoded({
+app.use(bodyParser.urlencoded({
   extended: true
 }));
 
 
-app.listen(port).then(() => {
+app.listen(port, () => {
   console.log(`Server started on port ${port}.`);
-}).catch((error) => {
-  console.log(error);
 });
 ```
+
+### Routes
+
+Next we want to setup the routes found in our `/views` folder. Create the route handlers for the root route, login, and register.
+
+Add routes for home, login, and register views
+
+This commit adds three routes to the express app: /, /login, and /register. These routes handle GET requests and render the corresponding views using ejs. The views are located in the views folder and contain the HTML templates for the home page, the login form, and the registration form. These routes are part of the basic functionality of the app and allow users to navigate between different pages.
+
+```js
+app.get("/", (req, res) => {
+  res.render("home");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+```
+
+With routes in place we can start adding security.
+
+## Level 1: Basic Account creation
