@@ -322,6 +322,8 @@ const userSchema = {
 const User = new mongoose.model("User", userSchema);
 ```
 
+## Handle POST request for /register route
+
 Which route will we create the user? In the register route, we have two inputs and a submit button:
 
 `register.ejs`
@@ -362,5 +364,70 @@ app.post("/register", (req, res) => {
       // Send an error response or redirect to an error page
       res.status(500).send("Something went wrong");
     });
+});
+```
+
+## Handle POST request for /login route
+
+For the login route, we want to extract the `username` and `password` from the `req.body`. Then we can authenticate.
+
+If the username exists in the database, then check if the username and the passwords match. If passwords match then render the the secrets page.
+
+```js
+// Route handler for /login path
+app.post("/login", (req, res) => {
+  // Extract username and password from the request body
+  const { username, password } = req.body;
+  
+  // Find a user document in the database that matches the email
+  User.findOne({ email: username }, function (error, foundUser) {
+    if (error) {
+      console.log(error);
+    } else {
+      // If the user exists, compare the password with the stored password
+      if (foundUser) {
+        // If the passwords match, render the secrets page
+        if (foundUser.password === password) {
+          res.render("secrets");
+        }
+      }
+    }
+  });
+});
+```
+
+We can also check for the other cases where:
+
+- passwords do not match, then send an error message
+- user not found in the database, so user doesn't exist, send an error message
+
+```js
+// Route handler for /login path
+app.post("/login", (req, res) => {
+  // Extract username and password from the request body
+  const { username, password } = req.body;
+  
+  // Find a user document in the database that matches the email
+  User.findOne({ email: username }, function (error, foundUser) {
+    if (error) {
+      console.log(error);
+    } else {
+      // If the user exists, compare the password with the stored password
+      if (foundUser) {
+        // If the passwords match, render the secrets page
+        if (foundUser.password === password) {
+          res.render("secrets");
+        }
+        // If the passwords do not match, you can send an error message or redirect to another page
+        // else {
+        //   res.send("Wrong password");
+        // }
+      }
+      // If the user does not exist, you can send an error message or redirect to another page
+      // else {
+      //   res.send("User not found");
+      // }
+    }
+  });
 });
 ```
