@@ -13,6 +13,7 @@
     // Optional Chaining Support
     // https://eslint.org/blog/2020/07/eslint-v7.5.0-released/#optional-chaining-support
     "parserOptions": {
+      "sourceType": "module",
       "ecmaVersion": 2022
   }
 }
