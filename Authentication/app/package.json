@@ -1,0 +1,18 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "simple app to learn authentication",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Curiosity/Authentication/app"
+  },
+  "keywords": [
+    "authentication"
+  ],
+  "author": "DragonSenses",
+  "license": "ISC"
+}
