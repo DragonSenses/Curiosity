@@ -1,6 +1,7 @@
 {
   "name": "app",
   "version": "1.0.0",
+  "type": "module",
   "description": "simple app to learn authentication",
   "main": "app.js",
   "scripts": {
