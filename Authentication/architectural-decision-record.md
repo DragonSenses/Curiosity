@@ -51,3 +51,91 @@ For building authentication for self-hosting and from the ground-up, I covered t
 
 Going to be building an app that will gradually gain more layers of security as we go. Some design decisions will favor neuroplasticity (i.e., learning new things) and ease of building such as using EJS (a templating language with HTML markup with plain JS) over React.
 
+## Project Structure
+
+-app
+  |- public
+    |- css
+      |- styles.css
+  |- views
+    |- partials
+      |- footer.ejs
+      |- header.ejs
+    |- home.ejs
+    |- login.ejs
+    |- register.ejs
+    |- secrets.ejs
+    |- submit.ejs
+  |- .gitignore
+  |- app.js
+  |- package.json
+
+The git ignore file will ignore our `/node_modules`. 
+
+`.gitignore`
+```
+# dependencies
+/node_modules
+```
+
+## Project Setup
+
+Install packages:
+
+- [Express](https://expressjs.com/en/starter/installing.html)
+- [body parser](https://expressjs.com/en/resources/middleware/body-parser.html)
+- [EJS](https://ejs.co/#install)
+
+```sh
+npm i express ejs body-parser
+```
+
+### Add "type": "module" to your package.json file.
+
+Configure `package.json` to use modules. e.g.,
+
+`package.json`
+```json
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "type": "module",
+  // ...
+}
+```
+
+Also configure `ESLint`'s config file `.eslintrc` by specifying `sourceType` as module
+
+`.eslintrc`
+```json
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 2022
+  }
+```
+
+### Develop `app.js` express server
+
+Let's start with the basic template:
+
+```js
+import express from 'express';
+import bodyParser from 'bodyParser';
+import ejs from 'ejs';
+
+const port = 3000;
+const app = express();
+
+app.use(express.static("public"));
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlEncoded({
+  extended: true
+}));
+
+
+app.listen(port).then(() => {
+  console.log(`Server started on port ${port}.`);
+}).catch((error) => {
+  console.log(error);
+});
+```
