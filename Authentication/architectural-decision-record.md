@@ -189,6 +189,30 @@ app.listen(port, () => {
 });
 ```
 
+### Running the app
+
+We can now run the app with this command:
+
+```sh
+node app.js
+```
+
+We can also add a script to `package.json`
+
+```json
+  "scripts": {
+    "dev": "node app.js",
+  },
+```
+
+Then we can run our app with the command
+
+```sh
+npm run dev
+```
+
+For those with Next.js experience, this is a more familiar command.
+
 ### Routes
 
 Next we want to setup the routes found in our `/views` folder. Create the route handlers for the root route, login, and register.
@@ -271,12 +295,72 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 
 /* Connect to Database */
-mongoose.connect(process.env.MongoDB_Connection_String, {useNewUrlParser: true});
+mongoose.connect(process.env.MongoDB_Connection_String);
 ```
 
 - `mongoose` library is a MongoDB object modeling tool that helps you work with MongoDB in an asynchronouse environment
 - `mongoose.connect()` is a function that establishes a connection to a MongoDB database. It takes two parameters: a connection and an options object
 - `process.env.MongoDB_Connection_String` is a variable that stores the connection string, which is a URI that specifies the location and credentials of the database. The connection string is stored in an environment variable, which is a way of hiding sensitive information from the code
-- `{useNewUrlParser: true} `is an options object that passes some configuration settings to the mongoose.connect function. In this case, the option useNewUrlParser tells mongoose to use a new URL parser that is more secure and robust
 
 For more see [Getting Started with MongoDB & Mongoose](https://www.mongodb.com/developer/languages/javascript/getting-started-with-mongodb-and-mongoose/)
+
+### Define a User Schema
+
+A schema defines the structure of your collection documents. A Mongoose schema maps directly to a MongoDB collection.
+
+```js
+/* Connect to Database */
+mongoose.connect(process.env.MongoDB_Connection_String);
+
+// Define a schema for user documents
+const userSchema = {
+  email: String,
+  password: String,
+};
+
+// Create a model for user collection
+const User = new mongoose.model("User", userSchema);
+```
+
+Which route will we create the user? In the register route, we have two inputs and a submit button:
+
+`register.ejs`
+```html
+<input type="email" class="form-control" name="username">
+
+<input type="password" class="form-control" name="password">
+
+<button type="submit" class="btn btn-dark">Register</button>
+```
+
+When user submits their email and password, they create a `POST` request which we should capture in our server.
+
+So we create a register POST route where we will:
+
+Add register route to save new user & render secrets page
+
+- Create a new user with the incoming email and password from the req.body
+- Render the secrets page
+- Catch any errors
+
+```js
+app.post("/register", (req, res) => {
+  // Create a new user document with the email & password from the request body
+  const newUser = new User({
+    email: req.body.username,
+    password: req.body.password
+  });
+
+  // Save the new user to the database
+  newUser.save()
+    .then(() => {
+      res.render("secrets");
+    })
+    .catch(err => { 
+      // Log the error to the console or a file
+      console.error(err);
+      // Send an error response or redirect to an error page
+      res.status(500).send("Something went wrong");
+    });
+});
+```
