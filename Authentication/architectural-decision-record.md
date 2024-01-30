@@ -371,6 +371,8 @@ app.post("/register", (req, res) => {
 
 For the login route, we want to extract the `username` and `password` from the `req.body`. Then we can authenticate.
 
+Add login route to authenticate user & render protected route
+
 If the username exists in the database, then check if the username and the passwords match. If passwords match then render the the secrets page.
 
 ```js
@@ -378,21 +380,20 @@ If the username exists in the database, then check if the username and the passw
 app.post("/login", (req, res) => {
   // Extract username and password from the request body
   const { username, password } = req.body;
-  
+
   // Find a user document in the database that matches the email
-  User.findOne({ email: username }, function (error, foundUser) {
-    if (error) {
-      console.log(error);
-    } else {
-      // If the user exists, compare the password with the stored password
-      if (foundUser) {
+  User.findOne({ email: username })
+  .then(foundUser => {
+      // If user exists, compare the password with the stored password
+      if (foundUser && (foundUser.password === password)) {
         // If the passwords match, render the secrets page
-        if (foundUser.password === password) {
-          res.render("secrets");
-        }
-      }
-    }
-  });
+        res.render("secrets");
+      } 
+    })
+    .catch(error => {
+      // Handle any error that occurs during the process
+      console.log(error);
+    });
 });
 ```
 
@@ -406,28 +407,33 @@ We can also check for the other cases where:
 app.post("/login", (req, res) => {
   // Extract username and password from the request body
   const { username, password } = req.body;
-  
+
   // Find a user document in the database that matches the email
-  User.findOne({ email: username }, function (error, foundUser) {
-    if (error) {
-      console.log(error);
-    } else {
-      // If the user exists, compare the password with the stored password
-      if (foundUser) {
+  User.findOne({ email: username })
+  .then(foundUser => {
+      // If user exists, compare the password with the stored password
+      if (foundUser && (foundUser.password === password)) {
         // If the passwords match, render the secrets page
-        if (foundUser.password === password) {
-          res.render("secrets");
-        }
-        // If the passwords do not match, you can send an error message or redirect to another page
-        // else {
-        //   res.send("Wrong password");
-        // }
+        res.render("secrets");
+      } else if (foundUser && (foundUser.password !== password)) {
+        // If passwords do not match, send an error message or redirect
+        res.send("Wrong password");
+      } else {
+        // If the user does not exist, send an error message or redirect
+        res.send("User not found");
       }
-      // If the user does not exist, you can send an error message or redirect to another page
-      // else {
-      //   res.send("User not found");
-      // }
-    }
-  });
+    })
+    .catch(error => {
+      // Handle any error that occurs during the process
+      console.log(error);
+    });
 });
 ```
+
+Refactor login route to use promise instead of callback.
+
+This change fixes the MongooseError: Model.findOne() no longer accepts a
+callback, which occurs when using an outdated version of Mongoose. By using
+a promise, the code becomes more readable and consistent with the latest
+Mongoose API.
+
