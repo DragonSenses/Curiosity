@@ -433,7 +433,53 @@ app.post("/login", (req, res) => {
 Refactor login route to use promise instead of callback.
 
 This change fixes the MongooseError: Model.findOne() no longer accepts a
-callback, which occurs when using an outdated version of Mongoose. By using
-a promise, the code becomes more readable and consistent with the latest
-Mongoose API.
+callback, which occurs when using an outdated version of Mongoose.
+By using  a promise, the code becomes more readable and consistent with
+the latest Mongoose API.
 
+With these changes we now have a running application that allows users to create a basic account.
+
+Features:
+
+User can
+- register with their email
+- login
+
+## Note: do not store passwords in a database
+
+The issue with the current app is that in the database we can see the user's password in plain text.
+
+Storing passwords directly in a database is bad because it exposes the passwords to anyone who can access the database, either by hacking, stealing, or compromising it. This can lead to unauthorized access to the user’s account and other systems where the user may have reused the same password. It can also damage the reputation and trust of the service that stored the passwords.
+
+# Level 2: Encryption
+
+The next level of authentication is encryption.
+
+Encryption is a way of protecting data from unauthorized access by transforming it into a secret code that only authorized parties can understand. Encryption uses mathematical algorithms and keys to scramble and unscramble data. There are different types of encryption, such as symmetric-key encryption and asymmetric-key encryption, that use different methods and keys to encrypt and decrypt data.
+
+- [Cryptii is a web app for modular conversion, encoding & encryption](https://cryptii.com/), we can explore various ways for encryption such as Caesar cipher or Base64.
+
+For now we will use the package [mongoose-encryption](https://www.npmjs.com/package/mongoose-encryption), which handles encryption and authentication for mongoose documents.
+
+Install the package
+
+```sh
+npm i mongoose-encryption
+```
+
+Import
+
+```js
+import mongoose from 'mongoose';
+import { encrypt } from 'mongoose-encryption';
+```
+
+Now to use it we need to change our schema, which so far is just a simple object.
+
+```js
+// Define a schema for user documents
+const userSchema = {
+  email: String,
+  password: String,
+};
+```
