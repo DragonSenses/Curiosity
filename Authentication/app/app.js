@@ -1,8 +1,8 @@
 //jshint esversion:6
+import 'dotenv/config';
 import express from 'express';
 import bodyParser from 'body-parser';
 import ejs from 'ejs'; // eslint-disable-line no-unused-vars
-import 'dotenv/config';
 import mongoose from 'mongoose';
 import { encrypt } from 'mongoose-encryption';
 
@@ -26,14 +26,11 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
-// Get the secret string from the environment variable
-const secret = process.env.SECRET_STRING;
-
 // Apply the encrypt plugin to the user schema with the secret string
 // Encrypt only the password field
 // This will add _ct and _ac fields to the schema for storing the ciphertext and the authentication code
 // It will also add encrypt, decrypt, sign, and authenticate methods to the schema
-userSchema.plugin(encrypt, { secret: secret, encryptedFields: ['password'] });
+userSchema.plugin(encrypt, { secret: process.env.SECRET_STRING, encryptedFields: ['password'] });
 
 // Create a user model from the user schema
 const User = new mongoose.model("User", userSchema);
