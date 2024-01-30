@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import ejs from 'ejs'; // eslint-disable-line no-unused-vars
 import 'dotenv/config';
 import mongoose from 'mongoose';
+import { encrypt } from 'mongoose-encryption';
 
 /* Constant variables */
 const port = 3000; // Define port number for the server
@@ -19,13 +20,21 @@ app.use(bodyParser.urlencoded({ // Parses incoming request bodies
 /* Connect to Database */
 mongoose.connect(process.env.MongoDB_Connection_String);
 
-// Define a schema for user documents
-const userSchema = {
+// Define a user schema with email and password fields
+const userSchema = new mongoose.Schema({
   email: String,
   password: String,
-};
+});
 
-// Create a model for user collection
+// Get the secret string from the environment variable
+const secret = process.env.SECRET_STRING;
+
+// Apply the encrypt plugin to the user schema with the secret string
+// This will add _ct and _ac fields to the schema for storing the ciphertext and the authentication code
+// It will also add encrypt, decrypt, sign, and authenticate methods to the schema
+userSchema.plugin(encrypt, { secret: secret });
+
+// Create a user model from the user schema
 const User = new mongoose.model("User", userSchema);
 
 /* Routes */
