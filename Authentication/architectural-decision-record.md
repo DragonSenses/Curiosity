@@ -477,9 +477,56 @@ import { encrypt } from 'mongoose-encryption';
 Now to use it we need to change our schema, which so far is just a simple object.
 
 ```js
-// Define a schema for user documents
 const userSchema = {
   email: String,
   password: String,
 };
 ```
+
+We have to create to pass in the object into `mongoose.Schema()` class
+
+```js
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+});
+```
+
+- [mongoose-encryption Usage](https://www.npmjs.com/package/mongoose-encryption#usage)
+
+Generate and store keys separately. They should probably live in environment variables, but be sure not to lose them. You can either use a single `secret` string of any length; or a pair of base64 strings (a 32-byte `encryptionKey` and a 64-byte `signingKey`).
+
+For convenience, you can also pass in a [secret string instead of two keys](https://www.npmjs.com/package/mongoose-encryption#secret-string-instead-of-two-keys).
+
+```js
+var secret = process.env.SOME_LONG_UNGUESSABLE_STRING;
+userSchema.plugin(encrypt, { secret: secret });
+```
+
+Let's create that string in our environment variables, in the `.env` file create a variable `SECRET_STRING` and set the value to anything you want.
+
+- You can find a site that can generate an encryption key for you such as [randomkeygen.com](https://randomkeygen.com/)
+
+```js
+import { encrypt } from 'mongoose-encryption';
+
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+});
+
+const secret = process.env.SECRET_STRING;
+userSchema.plugin(encrypt, { secret: secret });
+
+const User = new mongoose.model("User", userSchema);
+```
+
+Make sure that we add the `encrypt` package as a plugin to the schema before creating the model.
+
+- [Mongoose plugins | Reference](https://mongoosejs.com/docs/plugins.html)
+
+Schemas are pluggable, i.e., they allow for applying pre-packaged capabilities to extend their functionality.
+
+feat: encrypt user schema with mongoose-encryption
+
+Use the mongoose-encryption plugin to encrypt the email and password fields of the user schema with a secret string from the environment variable. This adds security and privacy to the user data stored in MongoDB.
