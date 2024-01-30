@@ -30,9 +30,10 @@ const userSchema = new mongoose.Schema({
 const secret = process.env.SECRET_STRING;
 
 // Apply the encrypt plugin to the user schema with the secret string
+// Encrypt only the password field
 // This will add _ct and _ac fields to the schema for storing the ciphertext and the authentication code
 // It will also add encrypt, decrypt, sign, and authenticate methods to the schema
-userSchema.plugin(encrypt, { secret: secret });
+userSchema.plugin(encrypt, { secret: secret, encryptedFields: ['password'] });
 
 // Create a user model from the user schema
 const User = new mongoose.model("User", userSchema);
