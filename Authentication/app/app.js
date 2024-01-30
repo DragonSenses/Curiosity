@@ -67,29 +67,26 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
   // Extract username and password from the request body
   const { username, password } = req.body;
-  
+
   // Find a user document in the database that matches the email
-  User.findOne({ email: username }, function (error, foundUser) {
-    if (error) {
-      console.log(error);
-    } else {
-      // If the user exists, compare the password with the stored password
-      if (foundUser) {
+  User.findOne({ email: username })
+  .then(foundUser => {
+      // If user exists, compare the password with the stored password
+      if (foundUser && (foundUser.password === password)) {
         // If the passwords match, render the secrets page
-        if (foundUser.password === password) {
-          res.render("secrets");
-        }
-        // If the passwords do not match, you can send an error message or redirect to another page
-        // else {
-        //   res.send("Wrong password");
-        // }
+        res.render("secrets");
+      } else if (foundUser && (foundUser.password !== password)) {
+        // If passwords do not match, send an error message or redirect
+        res.send("Wrong password");
+      } else {
+        // If the user does not exist, send an error message or redirect
+        res.send("User not found");
       }
-      // If the user does not exist, you can send an error message or redirect to another page
-      // else {
-      //   res.send("User not found");
-      // }
-    }
-  });
+    })
+    .catch(error => {
+      // Handle any error that occurs during the process
+      console.log(error);
+    });
 });
 
 /* Starts the server & listens for requests on the specified port */
