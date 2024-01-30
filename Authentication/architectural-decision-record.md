@@ -562,3 +562,45 @@ userSchema.plugin(encrypt, { secret: secret, encryptedFields: ['password'] });
 
 Now our password field will be encrypted from now on as `mongoose-encryption` will encrypt when we call `save()` and decrypt during `find()` call on documents.
 
+# Level 3: Using Environment Variables to keep sensitive data safe
+
+Level 3 of authentication is to use environment variables. We have already been doing this by using the `dotenv` package and storing our passwords in a `.env` file.
+
+The `.env` file stores our sensitive information such as encryption keys, API keys and passwords.  Then the [Next.js built-in support for environment variables](https://nextjs.org/docs/app/building-your-application/configuring/environment-variables) or [dotenv](https://www.npmjs.com/package/dotenv) module will load environment variables from a `.env` file into `process.env`. Storing configuration in the environment separate from code is based on The [Twelve-Factor App](https://12factor.net/config) methodology.
+
+We can review how to get environment variables running.
+
+Install `dotenv` package
+
+```sh
+# install locally (recommended)
+npm install dotenv --save
+```
+
+Create a `.env` file in the root of your project:
+```sh
+SECRET_KEY="YOURSECRETKEYGOESHERE"
+```
+
+As early as possible in your application, import and configure dotenv:
+
+```sh
+import 'dotenv/config';
+```
+
+That's it. `process.env` now has the keys and values you defined in your `.env` file:
+
+```js
+let secret = process.env.SECRET_KEY;
+```
+
+The final step is to make sure we add a hidden file `.gitignore`, which tells git which files to ignore when it uploads to a remote repo. Then we add `.env` to the `.gitignore` file, this way we won't push the environment variables to the repo.
+
+We can find a [gitignore file template for Node](https://github.com/github/gitignore/blob/main/Node.gitignore).
+
+- [Github gitignore collection](https://github.com/github/gitignore)
+
+With that in place, our sensitive data will no longer be public.
+
+Note on deployment and production: when we want to put the project to production, when we are using a hosting service such as render or heroku, we have to specify the environment variables in the config. Make sure to set the environment variables and/or config variables. 
+
