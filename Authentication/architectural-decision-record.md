@@ -530,3 +530,35 @@ Schemas are pluggable, i.e., they allow for applying pre-packaged capabilities t
 feat: encrypt user schema with mongoose-encryption
 
 Use the mongoose-encryption plugin to encrypt the email and password fields of the user schema with a secret string from the environment variable. This adds security and privacy to the user data stored in MongoDB.
+
+### Issue: entire user database is encrypted
+
+```js
+userSchema.plugin(encrypt, { secret: secret });
+```
+
+The plugin encrypts the entire database. Meaning both email and password will be encrypted. However, this may not be the desired behavior as we may need to search for users using their email.
+
+Instead, we should only encrypt the password field. To do that we need to change the options for the [mongoose-encryption to encrypt only certain fields](https://www.npmjs.com/package/mongoose-encryption#encrypt-only-certain-fields). e.g.,
+
+```js
+// encrypt age regardless of any other options. name and _id will be left unencrypted
+userSchema.plugin(encrypt, { encryptionKey: encKey, signingKey: sigKey, encryptedFields: ['age'] });
+```
+
+So what we need to do is add an object with `encryptedFields` at the end of the plugin.
+
+feat(user): encrypt password field with mongoose-encryption
+
+Use the mongoose-encryption plugin to encrypt only the password field of the user schema with a secret string from the environment variable. This adds security and privacy to the user password stored in MongoDB.
+
+```js
+// Apply the encrypt plugin to the user schema with the secret string
+// Encrypt only the password field
+// This will add _ct and _ac fields to the schema for storing the ciphertext and the authentication code
+// It will also add encrypt, decrypt, sign, and authenticate methods to the schema
+userSchema.plugin(encrypt, { secret: secret, encryptedFields: ['password'] });
+```
+
+Now our password field will be encrypted from now on as `mongoose-encryption` will encrypt when we call `save()` and decrypt during `find()` call on documents.
+
