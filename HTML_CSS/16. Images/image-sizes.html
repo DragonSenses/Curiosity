@@ -1,22 +1,41 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Image Sizes</title>
-		<style type="text/css">
-			img.large {
-				width: 500px;
-				height: 500px;}
-			img.medium {
-				width: 250px;
-				height: 250px;}
-			img.small {
-				width: 100px;
-				height: 100px;}
-		</style>
-	</head>
-	<body>
-		<img src="images/magnolia-large.jpg" class="large" alt="Magnolia" />
-		<img src="images/magnolia-medium.jpg" class="medium" alt="Magnolia" />
-		<img src="images/magnolia-small.jpg" class="small" alt="Magnolia" />
-	</body>
+  <head>
+    <title>Image Sizes</title>
+    <style type="text/css">
+      img.large {
+        width: 500px;
+        height: 500px;
+      }
+      img.medium {
+        width: 250px;
+        height: 250px;
+      }
+      img.small {
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="images/magnolia-large.jpg" class="large" alt="Magnolia" />
+    <img src="images/magnolia-medium.jpg" class="medium" alt="Magnolia" />
+    <img src="images/magnolia-small.jpg" class="small" alt="Magnolia" />
+  </body>
 </html>
+
+<!-- Controlling Sizes of Images in CSS
+  ○ Just like any other box, size of an image can be controlled using the 
+  width and height properties in CSS
+  ○ Specifying image sizes helps pages load more smoothly because HTML&CSS 
+  code often loads before the images, telling the browser how much space to 
+  leave for an image allows it to render the rest of the page without 
+  waiting for image to download
+  ○ A lot of sites use the same sized image across many of their pages, 
+  and not have images of all different sizes on a site
+  ○ e.g., e-commerce site tends to show product photos @ same size. 
+  ○ Or if site designed on a grid, then might have a selection of image 
+  sizes that are commonly used on all pages:
+  Whenever you use consistently sized images across a site, can use CSS to 
+  control the dimensions of the images, instead of putting the dimensions in HTML
+-->
