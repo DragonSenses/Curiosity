@@ -715,7 +715,7 @@ var md5 = require('md5');
 console.log(md5('message'));
 ```
 
-Now instead of using `mongoose-encryption` we can directly hash the password when saving the user in the `/register` route. 
+Now instead of using `mongoose-encryption` we can directly hash the password when saving the user in the `/register` route. Then in ther `/login` route, we hash the password from the request body and compare it to the one in the database.
 
 ```js
 import md5 from 'md5';
@@ -735,11 +735,32 @@ app.post("/register", (req, res) => {
       res.status(500).send("Something went wrong");
     });
 });
+
+app.post("/login", (req, res) => {
+  const username = req.body.username;
+  const password = md5(req.body.password);
+
+  User.findOne({ email: username })
+  .then(foundUser => {
+      if (foundUser && (foundUser.password === password)) {
+        res.render("secrets");
+      } else if (foundUser && (foundUser.password !== password)) {
+        res.send("Wrong password");
+      } else {
+        res.send("User not found");
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
 ```
 
 feat: Add MD5 password hashing for user registration
 
 This commit enhanced user security by implementing MD5 hashing for user passwords during registration. The `md5` module in Node.js is used to create a 128-bit hash value from the provided password. The hashed password is then stored securely in the database.
+
+feat: Add MD5 password validation for user login
 
 The full code:
 
@@ -749,6 +770,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import ejs from 'ejs'; // eslint-disable-line no-unused-vars
 import mongoose from 'mongoose';
+// import { encrypt } from 'mongoose-encryption';
 import md5 from 'md5';
 
 /* Constant variables */
@@ -770,6 +792,14 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
 });
+
+/* Apply the encrypt plugin to the user schema with the secret string. 
+  Encrypt only the password field.
+  This will add _ct and _ac fields to the schema for storing the ciphertext 
+  and the authentication code.
+  It will also add encrypt, decrypt, sign, and authenticate methods to the schema.
+*/
+// userSchema.plugin(encrypt, { secret: process.env.SECRET_STRING, encryptedFields: ['password'] });
 
 // Create a user model from the user schema
 const User = new mongoose.model("User", userSchema);
@@ -812,7 +842,8 @@ app.post("/register", (req, res) => {
 // Route handler for /login path
 app.post("/login", (req, res) => {
   // Extract username and password from the request body
-  const { username, password } = req.body;
+  const username = req.body.username;
+  const password = md5(req.body.password);
 
   // Find a user document in the database that matches the email
   User.findOne({ email: username })
@@ -865,4 +896,37 @@ app.listen(port, () => {
 In summary, while MD5 is still used in non-cryptographic contexts (such as checksums), it should not be relied upon for security-related tasks. For secure hashing, choose stronger algorithms.
 
 See [MD5 Security](https://en.wikipedia.org/wiki/MD5).
+
+## Hashing & Encryption
+
+With the MD5 algorithm implemented for both user registration and login, this adds another layer of security for our users. In the database, we can see that the passwords only store the **hash value, hash code, hash digest** or simply a **hash** which are all names for the result of the hash function. It is computationally difficult to retrieve the original input (the user's password).
+
+Hashing passwords are more secure than simple encryptions, because we have the vulnerability of the encryption key.
+
+**Hashing** and **encryption** serve different purposes and have distinct characteristics. Let's explore why **hashing passwords** is generally considered more secure than encryption:
+
+1. **One-Way Function**:
+   - **Hashing** is a **one-way function**, meaning that once you hash a password, it is **impossible to reverse** the process and obtain the original plaintext password.
+   - In contrast, **encryption** is a **two-way function**, allowing you to decrypt ciphertext back into plaintext using the right key.
+
+2. **Password Storage**:
+   - When it comes to **password storage**, **hashing** is the preferred approach. Here's why:
+     - **Hashed passwords** are stored securely in databases. Even if an attacker gains access to the database, they cannot retrieve the original passwords from the hash values.
+     - **Encrypted passwords**, on the other hand, can be decrypted if the attacker obtains the encryption key. This poses a significant security risk.
+
+3. **Password Validation**:
+   - During **user authentication**, systems need to validate passwords without revealing the actual password.
+   - **Hashing** allows this validation without exposing the original password. The system hashes the user's input and compares it to the stored hash.
+   - **Encryption**, while reversible, is not suitable for this purpose because it requires the decryption key.
+
+4. **Salting**:
+   - To enhance security, **hashing** often involves adding a **salt** (a random value) before hashing the password.
+   - Salting ensures that even if two users have the same password, their hashed values will be different.
+   - **Encryption** does not inherently include salting, making it less secure for password storage.
+
+5. **Use Cases**:
+   - **Encryption** is ideal for securing data during transmission or sharing confidential messages. It requires a shared key between sender and recipient.
+   - **Hashing**, especially with salting, is best for **passwords** and other sensitive data that should remain irreversible.
+
+In summary, **hashing** provides a strong layer of security for password storage and validation, while **encryption** serves different purposes such as confidentiality during data transmission. For password security, choose **hashing** with proper salting!
 
