@@ -4,7 +4,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import ejs from 'ejs'; // eslint-disable-line no-unused-vars
 import mongoose from 'mongoose';
-import { encrypt } from 'mongoose-encryption';
+// import { encrypt } from 'mongoose-encryption';
+import md5 from 'md5';
 
 /* Constant variables */
 const port = 3000; // Define port number for the server
@@ -26,11 +27,13 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
-// Apply the encrypt plugin to the user schema with the secret string
-// Encrypt only the password field
-// This will add _ct and _ac fields to the schema for storing the ciphertext and the authentication code
-// It will also add encrypt, decrypt, sign, and authenticate methods to the schema
-userSchema.plugin(encrypt, { secret: process.env.SECRET_STRING, encryptedFields: ['password'] });
+/* Apply the encrypt plugin to the user schema with the secret string. 
+  Encrypt only the password field.
+  This will add _ct and _ac fields to the schema for storing the ciphertext 
+  and the authentication code.
+  It will also add encrypt, decrypt, sign, and authenticate methods to the schema.
+*/
+// userSchema.plugin(encrypt, { secret: process.env.SECRET_STRING, encryptedFields: ['password'] });
 
 // Create a user model from the user schema
 const User = new mongoose.model("User", userSchema);
@@ -52,7 +55,7 @@ app.post("/register", (req, res) => {
   // Create a new user document with the email & password from the request body
   const newUser = new User({
     email: req.body.username,
-    password: req.body.password
+    password: md5(req.body.password)
   });
 
   // Save the new user to the database
