@@ -628,7 +628,62 @@ The next level of security for authentication is to hash the password. We do not
 
 A computationally difficult one-way function is finding the factors of a co-prime number. e.g., find the two factors (not including 377 and 1) that when multiplied equal to 377. It is more time consuming to find out those factors are 13 and 29, than it is to multiply 13 and 29 to get 377. This is similar to hash functions in which are calculated quickly going forwards but computationally infeasible to go backwards.
 
+### Hash functions
 
+Hash functions are commonly consist of two portions - a *hash code* and a *compression function*.
+
+1. **Hash code** maps a key `k` to an integer
+
+The first action that a hash function performs is to take an arbitrary key k in our
+map and compute an integer that is called the hash code for k; this integer need not
+be in the range [0,N−1], and may even be negative. We desire that the set of hash
+codes assigned to our keys should avoid collisions as much as possible. For if the
+hash codes of our keys cause collisions, then there is no hope for our compression
+function to avoid them.
+
+2. **Compression function** maps the hash code to an integer within a range of indices, [0, N-1]
+
+The hash code for a key k will typically not be suitable for immediate use with a
+bucket array, because the integer hash code may be negative or may exceed the capacity
+of the bucket array. Thus, once we have determined an integer hash code for
+a key object k, there is still the issue of mapping that integer into the range [0,N−1].
+This computation, known as a compression function, is the second action performed
+as part of an overall hash function. A good compression function is one
+that minimizes the number of collisions for a given set of distinct hash codes.
+
+
+A simple compression function is the *division method* which maps an integer i to where N is a fixed positive integer. `i mod N`.
+
+A more sophisticated compression function, which helps eliminate repeated patterns
+in a set of integer keys, is the Multiply-Add-and-Divide (or "MAD") method.
+This method maps an integer i to
+`[(ai+b) mod p] mod N`,
+where N is the size of the bucket array, p is a prime number larger than N, and a
+and b are integers chosen at random from the interval [0, p−1], with a > 0.
+
+### Hash functitons are one-way functions
+
+**Hash functions** are **one-way functions**. They take an input (often called a **message** or **plaintext**) and produce a fixed-length string of characters (the **hash value** or **digest**). Here are some key points about hash functions:
+
+1. **Unidirectional Transformation**:
+   - Hash functions are designed to be **irreversible**. Given a hash value, it is computationally infeasible to retrieve the original input.
+   - This property makes them suitable for tasks like **password hashing**, where you store the hash of a password instead of the actual password itself.
+
+2. **Deterministic**:
+   - Hash functions always produce the same hash value for the same input.
+   - If you hash the same message twice, you'll get the same result.
+
+3. **Fixed Output Length**:
+   - Regardless of the input size, hash functions produce a fixed-length output (e.g., 128 bits, 256 bits, etc.).
+
+4. **Collision Resistance**:
+   - A good hash function minimizes the chance of **collisions** (two different inputs producing the same hash value).
+   - While collisions are theoretically possible, modern cryptographic hash functions make them extremely unlikely.
+
+5. **Examples**:
+   - Common hash functions include **SHA-256**, **MD5**, and **SHA-1** (though the latter two are considered insecure due to vulnerabilities).
+
+Remember that hash functions are widely used in security, data integrity checks, and digital signatures. However, they are not encryption mechanisms; they don't provide confidentiality. If you need to encrypt data, use encryption algorithms instead. 
 
 ## Implementing password hashing
 
