@@ -739,7 +739,7 @@ app.post("/register", (req, res) => {
 
 feat: Add MD5 password hashing for user registration
 
-In this commit, enhanced user security by implementing MD5 hashing for user passwords during registration. The `md5` module in Node.js is used to create a 128-bit hash value from the provided password. The hashed password is then stored securely in the database.
+This commit enhanced user security by implementing MD5 hashing for user passwords during registration. The `md5` module in Node.js is used to create a 128-bit hash value from the provided password. The hashed password is then stored securely in the database.
 
 The full code:
 
@@ -840,4 +840,29 @@ app.listen(port, () => {
   console.log(`Server started on port ${port}.`);
 });
 ```
+
+#### Limitations of MD5, no longer secure for cryptographic purposes
+
+**MD5**, which stands for **Message Digest Algorithm 5**, is a widely used cryptographic hash function. However, it's essential to understand its limitations:
+
+1. **Security**:
+   - **MD5** is **not considered secure** for cryptographic purposes anymore. It has several vulnerabilities:
+     - **Collision Vulnerability**: Different inputs can produce the same MD5 hash (collision). Attackers can intentionally create two different messages with the same MD5 hash.
+     - **Preimage Vulnerability**: Given an MD5 hash, it's possible to find a message that produces that hash (preimage attack).
+   - Due to these vulnerabilities, MD5 is **unsuitable for security purposes** such as password hashing or digital signatures.
+
+2. **Reversibility**:
+   - **MD5 is irreversible**. In other words, you cannot directly reverse an MD5 hash to obtain the original input.
+   - However, attackers can use **brute-force attacks** or **rainbow tables** to find a matching input for a given MD5 hash.
+   - **Brute-force attacks** involve trying all possible inputs until a match is found. With modern computing power, this process can be relatively fast.
+   - **Rainbow tables** are precomputed tables that map hashes to their corresponding inputs. These tables allow attackers to quickly find a match for a given hash.
+   - The effectiveness of reversing MD5 depends on the length and complexity of the original input. Short and simple inputs are more susceptible to attacks.
+
+3. **Recommendations**:
+   - For security purposes, **avoid using MD5**. Instead, consider using stronger hash functions like **SHA-256** or **bcrypt**.
+   - If you need to hash passwords or sensitive data, use a **salted hash** (where a unique salt is added to each input before hashing) to enhance security.
+
+In summary, while MD5 is still used in non-cryptographic contexts (such as checksums), it should not be relied upon for security-related tasks. For secure hashing, choose stronger algorithms.
+
+See [MD5 Security](https://en.wikipedia.org/wiki/MD5).
 
