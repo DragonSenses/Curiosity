@@ -562,9 +562,9 @@ userSchema.plugin(encrypt, { secret: secret, encryptedFields: ['password'] });
 
 Now our password field will be encrypted from now on as `mongoose-encryption` will encrypt when we call `save()` and decrypt during `find()` call on documents.
 
-# Level 3: Using Environment Variables to keep sensitive data safe
+# Using Environment Variables to keep sensitive data safe
 
-Level 3 of authentication is to use environment variables. We have already been doing this by using the `dotenv` package and storing our passwords in a `.env` file.
+To add an extra layer of authentication we use environment variables. We have already been doing this by using the `dotenv` package and storing our passwords in a `.env` file.
 
 The `.env` file stores our sensitive information such as encryption keys, API keys and passwords.  Then the [Next.js built-in support for environment variables](https://nextjs.org/docs/app/building-your-application/configuring/environment-variables) or [dotenv](https://www.npmjs.com/package/dotenv) module will load environment variables from a `.env` file into `process.env`. Storing configuration in the environment separate from code is based on The [Twelve-Factor App](https://12factor.net/config) methodology.
 
@@ -602,5 +602,38 @@ We can find a [gitignore file template for Node](https://github.com/github/gitig
 
 With that in place, our sensitive data will no longer be public.
 
-Note on deployment and production: when we want to put the project to production, when we are using a hosting service such as render or heroku, we have to specify the environment variables in the config. Make sure to set the environment variables and/or config variables. 
+In `app.js` we used environment variables `process.env.MongoDB_ConnectionString` and `process.env.SECRET_STRING`:
 
+```javascript
+/* Connect to Database */
+mongoose.connect(process.env.MongoDB_Connection_String);
+
+// Apply the encrypt plugin to the user schema with the secret string
+// Encrypt only the password field
+// This will add _ct and _ac fields to the schema for storing the ciphertext and the authentication code
+// It will also add encrypt, decrypt, sign, and authenticate methods to the schema
+userSchema.plugin(encrypt, { 
+  secret: process.env.SECRET_STRING, 
+  encryptedFields: ['password'] 
+});
+```
+
+#### Note on deployment and production
+ 
+When we want to put the project to production, when we are using a hosting service such as render or heroku, we have to specify the environment variables in the config. Make sure to set the environment variables and/or config variables. 
+
+# Level 3: Hashing Passwords
+
+The next level of security for authentication is to hash the password. We do not store the password directly, instead we take the password and pass it through a hash function. Hash functions are **one-way functions**, a unidirectional transformation, where they are designed to be irreversible. i.e., it is computationally infeasible to retrieve the original input. The output is a **hash**, or **hash value**, which we store instead of the password.
+
+A computationally difficult one-way function is finding the factors of a co-prime number. e.g., find the two factors (not including 377 and 1) that when multiplied equal to 377. It is more time consuming to find out those factors are 13 and 29, than it is to multiply 13 and 29 to get 377. This is similar to hash functions in which are calculated quickly going forwards but computationally infeasible to go backwards.
+
+
+
+## Implementing password hashing
+
+So how do we implement it on our app?
+
+When the user registers their login credentials, we take the password and convert it to a hash. Then we store the hash in the database.
+
+Now on every subsequent login, we hash the password attempt and compare the result with the hash in the database. If both hashes match, then they must be the same password because hashes are determinisitic (always produce the same hash value for the same input).
