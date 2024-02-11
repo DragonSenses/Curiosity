@@ -76,7 +76,8 @@ app.post("/register", (req, res) => {
 // Route handler for /login path
 app.post("/login", (req, res) => {
   // Extract username and password from the request body
-  const { username, password } = req.body;
+  const username = req.body.username;
+  const password = md5(req.body.password);
 
   // Find a user document in the database that matches the email
   User.findOne({ email: username })
