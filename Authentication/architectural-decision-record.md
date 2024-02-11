@@ -692,3 +692,152 @@ So how do we implement it on our app?
 When the user registers their login credentials, we take the password and convert it to a hash. Then we store the hash in the database.
 
 Now on every subsequent login, we hash the password attempt and compare the result with the hash in the database. If both hashes match, then they must be the same password because hashes are determinisitic (always produce the same hash value for the same input).
+
+### Use MD5 to hash user passwords
+
+Let's use [md5](https://www.npmjs.com/package/md5) package, a JavaScript function for hashing messages with MD5. [MD5 algorithm](https://en.wikipedia.org/wiki/MD5) is a widely used hash function producing a 128-bit hash value.
+
+```sh
+npm i md5
+```
+
+Then import the package
+
+```javascript
+import md5 from 'md5';
+```
+
+Usage:
+
+```javascript
+var md5 = require('md5');
+ 
+console.log(md5('message'));
+```
+
+Now instead of using `mongoose-encryption` we can directly hash the password when saving the user in the `/register` route. 
+
+```js
+import md5 from 'md5';
+// ...
+app.post("/register", (req, res) => {
+  const newUser = new User({
+    email: req.body.username,
+    password: md5(req.body.password)
+  });
+
+  newUser.save()
+    .then(() => {
+      res.render("secrets");
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Something went wrong");
+    });
+});
+```
+
+feat: Add MD5 password hashing for user registration
+
+In this commit, enhanced user security by implementing MD5 hashing for user passwords during registration. The `md5` module in Node.js is used to create a 128-bit hash value from the provided password. The hashed password is then stored securely in the database.
+
+The full code:
+
+```javascript
+import 'dotenv/config';
+import express from 'express';
+import bodyParser from 'body-parser';
+import ejs from 'ejs'; // eslint-disable-line no-unused-vars
+import mongoose from 'mongoose';
+import md5 from 'md5';
+
+/* Constant variables */
+const port = 3000; // Define port number for the server
+const app = express(); // Create an express app
+
+/* Express middleware */
+app.use(express.static("public")); // Server static files from the public folder
+app.set('view engine', 'ejs'); // Sets view engine to EJS
+app.use(bodyParser.urlencoded({ // Parses incoming request bodies
+  extended: true // Allow parsing of nested objects
+}));
+
+/* Connect to Database */
+mongoose.connect(process.env.MongoDB_Connection_String);
+
+// Define a user schema with email and password fields
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+});
+
+// Create a user model from the user schema
+const User = new mongoose.model("User", userSchema);
+
+/* Routes */
+app.get("/", (req, res) => {
+  res.render("home");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+app.post("/register", (req, res) => {
+  // Create a new user document with the email & password from the request body
+  const newUser = new User({
+    email: req.body.username,
+    password: md5(req.body.password)
+  });
+
+  // Save the new user to the database
+  newUser.save()
+    .then(() => {
+      res.render("secrets");
+      // Do something with user document, such as sending a response or redirecting
+      // res.status(201).send("User created");
+    })
+    .catch(err => {
+      // Log the error to the console or a file
+      console.error(err);
+      // Send an error response or redirect to an error page
+      res.status(500).send("Something went wrong");
+    });
+});
+
+// Route handler for /login path
+app.post("/login", (req, res) => {
+  // Extract username and password from the request body
+  const { username, password } = req.body;
+
+  // Find a user document in the database that matches the email
+  User.findOne({ email: username })
+  .then(foundUser => {
+      // If user exists, compare the password with the stored password
+      if (foundUser && (foundUser.password === password)) {
+        // If the passwords match, render the secrets page
+        res.render("secrets");
+      } else if (foundUser && (foundUser.password !== password)) {
+        // If passwords do not match, send an error message or redirect
+        res.send("Wrong password");
+      } else {
+        // If the user does not exist, send an error message or redirect
+        res.send("User not found");
+      }
+    })
+    .catch(error => {
+      // Handle any error that occurs during the process
+      console.log(error);
+    });
+});
+
+/* Starts the server & listens for requests on the specified port */
+app.listen(port, () => {
+  console.log(`Server started on port ${port}.`);
+});
+```
+
