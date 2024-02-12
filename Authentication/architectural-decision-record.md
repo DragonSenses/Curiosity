@@ -930,3 +930,30 @@ Hashing passwords are more secure than simple encryptions, because we have the v
 
 In summary, **hashing** provides a strong layer of security for password storage and validation, while **encryption** serves different purposes such as confidentiality during data transmission. For password security, choose **hashing** with proper salting!
 
+# Level 4: Salting & Hashing Passwords with bcrypt
+
+The next level of security for authentication is salting and hashing passwords.
+
+- [bcrypt](https://www.npmjs.com/package/bcrypt)
+
+Install bcrypt package to help has passwords.
+
+```sh
+npm i bcrypt
+```
+
+What is salting?
+
+- To enhance security, **hashing** often involves adding a **salt** (a random value) before hashing the password.
+- Salting ensures that even if two users have the same password, their hashed values will be different.
+
+Salt is stored in the database, along with the hash.
+
+[bcrypt](https://en.wikipedia.org/wiki/Bcrypt) is a password-hashing function that we'll use. Besides incorporating a salt to protect against rainbow table attacks, bcrypt is an adaptive function: over time, the iteration count can be increased to make it slower, so it remains resistant to brute-force search attacks even with increasing computation power.
+
+It also has the concept of *salt rounds*, how many rounds you salt your password with.
+
+The first round of salt takes the password and a randomly generated salt and creates a hash out of it. The second round takes the hash from round 1 and adds the same salt from before and run it through bcrypt again to get another hash.
+
+The number of times we repeat this process is the number of salt rounds.
+
