@@ -1,20 +1,48 @@
 // Import the libraries
 // const axios = require("axios");
 // const cheerio = require("cheerio");
-import { get } from "axios";
+import axios from "axios";
 import { load } from "cheerio";
-import downloadImages from "./downloadImages";
+
+export default async function scrapeImages(url, selector) {
+  try {
+    const response = await axios.get(url); // Await the response
+    console.log(response);
+
+    // Parse the HTML content using Cheerio
+    const $ = load(response.data);
+
+    const links = $(selector);
+    // console.log(links);
+    
+    const imageUrls = [];
+
+    links.each((index, element) => {
+      const href = $(element).attr("href");
+      const text = $(element).text();
+
+      console.log(`Link ${index + 1}: ${text} - ${href}`);
+      imageUrls.push(new URL(href));
+    });
+
+    console.log(`imageUrls:\n${imageUrls}\n`);
+    return imageUrls;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return []; // Return an empty array in case of an error
+  }
+}
 
 /* Constants */
 
 // Define the webpage URL
-const url = "https://example.com";
+// const url = "https://example.com";
 
 /* To scrape all the <a> tags with the class "sample image" from a given webpage 
 let selector = "a.sample_image";
 */
 // Define the CSS selector for the <a> tags with the class "sample image"
-let selector = "a.sample_image";
+// let selector = "a.sample_image";
 // a.image_magnify
 
 /* This code will print something like:
@@ -25,10 +53,11 @@ Link 3: Sample Image 3 - https://example.com/image3.jpg
 
 returns array of image URLs
 */
-async function scrapeImages(URL, selector){
+/* 
+export default async function scrapeImages(url, selector){
   let imageUrls = [];
   // Fetch the HTML content of the webpage
-  get(url)
+  await axios.get(url)
     .then(response => {
       // Parse the HTML content using Cheerio
       const $ = load(response.data);
@@ -56,13 +85,14 @@ async function scrapeImages(URL, selector){
       console.error(error);
     });
 
-    console.log(imageUrls);
+    console.log(`imageUrls:
+    ${imageUrls}
+    `);
+
+    // if (imageUrls.length === 0) {
+    //   return [];
+    // }
     
     return imageUrls;
 }
-
-// Extract imageUrls
-const data = scrapeImages(url, selector);
-
-// Given an array of URLs, download the data
-downloadImages(data);
+*/
