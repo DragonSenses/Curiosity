@@ -2,8 +2,25 @@
 const http = require("http");
 const fs = require("fs");
 
-// Pathname for downloaded images
+/* Pathname for downloaded images */
+// relative: './downloads/'
+// Windows: 'C:/Users/YourUsername/Desktop/MyDownloads/'
+// 'D:/temp/images/'
 const outputPath = './downloads/';
+
+/**
+ * Checks if the output path exists. If it does not exist then create
+ * the directory (also create nested directories).
+ * @param {string} path the output path name
+ */
+function checkOutputPath(path){
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path, { recursive: true });
+  }
+
+  return;
+}
+
 const createFilePath = (url) => {
   const filename = url.split('/').pop(); // Extract filename from URL
   return `${outputPath}${filename}`;
