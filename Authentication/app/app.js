@@ -63,7 +63,7 @@ app.post("/register", (req, res) => {
       email: req.body.username,
       password: hash
     });
-  
+
     // Save the new user to the database
     newUser.save()
       .then(() => {
@@ -92,17 +92,28 @@ app.post("/login", (req, res) => {
     .then(foundUser => {
       // If user exists, compare the password with the stored password
       if (foundUser) {
-        bcrypt.compare(password, foundUser.password, function(err, result) {
-          // If the passwords match, render the secrets page
-          if (result === true) {
+        bcrypt.compare(password, foundUser.password, function (err, result) {
+          if (err) {
+            // Handle bcrypt error
+            console.error("Error comparing passwords:", err);
+            res.status(500).send("Internal server error");
+          } else if (result === true) {
+            // Passwords match, render the secrets page
             res.render("secrets");
+          } else {
+            // Passwords do not match, send an error message or redirect
+            res.status(401).send("Wrong password");
           }
-        }); 
+        });
+      } else {
+        // If the user does not exist, send an error message or redirect
+        res.status(404).send("User not found");
       }
     })
     .catch(error => {
       // Handle any error that occurs during the process
       console.log(error);
+      res.status(500).send("Internal server error");
     });
 });
 
