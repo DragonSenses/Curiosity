@@ -91,15 +91,13 @@ app.post("/login", (req, res) => {
   User.findOne({ email: username })
     .then(foundUser => {
       // If user exists, compare the password with the stored password
-      if (foundUser && (foundUser.password === password)) {
-        // If the passwords match, render the secrets page
-        res.render("secrets");
-      } else if (foundUser && (foundUser.password !== password)) {
-        // If passwords do not match, send an error message or redirect
-        res.send("Wrong password");
-      } else {
-        // If the user does not exist, send an error message or redirect
-        res.send("User not found");
+      if (foundUser) {
+        bcrypt.compare(password, foundUser.password, function(err, result) {
+          // If the passwords match, render the secrets page
+          if (result === true) {
+            res.render("secrets");
+          }
+        }); 
       }
     })
     .catch(error => {
