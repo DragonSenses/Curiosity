@@ -1184,3 +1184,59 @@ app.post("/login", (req, res) => {
 Let's update the post login handler with bcrypt.
 
 Refactor post login handler to use bcrypt for password comparing
+
+```javascript
+// Route handler for /login path
+app.post("/login", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.findOne({ email: username })
+    .then(foundUser => {
+      if (foundUser) {
+        bcrypt.compare(password, foundUser.password, function(err, result) {
+          if (result === true) {
+            res.render("secrets");
+          }
+        }); 
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+```
+
+## Testing register and login with bcrypt
+
+1. Run the project with `npm run dev`
+2. Open a browser and head to `localhost:3000`
+3. Click register
+4. On register page, sign up a sample user
+  
+```sh
+Email: MiyukiShiba@gmail.com
+Password: TatsuyaShiba
+```
+5. Check the database to see if the user was created
+
+Confirm if the hashed and salted password for the new user is stored.
+
+In MongoDB:
+
+```json
+{"_id":
+  {"$oid":"65f7d2e932c6d19099064661"},
+  "email":"MiyukiShiba@gmail.com",
+  "password":"$2b$10$C3FAb84DggaelXt9Fl9OyeKHAUvJ2E9RfBZ/42Z8STDCW7TgFn4IS",
+  "__v":{"$numberInt":"0"}
+}
+```
+
+6. Return to `localhost:3000` and click the login button. Attempt to login with new user.
+
+In the `localhost:3000/login` route, login with the new user details.
+
+If we get redirected to the secrets page, the bcrypt comparison was successful!
+
+docs: Add detailed guide testing register & login
