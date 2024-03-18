@@ -5,7 +5,6 @@ import bodyParser from 'body-parser';
 import ejs from 'ejs'; // eslint-disable-line no-unused-vars
 import mongoose from 'mongoose';
 // import { encrypt } from 'mongoose-encryption';
-// import md5 from 'md5';
 // import { hash, compare } from 'bcryptjs';
 import bcrypt from 'bcrypt';
 
@@ -86,7 +85,7 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
   // Extract username and password from the request body
   const username = req.body.username;
-  const password = md5(req.body.password);
+  const password = req.body.password;
 
   // Find a user document in the database that matches the email
   User.findOne({ email: username })
