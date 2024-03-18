@@ -1031,3 +1031,103 @@ bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
 });
 ```
 
+## Implement with bcrypt
+
+In our `app.js`, in the register route we want to generate the hash not with MD5 but with bcrypt. Let's take a look at our register route
+
+```javascript
+app.post("/register", (req, res) => {
+  // Create a new user document with the email & password from the request body
+  const newUser = new User({
+    email: req.body.username,
+    password: md5(req.body.password)
+  });
+
+  // Save the new user to the database
+  newUser.save()
+    .then(() => {
+      res.render("secrets");
+      // Do something with user document, such as sending a response or redirecting
+      // res.status(201).send("User created");
+    })
+    .catch(err => {
+      // Log the error to the console or a file
+      console.error(err);
+      // Send an error response or redirect to an error page
+      res.status(500).send("Something went wrong");
+    });
+});
+```
+
+We will go with technique 2 to auto-generate a salt and hash.
+
+```javascript
+bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+    // Store hash in your password DB.
+});
+```
+
+Here's the register route using bcrypt hash
+
+```js
+app.post("/register", (req, res) => {
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    // Store hash in your password DB.
+
+    // Create a new user document with the email & password from the request body
+    const newUser = new User({
+      email: req.body.username,
+      password: hash
+    });
+  
+    // Save the new user to the database
+    newUser.save()
+      .then(() => {
+        res.render("secrets");
+        // Do something with user document, such as sending a response or redirecting
+        // res.status(201).send("User created");
+      })
+      .catch(err => {
+        // Log the error to the console or a file
+        console.error(err);
+        // Send an error response or redirect to an error page
+        res.status(500).send("Something went wrong");
+      });
+  });
+
+});
+```
+
+`Authentication\app\app.js`
+```javascript
+// ... imports
+import bcrypt from 'bcrypt';
+
+const saltRounds = 10;
+
+/* Constant variables */
+/* Express middleware */
+/* Connect to Database */
+
+app.post("/register", (req, res) => {
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    // Store hash in your password DB.
+
+    const newUser = new User({
+      email: req.body.username,
+      password: hash
+    });
+  
+    newUser.save()
+      .then(() => {
+        res.render("secrets");
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).send("Something went wrong");
+      });
+  });
+
+});
+
+```
