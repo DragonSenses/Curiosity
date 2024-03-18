@@ -1240,3 +1240,51 @@ In the `localhost:3000/login` route, login with the new user details.
 If we get redirected to the secrets page, the bcrypt comparison was successful!
 
 docs: Add detailed guide testing register & login
+
+### Handle error cases in login route
+
+Let's also handle the error cases in the login route.
+
+1. When user not found in the database
+2. When bcrypt has an error
+3. When passwords do not match
+
+Handle edge & error cases in post login handler
+
+```javascript
+// Route handler for /login path
+app.post("/login", (req, res) => {
+  // Extract username and password from the request body
+  const username = req.body.username;
+  const password = req.body.password;
+
+  // Find a user document in the database that matches the email
+  User.findOne({ email: username })
+    .then(foundUser => {
+      // If user exists, compare the password with the stored password
+      if (foundUser) {
+        bcrypt.compare(password, foundUser.password, function (err, result) {
+          if (err) {
+            // Handle bcrypt error
+            console.error("Error comparing passwords:", err);
+            res.status(500).send("Internal server error");
+          } else if (result === true) {
+            // Passwords match, render the secrets page
+            res.render("secrets");
+          } else {
+            // Passwords do not match, send an error message or redirect
+            res.status(401).send("Wrong password");
+          }
+        });
+      } else {
+        // If the user does not exist, send an error message or redirect
+        res.status(404).send("User not found");
+      }
+    })
+    .catch(error => {
+      // Handle any error that occurs during the process
+      console.log(error);
+      res.status(500).send("Internal server error");
+    });
+});
+```
