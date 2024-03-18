@@ -957,3 +957,77 @@ The first round of salt takes the password and a randomly generated salt and cre
 
 The number of times we repeat this process is the number of salt rounds.
 
+## Using bcrypt
+
+- [bcrypt](https://www.npmjs.com/package/bcrypt)
+
+Usage:
+
+```js
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const myPlaintextPassword = 's0/\/\P4$$w0rD';
+const someOtherPlaintextPassword = 'not_bacon';
+```
+
+Walkthrough:
+
+1. Import
+   
+The import can be CJS (Common JS)
+
+```javascript
+const bcrypt = require('bcrypt');
+```
+
+or ES6 Modules (ESM)
+```javascript
+import bcrypt from 'bcrypt';
+```
+
+2. Salt rounds
+
+Then we define the number of salt rounds
+
+```js
+const saltRounds = 10;
+```
+
+Remeber that the more we increase the number of `saltRounds`, the harder the computer will have to work to generate the hashes. 
+
+- [A Note on Rounds | bcrypt](https://www.npmjs.com/package/bcrypt#a-note-on-rounds) has a table where we can roughly expect how many hashes it would take.
+
+```sh
+From @garthk, on a 2GHz core you can roughly expect:
+rounds=8 : ~40 hashes/sec
+rounds=9 : ~20 hashes/sec
+rounds=10: ~10 hashes/sec
+rounds=11: ~5  hashes/sec
+rounds=12: 2-3 hashes/sec
+rounds=13: ~1 sec/hash
+rounds=14: ~1.5 sec/hash
+rounds=15: ~3 sec/hash
+rounds=25: ~1 hour/hash
+rounds=31: 2-3 days/hash
+```
+
+3. Use bcrypt to hash a password
+
+Technique 1 (generate a salt and hash on separate function calls):
+
+```javascript
+bcrypt.genSalt(saltRounds, function(err, salt) {
+    bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
+        // Store hash in your password DB.
+    });
+});
+```
+
+Technique 2 (auto-gen a salt and hash):
+
+```javascript
+bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+    // Store hash in your password DB.
+});
+```
+
