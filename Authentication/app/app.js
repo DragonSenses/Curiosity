@@ -5,7 +5,11 @@ import bodyParser from 'body-parser';
 import ejs from 'ejs'; // eslint-disable-line no-unused-vars
 import mongoose from 'mongoose';
 // import { encrypt } from 'mongoose-encryption';
-import md5 from 'md5';
+// import md5 from 'md5';
+// import { hash, compare } from 'bcryptjs';
+import bcrypt from 'bcrypt';
+
+const saltRounds = 10;
 
 /* Constant variables */
 const port = 3000; // Define port number for the server
@@ -52,25 +56,30 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  // Create a new user document with the email & password from the request body
-  const newUser = new User({
-    email: req.body.username,
-    password: md5(req.body.password)
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    // Store hash in your password DB.
+
+    // Create a new user document with the email & password from the request body
+    const newUser = new User({
+      email: req.body.username,
+      password: hash
+    });
+  
+    // Save the new user to the database
+    newUser.save()
+      .then(() => {
+        res.render("secrets");
+        // Do something with user document, such as sending a response or redirecting
+        // res.status(201).send("User created");
+      })
+      .catch(err => {
+        // Log the error to the console or a file
+        console.error(err);
+        // Send an error response or redirect to an error page
+        res.status(500).send("Something went wrong");
+      });
   });
 
-  // Save the new user to the database
-  newUser.save()
-    .then(() => {
-      res.render("secrets");
-      // Do something with user document, such as sending a response or redirecting
-      // res.status(201).send("User created");
-    })
-    .catch(err => {
-      // Log the error to the console or a file
-      console.error(err);
-      // Send an error response or redirect to an error page
-      res.status(500).send("Something went wrong");
-    });
 });
 
 // Route handler for /login path
@@ -81,7 +90,7 @@ app.post("/login", (req, res) => {
 
   // Find a user document in the database that matches the email
   User.findOne({ email: username })
-  .then(foundUser => {
+    .then(foundUser => {
       // If user exists, compare the password with the stored password
       if (foundUser && (foundUser.password === password)) {
         // If the passwords match, render the secrets page
@@ -102,5 +111,5 @@ app.post("/login", (req, res) => {
 
 /* Starts the server & listens for requests on the specified port */
 app.listen(port, () => {
-  console.log(`Server started on port ${port}.`);
+  console.log(`Server started on port ${ port }.`);
 });
