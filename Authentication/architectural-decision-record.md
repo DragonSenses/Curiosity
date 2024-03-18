@@ -1098,6 +1098,10 @@ app.post("/register", (req, res) => {
 });
 ```
 
+### Register route with bcrypt
+
+Refactor post register handler to use bcrypt for password hashing
+
 `Authentication\app\app.js`
 ```javascript
 // ... imports
@@ -1111,7 +1115,6 @@ const saltRounds = 10;
 
 app.post("/register", (req, res) => {
   bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
-    // Store hash in your password DB.
 
     const newUser = new User({
       email: req.body.username,
@@ -1129,5 +1132,55 @@ app.post("/register", (req, res) => {
   });
 
 });
-
 ```
+
+Now we can register a user with a username and password. We can check if the password was hashed properly in the database (I'm using MongoDB Atlas to view the database).
+
+### Login route with bcrypt
+
+[To check a password](https://www.npmjs.com/package/bcrypt#to-check-a-password):
+
+```javascript
+// Load hash from your password DB.
+bcrypt.compare(myPlaintextPassword, hash, function(err, result) {
+    // result == true
+});
+bcrypt.compare(someOtherPlaintextPassword, hash, function(err, result) {
+    // result == false
+});
+```
+
+Here is the post login handler currently:
+
+```javascript
+// Route handler for /login path
+app.post("/login", (req, res) => {
+  // Extract username and password from the request body
+  const username = req.body.username;
+  const password = req.body.password;
+
+  // Find a user document in the database that matches the email
+  User.findOne({ email: username })
+    .then(foundUser => {
+      // If user exists, compare the password with the stored password
+      if (foundUser && (foundUser.password === password)) {
+        // If the passwords match, render the secrets page
+        res.render("secrets");
+      } else if (foundUser && (foundUser.password !== password)) {
+        // If passwords do not match, send an error message or redirect
+        res.send("Wrong password");
+      } else {
+        // If the user does not exist, send an error message or redirect
+        res.send("User not found");
+      }
+    })
+    .catch(error => {
+      // Handle any error that occurs during the process
+      console.log(error);
+    });
+});
+```
+
+Let's update the post login handler with bcrypt.
+
+Refactor post login handler to use bcrypt for password comparing
