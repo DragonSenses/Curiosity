@@ -1311,3 +1311,33 @@ When a server sends a web page to a browser, it can also send a cookie. The brow
 
 Cookies can be set to expire after a certain date or time period, and they can be restricted to a specific domain and path, limiting where the cookie is sent. While cookies are essential for many web functionalities, they can also impact performance, especially on mobile data connections, and there are modern storage APIs like the Web Storage API (localStorage and sessionStorage) and IndexedDB recommended for client-side storage.
 
+## Cookie process
+
+1. Browser sends a GET request to a website
+2. Server sends a response, including JS files to render site
+3. Browser adds a item to the cart, which is equivalent to making a POST request to server
+4. Server creates a cookie to identify user with browser
+   1. cookie contains data that user wants to buy an item
+5. Server sends cookie back as part of the response
+6. Browser saves the cookie
+7. Next time user makes a request to site, the cookie is sent back along with GET request
+8. Cookie allows server to identify who user is, and any previous session they had along with the item they wanted to buy
+
+### Session
+
+Sessions are a type of cookie.
+
+Session: period of time when a browser interacts with a server
+
+When user logs in to a site, that is when the session starts and the cookie is created.
+
+Inside the cookie is the user credentials which verifies that user is logged-in and authenticated. Further access to the website does not need the user to log-in again, as they can check against the active cookie on the browser.
+
+When user logs out, the session ends and the cookie related to the session is destroyed.
+
+## Passport js
+
+- [passportjs](https://www.passportjs.org/)
+  
+> Passport is authentication middleware for Node.js. Extremely flexible and modular, Passport can be unobtrusively dropped in to any Express-based web application. A comprehensive set of strategies support authentication using a username and password, Facebook, Twitter, and more
+
