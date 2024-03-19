@@ -1288,3 +1288,26 @@ app.post("/login", (req, res) => {
     });
 });
 ```
+
+# Level 5: Cookies and Sessions
+
+The next level of authentication and security is cookies and sessions.
+
+Cookies are more like fortune cookies as they have a message that is packaged inside, can be passed around and broken to reveal a message.
+
+If we put an item in our shopping cart at [Amazon](https://www.amazon.com/), then navigate to a different site without purchasing. We can check our browser's cookies in the settings and see the cookie data. We get a cookie that contains our session ID number.
+
+This `session-id` number can be used to fetch all the things we added to the shopping cart during the browser session.
+
+- [Cookies | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
+
+HTTP cookies, also known as web cookies or browser cookies, are small pieces of data sent from a website and stored on the user's web browser while the user is browsing. They serve several functions:
+
+- **Session Management**: Cookies can keep users logged into a site, track shopping cart items, game scores, or any other data the server should remember.
+- **Personalization**: They store user preferences, themes, and other settings.
+- **Tracking**: Cookies can record and analyze user behavior, which can be used for marketing or analytics.
+
+When a server sends a web page to a browser, it can also send a cookie. The browser may store this cookie and send it back with subsequent requests to the same server. This way, the server can recognize if two requests came from the same browser, which is useful for maintaining a consistent user experience, like staying logged in on a website.
+
+Cookies can be set to expire after a certain date or time period, and they can be restricted to a specific domain and path, limiting where the cookie is sent. While cookies are essential for many web functionalities, they can also impact performance, especially on mobile data connections, and there are modern storage APIs like the Web Storage API (localStorage and sessionStorage) and IndexedDB recommended for client-side storage.
+
