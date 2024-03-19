@@ -54,6 +54,10 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
+app.get("/logout", (req, res) => {
+  res.render("home");
+});
+
 app.post("/register", (req, res) => {
   bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
     // Store hash in your password DB.
