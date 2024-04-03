@@ -1488,7 +1488,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true }
-}))
+}));
 
 /* Connect to Database */
 mongoose.connect(process.env.MongoDB_Connection_String);
@@ -1503,4 +1503,54 @@ feat: Create session middleware in app.js
 
 - Added session management packages
 - Configured session with secret key
+
+Let's take the extra step and store the secret key as an environment variable.
+- Add `SECRET_SESSION_STRING` in `.env` file and set the string
+- Use the new key when creating the session
+
+refactor: Use environment variable for session secret
+
+In this commit, the session secret for creating sessions has been refactored to use an environment variable (`process.env.SECRET_SESSION_STRING`). This approach enhances security by keeping sensitive information separate from the codebase. It allows for better management of secrets and reduces the risk of accidental exposure in version control.
+
+```javascript
+app.use(session({
+  secret: process.env.SECRET_SESSION_STRING,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
+```
+
+## Initialize passport
+
+Now right below the session, let's initialize the passport. Then afterwards we want passport to setup our session.
+
+feat: Initialize passport and passport session
+
+In this commit, passport and passport session have been initialized for session management. The `express-session` middleware is used along with `passport` for authentication and user session handling.
+
+```javascript
+import session from 'express-session';
+import passport from 'passport';
+
+/* Express middleware */
+app.use(express.static("public"));
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({
+  extended: true 
+}));
+
+app.use(session({
+  secret: 'Your secret key here',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+/* Connect to Database */
+mongoose.connect(process.env.MongoDB_Connection_String);
+```
 
