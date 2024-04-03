@@ -1289,6 +1289,18 @@ app.post("/login", (req, res) => {
 });
 ```
 
+## Create a backup of the app
+
+Before we modify our current `app.js` file, let's create a backup that stores our app that currently hashes and salts passwords.
+
+feat: Create backup of app.js
+
+This commit adds a backup copy of the main Express app.js file. The backup is stored in a separate directory named 'backups' as 'app.js.bak'. This ensures that we have a safety net in case any changes accidentally break the original file.
+
+- Created a new directory 'backups' within the project root.
+- Copied 'app.js' to 'backups/app.js.bak'.
+- The application currently uses **hashing and salting** for password authentication.
+
 # Level 5: Cookies and Sessions
 
 The next level of authentication and security is cookies and sessions.
@@ -1340,4 +1352,31 @@ When user logs out, the session ends and the cookie related to the session is de
 - [passportjs](https://www.passportjs.org/)
   
 > Passport is authentication middleware for Node.js. Extremely flexible and modular, Passport can be unobtrusively dropped in to any Express-based web application. A comprehensive set of strategies support authentication using a username and password, Facebook, Twitter, and more
+
+## Authentication and Session Management Packages
+
+To enhance our application, we'll install packages that handle sessions and cookies.
+
+1. **[passport](https://www.npmjs.com/package/passport)**: A popular authentication middleware for Node.js applications.
+2. **[passport-local](https://www.npmjs.com/package/passport-local)**: A Passport strategy for authenticating with a username and password.
+3. **[passport-local-mongoose](https://www.npmjs.com/package/passport-local-mongoose)**: A Mongoose plugin that simplifies building username and password login with Passport.
+4. **[express-session](https://www.npmjs.com/package/express-session)**: Middleware for managing sessions in Express applications.
+
+Install all at once:
+
+```sh
+npm i passport passport-local passport-local-mongoose express-session
+```
+
+Commands to install individually:
+
+```sh
+npm install passport
+
+npm install passport-local
+
+npm i passport-local-mongoose
+
+npm i express-session
+```
 
