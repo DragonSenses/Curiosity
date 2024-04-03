@@ -27,6 +27,9 @@ app.use(session({
   cookie: { secure: true }
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 /* Connect to Database */
 mongoose.connect(process.env.MongoDB_Connection_String);
 
