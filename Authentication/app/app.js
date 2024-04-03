@@ -21,11 +21,11 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(session({
-  secret: 'Your secret key here',
+  secret: process.env.SECRET_SESSION_STRING,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true }
-}))
+}));
 
 /* Connect to Database */
 mongoose.connect(process.env.MongoDB_Connection_String);
