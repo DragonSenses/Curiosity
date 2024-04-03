@@ -1353,7 +1353,7 @@ When user logs out, the session ends and the cookie related to the session is de
   
 > Passport is authentication middleware for Node.js. Extremely flexible and modular, Passport can be unobtrusively dropped in to any Express-based web application. A comprehensive set of strategies support authentication using a username and password, Facebook, Twitter, and more
 
-## Authentication and Session Management Packages
+### Authentication and Session Management Packages
 
 To enhance our application, we'll install packages that handle sessions and cookies.
 
@@ -1448,4 +1448,59 @@ app.listen(port, () => {
   console.log(`Server started on port ${ port }.`);
 });
 ```
+
+### Import packages in app
+
+Now let's import the packages,
+
+In CommonJS (CJS) require statement:
+```javascript
+const session = require('express-session');
+const passport = require('passport');
+const passportLocalMongoose = require('passport-local-mongoose');
+```
+
+In ECMAScript Module (ESM) import statemenet:
+```javascript
+import session from 'express-session';
+import passport from 'passport';
+import passportLocalMongoose from 'passport-local-mongoose';
+```
+
+We do not need to import `passport-local`.
+
+## Create session middleware
+
+Next let's start with `session` and actually use it.
+
+***After*** our express middleware, **but *before*** we connect to the database, create a session middleware with the given options.
+
+```js
+/* Express middleware */
+app.use(express.static("public"));
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({
+  extended: true 
+}));
+
+app.use(session({
+  secret: 'Your secret key here',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
+
+/* Connect to Database */
+mongoose.connect(process.env.MongoDB_Connection_String);
+```
+
+- `secret` is the secret used to sign the session ID cookie
+- `resave`: Forces the session to be saved back to the session store, even if the session was never modified during the request. 
+- `saveUninitialized`: Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified. Choosing `false` is useful for implementing login sessions, reducing server storage usage, or complying with laws that require permission before setting a cookie. Choosing `false` will also help with race conditions where a client makes multiple parallel requests without a session.
+- `cookie`: Settings object for the session ID cookie.
+
+feat: Create session middleware in app.js
+
+- Added session management packages
+- Configured session with secret key
 
