@@ -123,3 +123,37 @@ Remember to replace placeholders (such as `'your_password'`) with actual values 
 
 NOTE: Wrap the password with single quotes (`''`). End statements with semicolon (`;`).
 
+## Database tool: pgAdmin 4
+
+- [pgAdmin](https://www.pgadmin.org/)
+
+**pgAdmin** is a feature-rich **open-source administration and development platform** for **PostgreSQL**
+
+Here are some key points about pgAdmin:
+
+1. **Purpose**:
+   - **Database Management**: pgAdmin is designed for **administering and managing PostgreSQL databases**.
+   - **Web-Based Tool**: It provides an **intuitive graphical interface (GUI)** for interacting with PostgreSQL databases.
+
+2. **Features**:
+   - **Cross-Platform**: pgAdmin can be used on **Linux, Unix, macOS, and Windows**.
+   - **Administration**: It allows you to perform tasks such as creating, modifying, and deleting database objects.
+   - **Development**: You can write and execute SQL queries, manage users, and handle backups.
+   - **Customization**: Users can customize their workspace preferences to enhance productivity¹².
+
+In summary, pgAdmin simplifies database management by offering a user-friendly interface for PostgreSQL administrators and developers. 
+
+### Dark mode for pgAdmin 4
+
+**pgAdmin** offers a dark theme to reduce eye strain during extended usage. Here's how you can enable dark mode in pgAdmin:
+
+1. **pgAdmin 4 (v4+)**:
+   - Open pgAdmin 4.
+   - Go to **File** > **Preferences** > **Miscellaneous** > **Themes**.
+   - Select the **dark theme** from the dropdown menu.
+   - Remember to refresh the pgAdmin page for the changes to take effect.
+
+### DBeaver
+
+Another universal database tool is [Dbeaver](https://dbeaver.io/).
+
