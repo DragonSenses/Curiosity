@@ -4,6 +4,11 @@ import bodyParser from 'body-parser';
 import ejs from 'ejs'; // eslint-disable-line no-unused-vars
 import mongoose from 'mongoose';
 
+/* Packages for session management*/
+import session from 'express-session';
+import passport from 'passport';
+import passportLocalMongoose from 'passport-local-mongoose';
+
 /* Constant variables */
 const port = 3000;
 const app = express();
@@ -14,6 +19,13 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
   extended: true 
 }));
+
+app.use(session({
+  secret: 'Your secret key here',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 
 /* Connect to Database */
 mongoose.connect(process.env.MongoDB_Connection_String);
