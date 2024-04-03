@@ -1554,3 +1554,63 @@ app.use(passport.session());
 mongoose.connect(process.env.MongoDB_Connection_String);
 ```
 
+### User session handling with passport local mongoose
+
+- [passport-local-mongoose | npm reference](https://www.npmjs.com/package/passport-local-mongoose)
+
+Next add `passportLocalMongoose` as a plugin to the user schema.
+
+```js
+import passportLocalMongoose from 'passport-local-mongoose';
+
+// ...
+
+/* Connect to Database */
+mongoose.connect(process.env.MongoDB_Connection_String);
+
+// Define a user schema with email and password fields
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+});
+
+userSchema.plugin(passportLocalMongoose);
+```
+
+Enabling `passportLocalMongoose` will allow us to hash and salt our passwords and save our users into our mongoDB.
+
+Next add the simplified passport/passport-local configuration
+
+1. We have to create a strategy
+2. Serialize user
+3. Deserialize user
+
+Serialize/deserialize is only necessary when using sessions.
+
+Serialize the user creates the cookie which contains the user identifications.
+Deserialize allows passport to open the cookie and read the information within to identify the user.
+
+feat: Set up passportLocalMongoose and user session handling
+
+In this commit, passportLocalMongoose has been set up for user authentication. The user schema includes email and password fields. Additionally, the passport strategy, serializeUser, and deserializeUser functions have been configured for user session management.
+
+```js
+/* Connect to Database */
+mongoose.connect(process.env.MongoDB_Connection_String);
+
+// Define a user schema with email and password fields
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+});
+
+userSchema.plugin(passportLocalMongoose);
+
+// Create a user model from the user schema
+const User = new mongoose.model("User", userSchema);
+
+passport.use(User.createStrategy());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+```
