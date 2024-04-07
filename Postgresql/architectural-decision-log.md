@@ -166,6 +166,42 @@ Why PostgreSQL?
 - Career Opportunities
 - Community Support
 
+## SQL Primer
+
+### Tables
+
+Let's explore the components of an **SQL table**:
+
+1. **Columns (Fields)**:
+   - Columns define the **attributes** or **fields** of the data stored in the table.
+   - Each column has an **individual name** and represents a specific type of data (e.g., numbers, text, dates).
+   - Columns are **vertical** and provide the structure for organizing data.
+
+2. **Rows (Records)**:
+   - Rows, also known as **records**, represent **individual instances** of data within the table.
+   - Each row contains a set of values corresponding to the columns.
+   - Rows are **horizontal** and hold the actual data entries.
+
+3. **Primary Key**:
+   - A **primary key** is a column (or a set of columns) that **uniquely identifies** each row in the table.
+   - It ensures data integrity by preventing duplicate records.
+   - Common examples of primary keys include user IDs, order numbers, or product codes.
+
+4. **Foreign Key** (Optional):
+   - A **foreign key** establishes a relationship between two tables.
+   - It references a primary key in another table, creating a link between related data.
+   - Foreign keys maintain data consistency and enforce referential integrity.
+
+5. **Table Constraints** (Optional):
+   - Constraints define rules for data validation and integrity.
+   - Examples include **NOT NULL** (ensuring a column cannot have null values), **UNIQUE** (ensuring unique values), and **CHECK** (defining custom conditions).
+
+6. **Table Name**:
+   - The table is identified by a **unique name** within the database.
+   - Choose a descriptive name that reflects the purpose of the data stored in the table.
+
+
+
 # Web App Walkthrough
 
 ## 1. Client
