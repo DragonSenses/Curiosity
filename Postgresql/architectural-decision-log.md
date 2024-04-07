@@ -200,7 +200,56 @@ Let's explore the components of an **SQL table**:
    - The table is identified by a **unique name** within the database.
    - Choose a descriptive name that reflects the purpose of the data stored in the table.
 
+#### Example: Create Table
 
+Here is an example code to create a table in SQL:
+
+```sql
+CREATE TABLE <Name of Table> (
+  <field1> <DATATYPE>,
+  <field> <DATATYPE>,
+  <field3> <DATATYPE>
+);
+```
+
+Certainly! Let's break down the SQL code you provided:
+
+```sql
+CREATE TABLE <Name of Table> (
+  <field1> <DATATYPE>,
+  <field2> <DATATYPE>,
+  <field3> <DATATYPE>
+);
+```
+
+Here's what each part means:
+
+1. **`CREATE TABLE`**:
+   - This SQL command is used to **create a new table** in the database.
+   - It specifies that we want to define a new table.
+
+2. **`<Name of Table>`**:
+   - Replace `<Name of Table>` with the **actual name** you want for your table.
+   - This is where you give your table a unique identifier.
+
+3. **Columns (Fields)**:
+   - Columns are defined within parentheses after the table name.
+   - Each column is represented by `<fieldX>` (e.g., `<field1>`, `<field2>`, `<field3>`).
+   - Replace `<fieldX>` with **descriptive column names** (e.g., `user_id`, `product_name`, etc.).
+
+4. **`<DATATYPE>`**:
+   - For each column, specify the **data type** of the values it will hold.
+   - Examples of data types include:
+     - `INT` (integer)
+     - `VARCHAR(n)` (variable-length character string with a maximum length of `n`)
+     - `DATE` (date)
+     - `DECIMAL(p, s)` (decimal number with `p` total digits and `s` decimal places)
+
+5. **Semicolon (`;`)**:
+   - The semicolon at the end of the statement indicates the **end of the SQL command**.
+   - It's essential to terminate SQL statements with a semicolon.
+
+In summary, this SQL code creates a new table with the specified columns and their associated data types. Remember to customize it by replacing placeholders with actual table names and column names relevant to your use case.
 
 # Web App Walkthrough
 
