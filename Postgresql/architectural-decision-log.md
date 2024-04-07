@@ -251,6 +251,46 @@ Here's what each part means:
 
 In summary, this SQL code creates a new table with the specified columns and their associated data types. Remember to customize it by replacing placeholders with actual table names and column names relevant to your use case.
 
+#### Example 2: Table of friends
+
+Let's create a table of friends.
+
+```sql
+CREATE TABLE friends (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50),
+  age INT,
+);
+```
+
+Let's break down the SQL code for creating a table named "friends":
+
+1. **`CREATE TABLE friends (`**:
+   - This line initiates the creation of a new table named "friends."
+   - The opening parenthesis `(` indicates the start of the column definitions.
+
+2. **`id SERIAL PRIMARY KEY,`**:
+   - `id` is the name of the first column.
+   - `SERIAL` specifies that this column will be an **auto-incrementing integer** (usually used for unique identifiers).
+   - `PRIMARY KEY` designates this column as the **primary key**, ensuring each row has a unique value for the `id`.
+
+3. **`name VARCHAR(50),`**:
+   - `name` is the second column.
+   - `VARCHAR(50)` defines a **variable-length character string** with a maximum length of 50 characters.
+   - This column will store names.
+
+4. **`age INT,`**:
+   - `age` is the third column.
+   - `INT` represents an **integer data type**.
+   - This column will store age values.
+
+5. **Closing Parenthesis `)`**:
+   - The closing parenthesis `)` indicates the end of the column definitions.
+
+Remember that this SQL code creates a table called "friends" with three columns: `id`, `name`, and `age`. The `id` column serves as the primary key, ensuring uniqueness for each row. The `name` column stores names, and the `age` column stores integer values representing ages. 
+
+
+
 # Web App Walkthrough
 
 ## 1. Client
