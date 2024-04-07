@@ -188,3 +188,45 @@ Why PostgreSQL?
 2. It then sends the **correct response** back to the server.
 3. The client can now **format and display** the data.
 
+# PostgreSQ: simple example in Node
+
+Let's create a simple example using **PostgreSQL** and the **`pg` package**:
+
+- [pg](https://www.npmjs.com/package/pg) is a non-blocking PostgreSQL client for Node.js.
+
+Steps:
+1. **Install PostgreSQL** on your system.
+2. **Set up a database** (if you haven't already).
+3. Install the **`pg` package** (a PostgreSQL client library) using your preferred package manager:
+
+    ```sh
+    npm install pg
+    ```
+
+4. **Connect to your PostgreSQL database** using the `pg` package.
+5. Perform basic operations such as **querying data**, **inserting records**, or **updating data** to demonstrate the interaction between your Node application and the PostgreSQL database.
+
+`index.js`
+```js
+import Client from "pg";
+
+const db = new Client({
+  user: "username",
+  host: "localhost",
+  database: "myDatabase",
+  password: "password",
+  port: 5432,
+});
+
+db.connect();
+
+db.query("SELECT * FROM users", (err, res) => {
+  if (err) {
+    console.error("Error executing query", err.stack);
+  } else {
+    console.log("USer data:", res.rows);
+  }
+  
+  db.end();
+});
+```
