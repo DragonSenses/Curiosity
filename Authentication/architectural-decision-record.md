@@ -1614,3 +1614,54 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 ```
+
+## Setup POST routes
+
+With the configurations to setup cookies and sessions we should now be able to implement our routes. 
+
+- [passport-local-mongoose | Examples section](https://www.npmjs.com/package/passport-local-mongoose#examples-1)
+- Here is the content of the link above:
+
+To allow only "active" users to authenticate
+
+First, we define a schema with an additional field `active` of type Boolean.
+
+```javascript
+const UserSchema = new Schema({
+  active: Boolean
+});
+```
+
+When plugging in Passport-Local Mongoose, we set `usernameUnique` to avoid creating a unique mongodb index on field `username`. To avoid non active users being queried by mongodb, we can specify the option `findByUsername` that allows us to restrict a query. In our case we want to restrict the query to only query users with field `active` set to `true`. 
+
+The `findByUsername` MUST return a Mongoose query.
+
+```javascript
+UserSchema.plugin(passportLocalMongoose, {
+  // Set usernameUnique to false to avoid a mongodb index on the username column!
+  usernameUnique: false,
+
+  findByUsername: function(model, queryParameters) {
+    // Add additional query parameter - AND condition - active: true
+    queryParameters.active = true;
+    return model.findOne(queryParameters);
+  }
+});
+```
+
+To test the implementation, we can simply create (register) a user with field active set to false and try to authenticate this user in a second step:
+
+```javascript
+const User = mongoose.model('Users', UserSchema);
+
+User.register({username:'username', active: false}, 'password', function(err, user) {
+  if (err) { ... }
+
+  const authenticate = User.authenticate();
+  authenticate('username', 'password', function(err, result) {
+    if (err) { ... }
+
+    // Value 'result' is set to false. The user could not be authenticated since the user is not active
+  });
+});
+```
