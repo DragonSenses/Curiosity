@@ -157,3 +157,34 @@ In summary, pgAdmin simplifies database management by offering a user-friendly i
 
 Another universal database tool is [Dbeaver](https://dbeaver.io/).
 
+# PostgreSQL Intro
+
+Why PostgreSQL?
+
+- Free & Open Source
+- Widely used in the Industry
+- Career Opportunities
+- Community Support
+
+# Web App Walkthrough
+
+## 1. Client
+- The **front-end** of the website initiates communication with the server.
+- It sends a **request** to the server-side.
+
+## 2. Server
+- The **server-side** processes the request received from the client.
+
+## 3. App
+- Within the application (e.g., `App.js`, `index.js`), the **business logic** handles the request.
+- The app also **interacts with the database**.
+
+## 4. Database
+- The database **stores data** for the application.
+- It **returns the necessary data** in response to requests from the app.
+
+## Workflow
+1. The app **retrieves data** and performs necessary **business logic**.
+2. It then sends the **correct response** back to the server.
+3. The client can now **format and display** the data.
+
