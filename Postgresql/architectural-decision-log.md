@@ -289,6 +289,40 @@ Let's break down the SQL code for creating a table named "friends":
 
 Remember that this SQL code creates a table called "friends" with three columns: `id`, `name`, and `age`. The `id` column serves as the primary key, ensuring uniqueness for each row. The `name` column stores names, and the `age` column stores integer values representing ages. 
 
+##### CHAR vs VARCHAR
+
+Let's explore the differences between the **CHAR** and **VARCHAR** data types in SQL:
+
+1. **CHAR Datatype**:
+   - **Fixed-Length**: The `CHAR` datatype is used to store character strings of a **fixed length**.
+   - **Padding**: If the length of the string is less than the specified fixed length, it is **padded with extra blank spaces** to match the set length (when the `PAD_CHAR_TO_FULL_LENGTH` SQL mode is enabled).
+   - **Storage Size**: The storage size of `CHAR` is **n bytes** (where `n` is the set length).
+   - **Usage**: Use `CHAR` when you expect data values in a column to be of the **same length**.
+   - **Example**:
+     ```sql
+     CREATE TABLE Student (Name VARCHAR(30), Gender CHAR(6));
+     ```
+
+2. **VARCHAR Datatype**:
+   - **Variable-Length**: The `VARCHAR` datatype stores character strings of **variable length**, up to a maximum specified length.
+   - **No Padding**: If the length of the string is less than the set length, it is stored as-is without extra blank spaces.
+   - **Storage Size**: The storage size of `VARCHAR` is equal to the **actual length of the entered string in bytes**.
+   - **Usage**: Use `VARCHAR` when you expect data values in a column to be of **varying lengths**.
+   - **Example**:
+     ```sql
+     CREATE TABLE Student (Name VARCHAR(20), Gender CHAR(6));
+     ```
+
+3. **Summary**:
+   - **CHAR** stands for "Character," while **VARCHAR** stands for "Variable Character."
+   - **Storage Size**:
+     - `CHAR`: Fixed size (n bytes).
+     - `VARCHAR`: Actual length of the entered string (plus some extra bytes for holding length information).
+   - **Performance**:
+     - `CHAR` may have better performance due to fixed-length storage.
+     - `VARCHAR` saves space when there is variation in value lengths.
+
+Remember that choosing between `CHAR` and `VARCHAR` depends on your specific use case and the expected characteristics of the data you'll be storing.
 
 
 # Web App Walkthrough
