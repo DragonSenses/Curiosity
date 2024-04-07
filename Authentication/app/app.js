@@ -66,6 +66,15 @@ app.get("/logout", (req, res) => {
   res.render("home");
 });
 
+app.get("/secrets", (req, res) => {
+  // Check if user is authenticated
+  if (req.isAuthenticated()) {
+    res.render("secrets");
+  } else {
+    res.redirect("/login");
+  }
+}); 
+
 app.post("/register", (req, res) => {
 
   User.register({username: req.body.username}, req.body.password, function(err, user){
