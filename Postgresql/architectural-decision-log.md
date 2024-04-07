@@ -289,6 +289,10 @@ Let's break down the SQL code for creating a table named "friends":
 
 Remember that this SQL code creates a table called "friends" with three columns: `id`, `name`, and `age`. The `id` column serves as the primary key, ensuring uniqueness for each row. The `name` column stores names, and the `age` column stores integer values representing ages. 
 
+#### PostgreSQL data types
+
+- [PostgreSQL data types | Reference](https://www.postgresql.org/docs/current/datatype.html)
+
 ##### CHAR vs VARCHAR
 
 Let's explore the differences between the **CHAR** and **VARCHAR** data types in SQL:
@@ -324,6 +328,38 @@ Let's explore the differences between the **CHAR** and **VARCHAR** data types in
 
 Remember that choosing between `CHAR` and `VARCHAR` depends on your specific use case and the expected characteristics of the data you'll be storing.
 
+##### Text data type
+
+Let's delve into the **TEXT** data type in SQL:
+
+1. **TEXT Datatype**:
+   - The `TEXT` data type is used to store **large amounts of text data**.
+   - It allows for **variable-length** storage, accommodating lengthy strings.
+   - Unlike `CHAR` and `VARCHAR`, `TEXT` has **no fixed maximum length**.
+   - **Storage Size**: The space allocated for `TEXT` is **16 bytes** for column storage.
+   - **Usage**:
+     - Use `TEXT` when you need to store **extensive textual content**, such as articles, descriptions, or comments.
+     - It's suitable for scenarios where the length of the data varies significantly.
+
+2. **Comparison with CHAR and VARCHAR**:
+   - **CHAR**:
+     - Fixed-length storage.
+     - Padded with extra memory space if the string length is less than the set length.
+     - Suitable for data values of the same length.
+   - **VARCHAR**:
+     - Variable-length storage.
+     - Stores data as-is without padding.
+     - Suitable for data values of varying lengths.
+   - **TEXT**:
+     - Variable-length storage (no maximum length).
+     - Ideal for large textual content.
+     - No need to specify a length; it adapts dynamically.
+
+3. **Performance Considerations**:
+   - `CHAR` might have better performance due to fixed-length storage.
+   - `VARCHAR` and `TEXT` save space but may not perform as well as `CHAR`.
+
+In summary, choose `TEXT` when dealing with extensive text data, and use `CHAR` or `VARCHAR` based on your specific requirements. Each type serves a distinct purpose in managing character data.
 
 # Web App Walkthrough
 
