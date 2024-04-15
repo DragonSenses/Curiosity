@@ -108,6 +108,13 @@ app.post("/login", (req, res) => {
   });
 });
 
+app.post('/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+});
+
 /* Starts the server & listens for requests on the specified port */
 app.listen(port, () => {
   console.log(`Server started on port ${ port }.`);
