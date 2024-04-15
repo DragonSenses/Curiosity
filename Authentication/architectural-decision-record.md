@@ -1834,3 +1834,28 @@ In detail,
    - If the cookie is valid, the user is granted access to authorized pages (e.g., the "/secrets" page).
 
 This process ensures secure and seamless user authentication within the application.
+
+## Add logout route to deauthenticate users
+
+docs: Add logout route to deauthenticate users
+
+This commit introduces a logout route that deauthenticates users, ensuring they are securely logged out. 
+
+- [Log out | Passportjs](https://www.passportjs.org/concepts/authentication/logout/)
+
+Passport exposes a `logout()` function on `req` (also aliased as `logOut()`) that can be called from any route handler which needs to terminate a login session. Invoking `logout()` will remove the `req.user` property and clear the login session (if any).
+
+It is a good idea to use POST or DELETE requests instead of GET requests for the logout endpoints, in order to prevent accidental or malicious logouts.
+
+feat: Implement logout route
+
+This commit adds a logout route that deauthenticates users. Upon successful logout, users are redirected to the home page.
+
+```javascript
+app.post('/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+});
+```
