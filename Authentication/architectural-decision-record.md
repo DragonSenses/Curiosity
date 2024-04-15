@@ -1805,3 +1805,32 @@ app.post("/login", (req, res) => {
   });
 });
 ```
+
+#### Walkthrough of login POST route
+
+1. User logins in with credentials in login route
+2. Then `passport.authenticate` sends a cookie to browser which it will hold onto
+3. Cookie will authenticate and allow the user to view authorized pages
+
+docs: Add walkthrough for login POST route
+
+This commit includes a detailed walkthrough for the login POST route. It explains the user authentication process, the role of `passport.authenticate`, and how cookie-based authentication works.
+
+In detail,
+
+1. **User Authentication Process**:
+   - The user submits their login credentials (username and password) via the login route.
+   - The server receives the credentials and processes them.
+
+2. **Passport Authentication**:
+   - The `passport.authenticate` middleware is invoked.
+   - If the credentials are valid, Passport generates an authentication cookie.
+   - This cookie is sent to the user's browser, where it is stored.
+
+3. **Cookie-Based Authentication**:
+   - The browser holds onto the authentication cookie.
+   - For subsequent requests, the browser automatically includes this cookie.
+   - The server uses the cookie to verify the user's identity.
+   - If the cookie is valid, the user is granted access to authorized pages (e.g., the "/secrets" page).
+
+This process ensures secure and seamless user authentication within the application.
