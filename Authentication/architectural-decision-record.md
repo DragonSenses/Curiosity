@@ -1695,3 +1695,25 @@ app.post("/register", (req, res) => {
   });
 });
 ```
+
+#### Secrets GET route
+
+Notice we redirect the user to the "/secrets" route. Previously, we did not implement this route because we relied on `res.render()` to render the secrets page within the register or login page.
+
+But because we are authenticating the user and setting up a logged-in session for them, then they should be automatically be able to view the secrets page if they are still logged-in.
+
+feat: Implement secrets GET route
+
+This commit adds the secrets route to the Express app. If the user is authenticated, it renders the 'secrets' view; otherwise, it redirects to the login page.
+
+```javascript
+app.get("/secrets", (req, res) => {
+  // Check if user is authenticated
+  if (req.isAuthenticated()) {
+    res.render("secrets");
+  } else {
+    res.redirect("/login");
+  }
+}); 
+```
+
