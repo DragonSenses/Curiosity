@@ -1665,3 +1665,33 @@ User.register({username:'username', active: false}, 'password', function(err, us
   });
 });
 ```
+
+### Register POST route
+
+feat: Implement registration POST route
+
+This commit adds the registration functionality to the Express app. It includes session management, database connection, and user authentication using Passport.js.
+
+Changes made:
+- Set up middleware for static files and EJS templates.
+- Configured session handling with secure cookies.
+- Initialized Passport for authentication.
+- Defined a user schema with email and password fields.
+- Created a user model from the schema.
+- Implemented registration route that registers users and redirects to the secrets page upon successful authentication.
+
+```javascript
+app.post("/register", (req, res) => {
+
+  User.register({username: req.body.username}, req.body.password, function(err, user){
+    if (err) {
+      console.log(err);
+      res.redirect("/register");
+    } else {
+      passport.authenticate("local")(req, res, function() {
+        res.redirect("/secrets");
+      });
+    }
+  });
+});
+```
