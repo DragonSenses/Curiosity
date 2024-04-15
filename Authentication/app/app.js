@@ -17,7 +17,7 @@ const app = express();
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
-  extended: true 
+  extended: true
 }));
 
 app.use(session({
@@ -73,16 +73,16 @@ app.get("/secrets", (req, res) => {
   } else {
     res.redirect("/login");
   }
-}); 
+});
 
 app.post("/register", (req, res) => {
 
-  User.register({username: req.body.username}, req.body.password, function(err, user){
+  User.register({ username: req.body.username }, req.body.password, function (err, user) {
     if (err) {
       console.log(err);
       res.redirect("/register");
     } else {
-      passport.authenticate("local")(req, res, function() {
+      passport.authenticate("local")(req, res, function () {
         res.redirect("/secrets");
       });
     }
@@ -97,11 +97,11 @@ app.post("/login", (req, res) => {
   });
 
   // Use passport to log-in the user
-  req.login(user, function(err) {
+  req.login(user, function (err) {
     if (err) {
       console.log(err);
     } else {
-      passport.authenticate("local")(req, res, function() {
+      passport.authenticate("local")(req, res, function () {
         res.redirect("/secrets");
       });
     }
