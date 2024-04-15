@@ -1717,3 +1717,48 @@ app.get("/secrets", (req, res) => {
 }); 
 ```
 
+#### Test register and secrets routes
+
+Now we can test the routes. 
+
+1. In the terminal, run the server.
+
+```sh
+npm run dev
+```
+
+2. Register a new user
+
+```sh
+Email: TatsuyaShiba@gmail.com
+Password: MiyukiShiba
+```
+
+User will be created in the database and redirected to the secrets page.
+
+3. Check the database for the document created in the collection
+
+We can see the newly created user has a `username`, `salt`, and `hash` fields. It also has private fields `_id` and `__v`.
+
+The `salt` and `hash` are done automatically by `passport-local-mongoose`.
+
+4. Check if session is preserved
+
+- Navigate to `localhost:3000` the home page
+- Navigate back to `localhost:3000/secrets`
+
+The secrets page is rendered right away without neeeding to login because user is already authenticated.
+
+5. Check the cookie saved in browser session
+
+Go to Chrome settings > Content Settings > Cookies > See all cookies and site data
+
+- Locate `localhost`
+- One cookie is found named `connect.sid` which saves our session
+- This cookie is created by `express-session` package
+- Set to expire when browsing session ends
+
+6. Remove the cookie and access secrets page again
+
+If we reset our session by ending the browser session (close Chrome) or deleting the cookie, and then access the secrets page again the user will not be authenticated. It will redirect us back to the login page.
+
