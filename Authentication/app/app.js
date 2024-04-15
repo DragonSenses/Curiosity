@@ -90,7 +90,22 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
+  // Create a new user
+  const user = new User({
+    username: req.body.username,
+    password: req.body.password
+  });
 
+  // Use passport to log-in the user
+  req.login(user, function(err) {
+    if (err) {
+      console.log(err);
+    } else {
+      passport.authenticate("local")(req, res, function() {
+        res.redirect("/secrets");
+      });
+    }
+  });
 });
 
 /* Starts the server & listens for requests on the specified port */
