@@ -1778,3 +1778,30 @@ req.login(user, function(err) {
 When the login operation completes, `user` will be assigned to `req.user`.
 
 Note: `passport.authenticate()` middleware invokes `req.login()` automatically. This function is primarily used when users sign up, during which `req.login()` can be invoked to automatically log in the newly registered user.
+
+Let's implement the POST route. On login, create a user with the login credentials. Then autenticate that user with `passport`.
+
+feat: Implement user login route
+
+This commit adds a new route for user login. When a POST request is made to "/login", the provided username and password are used to authenticate the user. If successful, the user is redirected to the "/secrets" page.
+
+```javascript
+app.post("/login", (req, res) => {
+  // Create a new user
+  const user = new User({
+    username: req.body.username,
+    password: req.body.password
+  });
+
+  // Use passport to log-in the user
+  req.login(user, function(err) {
+    if (err) {
+      console.log(err);
+    } else {
+      passport.authenticate("local")(req, res, function() {
+        res.redirect("/secrets");
+      });
+    }
+  });
+});
+```
