@@ -1862,7 +1862,7 @@ app.post('/logout', function(req, res, next){
 
 ### Level 6: OAuth - Open Authorization
 
-What is **OAuth**?
+#### What is **OAuth**?
 
 - **OAuth (Open Authorization)** is an open standard for token based authorization
 - **OAuth (Open Authorization)** is an open standard for access delegation, commonly used as a way for internet users to grant websites or applications access to their information on other websites but without giving them the passwords. [Source: Wikipedia](https://en.wikipedia.org/wiki/OAuth)
@@ -1878,4 +1878,32 @@ What is **OAuth**?
 
 5. **Common Use Cases**: OAuth is widely used by companies like Amazon, Google, Microsoft, and Twitter. For example, when you log in to a third-party app using your Google account, OAuth enables the app to access your Google profile without knowing your Google password.
 
-In summary, OAuth provides a secure way for users to share their account information with third-party services, enhancing privacy and security while allowing seamless integration between different platforms
+In summary, OAuth provides a secure way for users to share their account information with third-party services, enhancing privacy and security while allowing seamless integration between different platforms.
+
+#### Why **OAuth**?
+
+**OAuth** allows us to access specific information on third-party websites without sharing our passwords directly. By delegating password management to these third-party companies, OAuth enhances security. As a result, our liability decreases when our users' sensitive data is exposed.
+
+**OAuth** is special in 3 ways.
+
+1. Granular Access Levels
+2. Read/Read+Write Access
+3. Revoke Access
+
+Granular Access Levels
+
+- When a user logs in using a third-party service like GitHub or Google, we have the ability to request **specific pieces of information** from their accounts.
+- For instance, if our app only requires access to the user's **profile and email address**, we can limit our request to just those details. Alternatively, we might ask for additional data, such as their **list of friends**.
+- The term **granular** refers to breaking down access into smaller, more precise components. In this context, **granularity** allows app developers to precisely determine the type of data they need from the user's third-party account, tailoring their requests accordingly.
+
+Read/Read+Write Access
+
+- **OAuth** provides two levels of access:
+    - **Read-only access**: With this level, we can retrieve information from a user's account without the ability to modify or write any data.
+    - **Read+Write access**: In contrast, this level allows us to both retrieve information and make changes to a user's account. For instance, we could post information on a user's third-party account.
+
+Revoke Access
+
+- When using a third-party service for user authentication, it's essential that the user has the ability to **revoke access** at any time. 
+- For instance, if a user authenticates with Google, they should be able to visit their Google account settings and **deauthorize** the access they previously granted to your application or website. 
+- This way, users don't need to navigate to your website specifically to manage access permissions, making the process more straightforward and user-friendly.
