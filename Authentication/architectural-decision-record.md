@@ -1859,3 +1859,23 @@ app.post('/logout', function(req, res, next){
   });
 });
 ```
+
+### Level 6: OAuth - Open Authorization
+
+What is **OAuth**?
+
+- **OAuth (Open Authorization)** is an open standard for token based authorization
+- **OAuth (Open Authorization)** is an open standard for access delegation, commonly used as a way for internet users to grant websites or applications access to their information on other websites but without giving them the passwords. [Source: Wikipedia](https://en.wikipedia.org/wiki/OAuth)
+- **OAuth (Open Authorization)** is an open standard protocol that facilitates authorization for applications to access user information. Here's how it works:
+
+1. **Access Delegation**: OAuth allows internet users to grant websites or applications access to their information on other websites **without** sharing their passwords. Instead of revealing login credentials, OAuth enables a secure way for users to delegate access to their data.
+
+2. **Resource Owner and Client**: In the OAuth process, the **resource owner** (the user) authorizes a **client application** (such as a website or app) to access specific resources (like user profiles or data) hosted by a **resource server** (another website or service).
+
+3. **Access Tokens**: When a user authorizes access, the authorization server issues an **access token** to the client application. This token acts as a credential that the client can use to access the protected resources on behalf of the user.
+
+4. **Resource Server Interaction**: The client application presents the access token to the resource server. If valid, the resource server grants access to the requested resources.
+
+5. **Common Use Cases**: OAuth is widely used by companies like Amazon, Google, Microsoft, and Twitter. For example, when you log in to a third-party app using your Google account, OAuth enables the app to access your Google profile without knowing your Google password.
+
+In summary, OAuth provides a secure way for users to share their account information with third-party services, enhancing privacy and security while allowing seamless integration between different platforms
