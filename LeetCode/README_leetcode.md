@@ -28,3 +28,32 @@ What is LeetCode?
 
 Remember that LeetCode alone doesn't guarantee job readiness. It's part of a broader learning process. Combine it with practical projects, open-source contributions, and soft skills to enhance your overall job readiness. 
 
+## Reasons to practice
+
+1. **Technical Interview Preparation**:
+   - LeetCode offers a vast collection of authentic company interview questions. By solving these problems, you can become well-prepared for technical interviews.
+   - Many tech companies use similar problem-solving formats during interviews, making LeetCode an excellent resource to practice and refine your skills.
+
+2. **Algorithmic Fundamentals**:
+   - LeetCode covers a wide range of topics related to data structures (arrays, linked lists, trees, graphs) and algorithms (sorting, searching, dynamic programming).
+   - Mastering these concepts is crucial for success in technical roles.
+
+3. **Problem-Solving Practice**:
+   - Regularly solving LeetCode problems helps you stay sharp and maintain your algorithmic knowledge.
+   - It's an opportunity to refresh your understanding of fundamental algorithms and data structures.
+
+4. **Language Proficiency**:
+   - LeetCode allows you to practice coding in various programming languages.
+   - If you're learning a new language, LeetCode can be a fun way to apply your knowledge and improve your proficiency.
+
+5. **New Challenges and Approaches**:
+   - LeetCode exposes you to diverse problem scenarios and novel ways of solving them.
+   - Even if you don't get a question right, articulating your thought process and approach during interviews is valuable.
+
+6. **Industry Expectations**:
+   - Some companies consider LeetCode performance as a measure of a candidate's coding abilities.
+   - While it's not the sole indicator, being comfortable with LeetCode-style problems can boost your chances.
+
+LeetCode complements other skills like system design, software engineering principles, and practical projects. It's a valuable tool, but not the only one.
+
+
