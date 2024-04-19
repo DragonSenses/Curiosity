@@ -56,4 +56,28 @@ Remember that LeetCode alone doesn't guarantee job readiness. It's part of a bro
 
 LeetCode complements other skills like system design, software engineering principles, and practical projects. It's a valuable tool, but not the only one.
 
+### Abstract away
 
+- [what does "abstract away from" mean? | English language learners stack exchange](https://ell.stackexchange.com/questions/89687/what-does-abstract-away-from-mean)
+
+This response to the question of what "abstract away" means is brilliant, so I'd like to reiterate here for posterity:
+
+Q: I'm reading a technical book about programming and I came across on this sentence,
+
+> "A dependency abstracts functionality away from calling code. You don't need to worry too much about what a dependency is doing, much less how it is doing it, but you should ensure that all dependencies are correctly managed."
+
+I did not quite get the sentence. Can anyone explain me this?
+
+A: 
+
+*To abstract (away)*, specifically in computer science, refers to intentionally obscuring the details of how something works in order to simplify things conceptually. Something is abstracted when it acts as a "[black box](https://en.wikipedia.org/wiki/Black_box)": We put some input into the box, and get some output from the box, but we can't see the inner workings inside the box. Abstraction typically happens in layers, i.e. some system of black boxes become the inner workings of a black box at a higher level of abstraction.
+
+For example, consider what happens when I press a key and a letter appears on the screen. The details of how this happens are quite complex: pressing the key connects a circuit that causes a specific electronic signal to be sent to the computer, that signal is interpreted by hardware drivers and directed by the operating system into Google Chrome, which receives it as a sequence of bits which are handled by various functions in Chrome's code. Then there's a separate driver for the monitor, and so on. An abstract way of describing this is as follows: I press a key on my keyboard, and the corresponding letter appears on the screen.
+
+The reason why this is conceptually useful in computer science is because computer systems and software can be incredibly complex. Nested black boxes are the conceptual building blocks of computer science because they allow you to choose your own level of detail. Need more detail? Open up the box and look inside. Too much detail? Abstract it away by putting everything in an even larger box.
+
+**How does this work with dependencies in particular?**
+
+One of the main ways of actually abstracting something is by encapsulating a piece of functionality in a class, method, routine, module, etc. that can be referenced by other areas of code. When a reference is established, the referencer becomes dependent on the referenced code. All the referencer can do is interact with the referenced code as a black box: giving it an input and receiving an output, but never having access to the inner workings. 
+
+See [encapsulation](https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)).
