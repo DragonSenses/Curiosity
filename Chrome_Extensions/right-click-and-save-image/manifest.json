@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Right-Click-and-Save-Image",
+  "version": "1.0.0",
+  "description": "A basic extension that simplifies the process of downloading an image with a right-click in the browser.",
+  "permissions": ["activeTab", "scripting"],
+  "icons": {
+      "128": "icon-128.png"
+  },
+  "background": {
+      "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": {
+      "128": "icon-128.png"
+    }
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+B",
+        "mac": "Command+B"
+      }
+    }
+  }
+}
