@@ -197,3 +197,100 @@ Read and change yoru data on developer.chrome.com
 ```
 
 To dive deeper on extension permissions, see [Declaring permissions and warn users](https://developer.chrome.com/docs/extensions/develop/concepts/permission-warnings).
+
+4. Calculate and insert the reading time
+
+Content scripts can use the standard [Document Object Model (DOM)](https://developer.mozilla.org/docs/Web/API/Document_Object_Model) to read and change the content of a page. The extension will first check if the page contains the `<article>` element. Then, it will count all the words within this element and create a paragraph that displays the total reading time.
+
+Create a file called `content.js` inside a folder called `scripts` and add the following code:
+
+```javascript
+const article = document.querySelector("article");
+
+// `document.querySelector` may return null if the selector doesn't match anything.
+if (article) {
+  const text = article.textContent;
+  const wordMatchRegExp = /[^\s]+/g; // Regular expression
+  const words = text.matchAll(wordMatchRegExp);
+  // matchAll returns an iterator, convert to array to get word count
+  const wordCount = [...words].length;
+  const readingTime = Math.round(wordCount / 200);
+  const badge = document.createElement("p");
+  // Use the same styling as the publish information in an article's header
+  badge.classList.add("color-secondary-text", "type--caption");
+  badge.textContent = `⏱️ ${readingTime} min read`;
+
+  // Support for API reference docs
+  const heading = article.querySelector("h1");
+  // Support for article docs with date
+  const date = article.querySelector("time")?.parentNode;
+
+  (date ?? heading).insertAdjacentElement("afterend", badge);
+}
+```
+
+**Interesting JavaScript used in this code**
+
+- [Regular expressions](https://developer.mozilla.org/docs/Web/JavaScript/Guide/Regular_Expressions#writing_a_regular_expression_pattern) used to count only the words inside the `<article>` element.
+- [insertAdjacentElement()](https://developer.mozilla.org/docs/Web/API/Element/insertAdjacentElement) used to insert the reading time node after the element.
+- The [classList](https://developer.mozilla.org/docs/Web/API/Element/classList) property used to add CSS class names to the element class attribute.
+- [Optional chaining](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Optional_chaining) used to access an object property that may be undefined or null.
+- [Nullish coalescing](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator) returns the `<heading>` if the `<date>` is null or undefined.
+
+feat: Add script for reading time calculation
+
+This commit introduces a content script that calculates the reading time for articles displayed on specific URLs. The script is designed to be injected into web pages that match the patterns defined in manifest.json.
+
+The content script performs the following actions:
+
+1. Locates the article element on the page.
+2. Retrieves the text content from the article.
+3. Counts the number of words using a regular expression.
+4. Calculates the reading time based on an assumed average reading speed.
+5. Creates a badge displaying the estimated reading time (e.g., "⏱️ 5 min read").
+6. Inserts the badge after the article's date or heading (if available).
+
+### Test that it works
+
+**Verify that the file structure of your project** looks like the following:
+
+```sh
+|- reading-time
+  |- manifest.json
+  |- scripts
+    |- content.js
+  |- images
+    |- icon-16.png
+    |- icon-32.png
+    |- icon-48.png
+    |- icon-128.png
+```
+
+**Load your extension locally**
+
+To load an unpacked extension in developer mode, follow the steps in [Development Basics](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
+
+**Open an extension or Chrome Web Store documentation**
+
+Here are a few pages you can open to see how long each article will take to read.
+
+  - [Publish in the Chrome Web Store](https://developer.chrome.com/docs/webstore/publish)
+  - [Understanding Content Scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts)
+
+It should look like this:
+
+```sh
+Welcome
+Learn about developing extensions for Chrome.
+Published oon MOnday, November 9, 202
+⏱️1 min read
+```
+### Potential enhancements
+
+Based on what you've learned today, try to implement any of the following:
+
+- Add another **match pattern** in the manifest.json to support other [chrome developer](https://developer.chrome.com/docs/) pages, like for example, the [Chrome DevTools](https://developer.chrome.com/docs/devtools/) or [Workbox](https://developer.chrome.com/docs/workbox).
+- Add a new content script that calculates the reading time to any of your favorite blogs or documentation sites.
+
+Hint: You can use DevTools to [inspect DOM elements](https://developer.chrome.com/docs/devtools/dom).
+
