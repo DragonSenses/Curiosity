@@ -371,3 +371,55 @@ The first event our service worker will listen for is `runtime.onInstalled()`. T
 
 Key term: The [action's badge](https://developer.chrome.com/docs/extensions/reference/api/action#badge) is a colored banner on top of the extension action (toolbar icon).
 
+3. Enable the extension action
+
+The ***extension action*** controls the extension's toolbar icon. So whenever the user clicks the extension icon, it will either run some code (like in this example) or display a popup. Add the following code to declare the extension action in the `manifest.json` file:
+
+```json
+{
+  ...
+  "action": {
+    "default_icon": {
+      "16": "images/icon-16.png",
+      "32": "images/icon-32.png",
+      "48": "images/icon-48.png",
+      "128": "images/icon-128.png"
+    }
+  },
+  ...
+}
+```
+
+feat: Add extension action configuration
+
+This commit adds an "action" section to the manifest file, specifying the default icon for the extension. The icon sizes are provided for different contexts (16x16, 32x32, 48x48, and 128x128).
+
+**Use the activeTab permission to protect user privacy**
+
+The `activeTab` permission grants the extension *temporary* ability to execute code on the active tab. It also allows access to [sensitive properties](https://developer.chrome.com/docs/extensions/develop/concepts/activeTab#what-activeTab-allows) of the current tab.
+
+This permission is enabled when the user ***invokes*** the extension. In this case, the user invokes the extension by clicking on the extension action.
+
+**What other user interactions enable the activeTab permission in my own extension?**
+   - Pressing a keyboard shortcut combination.
+   - Selecting a context menu item.
+   - Accepting a suggestion from the omnibox.
+   - Opening an extension popup.
+
+The `"activeTab"` permission allows users to *purposefully* choose to run the extension on the focused tab; this way, it protects the user's privacy. Another benefit is that it does not trigger a [permission warning](https://developer.chrome.com/docs/extensions/develop/concepts/permission-warnings#permissions_with_warnings).
+
+To use the `"activeTab"` permission, add it to the manifest's permission array:
+
+```json
+{
+  ...
+  "permissions": ["activeTab"],
+  ...
+}
+```
+
+feat: Add activeTab permission for user privacy
+
+- This commit enhances user privacy by granting the extension the 'activeTab' permission. 
+- This permission allows the extension to interact with the currently active tab without exposing sensitive data.
+- This permission is enabled when the user invokes the extension. In this case, the user invokes the extension by clicking on the extension action.
