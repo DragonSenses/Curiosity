@@ -340,3 +340,34 @@ feat: Initialize manifest for focus-mode extension
 This commit sets up the initial manifest for the "Focus Mode" extension. The manifest will define the extension's behavior, permissions, and other essential details.
 
 feat: Add icons for focus-mode chrome extension
+
+2. Initialize the extension
+
+Extensions can monitor browser events in the background using the [extension's service worker](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers). Service workers are special JavaScript environments that handle events and terminate when they're not needed.
+
+Start by registering the service worker in the `manifest.json` file:
+
+```json
+{
+  ...
+  "background": {
+    "service_worker": "background.js"
+  },
+  ...
+}
+```
+
+Create a file called `background.js` and add the following code:
+
+```javascript
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.action.setBadgeText({
+    text: "OFF",
+  });
+});
+```
+
+The first event our service worker will listen for is `runtime.onInstalled()`. This method allows the extension to set an initial state or complete some tasks on installation. Extensions can use the [Storage API](https://developer.chrome.com/docs/extensions/reference/api/storage) and [IndexedDB](https://developer.mozilla.org/docs/Web/API/IndexedDB_API) to store the application state. In this case, though, since we're only handling two states, we will use the action's badge text itself to track whether the extension is 'ON' or 'OFF'.
+
+Key term: The [action's badge](https://developer.chrome.com/docs/extensions/reference/api/action#badge) is a colored banner on top of the extension action (toolbar icon).
+
