@@ -127,3 +127,37 @@ These keys contain basic metadata for the extension. They control how the extens
 - It must be located at the **root** of the project.
 - The only required keys are "`manifest_version`", "`name`", and "`version`".
 - It supports comments (`//`) during development, but these must be removed before uploading your code to the Chrome Web Store.
+
+2. Provide the icons
+
+So, why do you need icons? Although [icons](https://developer.chrome.com/docs/extensions/reference/manifest/icons) are optional during development, they are required if you plan to distribute your extension on the Chrome Web Store. They also appear in other places like the Extensions Management page.
+
+Create an `images` folder and place the icons inside. You can download the icons on [GitHub](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.reading-time/images). Next, add the highlighted code to your manifest to declare icons:
+
+```json
+{
+  "manifest_version": 3,
+  "name": "Reading time",
+  "version": "1.0",
+  "description": "Add the reading time to Chrome Extension documentation articles",
+
+  "icons": {
+    "16": "images/icon-16.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  }
+}
+```
+
+We recommend using PNG files, but other file formats are allowed, **except for SVG files**.
+
+**Where are these differently-sized icons displayed?**
+
+|Icon size|Icon use|
+|---------|--------|
+|16x16|	Favicon on the extension's pages and context menu.|
+|32x32| Windows computers often require this size. |
+|48x48| Displays on the Extensions page. |
+|128x128|	Displays on installation and in the Chrome Web Store. |
+
