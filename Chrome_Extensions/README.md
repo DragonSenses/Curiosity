@@ -91,3 +91,39 @@ To load an unpacked extension in developer mode:
   3. Click the **Load unpacked** button and select the extension directory.
 
 The extension has been successfully installed. If no extension icons were included in the manifest, a generic icon will be created for the extension.
+
+## Run scripts on every page
+
+- [Run scripts on every tab](https://developer.chrome.com/docs/extensions/get-started/tutorial/scripts-on-every-tab)
+
+Let's create an extension that runs a script on every page.
+
+**Concepts:**
+  - The extension manifest.
+  - What icon sizes an extension uses.
+  - How to inject code into pages using [content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts).
+  - How to use match patterns.
+  - Extension permissions.
+
+Create a folder named `reading-time` to hold the extension's files.
+
+1. Add information about the extension
+
+The manifest JSON file is the only required file. It holds important information about the extension. Create a `manifest.json` file in the *root* of the project and add the following code:
+
+```json
+{
+  "manifest_version": 3,
+  "name": "Reading time",
+  "version": "1.0",
+  "description": "Add the reading time to Chrome Extension documentation articles"
+}
+```
+
+These keys contain basic metadata for the extension. They control how the extension appears on the extensions page and, when published, on the Chrome Web Store. To dive deeper, check out the `"name"`, `"version"` and `"description"` keys on the [Manifest](https://developer.chrome.com/docs/extensions/reference/manifest) overview page.
+
+**Other facts about the extension manifest**
+
+- It must be located at the **root** of the project.
+- The only required keys are "`manifest_version`", "`name`", and "`version`".
+- It supports comments (`//`) during development, but these must be removed before uploading your code to the Chrome Web Store.
