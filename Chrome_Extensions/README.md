@@ -294,3 +294,49 @@ Based on what you've learned today, try to implement any of the following:
 
 Hint: You can use DevTools to [inspect DOM elements](https://developer.chrome.com/docs/devtools/dom).
 
+## Inject scripts into the active tab
+
+Simplify the styling of the current page by clicking the extension toolbar icon.
+
+### Overview
+
+This tutorial builds an extension that simplifies the styling of the Chrome extension and Chrome Web Store documentation pages so that they are easier to read.
+
+In this guide, we're going to explain how to do the following:
+
+- Use the extension service worker as the event coordinator.
+- Preserve user privacy through the `"activeTab"` permission.
+- Run code when the user clicks the extension toolbar icon.
+- Insert and remove a style sheet using the [Scripting](https://developer.chrome.com/docs/extensions/reference/api/scripting) API.
+- Use a keyboard shortcut to execute code.
+
+### Build the extension
+
+To start, create a new directory called `focus-mode` that will hold the extension's files. If you prefer, you can download the complete source code from [GitHub](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.focus-mode).
+
+1. Add the extension data and icons
+
+Create a file called `manifest.json` and include the following code.
+
+```json
+{
+  "manifest_version": 3,
+  "name": "Focus Mode",
+  "description": "Enable focus mode on Chrome's official Extensions and Chrome Web Store documentation.",
+  "version": "1.0",
+  "icons": {
+    "16": "images/icon-16.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  }
+}
+```
+
+Create an `images` folder then [download the icons](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.focus-mode/images) into it.
+
+feat: Initialize manifest for focus-mode extension
+
+This commit sets up the initial manifest for the "Focus Mode" extension. The manifest will define the extension's behavior, permissions, and other essential details.
+
+feat: Add icons for focus-mode chrome extension
