@@ -423,3 +423,57 @@ feat: Add activeTab permission for user privacy
 - This commit enhances user privacy by granting the extension the 'activeTab' permission. 
 - This permission allows the extension to interact with the currently active tab without exposing sensitive data.
 - This permission is enabled when the user invokes the extension. In this case, the user invokes the extension by clicking on the extension action.
+
+4. Track the state of the current tab
+
+After the user clicks the extension action, the extension will check if the URL matches a documentation page. Next, it will check the state of the current tab and set the next state. Add the following code to `background.js`:
+
+```js
+const extensions = 'https://developer.chrome.com/docs/extensions';
+const webstore = 'https://developer.chrome.com/docs/webstore';
+
+chrome.action.onClicked.addListener(async (tab) => {
+  if (tab.url.startsWith(extensions) || tab.url.startsWith(webstore)) {
+    // Retrieve the action badge to check if the extension is 'ON' or 'OFF'
+    const prevState = await chrome.action.getBadgeText({ tabId: tab.id });
+    // Next state will always be the opposite
+    const nextState = prevState === 'ON' ? 'OFF' : 'ON';
+
+    // Set the action badge to the next state
+    await chrome.action.setBadgeText({
+      tabId: tab.id,
+      text: nextState,
+    });
+  }
+});
+```
+
+feat: Toggle extension state on icon click
+
+This commit adds functionality to toggle the extension state when the user clicks the extension icon. If the active tab URL starts with either the extensions or webstore documentation URLs, the badge text switches between 'ON' and 'OFF'.
+
+Here's what each part of the code does:
+
+1. **URL Definitions**:
+   - The `extensions` and `webstore` variables store URLs related to Chrome extensions and the Chrome Web Store documentation, respectively.
+
+2. **Event Listener**:
+   - `chrome.action.onClicked.addListener(async (tab) => { ... });`
+     - This line adds an event listener to the `onClicked` event of the extension icon (browser action).
+     - When the user clicks the extension icon, the arrow function (`async (tab) => { ... }`) is executed.
+     - The `tab` parameter represents the currently active tab.
+
+3. **URL Check**:
+   - `if (tab.url.startsWith(extensions) || tab.url.startsWith(webstore)) { ... }`
+     - This condition checks if the URL of the active tab starts with either the `extensions` or `webstore` URL.
+     - If true, the following actions are performed.
+
+4. **Badge State Toggle**:
+   - `const prevState = await chrome.action.getBadgeText({ tabId: tab.id });`
+     - Retrieves the current badge text (which represents the extension state) for the active tab.
+   - `const nextState = prevState === 'ON' ? 'OFF' : 'ON';`
+     - Determines the next state (either 'ON' or 'OFF') based on the current state.
+   - `await chrome.action.setBadgeText({ tabId: tab.id, text: nextState });`
+     - Sets the badge text for the extension icon to the calculated next state.
+
+In short, the service worker toggles the extension state (badge text) between 'ON' and 'OFF' when the user clicks the extension icon, but only for specific URLs related to extensions and the Chrome Web Store.
