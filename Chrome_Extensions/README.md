@@ -477,3 +477,66 @@ Here's what each part of the code does:
      - Sets the badge text for the extension icon to the calculated next state.
 
 In short, the service worker toggles the extension state (badge text) between 'ON' and 'OFF' when the user clicks the extension icon, but only for specific URLs related to extensions and the Chrome Web Store.
+
+5. Add or remove the style sheet
+
+Now it's time to change the layout of the page. Create a file named `focus-mode.css` and include the following code:
+
+```css
+body > .scaffold > :is(top-nav, navigation-rail, side-nav, footer),
+main > :not(:last-child),
+main > :last-child > navigation-tree,
+main .toc-container {
+  display: none;
+}
+
+main > :last-child {
+  margin-top: min(10vmax, 10rem);
+  margin-bottom: min(10vmax, 10rem);
+}
+```
+
+Insert or remove the style sheet using the [Scripting](https://developer.chrome.com/docs/extensions/reference/api/scripting) API. Start by declaring the `"scripting"` permission in the manifest:
+
+```json
+{
+  ...
+  "permissions": ["activeTab", "scripting"],
+  ...
+}
+```
+
+feat: Add scripting permission to manifest
+
+This commit grants the extension the 'scripting' permission, allowing it to interact with web pages using the Chrome Scripting API. This permission is essential for enabling advanced features.
+
+**Success**: The Scripting API does not trigger a [permission warning](https://developer.chrome.com/docs/extensions/develop/concepts/permission-warnings#permissions_with_warnings).
+
+Finally, in `background.js` add the following code to change the layout of the page:
+
+```javascript
+  // ...
+    if (nextState === "ON") {
+      // Insert the CSS file when the user turns the extension on
+      await chrome.scripting.insertCSS({
+        files: ["focus-mode.css"],
+        target: { tabId: tab.id },
+      });
+    } else if (nextState === "OFF") {
+      // Remove the CSS file when the user turns the extension off
+      await chrome.scripting.removeCSS({
+        files: ["focus-mode.css"],
+        target: { tabId: tab.id },
+      });
+    }
+  }
+});
+```
+
+feat: Toggle CSS file based on extension state
+
+This commit adds functionality to insert or remove a CSS file when the user toggles the extension state ('ON' or 'OFF'). The CSS file is applied to the active tab.
+
+**Can I use the Scripting API to inject code instead of a style sheet?**
+
+**Yes**. You can use `scripting.executeScript()` to inject JavaScript.
