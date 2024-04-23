@@ -161,3 +161,39 @@ We recommend using PNG files, but other file formats are allowed, **except for S
 |48x48| Displays on the Extensions page. |
 |128x128|	Displays on installation and in the Chrome Web Store. |
 
+3. Declare the content script
+
+Extensions can run scripts that read and modify the content of a page. These are called ***content scripts***. They live in an [isolated world](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts#isolated_world), meaning they can make changes to their JavaScript environment without conflicting with their host page or other extensions' content scripts.
+
+Add the following code to the `manifest.json` to register a content script called `content.js`.
+
+```json
+{
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "matches": [
+        "https://developer.chrome.com/docs/extensions/*",
+        "https://developer.chrome.com/docs/webstore/*"
+      ]
+    }
+  ]
+}
+```
+
+The `"matches"` field can have one or more [match patterns](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns). These allow the browser to identify which sites to inject the content scripts into. Match patterns consist of three parts: `<scheme>://<host><path>`. They can contain `'*'` characters.
+
+**Does this extension display a permission warning?**
+
+When a user installs an extension, the browser informs them what the extension can do. Content scripts request permission to run on sites that meet the match pattern criteria.
+
+In this example, the user would see the following permission warning:
+
+```sh
+Add "Reading Time"?
+
+It can:
+Read and change yoru data on developer.chrome.com
+```
+
+To dive deeper on extension permissions, see [Declaring permissions and warn users](https://developer.chrome.com/docs/extensions/develop/concepts/permission-warnings).
