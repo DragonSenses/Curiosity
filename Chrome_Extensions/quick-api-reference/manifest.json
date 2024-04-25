@@ -5,5 +5,8 @@
   "icons": {
     "16": "images/icon-16.png",
     "128": "images/icon-128.png"
+  },
+  "background": {
+    "service_worker": "service-worker.js"
   }
 }
