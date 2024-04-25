@@ -599,3 +599,26 @@ First, open any of the following pages:
 Then, click the extension action. If you set up a [keyboard shortcut](https://developer.chrome.com/docs/extensions/get-started/tutorial/scripts-activetab#step-6), you can test it by pressing `Ctrl + B` or `Cmd + B`.
 
 What the script should do on the active tab is enable the CSS file. The CSS file in turn hides specific elements such as the top navbar and sidebars, while adjusting the margins for the content within `main`. This provides and austere and minimalistic look to improve the layout and visual presentation of the page when focus mode extension is enabled.
+
+## Handle events with service workers
+
+This extension demonstrates how to handle events with service workers.
+
+The extension built allows users to quickly navigate to Chrome API reference pages using the omnibox.
+
+The events from the following APIs have been handled: `chrome.runtime`, `chrome.omnibox` and `chrome.alarms`.
+
+### Overview
+
+This tutorial provides an introduction to Chrome Extension service workers. As part of this tutorial, you will build an extension that allows users to quickly navigate to Chrome API reference pages using the omnibox. You will learn how to:
+
+- Register your service worker and import modules.
+- Debug your extension service worker.
+- Manage state and handle events.
+- Trigger periodic events.
+- Communicate with content scripts.
+
+### Build the extension
+
+Start by creating a new directory called `quick-api-reference` to hold the extension files, or download the source code from [GitHub](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.quick-api-reference).
+
