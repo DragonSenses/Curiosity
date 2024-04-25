@@ -543,3 +543,27 @@ This commit adds functionality to insert or remove a CSS file when the user togg
 
 **Yes**. You can use `scripting.executeScript()` to inject JavaScript.
 
+#### 6. *Optional*: Assign a keyboard shortcut
+
+We can add a shortcut to make it easier to enable or disable focus mode. Add the `"commands"` key to the manifest.
+
+```json
+{
+  ...
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+B",
+        "mac": "Command+B"
+      }
+    }
+  }
+}
+```
+
+The `"_execute_action"` key runs the same code as the `action.onClicked()` event, so no additional code is needed.
+
+feat: Add commands in focus-mode manifest
+
+- Define keyboard shortcuts (Ctrl+B for Windows, Command+B for Mac) to toggle focus mode.
+
