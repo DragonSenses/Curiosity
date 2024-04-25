@@ -602,9 +602,7 @@ What the script should do on the active tab is enable the CSS file. The CSS file
 
 ## Handle events with service workers
 
-This extension demonstrates how to handle events with service workers.
-
-The extension built allows users to quickly navigate to Chrome API reference pages using the omnibox.
+The `quick-api-reference` extension allows users to quickly navigate to Chrome API reference pages using the omnibox. This extension demonstrates how to handle events with service workers.
 
 The events from the following APIs have been handled: `chrome.runtime`, `chrome.omnibox` and `chrome.alarms`.
 
@@ -622,3 +620,46 @@ This tutorial provides an introduction to Chrome Extension service workers. As p
 
 Start by creating a new directory called `quick-api-reference` to hold the extension files, or download the source code from [GitHub](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.quick-api-reference).
 
+Here's the outline for the initial steps to build the extension.
+
+- Set up project structure and directory layout
+- Create manifest.json with necessary metadata
+- Prepare icon images
+- Define service-worker.js for background tasks
+
+#### 1. Register the service worker
+
+Create the [manifest](https://developer.chrome.com/docs/extensions/reference/manifest) file in the root of the project and add the following code:
+
+`manifest.json`
+```json
+{
+  "manifest_version": 3,
+  "name": "Open extension API reference",
+  "version": "1.0.0",
+  "icons": {
+    "16": "images/icon-16.png",
+    "128": "images/icon-128.png"
+  },
+  "background": {
+    "service_worker": "service-worker.js"
+  }
+}
+```
+
+Extensions register their service worker in the manifest, which only takes a single JavaScript file. There's no need to call `navigator.serviceWorker.register()`, like you would in a web page.
+
+Create an `images` folder then [download the icons](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.quick-api-reference/images) into it.
+
+#### 2. Import multiple service worker modules
+
+Our service worker implements two features. For better maintainability, we will implement each feature in a separate module. First, we need to declare the service worker as an [ES Module](https://web.dev/es-modules-in-sw/) in our manifest, which allows us to import modules in our service worker:
+
+```json
+{
+ "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  },
+}
+```
