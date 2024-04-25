@@ -567,3 +567,35 @@ feat: Add commands in focus-mode manifest
 
 - Define keyboard shortcuts (Ctrl+B for Windows, Command+B for Mac) to toggle focus mode.
 
+
+### Test that it works
+
+**Verify that the file structure of your project** looks like the following:
+
+```sh
+|- focus-mode
+  |- manifest.json
+  |- background.js
+  |- focus-mode.css
+  |- images
+    |- icon-16.png
+    |- icon-32.png
+    |- icon-48.png
+    |- icon-128.png
+```
+
+**Load your extension locally**
+
+To load an unpacked extension in developer mode, follow the steps in [Development Basics](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
+
+**Test the extension on a documentation page**
+
+First, open any of the following pages:
+
+- [Welcome to the Chrome Extension documentation](https://developer.chrome.com/docs/extensions)
+- [Publish in the Chrome Web Store](https://developer.chrome.com/docs/webstore/publish)
+- [Scripting API](https://developer.chrome.com/docs/extensions/reference/api/scripting)
+
+Then, click the extension action. If you set up a [keyboard shortcut](https://developer.chrome.com/docs/extensions/get-started/tutorial/scripts-activetab#step-6), you can test it by pressing `Ctrl + B` or `Cmd + B`.
+
+What the script should do on the active tab is enable the CSS file. The CSS file in turn hides specific elements such as the top navbar and sidebars, while adjusting the margins for the content within `main`. This provides and austere and minimalistic look to improve the layout and visual presentation of the page when focus mode extension is enabled.
