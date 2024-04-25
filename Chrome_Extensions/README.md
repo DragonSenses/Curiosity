@@ -105,9 +105,11 @@ Let's create an extension that runs a script on every page.
   - How to use match patterns.
   - Extension permissions.
 
+### Build the extension
+
 Create a folder named `reading-time` to hold the extension's files.
 
-1. Add information about the extension
+#### 1. Add information about the extension
 
 The manifest JSON file is the only required file. It holds important information about the extension. Create a `manifest.json` file in the *root* of the project and add the following code:
 
@@ -128,7 +130,7 @@ These keys contain basic metadata for the extension. They control how the extens
 - The only required keys are "`manifest_version`", "`name`", and "`version`".
 - It supports comments (`//`) during development, but these must be removed before uploading your code to the Chrome Web Store.
 
-2. Provide the icons
+#### 2. Provide the icons
 
 So, why do you need icons? Although [icons](https://developer.chrome.com/docs/extensions/reference/manifest/icons) are optional during development, they are required if you plan to distribute your extension on the Chrome Web Store. They also appear in other places like the Extensions Management page.
 
@@ -161,7 +163,7 @@ We recommend using PNG files, but other file formats are allowed, **except for S
 |48x48| Displays on the Extensions page. |
 |128x128|	Displays on installation and in the Chrome Web Store. |
 
-3. Declare the content script
+#### 3. Declare the content script
 
 Extensions can run scripts that read and modify the content of a page. These are called ***content scripts***. They live in an [isolated world](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts#isolated_world), meaning they can make changes to their JavaScript environment without conflicting with their host page or other extensions' content scripts.
 
@@ -198,7 +200,7 @@ Read and change yoru data on developer.chrome.com
 
 To dive deeper on extension permissions, see [Declaring permissions and warn users](https://developer.chrome.com/docs/extensions/develop/concepts/permission-warnings).
 
-4. Calculate and insert the reading time
+#### 4. Calculate and insert the reading time
 
 Content scripts can use the standard [Document Object Model (DOM)](https://developer.mozilla.org/docs/Web/API/Document_Object_Model) to read and change the content of a page. The extension will first check if the page contains the `<article>` element. Then, it will count all the words within this element and create a paragraph that displays the total reading time.
 
@@ -314,7 +316,7 @@ In this guide, we're going to explain how to do the following:
 
 To start, create a new directory called `focus-mode` that will hold the extension's files. If you prefer, you can download the complete source code from [GitHub](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.focus-mode).
 
-1. Add the extension data and icons
+#### 1. Add the extension data and icons
 
 Create a file called `manifest.json` and include the following code.
 
@@ -341,7 +343,7 @@ This commit sets up the initial manifest for the "Focus Mode" extension. The man
 
 feat: Add icons for focus-mode chrome extension
 
-2. Initialize the extension
+#### 2. Initialize the extension
 
 Extensions can monitor browser events in the background using the [extension's service worker](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers). Service workers are special JavaScript environments that handle events and terminate when they're not needed.
 
@@ -371,7 +373,7 @@ The first event our service worker will listen for is `runtime.onInstalled()`. T
 
 Key term: The [action's badge](https://developer.chrome.com/docs/extensions/reference/api/action#badge) is a colored banner on top of the extension action (toolbar icon).
 
-3. Enable the extension action
+#### 3. Enable the extension action
 
 The ***extension action*** controls the extension's toolbar icon. So whenever the user clicks the extension icon, it will either run some code (like in this example) or display a popup. Add the following code to declare the extension action in the `manifest.json` file:
 
@@ -424,7 +426,7 @@ feat: Add activeTab permission for user privacy
 - This permission allows the extension to interact with the currently active tab without exposing sensitive data.
 - This permission is enabled when the user invokes the extension. In this case, the user invokes the extension by clicking on the extension action.
 
-4. Track the state of the current tab
+#### 4. Track the state of the current tab
 
 After the user clicks the extension action, the extension will check if the URL matches a documentation page. Next, it will check the state of the current tab and set the next state. Add the following code to `background.js`:
 
@@ -478,7 +480,7 @@ Here's what each part of the code does:
 
 In short, the service worker toggles the extension state (badge text) between 'ON' and 'OFF' when the user clicks the extension icon, but only for specific URLs related to extensions and the Chrome Web Store.
 
-5. Add or remove the style sheet
+#### 5. Add or remove the style sheet
 
 Now it's time to change the layout of the page. Create a file named `focus-mode.css` and include the following code:
 
@@ -540,3 +542,4 @@ This commit adds functionality to insert or remove a CSS file when the user togg
 **Can I use the Scripting API to inject code instead of a style sheet?**
 
 **Yes**. You can use `scripting.executeScript()` to inject JavaScript.
+
