@@ -711,3 +711,36 @@ An unknown error occurred when fetching the script.
 See [Debugging extensions](https://developer.chrome.com/docs/extensions/get-started/tutorial/debug#debug_bg) for more ways debug the extension service worker.
 
 **Caution**: Don't forget to fix the filename before moving on.
+
+#### 4. Initialize the state
+
+Chrome will shut down service workers if they are not needed. We use the `chrome.storage` API to persist state across service worker sessions. For storage access, we need to request permission in the manifest:
+
+feat: Add storage permissions to extension manifest
+
+`manifest.json`
+```json
+{
+  ...
+  "permissions": ["storage"],
+}
+```
+
+First, save the default suggestions to storage. We can initialize state when the extension is first installed by listening to the `runtime.onInstalled()` event:
+
+`sw-omnibox.js`
+```javascript
+...
+// Save default API suggestions
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+  if (reason === 'install') {
+    chrome.storage.local.set({
+      apiSuggestions: ['tabs', 'storage', 'scripting']
+    });
+  }
+});
+```
+
+Service workers don't have direct access to the [window object](https://developer.mozilla.org/docs/Web/API/Window) and therefore cannot use `window.localStorage` to store values. Also, service workers are short-lived execution environments; they get terminated repeatedly throughout a user's browser session, which makes them incompatible with global variables. Instead, use `chrome.storage.local` which stores data on the local machine.
+
+See [Persist data rather than using global variables](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/lifecycle#persist-data) to learn about other storage options for extension service workers.
