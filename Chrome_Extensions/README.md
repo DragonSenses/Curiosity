@@ -663,3 +663,27 @@ Our service worker implements two features. For better maintainability, we will 
   },
 }
 ```
+Create the `service-worker.js` file and import two modules:
+
+```javascript
+import './sw-omnibox.js';
+import './sw-tips.js';
+```
+
+Create these files and add a console log to each one.
+
+`sw-omnibox.js`
+
+```javascript
+console.log("sw-omnibox.js");
+```
+
+`sw-tips.js`
+
+```javascript
+console.log("sw-tips.js")
+```
+
+See [Importing scripts](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/basics#import-scripts) to learn about other ways to import multiple files in a service worker.
+
+Tip: Remember to set `"type.module"` when using a modern module bundler framework, such as [CRXjs Vite plugin](https://crxjs.dev/vite-plugin).
