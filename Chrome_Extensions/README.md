@@ -716,7 +716,7 @@ See [Debugging extensions](https://developer.chrome.com/docs/extensions/get-star
 
 Chrome will shut down service workers if they are not needed. We use the `chrome.storage` API to persist state across service worker sessions. For storage access, we need to request permission in the manifest:
 
-feat: Add storage permissions to extension manifest
+feat: Add storage permissions to manifest
 
 `manifest.json`
 ```json
@@ -727,6 +727,8 @@ feat: Add storage permissions to extension manifest
 ```
 
 First, save the default suggestions to storage. We can initialize state when the extension is first installed by listening to the `runtime.onInstalled()` event:
+
+feat: Initialize extension state on installation
 
 `sw-omnibox.js`
 ```javascript
@@ -741,6 +743,61 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
 });
 ```
 
+In the `sw-omnibox.js` file, listen for the `runtime.onInstalled()` event. When the extension is first installed, save default API suggestions to local storage.
+
 Service workers don't have direct access to the [window object](https://developer.mozilla.org/docs/Web/API/Window) and therefore cannot use `window.localStorage` to store values. Also, service workers are short-lived execution environments; they get terminated repeatedly throughout a user's browser session, which makes them incompatible with global variables. Instead, use `chrome.storage.local` which stores data on the local machine.
 
 See [Persist data rather than using global variables](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/lifecycle#persist-data) to learn about other storage options for extension service workers.
+
+#### 5. Register your events
+
+All event listeners need to be statically registered in the global scope of the service worker. In other words, event listeners shouldn't be nested in async functions. This way Chrome can ensure that all event handlers are restored in case of a service worker reboot.
+
+In this example, we are going to use the `chrome.omnibox` API, but first we must declare the omnibox keyword trigger in the manifest:
+
+feat: Configure omnibox keyword for extension
+
+`manifest.json`
+```json
+{
+  ...
+  "minimum_chrome_version": "102",
+  "omnibox": {
+    "keyword": "api"
+  },
+}
+```
+
+**Key point:** The `"minimum_chrome_version"` reference explains how this key behaves when a user tries to install your extension but isn't using a compatible version of Chrome.
+
+Now, register the omnibox event listeners at the top level of the script. When the user enters the omnibox keyword (`api`) in the address bar followed by tab or space, Chrome will display a list of suggestions based on the keywords in storage. The `onInputChanged()` event, which takes the current user input and a `suggestResult` object, is responsible for populating these suggestions.
+
+feat: Implement omnibox suggestions in extension
+
+`sw-omnibox.js`
+```javascript
+...
+const URL_CHROME_EXTENSIONS_DOC =
+  'https://developer.chrome.com/docs/extensions/reference/';
+const NUMBER_OF_PREVIOUS_SEARCHES = 4;
+
+// Display the suggestions after user starts typing
+chrome.omnibox.onInputChanged.addListener(async (input, suggest) => {
+  await chrome.omnibox.setDefaultSuggestion({
+    description: 'Enter a Chrome API or choose from past searches'
+  });
+  const { apiSuggestions } = await chrome.storage.local.get('apiSuggestions');
+  const suggestions = apiSuggestions.map((api) => {
+    return { content: api, description: `Open chrome.${api} API` };
+  });
+  suggest(suggestions);
+});
+```
+
+In the `sw-omnibox.js` file, set up an event listener for the `chrome.omnibox.onInputChanged` event. When the user starts typing, display suggestions based on previously saved API searches. The default suggestion prompts the user to enter a Chrome API or choose from past searches.
+
+For each API suggestion, create a description that allows opening the corresponding Chrome API reference page.
+
+Details:
+- URL for Chrome API reference: Chrome Extensions API Reference
+- Number of previous searches to display: 4
