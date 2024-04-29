@@ -687,3 +687,27 @@ console.log("sw-tips.js")
 See [Importing scripts](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/basics#import-scripts) to learn about other ways to import multiple files in a service worker.
 
 Tip: Remember to set `"type.module"` when using a modern module bundler framework, such as [CRXjs Vite plugin](https://crxjs.dev/vite-plugin).
+
+#### 2.5 Optional: Debugging the service worker
+
+Let's find the service worker logs and know when it has terminated.
+
+First, follow the instructions to [Load an unpacked extension](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
+
+After 30 seconds you will see "service worker (inactive)" which means the service worker has terminated. Click the "service worker (inactive)" link to inspect it. 
+
+Did you notice that inspecting the service worker woke it up? Opening the service worker in the devtools will keep it active. To make sure that your extension behaves correctly when your service worker is terminated, remember to close DevTools.
+
+Now, break the extension to learn where to locate errors. One way to simulate an error is to delete ".js" from the `'./sw-omnibox.js'` import in the `service-worker.js` file. Chrome will be unable to register the service worker.
+
+Go back to chrome://extensions and refresh the extension. You will see two errors:
+
+```sh
+Service worker registration failed. Status code: 3.
+
+An unknown error occurred when fetching the script.
+```
+
+See [Debugging extensions](https://developer.chrome.com/docs/extensions/get-started/tutorial/debug#debug_bg) for more ways debug the extension service worker.
+
+**Caution**: Don't forget to fix the filename before moving on.
