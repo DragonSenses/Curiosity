@@ -544,3 +544,42 @@ Sources:
 
 For now let's not touch the `postgres` default database, let's create our own.
 
+## Create a **database** in pgAdmin
+
+To create a database in **pgAdmin 4**, navigate to the left pane and right click on the **Databases** and click **Create > Database**.
+
+In the `Database` input field we can add the name of the database. Let's name it `world`. We can also change the owner of the database, which by default is `postgres`. Now hit **Save** to create the database.
+
+Now click on `world` database, expand the `Schemas` then `Tables` and see that we currently have no tables.
+
+### Naming our database
+
+When choosing a **PostgreSQL database name**, consider the following best practices:
+
+1. **Descriptive and Meaningful**:
+   - Opt for a name that reflects the purpose or content of the database.
+   - Choose something descriptive and meaningful to you and your team.
+
+2. **Avoid Special Characters**:
+   - Stick to **lowercase letters**, **numeric digits**, and **underscores**.
+   - Avoid using spaces, hyphens, or other special characters.
+   - Although hyphens are technically allowed, they can cause confusion in certain scenarios.
+
+3. **Consistency**:
+   - Maintain consistency across your database names.
+   - If you use underscores in one database name, follow the same convention for others.
+
+4. **Readable and Pronounceable**:
+   - Aim for a name that is easy to read and pronounce.
+   - Avoid cryptic abbreviations or overly complex names.
+
+5. **Examples**:
+   - Here are some examples of good PostgreSQL database names:
+     - `inventory_db`
+     - `customer_data`
+     - `blog_posts`
+     - `sales_records`
+
+Remember to choose a name that aligns with your project and team conventions.
+
+
