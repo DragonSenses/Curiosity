@@ -582,4 +582,37 @@ When choosing a **PostgreSQL database name**, consider the following best practi
 
 Remember to choose a name that aligns with your project and team conventions.
 
+### Create a **table** in pgAdmin
 
+Instructions for creating a table in the `world` database using **pgAdmin**:
+
+1. **Navigate to the `world` Database**:
+   - In the left pane of **pgAdmin**, locate and select the `world` database.
+
+2. **Access the Query Tool**:
+   - Right above the left pane, you'll find the **Query Tool**.
+   - It appears as an icon resembling three circular discs stacked on top of each other.
+
+3. **Create Your Table**:
+   - Click the **Query Tool** icon to open it.
+   - Now you're ready to write and execute SQL queries to create your desired table within the `world` database.
+
+Let's add the SQL code in the query:
+
+```sql
+CREATE TABLE capitals (
+  id SERIAL PRIMARY KEY,
+  country VARCHAR(45),
+  capital VARCHAR(45)
+);
+```
+
+We can now run the code by pressing the **Execute Script** icon or `F5`. 
+
+The message pane below:
+
+```sh
+CREATE TABLE
+
+Query returned successfully in 32 msec.
+```
