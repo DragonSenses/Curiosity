@@ -816,3 +816,22 @@ chrome.omnibox.onInputEntered.addListener((input) => {
   updateHistory(input);
 });
 ```
+
+The `updateHistory()` function takes the omnibox input and saves it to [`storage.local`](https://developer.chrome.com/docs/extensions/reference/api/storage). This way the most recent search term can be used later as an omnibox suggestion.
+
+feat: Implement history update for API suggestions
+
+`sw-omnibox.js`
+```javascript
+// ...
+async function updateHistory(input) {
+  const { apiSuggestions } = await chrome.storage.local.get('apiSuggestions');
+  apiSuggestions.unshift(input);
+  apiSuggestions.splice(NUMBER_OF_PREVIOUS_SEARCHES);
+  return chrome.storage.local.set({ apiSuggestions });
+}
+```
+
+**Key point**: Extension service workers can use both web APIs and Chrome APIs, with a few exceptions. For more information, see [Service Workers events](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/events).
+
+<!-- 6. Set up event-->
