@@ -776,7 +776,7 @@ feat: Implement omnibox suggestions in extension
 
 `sw-omnibox.js`
 ```javascript
-...
+// ...
 const URL_CHROME_EXTENSIONS_DOC =
   'https://developer.chrome.com/docs/extensions/reference/';
 const NUMBER_OF_PREVIOUS_SEARCHES = 4;
@@ -801,3 +801,18 @@ For each API suggestion, create a description that allows opening the correspond
 Details:
 - URL for Chrome API reference: Chrome Extensions API Reference
 - Number of previous searches to display: 4
+
+After the user selects a suggestion, `onInputEntered()` will open the corresponding Chrome API reference page.
+
+feat: Implement API reference page opening
+
+`sw-omnibox.js`
+```javascript
+// ...
+// Open the reference page of the chosen API
+chrome.omnibox.onInputEntered.addListener((input) => {
+  chrome.tabs.create({ url: URL_CHROME_EXTENSIONS_DOC + input });
+  // Save the latest keyword
+  updateHistory(input);
+});
+```
