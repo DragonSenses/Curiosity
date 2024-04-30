@@ -212,16 +212,6 @@ CREATE TABLE <Name of Table> (
 );
 ```
 
-Certainly! Let's break down the SQL code you provided:
-
-```sql
-CREATE TABLE <Name of Table> (
-  <field1> <DATATYPE>,
-  <field2> <DATATYPE>,
-  <field3> <DATATYPE>
-);
-```
-
 Here's what each part means:
 
 1. **`CREATE TABLE`**:
@@ -494,3 +484,20 @@ A well-defined header row makes working with CSV files more efficient and helps 
 In `sample-data`, we have a file named `capitals.csv`.
 
 We can see that the header row is `id, country, capital`.
+
+Given that all the `id` fields are unique, it's a sensible choice to designate the `id` column as the **primary key** for our PostgreSQL table. This ensures efficient indexing and maintains data integrity.
+
+Next is the `country` field, which is a character string. Considering that all the countries in the list have names shorter than 45 characters, we can use the `VARCHAR` data type with a maximum length of 45 for storing country names in our database.
+
+Similarly, `capitals` column is also of data type `VARCHAR(45)`.
+
+Here is the SQL code we can use inside our database tool **pgAdmin** to create a table:
+
+```sql
+CREATE TABLE capitals (
+  id SERIAL PRIMARY KEY,
+  country VARCHAR(45),
+  capital VARCHAR(45)
+);
+```
+
