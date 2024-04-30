@@ -501,3 +501,46 @@ CREATE TABLE capitals (
 );
 ```
 
+So how do we add this code to our database tool?
+
+## Navigating pgAdmin
+
+Now open up **pgAdmin** or the database tool of your choosing. Initially, it may ask you to set a global password.
+
+- [Master Password | pgAdmin 4](https://www.pgadmin.org/docs/pgadmin4/latest/master_password.html)
+
+**Remember**: Make sure to securely write down your passwords in a safe place!
+
+After launching **pgAdmin**, navigate to the left pane where you'll find your servers. Look for the entry labeled `PostgreSQL 16` (or the version you installed). The password you use to log in is the same one you defined during your initial PostgreSQL installation.
+
+Your default username is `postgres`, and you had to set a `password` for it.
+
+By default we have a database named `postgres`. Let's look into closer details of what it is.
+
+## postgres - the default PostgreSQL database
+
+The default **PostgreSQL** database is named **"postgres"**. When you install a PostgreSQL server, this database is automatically created. Let's explore its purpose:
+
+1. **Purpose of the "postgres" Database**:
+   - The **"postgres"** database serves several roles:
+     - It acts as a **default database** meant for use by **users**, **utilities**, and **third-party applications**.
+     - When a client application connects to a PostgreSQL server, it must specify which database it wants to connect to. However, since the client application (e.g., **psql**) needs to connect to a database to query information, it is hard-coded to connect to the **"postgres"** database when listing available databases using the command **`psql -l`**.
+     - Additionally, the **"postgres"** database is used as a **template** when creating new databases.
+
+2. **Template Databases**:
+   - PostgreSQL creates two template databases during initialization:
+     - **"template1"**: A source database that serves as a template for creating new databases. You can add objects to it, and these objects will be copied into databases created later.
+     - **"template0"**: Another source database that acts as a safety net. If you accidentally mess up other databases, you can restore them using **"template0"**.
+     - **"postgres"** is the default database for connecting to the PostgreSQL server.
+
+3. **Safety Note**:
+   - **Do not delete** the **"postgres"** database if you're not using it actively. It still plays a role in various scenarios, such as database dumps and restores.
+   - Deleting it could cause issues during database restoration or other operations.
+   - 
+Sources:
+(1) [Default database named postgres on Postgresql server](https://stackoverflow.com/questions/2370525/default-database-named-postgres-on-postgresql-server)
+(2) [PostgreSQL: Documentation: 16: CREATE DATABASE](https://www.postgresql.org/docs/current/sql-createdatabase.html)
+(3) [PostgreSQL: Documentation: 16: initdb](https://www.postgresql.org/docs/current/app-initdb.html)
+
+For now let's not touch the `postgres` default database, let's create our own.
+
