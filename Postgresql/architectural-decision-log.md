@@ -383,7 +383,7 @@ In summary, choose `TEXT` when dealing with extensive text data, and use `CHAR` 
 2. It then sends the **correct response** back to the server.
 3. The client can now **format and display** the data.
 
-# PostgreSQ: simple example in Node
+# PostgreSQL: simple example in Node
 
 Let's create a simple example using **PostgreSQL** and the **`pg` package**:
 
@@ -419,9 +419,78 @@ db.query("SELECT * FROM users", (err, res) => {
   if (err) {
     console.error("Error executing query", err.stack);
   } else {
-    console.log("USer data:", res.rows);
+    console.log("User data:", res.rows);
   }
   
   db.end();
 });
 ```
+
+# Sample data
+
+## CSV File
+
+A **CSV file**, or a **Comma Separated Values** file, is a plain text file that stores data by delimiting data entries with **commas**. It is a way of organizing information in a **tabular format** within a simple text file. Here are some key points about CSV files:
+
+1. **Structure of a CSV File**:
+   - A CSV file consists of rows and columns, similar to a spreadsheet.
+   - Data entries are separated by **commas** (hence the name "Comma Separated Values").
+   - Each line typically represents one data record.
+   - For example, a CSV file containing contact information might look like this:
+     ```
+     Name, Email, Phone Number
+     Alice Johnson, alice@example.com, 123-456-7890
+     Luna Berry, luna@example.com, 098-765-4321
+     ```
+
+2. **Common Uses**:
+   - CSV files are often used for **data exchange** between different applications.
+   - Databases, contact managers, and other software often support CSV files.
+   - They allow data to be easily exported from one application and imported into another.
+
+3. **Human-Readable Format**:
+   - CSV files are plain text, making them **human-readable**.
+   - You can view them using a simple text editor like **Notepad** or a spreadsheet program like **Microsoft Excel**.
+   - The resulting data is organized and easy to understand.
+
+4. **Opening a CSV File**:
+   - To view the contents of a CSV file in **Notepad**, right-click the file in File Explorer or Windows Explorer, and select the **"Edit"** command.
+   - For larger files, consider using a more capable plain text editor like **Notepad++**.
+   - In Notepad++, right-click the CSV file and select **"Edit With Notepad++"** to see the plaintext data.
+
+CSV files are a versatile way to store and exchange data, and they play a crucial role in data interoperability across various applications and platforms.
+
+### Header row
+
+The **first line** in a CSV file is typically known as the **header row**. It serves as a descriptor for the data columns within the file. Here are some important points about the header row in CSV files:
+
+1. **Column Names**:
+   - The header row contains the **names of the columns** or fields.
+   - Each column name corresponds to a specific type of data.
+   - For example, if you have a CSV file containing information about employees, the header row might include column names like "Name," "Email," and "Department."
+
+2. **Purpose**:
+   - The header row provides **context** for the data in subsequent rows.
+   - It helps users understand what each column represents.
+   - Without a header row, interpreting the data becomes more challenging.
+
+3. **Example**:
+   - Consider the following CSV snippet with a header row:
+     ```
+     Name, Email, Department
+     Alice Johnson, alice@example.com, Sales
+     Luna Berry, luna@example.com, Marketing
+     ```
+
+4. **Best Practices**:
+   - Ensure that the header row is **clear and descriptive**.
+   - Avoid using special characters or spaces in column names.
+   - Make sure the header row matches the order of data in subsequent rows.
+
+A well-defined header row makes working with CSV files more efficient and helps maintain data consistency across applications and systems.
+
+# Create a TABLE in pgAdmin
+
+In `sample-data`, we have a file named `capitals.csv`.
+
+We can see that the header row is `id, country, capital`.
