@@ -24,3 +24,10 @@ chrome.omnibox.onInputChanged.addListener(async (input, suggest) => {
   });
   suggest(suggestions);
 });
+
+// Open the reference page of the chosen API
+chrome.omnibox.onInputEntered.addListener((input) => {
+  chrome.tabs.create({ url: URL_CHROME_EXTENSIONS_DOC + input });
+  // Save the latest keyword
+  updateHistory(input);
+});
