@@ -31,3 +31,10 @@ chrome.omnibox.onInputEntered.addListener((input) => {
   // Save the latest keyword
   updateHistory(input);
 });
+
+async function updateHistory(input) {
+  const { apiSuggestions } = await chrome.storage.local.get('apiSuggestions');
+  apiSuggestions.unshift(input);
+  apiSuggestions.splice(NUMBER_OF_PREVIOUS_SEARCHES);
+  return chrome.storage.local.set({ apiSuggestions });
+}
