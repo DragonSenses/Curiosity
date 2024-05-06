@@ -965,3 +965,23 @@ function createDomElement(html) {
   return dom.body.firstElementChild;
 }
 ```
+
+The final step is to add a message handler to our service worker that sends a reply to the content script with the daily tip.
+
+feat: Add tip messaging to content script
+
+`sw-tips.js`
+```javascript
+// ...
+// Send tip to content script via messaging
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.greeting === 'tip') {
+    chrome.storage.local.get('tip').then(sendResponse);
+    return true;
+  }
+});
+```
+
+feat: Add message handler to service worker
+
+- Implemented message listener to send tips from background script to content script
