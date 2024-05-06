@@ -985,3 +985,47 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 feat: Add message handler to service worker
 
 - Implemented message listener to send tips from background script to content script
+
+### Test that it works
+
+**Verify that the file structure of your project** looks like the following:
+
+```sh
+|- quick-api-reference
+  |- content.js
+  |- manifest.json
+  |- service-worker.js
+  |- sw-omnibox.js
+  |- sw-tips.js
+  |- images
+    |- icon-16.png
+    |- icon-128.png
+```
+
+**Load your extension locally**
+
+To load an unpacked extension in developer mode, follow the steps in [Development Basics](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
+
+#### Open a reference page
+
+1. Enter the keyword "api" in the browser address bar.
+2. Press "tab" or "space".
+3. Enter the complete name of the API.
+  - OR choose from a list of past searches
+4. A new page will open to the Chrome API reference page.
+
+**Open the tip of the day**
+
+Click the Tip button located on the navigation bar to open the extension tip.
+
+#### Potential enhancements
+
+- Explore another way to implement the omnibox suggestions.
+- Create your own custom modal for displaying the extension tip.
+- Open an additional page to the MDN's Web Extensions reference API pages.
+
+#### Additional Resources
+
+- [About extension service workers](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers)
+- [The extension service worker lifecycle](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/lifecycle)
+- [Events in service workers](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/events)
