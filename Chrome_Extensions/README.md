@@ -834,4 +834,75 @@ async function updateHistory(input) {
 
 **Key point**: Extension service workers can use both web APIs and Chrome APIs, with a few exceptions. For more information, see [Service Workers events](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/events).
 
-<!-- 6. Set up event-->
+#### 6. Set up a recurring event
+
+The `setTimeout()` or `setInterval()` methods are commonly used to perform delayed or periodic tasks. However, these APIs can fail because the scheduler will cancel the timers when the service worker is terminated. Instead, extensions can use the [`chrome.alarms`](https://developer.chrome.com/docs/extensions/reference/api/alarms) API.
+
+Start by requesting the `"alarms"` permission in the manifest. Additionally, to fetch the extension tips from a remote hosted location, you need to request [host permission](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns):
+
+feat: Add alarms and host permissions in manifest
+
+`manifest.json`
+```json
+{
+  ...
+  "permissions": ["storage", "alarms"],
+  "host_permissions": ["https://extension-tips.glitch.me/*"],
+}
+```
+Let's breakdown what these permissions mean:
+
+1. `"permissions": ["storage", "alarms"]`: This specifies the permissions requested by the extension. 
+    - `"storage"`: Gives the extension access to the browser's storage (e.g., local storage or sync storage) so that it can store and retrieve data.
+    - `"alarms"`: Provides access to the `chrome.alarms` API, which allows the extension to schedule and manage alarms or timers.
+
+2. `"host_permissions": ["https://extension-tips.glitch.me/*"]`: This requests host permissions for a specific domain.
+    - The specified URL pattern is `"https://extension-tips.glitch.me/*"`.
+    - By requesting this host permission, the extension will be able to read or modify data related to the specified domain (in this case, `extension-tips.glitch.me`).
+    - The extra privileges granted by this permission include:
+        - Access to cookies for that host using the `cookies` API (if the `"cookies"` API permission is also included).
+        - Ability to inject scripts programmatically into pages served from that domain using `tabs.executeScript()`.
+        - Ability to receive events from the `webrequest` API for this host.
+        - Bypassing tracking protection for extension pages where the host is specified as a full domain or with wildcards.
+
+The extension will fetch all the tips, pick one at random and save it to storage. We will create an alarm that will be triggered once a day to update the tip. Alarms are not saved when you close Chrome. So we need to check if the alarm exists and create it if it doesn't.
+
+feat: Set up daily tip update using alarms
+
+- Added function to fetch tips
+- Randomly selects a tip and stores it in local storage
+- Created an alarm named 'tip' to trigger once a day
+- Ensures the alarm isn't reset when the browser session restarts
+
+`sw-tips.js`
+```javascript
+// Fetch tip & save in storage
+const updateTip = async () => {
+  const response = await fetch('https://extension-tips.glitch.me/tips.json');
+  const tips = await response.json();
+  const randomIndex = Math.floor(Math.random() * tips.length);
+  return chrome.storage.local.set({ tip: tips[randomIndex] });
+};
+
+const ALARM_NAME = 'tip';
+
+// Check if alarm exists to avoid resetting the timer.
+// The alarm might be removed when the browser session restarts.
+async function createAlarm() {
+  const alarm = await chrome.alarms.get(ALARM_NAME);
+  if (typeof alarm === 'undefined') {
+    chrome.alarms.create(ALARM_NAME, {
+      delayInMinutes: 1,
+      periodInMinutes: 1440
+    });
+    updateTip();
+  }
+}
+
+createAlarm();
+
+// Update tip once a day
+chrome.alarms.onAlarm.addListener(updateTip);
+```
+
+**Key point**: All [Chrome API](https://developer.chrome.com/docs/extensions/reference/api) event listeners and methods restart the service worker's 30-second termination timer. For more information, see the [Extension service worker lifecycle](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/lifecycle).
