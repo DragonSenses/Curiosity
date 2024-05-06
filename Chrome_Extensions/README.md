@@ -932,3 +932,36 @@ feat: Add content script in quick-api manifest
 
 Create a new content file. The following code sends a message to the service worker requesting the tip. Then, adds a button that will open a popover containing the extension tip. This code uses the new web platform [Popover API](https://developer.mozilla.org/docs/Web/API/Popover_API).
 
+feat: Add tip widget and popover functionality
+
+- Sends a message to the service worker to retrieve a tip
+- Creates a button (tipWidget) with a popover to display the tip
+- Injects the tip widget into the navigation bar
+
+`content.js`
+```javascript
+(async () => {
+  // Sends a message to the service worker and receives a tip in response
+  const { tip } = await chrome.runtime.sendMessage({ greeting: 'tip' });
+
+  const nav = document.querySelector('.upper-tabs > nav');
+  
+  const tipWidget = createDomElement(`
+    <button type="button" popovertarget="tip-popover" popovertargetaction="show" style="padding: 0 12px; height: 36px;">
+      <span style="display: block; font: var(--devsite-link-font,500 14px/20px var(--devsite-primary-font-family));">Tip</span>
+    </button>
+  `);
+
+  const popover = createDomElement(
+    `<div id='tip-popover' popover style="margin: auto;">${tip}</div>`
+  );
+
+  document.body.append(popover);
+  nav.append(tipWidget);
+})();
+
+function createDomElement(html) {
+  const dom = new DOMParser().parseFromString(html, 'text/html');
+  return dom.body.firstElementChild;
+}
+```
