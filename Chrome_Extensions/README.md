@@ -906,3 +906,29 @@ chrome.alarms.onAlarm.addListener(updateTip);
 ```
 
 **Key point**: All [Chrome API](https://developer.chrome.com/docs/extensions/reference/api) event listeners and methods restart the service worker's 30-second termination timer. For more information, see the [Extension service worker lifecycle](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/lifecycle).
+
+#### 7. Communicate with other contexts
+
+Extensions use [content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts) to read and modify the content of the page. When a user visits a Chrome API reference page, the extension's content script will update the page with the tip of the day. It [sends a message](https://developer.chrome.com/docs/extensions/develop/concepts/messaging) to request the tip of the day from the service worker.
+
+feat: Add cross-context communication in extension
+
+Start by declaring the content script in the manifest and add the match pattern corresponding to the [Chrome API](https://developer.chrome.com/docs/extensions/reference) reference documentation.
+
+feat: Add content script in quick-api manifest
+
+`manifest.json`
+```json
+{
+  ...
+  "content_scripts": [
+    {
+      "matches": ["https://developer.chrome.com/docs/extensions/reference/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
+```
+
+Create a new content file. The following code sends a message to the service worker requesting the tip. Then, adds a button that will open a popover containing the extension tip. This code uses the new web platform [Popover API](https://developer.mozilla.org/docs/Web/API/Popover_API).
+
