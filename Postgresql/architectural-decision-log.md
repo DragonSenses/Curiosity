@@ -582,7 +582,7 @@ When choosing a **PostgreSQL database name**, consider the following best practi
 
 Remember to choose a name that aligns with your project and team conventions.
 
-### Create a **table** in pgAdmin
+### *Create* a **table** in pgAdmin
 
 Instructions for creating a table in the `world` database using **pgAdmin**:
 
@@ -616,3 +616,37 @@ CREATE TABLE
 
 Query returned successfully in 32 msec.
 ```
+
+This means that the table is created. 
+
+### *View* the **table** in pgAdmin
+
+Right click on the `Tables` > `Refresh` then we'll see the `capitals` table. We can right click on `capitals` > `View/Edit Data` > `All Rows` then pgAdmin will display the table.
+
+The table will be at the bottom in the `Data Output` pane. 
+
+Notice how the `Query` pane changed after clicking `View/Edit Data` to `All Rows`:
+
+```sql
+SELECT * FROM public.capitals
+ORDER BY id ASC 
+```
+
+This is SQL code written automatically by pgAdmin when we clicked `View/Edit Data` > `All Rows`. If we change it to `View/Edit Data` > `First 100 Rows` then it will change the query to:
+
+```sql
+SELECT * FROM public.capitals
+ORDER BY id ASC LIMIT 100
+```
+
+Let's break down the query provided:
+
+1. `SELECT *`: This part of the query selects all columns from the specified table.
+2. `FROM public.capitals`: Here, we're selecting data from a table called `capitals` in the `public` schema. The `public` schema is the default schema in PostgreSQL.
+3. `ORDER BY id ASC`: This orders the results by the `id` column in ascending order.
+4. `LIMIT 100`: Finally, this limits the output to the first 100 rows.
+
+In summary, this query retrieves the first 100 rows from the `capitals` table, sorted by their `id` values.
+
+**"pgAdmin provides a user-friendly graphical interface (GUI) that allows us to access databases as an alternative to using the terminal."**
+
