@@ -706,3 +706,25 @@ The emoji in the `flag` column adds a fun and visual element to our data. We can
 - Field names should match the header from the `flags.csv`
 - Import the data from the `flags.csv` to your new table
 
+### Walkthrough for table creation
+
+1. Make sure the `world` database is selected and open up the **Query Tool**
+2. Add the SQL query to create the table `flags`.
+
+   ```sql
+   CREATE table flags (
+      id SERIAL PRIMARY key,
+      name VARCHAR(45),
+      flag TEXT
+   );
+   ``` 
+
+  - Optionally, we can create a table through the GUI by right clicking the `Tables` > `Create` and fill out the **Create - Table** window. We can add the table, define the columns and more in the window.
+
+3. Execute the script `[F5]` in pgAdmin to run the SQL query to create the table. Refresh the `Tables` to see the `flags` table created in the objext explorer panel.
+
+4. Import the data. Right click the `flags` table > Click `Import/Export Data...` > Add the **filename** > Select true for `Header` > Check the `Columns` to import are properly specified > Select `OK` to import the `flags.csv` data.
+
+5. Right click on the table `flags` > `View/Edit Data` > `All Rows` then pgAdmin will display the table.
+
+**Important Note:** Flag emojis might not display correctly in Microsoft Windows because Windows doesn't natively render flag images. As a result, when viewing flags in tools like pgAdmin or VSCode, you may see country codes instead of the actual flag emojis. However, this behavior is normal. In web development, what matters most is how flags appear in the browser, not how they're displayed in .csv files, pgAdmin, or VSCode.
