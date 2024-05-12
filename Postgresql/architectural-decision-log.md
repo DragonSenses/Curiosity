@@ -650,3 +650,27 @@ In summary, this query retrieves the first 100 rows from the `capitals` table, s
 
 **"pgAdmin provides a user-friendly graphical interface (GUI) that allows us to access databases as an alternative to using the terminal."**
 
+### *Import* the data in pgAdmin
+
+1. Right click the table in pgAdmin
+2. Click `Import/Export Data...`
+3. Make sure we have **Import** selected in the window
+4. Add the **filename** path to the file. Or select the file by clicking on the folder icon and finding the location where we have the data.
+5. As for **Format**, leave it as `csv`
+6. Click the `Options` tab
+7. Make sure that the **Header** is true/on. It is a round slider button where `true` is to the right. This option ensures that the first line in the CSV is not actual data but a header for each of the fields.
+8. Now in the `Columns` tab the header names are auto-imported from the `csv`
+9. Click `OK` at the bottom right of the window to start the import
+
+We should see popups named **Process started** and **Process completed**.
+
+If you encounter any issues, such as needing to rename fields, follow these steps: `Right click the table` > Select `Properties` > Navigate to `Columns` > Edit each of the field names > `Save` your changes. This problem typically arises when the field names in the CSV data file or the PostgreSQL table don't match.
+
+#### *View* the newly imported data in pgAdmin
+
+Now to view the newly imported data in the database.
+
+Right click on the `Tables` > `Refresh` then we'll see the `capitals` table. We can right click on `capitals` > `View/Edit Data` > `All Rows` then pgAdmin will display the table.
+
+Now, in the `Data Output` pane, we can view all our data. Specifically, we should see the `id` followed by the `country` and their corresponding `capitals`.
+
