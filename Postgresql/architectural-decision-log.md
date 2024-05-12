@@ -674,3 +674,35 @@ Right click on the `Tables` > `Refresh` then we'll see the `capitals` table. We 
 
 Now, in the `Data Output` pane, we can view all our data. Specifically, we should see the `id` followed by the `country` and their corresponding `capitals`.
 
+## Create and populate a table in the database
+
+**"Let's create a table, import data from a CSV file, and populate the table using pgAdmin. Here are the details:**
+
+1. **Table Creation:**
+   - First, we'll create a new table named `flags` in our PostgreSQL database using pgAdmin. This table will store information about flags.
+   - We'll define three columns for our table: `id`, `name`, and `flag`.
+
+2. **CSV File:**
+   - We have a CSV file named `flags.csv`.
+   - The header of the CSV file contains the column names: `id`, `name`, and `flag`.
+   - Each row in the CSV file represents a flag record.
+
+3. **Sample Record:**
+   - Let's take a look at a sample record from the CSV file:
+     - `233,United States,🇺🇸`
+   - In this record:
+     - `233` is the unique identifier (ID) for the flag.
+     - `United States` is the name of the country associated with the flag.
+     - `🇺🇸` is an emoji representing the flag itself.
+     - Note that the `flag` column contains text encoded in UTF-8, which can be recognized by computers and replaced with an image (in this case, the flag emoji).
+
+4. **Populating the Table:**
+   - After creating the table, we'll import data from the `flags.csv` file into the table.
+   - The imported data will populate the table with flag information, including the ID, country name, and corresponding flag emoji.
+
+The emoji in the `flag` column adds a fun and visual element to our data. We can use a new datatype `TEXT` from PostgreSQL as it handles UTF-8 better than `VARCHAR`.
+
+- Create a new table called `flags`
+- Field names should match the header from the `flags.csv`
+- Import the data from the `flags.csv` to your new table
+
