@@ -927,3 +927,45 @@ try {
   db.end();
 }
 ```
+
+## Create the routes for the quiz app
+
+Before we create the routes we need to create a helper function that picks a random question:
+
+```js
+// Initialize a variable to keep track of the total correct answers
+let totalCorrect = 0;
+
+// Initialize an empty object for the current question
+let currentQuestion = {};
+
+// Asynchronous function to select the next question
+async function nextQuestion() {
+  // Generate a random index to select a country from the 'quiz' array
+  const randomCountry = quiz[Math.floor(Math.random() * quiz.length)];
+
+  // Set the selected country as the current question
+  currentQuestion = randomCountry;
+}
+```
+
+### Implement root route handler
+
+Now we can create the `GET` route, an Express route handler for the root URL ("/").
+
+- When a user accesses the root URL:
+  - The `totalCorrect` variable is reset to zero
+  - The `nextQuestion()` function is awaited to select the next question
+  - The current question is logged to the console (for debugging purposes)
+  - The `index.ejs` view is rendered, passing the current question as a variable named `question`
+
+feat: Create GET route handler for root URL
+
+```javascript
+app.get("/", async (req, res) => {
+  totalCorrect = 0;
+  await nextQuestion();
+  console.log(currentQuestion);
+  res.render("index.ejs", { question: currentQuestion });
+});
+```
