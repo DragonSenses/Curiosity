@@ -765,6 +765,8 @@ npm i body-parser
 npm i pg
 ```
 
+Then in `index.js` create the express app template.
+
 ```js
 import express from "express";
 import bodyParser from "body-parser";
@@ -781,3 +783,103 @@ app.listen(port, () => {
   console.log(`Server is running at http://localhost:${ port }`);
 });
 ```
+
+Next let's create a `.env` file to store our environment variables. Then install `dotenv`
+
+```sh
+npm i dotenv
+```
+
+## Setup the PostgreSQL client instance
+
+Let's setup the client to work with our express app.
+
+```javascript
+const db = new pg.Client({
+  user: "postgres",
+  host: "localhost",
+  database: "world",
+  password: "123456",
+  port: 5432,
+});
+
+db.connect();
+```
+
+1. **Creates a PostgreSQL client instance**:
+   - It initializes a new `pg.Client` object with the specified connection configuration.
+   - The configuration includes details such as the database user, host (usually "localhost" for a local database), database name ("world"), password, and port number (default is 5432 for PostgreSQL).
+
+2. **Connects to the PostgreSQL database**:
+   - The `db.connect()` method establishes a connection to the PostgreSQL server using the provided configuration.
+   - Once connected, the client can execute queries against the database.
+
+In summary, this code sets up a client to interact with a PostgreSQL database named "world" using the specified credentials.
+
+### Replace database password with environment variable
+
+Let's replace the password with an environment variable.
+
+1. **Create a `.env` file**:
+   - In your project directory, create a new file named `.env`.
+   - Inside the `.env` file, add the following line (replace `"your_password_here"` with your actual database password):
+
+     ```env
+     DB_PASSWORD=your_password_here
+     ```
+
+2. **Install the `dotenv` package**:
+   - Run the following command to install the `dotenv` package:
+
+     ```bash
+     npm install dotenv
+     ```
+
+3. **Modify your code**:
+   - At the top of your JavaScript file (e.g., `index.js`), require and configure `dotenv`:
+
+     ```js
+     require('dotenv').config();
+     ```
+
+    Or use ES module
+
+    ```js
+    import dotenv from 'dotenv';
+    dotenv.config();
+    ```
+
+    - Ensure that your Node.js environment supports ES modules. You can either":
+      - Use a recent version of Node.js (12.20.0 or later) that natively supports ES modules.
+      - Add `"type": "module"` to your `package.json`:
+
+       ```json
+       {
+       "type": "module",
+       "dependencies": {
+         // ...
+       }
+       }
+       ```
+
+   - Update your database configuration to use the environment variable:
+
+     ```js
+     const db = new pg.Client({
+       user: "postgres",
+       host: "localhost",
+       database: "world",
+       password: process.env.DB_PASSWORD,
+       port: 5432,
+     });
+
+     db.connect();
+     ```
+
+4. **Add `.env` to your `.gitignore`**:
+   - Make sure your `.env` file is not committed to version control by adding it to your `.gitignore`:
+
+     ```
+     # .gitignore
+     .env
+     ```
