@@ -883,3 +883,47 @@ Let's replace the password with an environment variable.
      # .gitignore
      .env
      ```
+
+## Construct the query to the database
+
+When interacting with a database, we construct queries to retrieve, insert, update, or delete data. These queries are written in a specific database query language (such as SQL for relational databases) and allow us to communicate with the database to perform various operations.
+
+Let's create the query to read from our postgreSQL database.
+
+```sql
+SELECT * FROM <Name of Table>
+```
+
+So our javascript query will be:
+
+```js
+db.query("SELECT * FROM capitals");
+```
+
+Let's create a sample fallback `quiz` variable that is an array which contains objects. The objects will have `country` and `capital` properties.
+
+```javascript
+let quiz = [
+  { country: "United States of America", capital: "Washington" },
+  { country: "United Kingdom", capital: "London" },
+  { country: "France", capital: "Paris" },
+  { country: "China", capital: "Beijing" },
+  { country: "South Korea", capital: "Seoul" },
+  { country: "Japan", capital: "Tokyo" },
+];
+```
+
+Then we open up a `try..catch` to handle errors more elegantly. Meanwhile the `finally` block ensures that the database connection is closed regardless of success or failure.
+
+feat: Fetch and update quiz data from database
+
+```javascript
+try {
+  const res = await db.query("SELECT * FROM capitals");
+  quiz = res.rows;
+} catch (err) {
+  console.error("Error executing query:", err.stack);
+} finally {
+  db.end();
+}
+```
