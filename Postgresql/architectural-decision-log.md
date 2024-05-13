@@ -728,3 +728,56 @@ The emoji in the `flag` column adds a fun and visual element to our data. We can
 5. Right click on the table `flags` > `View/Edit Data` > `All Rows` then pgAdmin will display the table.
 
 **Important Note:** Flag emojis might not display correctly in Microsoft Windows because Windows doesn't natively render flag images. As a result, when viewing flags in tools like pgAdmin or VSCode, you may see country codes instead of the actual flag emojis. However, this behavior is normal. In web development, what matters most is how flags appear in the browser, not how they're displayed in .csv files, pgAdmin, or VSCode.
+
+# Create an app using PostgreSQL
+
+Let's create a simple world quiz app. It displays the country name and users can test their knowledge by entering the corresponding capital name.
+
+Let's start by creating a Node project named `world-quiz-app`.
+
+Inside of `/world-quiz-app` run the command:
+
+```sh
+npm init
+```
+
+Let's add the following files:
+
+```sh
+/world-quiz-app
+  |- public
+    |- images
+      |- background.jpg
+    |- styles
+      |- main.css
+  |- views
+    |- index.ejs
+  |- index.js
+  |- package.json
+  |- package-lock.json
+```
+
+Now in `index.js` let's build the express app. First install the following:
+
+```sh
+npm i express
+npm i body-parser
+npm i pg
+```
+
+```js
+import express from "express";
+import bodyParser from "body-parser";
+import pg from "pg";
+
+const app = express();
+const port = 3000;
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${ port }`);
+});
+```
