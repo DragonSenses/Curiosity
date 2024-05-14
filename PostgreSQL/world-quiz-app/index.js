@@ -38,6 +38,17 @@ let totalCorrect = 0;
 // Initialize an empty object for the current question
 let currentQuestion = {};
 
+/**
+ * Asynchronous function to select the next question
+ */
+async function nextQuestion() {
+  // Generate a random index to select a country from the 'quiz' array
+  const randomCountry = quiz[Math.floor(Math.random() * quiz.length)];
+
+  // Set the selected country as the current question
+  currentQuestion = randomCountry;
+}
+
 try {
   // Execute a query to fetch data from the 'capitals' table
   const res = await db.query("SELECT * FROM capitals");
