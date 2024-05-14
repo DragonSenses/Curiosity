@@ -32,6 +32,12 @@ let quiz = [
   { country: "Japan", capital: "Tokyo" },
 ];
 
+// Initialize a variable to keep track of the total correct answers
+let totalCorrect = 0;
+
+// Initialize an empty object for the current question
+let currentQuestion = {};
+
 try {
   // Execute a query to fetch data from the 'capitals' table
   const res = await db.query("SELECT * FROM capitals");
@@ -40,11 +46,12 @@ try {
 } catch (err) {
   // Handle any errors during query execution
   console.error("Error executing query:", err.stack);
+  // Fallback: Use the predefined quiz questions
+  console.log("Using predefined quiz questions instead.");
 } finally {
   // Close the database connection
   db.end();
 }
-
 
 /* Middleware */
 app.use(bodyParser.urlencoded({ extended: true }));
