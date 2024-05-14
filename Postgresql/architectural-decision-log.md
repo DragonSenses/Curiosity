@@ -894,11 +894,96 @@ Let's create the query to read from our postgreSQL database.
 SELECT * FROM <Name of Table>
 ```
 
-So our javascript query will be:
+So our database query will be:
 
 ```js
 db.query("SELECT * FROM capitals");
 ```
+
+### Filter out rows with null values in the PostgreSQL query
+
+Let's say we want to filter out any rows where there are all `null` values. We can check the entire row if all columns are null. The following will return all rows where **all columns** are not null.
+
+```sql
+SELECT * FROM capitals WHERE capitals IS NOT NULL;
+```
+
+- `capitals IS NOT NULL` is only true if **all** columns in that row are not null.
+
+Let's adjust the query to retrieve rows where **all columns have non-null values**. If any column is null for a particular row, we'll exclude it from the results.
+
+Here is an example of how to do that:
+
+```sql
+SELECT *
+FROM my_table
+WHERE column1 IS NOT NULL
+  AND column2 IS NOT NULL
+  -- Add more columns as needed
+  AND columnN IS NOT NULL;
+```
+
+**Note:** We don't need to check the `id` column for null values. The `id` column is defined as `SERIAL PRIMARY KEY`, which means it will always have a non-null value. So, your query can focus on checking the `country` and `capital` columns. 
+
+So our resulting database query:
+
+```sql
+SELECT *
+FROM capitals
+WHERE country IS NOT NULL AND capital IS NOT NULL;
+```
+
+feat: Add query to retrieve non-null pairs
+
+Add query that filters rows from the table `capitals` to retrieve non-null country-capital pairs.
+
+```js
+await db.query("SELECT * FROM capitals WHERE country IS NOT NULL AND capital IS NOT NULL");
+```
+
+#### Confirm that the query retrieves non-null country-capital pairs
+
+We can see that our `capitals` table has a total of 250 items by using the `COUNT` function in our query.
+
+```sql
+SELECT COUNT(*) FROM capitals;
+```
+
+Then we can retrieve rows where they have a null value in any column.
+
+```sql
+SELECT *
+FROM capitals
+WHERE country IS NULL OR capital IS NULL;
+```
+
+This will show us that there are 5 out of 250 items that have a `null` capital. Let's confirm this by combining our `SELECT` and `COUNT` functions together in our query.
+
+To combine the `COUNT` function with our existing query, you can use a **subquery**. Here's how you can retrieve both the count of rows with null values and the actual rows:
+
+```sql
+SELECT *,
+       (SELECT COUNT(*) FROM capitals WHERE country IS NULL OR capital IS NULL) AS null_count
+FROM capitals
+WHERE country IS NULL OR capital IS NULL;
+```
+
+In this query:
+- The subquery `(SELECT COUNT(*) FROM capitals WHERE country IS NULL OR capital IS NULL)` calculates the total count of rows with null values.
+- The `AS null_count` alias assigns a name to the count result.
+- The main query retrieves all rows where either the `country` or `capital` columns are null.
+
+To count the number of rows with null values in either the `country` or `capital` column, you can use the following query:
+
+```sql
+SELECT COUNT(*) AS null_count
+FROM capitals
+WHERE country IS NULL OR capital IS NULL;
+```
+
+This query will return the total count of rows where either the `country` or `capital` (or both) columns have null values.
+
+### Construct the quiz
 
 Let's create a sample fallback `quiz` variable that is an array which contains objects. The objects will have `country` and `capital` properties.
 
@@ -919,7 +1004,7 @@ feat: Fetch and update quiz data from database
 
 ```javascript
 try {
-  const res = await db.query("SELECT * FROM capitals");
+  const res = await db.query("SELECT * FROM capitals WHERE country IS NOT NULL AND capital IS NOT NULL");
   quiz = res.rows;
 } catch (err) {
   console.error("Error executing query:", err.stack);
