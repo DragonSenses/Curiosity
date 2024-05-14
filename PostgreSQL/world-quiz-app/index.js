@@ -50,8 +50,9 @@ async function nextQuestion() {
 }
 
 try {
-  // Execute a query to fetch data from the 'capitals' table
-  const res = await db.query("SELECT * FROM capitals");
+  // Execute a query to fetch data from the 'capitals' table where both 
+  // 'country' and 'capital' are non-null
+  const res = await db.query("SELECT * FROM capitals WHERE country IS NOT NULL AND capital IS NOT NULL");
   // Update the 'quiz' array with the retrieved rows
   quiz = res.rows;
 } catch (err) {
