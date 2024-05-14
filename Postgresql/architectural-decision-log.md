@@ -932,14 +932,22 @@ try {
 
 Before we create the routes we need to create a helper function that picks a random question:
 
+feat: Initialize quiz variables
+
 ```js
 // Initialize a variable to keep track of the total correct answers
 let totalCorrect = 0;
 
 // Initialize an empty object for the current question
 let currentQuestion = {};
+```
 
-// Asynchronous function to select the next question
+feat: Implement nextQuestion function
+
+```js
+/**
+ * Asynchronous function to select the next question
+ */
 async function nextQuestion() {
   // Generate a random index to select a country from the 'quiz' array
   const randomCountry = quiz[Math.floor(Math.random() * quiz.length)];
@@ -967,5 +975,28 @@ app.get("/", async (req, res) => {
   await nextQuestion();
   console.log(currentQuestion);
   res.render("index.ejs", { question: currentQuestion });
+});
+```
+
+Now the `POST` route for the user to submit the answer.
+
+feat: Handle quiz submission and update score
+
+```javascript
+app.post("/submit", (req, res) => {
+  let answer = req.body.answer.trim();
+  let isCorrect = false;
+  if (currentQuestion.capital.toLowerCase() === answer.toLowerCase()) {
+    totalCorrect++;
+    console.log(totalCorrect);
+    isCorrect = true;
+  }
+
+  nextQuestion();
+  res.render("index.ejs", {
+    question: currentQuestion,
+    wasCorrect: isCorrect,
+    totalScore: totalCorrect,
+  });
 });
 ```
