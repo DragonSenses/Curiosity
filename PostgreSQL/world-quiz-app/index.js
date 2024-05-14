@@ -75,6 +75,23 @@ app.get("/", async (req, res) => {
   res.render("index.ejs", { question: currentQuestion });
 });
 
+app.post("/submit", (req, res) => {
+  let answer = req.body.answer.trim();
+  let isCorrect = false;
+  if (currentQuestion.capital.toLowerCase() === answer.toLowerCase()) {
+    totalCorrect++;
+    console.log(totalCorrect);
+    isCorrect = true;
+  }
+
+  nextQuestion();
+  res.render("index.ejs", {
+    question: currentQuestion,
+    wasCorrect: isCorrect,
+    totalScore: totalCorrect,
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${ port }`);
 });
