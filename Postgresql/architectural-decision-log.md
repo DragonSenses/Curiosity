@@ -1085,6 +1085,47 @@ app.post("/submit", (req, res) => {
   });
 });
 ```
+
+# Query data using SELECT, WHERE and LIKE in PostgreSQL
+
+In PostgreSQL, you can use the `SELECT`, `WHERE`, and `LIKE` clauses to query data from a table based on specific conditions. Let's break it down:
+
+1. **SELECT Clause**:
+   - The `SELECT` clause retrieves specific columns or expressions from a table.
+   - Syntax: `SELECT column1, column2, ... FROM table_name;`
+   - Example: To retrieve the first name and last name of customers from a `customer` table:
+     ```sql
+     SELECT first_name, last_name FROM customer;
+     ```
+
+2. **WHERE Clause**:
+   - The `WHERE` clause filters rows based on specified conditions.
+   - Syntax: `SELECT columns FROM table_name WHERE condition;`
+   - Example: To find customers whose first name starts with "Jen":
+     ```sql
+     SELECT first_name, last_name FROM customer WHERE first_name LIKE 'Jen%';
+     ```
+     This query returns rows where the `first_name` begins with "Jen."
+
+3. **LIKE Operator**:
+   - The `LIKE` operator is used for pattern matching.
+   - It allows you to search for values that match a specified pattern.
+   - Wildcards:
+     - `%` (percent sign): Matches any sequence of zero or more characters.
+     - `_` (underscore): Matches any single character.
+   - Example: To find customers whose first name starts with "Jen" (using the `LIKE` operator):
+     ```sql
+     SELECT first_name, last_name FROM customer WHERE first_name LIKE 'Jen%';
+     ```
+     Output:
+     ```
+     first_name | last_name
+     ------------+-----------
+     Jennifer   | Berry
+     Jennie     | Mango
+     Jenny      | Banana
+     ```
+
 ## Query world food data
 
 In sample-data, let's add a `world-food.csv` file that contains the following:
