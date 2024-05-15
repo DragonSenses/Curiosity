@@ -1183,7 +1183,63 @@ Remember:
 - **FLOAT** for approximations.
 - **NUMERIC** (or **DECIMAL**) for precision and exactness.
 
+### Analyze the dataset to determine which data types to use
 
+The given dataset contains rice and wheat production values for various countries. Let's analyze it:
+
+1. **Rice Production**:
+   - Maximum rice production: 212.84 metric tons (China)
+   - Minimum rice production: 0.05 metric tons (Ukraine)
+
+2. **Wheat Production**:
+   - Maximum wheat production: 136.9 metric tons (China)
+   - Minimum wheat production: 0.5 metric tons (Nigeria)
+
+To find the best `NUMERIC` precision for these values, we need to consider the maximum and minimum values:
+
+- **Maximum Value**: 212.84 (rice) and 136.9 (wheat)
+- **Minimum Value**: 0.05 (rice) and 0.5 (wheat)
+
+Considering these ranges, a suitable `NUMERIC` precision would be at least 4 digits (including the decimal part) to accommodate both the maximum and minimum values. Let's choose `NUMERIC(5, 2)`:
+
+- Precision: 5 (total digits)
+- Scale: 2 (decimal places)
+
+This allows values up to 999.99, which covers the entire range of rice and wheat production in the dataset.
+
+So to create the `world_food` table we can run the following query:
+
+```sql
+CREATE TABLE world_food (
+  id SERIAL PRIMARY KEY,
+  country VARCHAR(45),
+  rice_production NUMERIC(5, 2),
+  wheat_production NUMERIC(5, 2)
+);
+```
+
+Or if you prefer to use the **FLOAT** data type:
+
+```sql
+CREATE TABLE world_food (
+  id SERIAL PRIMARY KEY,
+  country VARCHAR(45),
+  rice_production FLOAT,
+  wheat_production FLOAT
+);
+```
+
+Keep in mind the following considerations when using **FLOAT**:
+
+1. **Approximate Precision**:
+   - FLOAT represents approximate numeric values.
+   - It uses binary floating-point representation.
+   - Precision: Approximately 6-9 decimal digits.
+   - Suitable for scientific calculations but may have rounding errors.
+
+2. **Use Cases**:
+   - Use FLOAT when you can tolerate slight approximations (e.g., physics simulations).
+   - Avoid using it for exact values (e.g., financial data).
 
 ### Auto-generate IDs in PostgreSQL
 
