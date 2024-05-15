@@ -1085,3 +1085,65 @@ app.post("/submit", (req, res) => {
   });
 });
 ```
+## Query world food data
+
+In sample-data, let's add a `world-food.csv` file that contains the following:
+
+```csv
+Country,Rice,Wheat
+Australia,0.42,31.9
+Brazil,13.98,7.9
+China,212.84,136.9
+Ethiopia,0.20,5.2
+India,195.43,109.6
+Iran,1.60,10.1
+Pakistan,13.98,27.5
+Ukraine,0.05,32.2
+United States,8.70,44.8
+Argentina,1.25,18.3
+Bangladesh,52.00,1.5
+Canada,0.30,32.0
+Egypt,4.80,9.7
+France,1.10,38.2
+Germany,0.80,26.5
+Japan,7.50,1.8
+Mexico,1.80,3.5
+Nigeria,3.50,0.5
+Russia,1.10,72.0
+South Korea,4.20,4.0
+```
+
+The goal is to create a postgreSQL table named `world_food` inside the `world` database. We will have 4 columns: `id`, `country`, `rice_production` and `wheat_production`. We can either use the `FLOAT`, `NUMERIC` or `DECIMAL` data types.
+
+In PostgreSQL, you have a couple of options for storing decimal values: **FLOAT**, **NUMERIC** and **DECIMAL** (which is functionally equivalent to NUMERIC) data types in SQL databases:.
+
+1. **FLOAT**:
+   - Represents approximate numeric values.
+   - Uses binary floating-point representation.
+   - Precision: Approximately 6-9 decimal digits.
+   - Storage: 4 bytes (single precision) or 8 bytes (double precision).
+   - Commonly used for scientific calculations.
+   - Subject to rounding errors due to binary representation.
+   - Not suitable for exact values (e.g., financial data).
+
+2. **NUMERIC (or DECIMAL)**:
+   - Represents exact numeric values.
+   - Uses decimal representation.
+   - Precision: User-defined (up to 38 digits).
+   - Storage: Varies based on precision and scale.
+   - Ideal for financial applications, where exactness matters.
+   - No rounding errors; suitable for monetary values.
+
+3. **Use Cases**:
+   - **FLOAT**: Use when approximate calculations are acceptable (e.g., physics simulations).
+   - **NUMERIC/DECIMAL**: Use when exact numeric behavior is required (e.g., financial transactions).
+
+Remember:
+- **FLOAT** for approximations.
+- **NUMERIC** (or **DECIMAL**) for precision and exactness.
+
+So to create the `world_food` table we can run the following query:
+
+```sql
+
+```
