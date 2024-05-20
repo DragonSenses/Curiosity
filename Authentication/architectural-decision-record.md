@@ -1966,4 +1966,24 @@ To recap:
 
 Remember to consult the specific documentation for the third-party service you're integrating with, as each service may have unique requirements and endpoints.
 
+#### Use passport-google-oauth20
 
+feat: Add passport strategy for Google OAuth 2.0
+
+In passport.js, we select the strategy [passport-google-oatuh20](https://www.passportjs.org/packages/passport-google-oauth20/).
+
+1. Install
+
+```sh
+npm install passport-google-oauth20
+```
+
+2. Usage
+
+Create an Application
+
+Before using `passport-google-oauth20`, you must register an application with Google. If you have not already done so, a new project can be created in the [Google Developers Console](https://console.developers.google.com/). Your application will be issued a client ID and client secret, which need to be provided to the strategy. You will also need to configure a redirect URI which matches the route in your application.
+
+Configure Strategy
+
+The Google authentication strategy authenticates users using a Google account and OAuth 2.0 tokens. The client ID and secret obtained when creating an application are supplied as options when creating the strategy. The strategy also requires a `verify` callback, which receives the access token and optional refresh token, as well as `profile` which contains the authenticated user's Google profile. The `verify` callback must call `cb` providing a user to complete authentication.
