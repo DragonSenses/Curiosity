@@ -1907,3 +1907,63 @@ Revoke Access
 - When using a third-party service for user authentication, it's essential that the user has the ability to **revoke access** at any time. 
 - For instance, if a user authenticates with Google, they should be able to visit their Google account settings and **deauthorize** the access they previously granted to your application or website. 
 - This way, users don't need to navigate to your website specifically to manage access permissions, making the process more straightforward and user-friendly.
+
+#### Steps to integrate OAuth in app
+
+1. **Application Setup and Registration:**
+   - Begin by setting up your application in the respective third-party developer console (e.g., Google, Facebook, GitHub).
+   - Retrieve the **App ID** or **Client ID** provided by the third-party service. This unique identifier will be used to establish communication between your app and the service.
+
+2. **Redirect to Authentication:**
+   - When a user makes a request to your application, provide them with the option to log in using the third-party service.
+   - Redirect the user to the third-party authentication page, where they can log in with their own credentials.
+
+3. **User Authentication:**
+   - The user logs in with OAuth using their credentials from the third-party service.
+   - The third-party service validates the user's identity and returns an **authorization code** to your app.
+
+4. **Permission Granting:**
+   - The user reviews the permissions your application is requesting (e.g., access to their profile and email address).
+   - Upon approval, the user grants the necessary permissions.
+
+5. **Receive Authorization Code:**
+   - Your web app receives the authorization code from the third-party service.
+   - This code allows your app to verify and authenticate the user. You can then log them into your website.
+
+6. **Exchange Auth Code for Access Token:**
+   - Your web app exchanges the authorization code for an **access token** from the third-party service.
+   - Store this token securely in your database. It will be used to make subsequent requests for user information.
+   - Note that access tokens are valid for a longer duration than authentication tokens.
+
+To recap:
+
+1. **Application Setup and Registration:**
+   - Begin by setting up your application in the respective third-party developer console (e.g., Google, Facebook, GitHub).
+   - Retrieve the **App ID** or **Client ID** provided by the third-party service. This unique identifier will be used to establish communication between your app and the service.
+
+2. **Client-Side Authentication Flow:**
+   - Your website (the client) will initiate the OAuth flow by redirecting the user to the third-party authentication page.
+   - The user will log in or authorize your app to access their account on the third-party service.
+   - Upon successful authentication, the third-party service will redirect the user back to your app with an **authorization code**.
+
+3. **Server-Side Token Exchange:**
+   - Your app's server will receive the authorization code from the client.
+   - Use this code to make a secure request to the third-party service's token endpoint.
+   - In response, you'll receive an **access token** and optionally a **refresh token**.
+   - Store the access token securely, as it will be used to make authenticated requests on behalf of the user.
+
+4. **Accessing User Data:**
+   - With the access token, your app can now access the user's data (e.g., profile information, email, etc.) from the third-party service's APIs.
+   - Make API requests using the token as an authorization header.
+
+5. **Handling Token Expiry and Refresh:**
+   - Access tokens have a limited lifespan. Monitor their expiration and refresh them using the refresh token when needed.
+   - If the refresh token is also expired, prompt the user to re-authenticate.
+
+6. **Logout and Deauthorization:**
+   - Implement a logout mechanism that clears the user's session and revokes the access token.
+   - Consider handling deauthorization scenarios (e.g., if the user disconnects your app from their third-party account).
+
+Remember to consult the specific documentation for the third-party service you're integrating with, as each service may have unique requirements and endpoints.
+
+
