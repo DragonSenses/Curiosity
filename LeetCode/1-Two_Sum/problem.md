@@ -61,3 +61,101 @@ Here's the algorithm:
    1. If it has the difference, return an array containing the index where the difference is found and `i` the current index
    2. Otherwise, set the entry for the value of the number and its current index `[nums[i], i]` in the map
 
+Now for the implementations and key explanations:
+
+## **Java**
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+  /**
+   * Given an array of integers nums and an integer target, return indices of 
+   * the two numbers such that they add up to target.
+   * 
+   * Assumes: that each input would have exactly one solution, and you may not
+   * use the same element twice.
+   * 
+   * You can return the answer in any order.
+   * @param nums - array of integers
+   * @param target - the sum that two numbers in the array should add up to
+   * @return An array of indices of the two numbers within the array that add
+   * up to target
+   */
+  public int[] twoSum(int[] nums, int target) {
+    Map<Integer, Integer> map = new HashMap<>();
+
+    for (int i = 0; i < nums.length; i++) {
+      int complement = target - nums[i];
+      if (map.containsKey(complement)) {
+          return new int[]{map.get(complement), i};
+      }
+      map.put(nums[i], i);
+    }
+
+    // No valid pair found
+    return new int[0];
+  }
+}
+```
+
+## TypeScript
+
+```ts
+/**
+ * Finds two numbers in the given array that add up to the specified target.
+ * Assumes that each input would have exactly one solution, and you may not
+ * use the same element twice.
+ *
+ * @param nums - An array of integers.
+ * @param target - The sum that two numbers in the array should add up to.
+ * @returns An array of indices of the two numbers within the array that add
+ * up to the target, or an empty array if no valid pair exists.
+ */
+function twoSum(nums: number[], target: number): number[] {
+  const map = new Map<number, number>();
+
+  for (let i = 0; i < nums.length; i++) {
+    const complement = target - nums[i];
+
+    if (map.has(complement)) {
+      return [map.get(complement)!, i];
+    }
+
+    map.set(nums[i], i);
+  }
+
+  // No valid pair found
+  return [];
+}
+```
+
+Key points:
+
+**Where are the HashMaps in TypeScript?**
+
+- In **TypeScript**, the built-in `Map` is an interface that defines how key-value pairs can be used. The `Map` class serves as a hashmap by providing methods to insert, retrieve, and delete items based on keys.
+- The JavaScript specification has requirements for the `Map` interface such that it could be represented internally as a **hash table** (with O(1) lookup). See [Map - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+
+
+[**Non-Null Assertion Operator**](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-)
+
+The exclamation mark (`!`) in `map.get(complement)!` is called the **non-null assertion operator**. It's used to tell TypeScript that we are certain that the value returned by `map.get(complement)` will not be `null` or `undefined`.
+
+Here's why we need it in this context:
+
+1. **TypeScript and Nullability:**
+   - TypeScript is a statically typed language that helps catch potential runtime errors during development.
+   - When we call `map.get(complement)`, TypeScript infers that the return type could be either the value associated with the key or `undefined` (if the key is not found in the map).
+
+2. **Guaranteed Non-Null Value:**
+   - In our specific scenario, we know that the key `complement` exists in the map because we've already checked it using `map.has(complement)`.
+   - Therefore, we can safely assert that the value returned by `map.get(complement)` will not be `null` or `undefined`.
+
+3. **Using the Non-Null Assertion Operator:**
+   - By adding `!` after `map.get(complement)`, we tell TypeScript to treat the value as non-nullable.
+   - If, by any chance, the key was not found (which shouldn't happen in our case), TypeScript would throw a runtime error.
+
+In summary, the non-null assertion operator allows us to express our confidence that the value will indeed be present, avoiding unnecessary null checks in the code.
+
