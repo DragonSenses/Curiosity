@@ -6,6 +6,51 @@ Resources:
 
 [Chrome for Developers](https://developer.chrome.com/docs/extensions)
 
+## Update: Chrome Manifest V3
+
+Summary: Google Chrome will shut down Manifest V2 and all its extensions (mainly to hinder adblocker and content-filtering extensions). Instead it will opt to use the limited Manifest V3 exclusively.
+
+- [Google Chrome’s plan to limit ad blocking extensions kicks off next week (beginning of June 2024)](https://arstechnica.com/gadgets/2024/05/google-starts-deprecating-older-more-capable-chrome-extensions-next-week/)
+
+"Google Chrome will be shutting down its older, more capable extension system, Manifest V2, in favor of exclusively using the more limited Manifest V3. The deeply controversial Manifest V3 system was announced in 2019, and the full switch has been delayed a million times, but now Google says it's really going to make the transition: As [previously announced](https://arstechnica.com/gadgets/2023/11/google-chrome-will-limit-ad-blockers-starting-june-2024/), the phase-out of older Chrome extensions is starting next week."
+
+### Google Chrome's extension system transition from Manifest V2 to Manifest V3:
+
+- **Background:**
+  - Google Chrome has been working on a new extension system called "Manifest V3."
+  - The goal of Manifest V3 is to improve security, privacy, performance, and trustworthiness within the extension ecosystem.
+  - However, this transition has been controversial and delayed since its announcement in 2019.
+
+- **What's Happening:**
+  - Google is officially phasing out the older, more capable extension system (Manifest V2) in favor of Manifest V3.
+  - The full switch is starting next week, as previously announced.
+  - Manifest V3 offers benefits like Offscreen Documents, a new User Scripts API, and enhanced content filtering support.
+
+- **Controversy:**
+  - Some groups, including the Electronic Frontier Foundation (EFF), have criticized Manifest V3.
+  - The EFF called it "deceitful and threatening," expressing concerns about its impact on web extensions.
+  - They believe Manifest V3 will restrict the capabilities of extensions, especially those designed for monitoring, modification, and computation alongside browser interactions with websites.
+
+Despite the controversy, Google remains committed to the transition. Users relying on Manifest V2 extensions will see warnings, and developers are encouraged to switch to Manifest V3 alternatives. It's an ongoing development, and the transition is expected to be completed by early next year.
+
+- **Content Filtering Limitations:**
+  - A major point of concern is the limitations on "content filtering" APIs used by ad blockers and anti-tracking extensions.
+  - These APIs allow extensions to fight against ad companies like Google by blocking unwanted content.
+  - Google, which heavily relies on advertising revenue, has not provided a clear explanation for why Manifest V3 restricts content filtering.
+  - It's unclear how these limitations align with the stated goals of improving security, privacy, performance, and trustworthiness.
+
+- **Malicious Extensions vs. Content Filtering:**
+  - Philipp Kewisch from the Firefox team pointed out that malicious extensions primarily aim to spy on users and collect data.
+  - Content filtering, on the other hand, is not directly related to this goal.
+  - Despite this, Manifest V3 imposes restrictions on content filtering capabilities.
+
+- **Context:**
+  - Interestingly, Google is simultaneously building an ad system directly into Chrome, and platforms like YouTube are actively combating ad blockers.
+
+The limitations around content filtering in Manifest V3 have raised concerns, especially given Google's advertising-centric business model. This will have a large impact on ad blockers and privacy-focused extensions.
+
+"A big source of skepticism around Manifest V3 is limitations around "content filtering," aka the APIs ad blockers and anti-tracking extensions use to fight ad companies like Google. Google, which makes about 77 percent of its revenue from advertising, has not published a serious explanation as to why Manifest V3 limits content filtering, and it's not clear how that aligns with the goals of "improving the security, privacy, performance and trustworthiness." Like Kewisch said, the primary goal of malicious extensions is to spy on users and slurp up data, which has nothing to do with content filtering. This is all happening while Google is building an ad system directly into Chrome, and Google properties like YouTube are making aggressive moves against ad blockers."
+
 ## What is a Google Chrome Extension?
 
 A **Google Chrome extension** is a small program that can be installed into the Chrome web browser. These extensions serve to **modify the browser's functionality** by either adding new features or altering existing behaviors.
