@@ -1862,6 +1862,11 @@ app.post('/logout', function(req, res, next){
 
 # Level 6: OAuth - Open Authorization
 
+Resources:
+
+- [https://developers.google.com/identity/protocols/oauth2/](https://developers.google.com/identity/protocols/oauth2/)
+- [passport-google-oatuh20](https://www.passportjs.org/packages/passport-google-oauth20/)
+
 ## What is **OAuth**?
 
 - **OAuth (Open Authorization)** is an open standard for token based authorization
@@ -2114,3 +2119,22 @@ Now let's do it for our app.
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 ```
 
+2. Configure passport with Google OAuth 2.0 strategy
+
+Now after all of the set-up (so after the line `passport.deserializeUser...`) and before all of the routes (before the line `app.get("/")...`) configure passport with the OAuth strategy.
+
+feat: Configure Passport with Google OAuth2.0
+
+```js
+passport.use(new GoogleStrategy({
+  clientID: GOOGLE_CLIENT_ID,
+  clientSecret: GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:3000/auth/google/secrets"
+},
+  function (accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+```
