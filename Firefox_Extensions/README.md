@@ -79,3 +79,47 @@ If you choose to supply your own icon, It should be 48x48 pixels. You could also
 Alternatively, you could supply an SVG file here, and it will be scaled correctly. (Though: if you're using SVG and your icon includes text, you may want to use your SVG editor's "convert to path" tool to flatten the text, so that it scales with a consistent size/position.)
 
 - [Learn more about specifying icons.](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/icons)
+
+#### borderify.js
+
+Finally, create a file called "borderify.js" directly under the "borderify" directory. Give it this content:
+
+This script will be loaded into the pages that match the pattern given in the `content_scripts` manifest.json key. The script has direct access to the document, just like scripts loaded by the page itself.
+
+- [Learn more about content scripts.](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts)
+
+### Trying it out
+
+First, double check that you have the right files in the right places:
+
+```sh
+borderify/
+    icons/
+        border-48.png
+    borderify.js
+    manifest.json
+```
+
+#### Installing
+
+In Firefox: Open the [about:debugging](https://firefox-source-docs.mozilla.org/devtools-user/about_colon_debugging/index.html) page, click the This Firefox option, click the Load Temporary Add-on button, then select any file in your extension's directory.
+
+- Add this to the Address bar in the browser: about:debugging#/runtime/this-firefox
+- Click `Load Temporary Add-on...`
+- Select the extension directory
+
+The extension now installs, and remains installed until you restart Firefox.
+
+Alternatively, you can run the extension from the command line using the [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) tool.
+
+#### Testing
+
+**Note**: By default [extensions don't work in private browsing](https://support.mozilla.org/en-US/kb/extensions-private-browsing). If you want to test this extension in private browsing open "`about:addons`", click on the extension, and select the Allow radio button for Run in Private Windows.
+
+Now visit a page under "`https://www.mozilla.org/en-US/`", and you should see the red border round the page.
+
+Note: Don't try it on "`addons.mozilla.org`", though! Content scripts are currently blocked on that domain.
+
+Try experimenting a bit. Edit the content script to change the color of the border, or do something else to the page content. Save the content script, then reload the extension's files by clicking the Reload button in "`about:debugging`". You can see the changes right away.
+
+- [Learn more about loading extensions](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/)
