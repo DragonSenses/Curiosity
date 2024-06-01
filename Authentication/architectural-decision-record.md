@@ -1860,9 +1860,9 @@ app.post('/logout', function(req, res, next){
 });
 ```
 
-### Level 6: OAuth - Open Authorization
+# Level 6: OAuth - Open Authorization
 
-#### What is **OAuth**?
+## What is **OAuth**?
 
 - **OAuth (Open Authorization)** is an open standard for token based authorization
 - **OAuth (Open Authorization)** is an open standard for access delegation, commonly used as a way for internet users to grant websites or applications access to their information on other websites but without giving them the passwords. [Source: Wikipedia](https://en.wikipedia.org/wiki/OAuth)
@@ -1880,7 +1880,7 @@ app.post('/logout', function(req, res, next){
 
 In summary, OAuth provides a secure way for users to share their account information with third-party services, enhancing privacy and security while allowing seamless integration between different platforms.
 
-#### Why **OAuth**?
+### Why **OAuth**?
 
 **OAuth** allows us to access specific information on third-party websites without sharing our passwords directly. By delegating password management to these third-party companies, OAuth enhances security. As a result, our liability decreases when our users' sensitive data is exposed.
 
@@ -1908,7 +1908,7 @@ Revoke Access
 - For instance, if a user authenticates with Google, they should be able to visit their Google account settings and **deauthorize** the access they previously granted to your application or website. 
 - This way, users don't need to navigate to your website specifically to manage access permissions, making the process more straightforward and user-friendly.
 
-#### Steps to integrate OAuth in app
+### Steps to integrate OAuth in app
 
 1. **Application Setup and Registration:**
    - Begin by setting up your application in the respective third-party developer console (e.g., Google, Facebook, GitHub).
@@ -1966,7 +1966,7 @@ To recap:
 
 Remember to consult the specific documentation for the third-party service you're integrating with, as each service may have unique requirements and endpoints.
 
-#### Use passport-google-oauth20
+## Use passport-google-oauth20
 
 feat: Add passport strategy for Google OAuth 2.0
 
@@ -1990,7 +1990,7 @@ The Google authentication strategy authenticates users using a Google account an
 
 Let's implement these in our app.
 
-#### **Create an application in Google Developers Console**
+## **Create an application in Google Developers Console**
 
 - https://console.developers.google.com/
 - In your Google account, create a project named "**Secret** and click **CREATE**.
@@ -2031,9 +2031,9 @@ Finalize the app registration.
 
 Review the summary and click **Back to Dashboard.**
 
-#### Create API Credentials
+## Create API Credentials
 
-Back in the Googlee Developers Console, click **Credentials** in the left pane.
+Back in the Google Developers Console, click **Credentials** in the left pane.
 
 - Click **+ Create Credentials**
 - Select **OAuth client ID**
