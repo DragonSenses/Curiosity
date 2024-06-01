@@ -2030,3 +2030,30 @@ Add **Test Users** page.
 Finalize the app registration. 
 
 Review the summary and click **Back to Dashboard.**
+
+#### Create API Credentials
+
+Back in the Googlee Developers Console, click **Credentials** in the left pane.
+
+- Click **+ Create Credentials**
+- Select **OAuth client ID**
+- Select **Web application** for **Application type**
+- Set the **Name** to **Secrets**
+
+Now we need to set up the domains of the URIs. There are two categories:
+1. **Authorized JavaScript origins**
+  - Add the URI `http://localhost:3000` to JavaScript origins
+2. **Authorized redirect URIs**
+  - The redirect URI is the route on our server when Google has authenticated our user to return to so that we can locally authenticate them
+  - Add the URI `http://localhost:3000/auth/google/secrets`
+
+Now click **Create** to create the OAuth client.
+
+We should get two values, **OAuth Client ID** and **OAuth Client Secret**.
+
+Add API Credentials to `.env`
+
+```.env
+GOOGLE_CLIENT_ID=YOUR_CLIENT_ID_STRING
+GOOGLE_CLIENT_SECRET=YOUR_CLIENT_SECRET_STRING
+```
