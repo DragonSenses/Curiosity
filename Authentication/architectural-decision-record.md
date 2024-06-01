@@ -1972,13 +1972,13 @@ feat: Add passport strategy for Google OAuth 2.0
 
 In passport.js, we select the strategy [passport-google-oatuh20](https://www.passportjs.org/packages/passport-google-oauth20/).
 
-1. Install
+**Install**
 
 ```sh
 npm install passport-google-oauth20
 ```
 
-2. Usage
+**Usage**
 
 Create an Application
 
@@ -1987,3 +1987,46 @@ Before using `passport-google-oauth20`, you must register an application with Go
 Configure Strategy
 
 The Google authentication strategy authenticates users using a Google account and OAuth 2.0 tokens. The client ID and secret obtained when creating an application are supplied as options when creating the strategy. The strategy also requires a `verify` callback, which receives the access token and optional refresh token, as well as `profile` which contains the authenticated user's Google profile. The `verify` callback must call `cb` providing a user to complete authentication.
+
+Let's implement these in our app.
+
+#### **Create an application in Google Developers Console**
+
+- https://console.developers.google.com/
+- In your Google account, create a project named "**Secret** and click **CREATE**.
+- Back in the dashboard, after it is finished loading click on the `OAuth consent screen` on the left pane.
+  - For now click **External**, for **User Type**. Then click **CREATE** to make the user consent screen.
+  
+Now in the **OAuth consent screen**, we need to configure the app information.
+
+- **App name**: Secrets
+- **User support email**: add your email
+- **App logo** (Optional)
+- **App domain**: Leave these blank for now.
+- Save and continue 
+
+Now we proceed to the **Scopes** screen.
+
+- Add a scope
+- All we need are the default ones that do not require an API to call:
+  - email, `./auth/userinfo.email`
+  - profile, `./auth/userinfo.profile`
+  - openid, `openid`
+- Finally, add the scopes
+- To add more scopes to the screen you must find and enable the API in the [Google API Library](https://console.cloud.google.com/apis/library?project=secret-425104&supportedpurview=project)
+- Additional scopes allow developers to retrieve more data from the user such as youtube analytics, map location data and more through the use of different APIs.
+- The user will not have to go through a permissions page when we only take the email, profile and openid
+- Save and continue
+
+Add **Test Users** page.
+
+- Add test users to test the OAuth application
+- Press **+ Add Users** button
+- Input an email address in the input field
+- Click **Add**
+- Close the add user pane
+- Save and continue
+
+Finalize the app registration. 
+
+Review the summary and click **Back to Dashboard.**
