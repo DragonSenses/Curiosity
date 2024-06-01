@@ -1972,12 +1972,6 @@ feat: Add passport strategy for Google OAuth 2.0
 
 In passport.js, we select the strategy [passport-google-oatuh20](https://www.passportjs.org/packages/passport-google-oauth20/).
 
-**Install**
-
-```sh
-npm install passport-google-oauth20
-```
-
 **Usage**
 
 Create an Application
@@ -2057,3 +2051,66 @@ Add API Credentials to `.env`
 GOOGLE_CLIENT_ID=YOUR_CLIENT_ID_STRING
 GOOGLE_CLIENT_SECRET=YOUR_CLIENT_SECRET_STRING
 ```
+
+## Configure strategy to auth app
+
+Now back to our authentication app, let's ensure we have the package `passport-google-oauth20`.
+
+**Install**
+
+```sh
+npm install passport-google-oauth20
+```
+
+Now use the module to authenticate with Google using the OAuth 2.0 API. It takes two parts: the `GoogleStrategy` import and configuration of the google strategy with passport.
+
+```javascript
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://www.example.com/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+```
+
+For increased clarity we can comment the code to dissect the two main parts of the code here.
+
+```js
+// Import the Google OAuth 2.0 authentication strategy from the 'passport-google-oauth20' package
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+// Configure Passport to use the Google OAuth 2.0 strategy
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID, // Your Google API client ID
+    clientSecret: GOOGLE_CLIENT_SECRET, // Your Google API client secret
+    callbackURL: "http://www.example.com/auth/google/callback" // The callback URL after successful authentication
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    // This function is called when a user successfully authenticates with Google
+    // 'accessToken' and 'refreshToken' are tokens provided by Google
+    // 'profile' contains information about the authenticated user (e.g., ID, email, name)
+    // 'cb' is a callback function to handle any errors and return the user object
+
+    // In this example, we're using a hypothetical 'User' model to find or create a user based on their Google ID
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user); // Return the user object (or an error) to Passport
+    });
+  }
+));
+```
+
+Now let's do it for our app.
+
+1. Import the Google OAuth 2.0 strategy
+
+```js
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+```
+
