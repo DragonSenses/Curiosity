@@ -123,3 +123,40 @@ Note: Don't try it on "`addons.mozilla.org`", though! Content scripts are curren
 Try experimenting a bit. Edit the content script to change the color of the border, or do something else to the page content. Save the content script, then reload the extension's files by clicking the Reload button in "`about:debugging`". You can see the changes right away.
 
 - [Learn more about loading extensions](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/)
+
+### Packaging and publishing
+
+For other people to use your extension, you need to package it and submit it to Mozilla for signing. To learn more about that, see ["Publishing your extension"](https://extensionworkshop.com/documentation/publish/package-your-extension/).
+
+### What's next?
+
+Now you've had an introduction to the process of developing a WebExtension for Firefox:
+    - [write a more complex extension](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_second_WebExtension)
+    - [read more about the anatomy of an extension](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension)
+    - [explore the extension examples](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Examples)
+    - [find out what you need to develop, test, and publish your extension](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/What_next)
+    - [take your learning further](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/What_next#continue_your_learning_experience).
+
+## Second extension
+
+- [Second firefox extension walkthrough](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_second_WebExtension)
+
+The extension adds a new button to the Firefox toolbar. When the user clicks the button, we display a popup enabling them to choose an animal. Once they choose an animal, we'll replace the current page's content with a picture of the chosen animal.
+
+To implement this, we will:
+
+  - **define a [browser action](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Toolbar_button), which is a button attached to the Firefox toolbar**. For the button we'll supply:
+    - an icon, called "beasts-32.png"
+    - a popup to open when the button is pressed. The popup will include HTML, CSS, and JavaScript.
+  - **define an icon for the extension**, called "beasts-48.png". This will be shown in the Add-ons Manager.
+  - **write a content script, "beastify.js" that will be injected into web pages.** This is the code that will actually modify the pages.
+  - **package some images of the animals, to replace images in the web page**. We'll make the images "web accessible resources" so the web page can refer to them.
+
+It's a simple extension, but shows many of the basic concepts of the WebExtensions API:
+
+
+  - adding a button to the toolbar
+  - defining a popup panel using HTML, CSS, and JavaScript
+  - injecting content scripts into web pages
+  - communicating between content scripts and the rest of the extension
+  - packaging resources with your extension that can be used by web pages
