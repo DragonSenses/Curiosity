@@ -231,3 +231,45 @@ If you choose to supply your own icon, It should be 48x48 pixels. You could also
   "96": "icons/beasts-96.png"
 }
 ```
+
+If you don't supply a popup, then a click event is dispatched to your extension when the user clicks the button. If you do supply a popup, the click event is not dispatched, but instead, the popup is opened. We want a popup, so let's create that next.
+
+#### The popup
+
+The function of the popup is to enable the user to choose one of three beasts.
+
+Create a new directory called "popup" under the extension root. This is where we'll keep the code for the popup. The popup will consist of three files:
+
+  - `choose_beast.html` defines the content of the panel
+  - `choose_beast.css` styles the content
+  - `choose_beast.js` handles the user's choice by running a content script in the active tab
+
+#### choose_beast.html
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="choose_beast.css" />
+  </head>
+
+  <body>
+    <div id="popup-content">
+      <button>Frog</button>
+      <button>Turtle</button>
+      <button>Snake</button>
+      <button type="reset">Reset</button>
+    </div>
+    <div id="error-content" class="hidden">
+      <p>Can't beastify this web page.</p>
+      <p>Try a different page.</p>
+    </div>
+    <script src="choose_beast.js"></script>
+  </body>
+</html>
+```
+
+We have a `<div>` element with an ID of `"popup-content" `that contains a button for each animal choice and a reset button. We have another `<div>` with an ID of `"error-content"` and a class `"hidden"`. We'll use that in case there's a problem initializing the popup.
+
+Note that we include the CSS and JS files from this file, just like a web page.
