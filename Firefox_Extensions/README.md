@@ -273,3 +273,41 @@ Create a new directory called "popup" under the extension root. This is where we
 We have a `<div>` element with an ID of `"popup-content" `that contains a button for each animal choice and a reset button. We have another `<div>` with an ID of `"error-content"` and a class `"hidden"`. We'll use that in case there's a problem initializing the popup.
 
 Note that we include the CSS and JS files from this file, just like a web page.
+
+#### choose_beast.css
+
+The CSS fixes the size of the popup, ensures that the three choices fill the space, and gives them some basic styling. It also hides elements with `class="hidden"`: this means that our `<div id="error-content"...` element will be hidden by default.
+
+```css
+html,
+body {
+  width: 100px;
+}
+
+.hidden {
+  display: none;
+}
+
+button {
+  border: none;
+  width: 100%;
+  margin: 3% auto;
+  padding: 4px;
+  text-align: center;
+  font-size: 1.5em;
+  cursor: pointer;
+  background-color: #e5f2f2;
+}
+
+button:hover {
+  background-color: #cff2f2;
+}
+
+button[type="reset"] {
+  background-color: #fbfbc9;
+}
+
+button[type="reset"]:hover {
+  background-color: #eaea9d;
+}
+```
