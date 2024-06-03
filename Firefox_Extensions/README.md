@@ -152,11 +152,67 @@ To implement this, we will:
   - **write a content script, "beastify.js" that will be injected into web pages.** This is the code that will actually modify the pages.
   - **package some images of the animals, to replace images in the web page**. We'll make the images "web accessible resources" so the web page can refer to them.
 
-It's a simple extension, but shows many of the basic concepts of the WebExtensions API:
+You could visualize the overall structure of the extension like this:
 
+![Structure of beastify extension](/Firefox_Extensions\beastify\beastify.jpg)
+
+It's a simple extension, but shows many of the basic concepts of the WebExtensions API:
 
   - adding a button to the toolbar
   - defining a popup panel using HTML, CSS, and JavaScript
   - injecting content scripts into web pages
   - communicating between content scripts and the rest of the extension
   - packaging resources with your extension that can be used by web pages
+
+### Writing the extension
+
+Create a new directory and navigate to it:
+
+```sh
+mkdir beastify
+cd beastify
+```
+
+#### manifest.json
+
+Now create a new file called "manifest.json", and give it the following contents:
+
+```json
+{
+  "manifest_version": 2,
+  "name": "Beastify",
+  "version": "1.0",
+
+  "description": "Adds a browser action icon to the toolbar. Click the button to choose a beast. The active tab's body content is then replaced with a picture of the chosen beast. See https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Examples#beastify",
+  "homepage_url": "https://github.com/mdn/webextensions-examples/tree/main/beastify",
+  "icons": {
+    "48": "icons/beasts-48.png"
+  },
+
+  "permissions": ["activeTab"],
+
+  "browser_action": {
+    "default_icon": "icons/beasts-32.png",
+    "default_title": "Beastify",
+    "default_popup": "popup/choose_beast.html"
+  },
+
+  "web_accessible_resources": [
+    "beasts/frog.jpg",
+    "beasts/turtle.jpg",
+    "beasts/snake.jpg"
+  ]
+}
+```
+
+- The first three keys: [`manifest_version`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/manifest_version), [`name`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/name), and [`version`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/version), are mandatory and contain basic metadata for the extension.
+- [`description`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/description) and [`homepage_url`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/homepage_url) are optional, but recommended: they provide useful information about the extension.
+- [`icons`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/icons) is optional, but recommended: it allows you to specify an icon for the extension, that will be shown in the Add-ons Manager.
+- [`permissions`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions) lists permissions the extension needs. We're just asking for the [`activeTab` permission](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#activetab_permission) here.
+- [`browser_action`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_action) specifies the toolbar button. We're supplying three pieces of information here:
+  - `default_icon` is mandatory, and points to the icon for the button
+  - `default_title` is optional, and will be shown in a tooltip
+  - `default_popup` is used if you want a popup to be shown when the user clicks the button. We do, so we've included this key and made it point to an HTML file included with the extension.
+- [`web_accessible_resources`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/web_accessible_resources) lists files that we want to make accessible to web pages. Since the extension replaces the content in the page with images we've packaged with the extension, we need to make these images accessible to the page.
+
+Note that all paths given are relative to manifest.json itself.
