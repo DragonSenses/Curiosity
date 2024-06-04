@@ -495,3 +495,10 @@ Create a new directory, under the extension root, called "content_scripts" and c
 })();
 ```
 
+The first thing the content script does is to check for a global variable `window.hasRun`: if it's set the script returns early, otherwise it sets `window.hasRun` and continues. The reason we do this is that every time the user opens the popup, the popup executes a content script in the active tab, so we could have multiple instances of the script running in a single tab. If this happens, we need to make sure that only the first instance is actually going to do anything.
+
+After that, the place to start is line 40, where the content script listens for messages from the popup, using the [`browser.runtime.onMessage`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) API. We saw above that the popup script can send two different sorts of messages: "beastify" and "reset".
+
+  - if the message is "beastify", we expect it to contain a URL pointing to a beast image. We remove any beasts that might have been added by previous "beastify" calls, then construct and append an [`<img>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) element whose `src` attribute is set to the beast URL.
+  - if the message is "reset", we just remove any beasts that might have been added.
+
