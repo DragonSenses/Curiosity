@@ -423,3 +423,75 @@ browser.tabs
 The place to start here is line 99. The popup script executes a content script in the active tab as soon as the popup is loaded, using the [`browser.tabs.executeScript()`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/executeScript) API. If executing the content script is successful, then the content script will stay loaded in the page until the tab is closed or the user navigates to a different page.
 
 A common reason the `browser.tabs.executeScript()` call might fail is that you can't execute content scripts in all pages. For example, you can't execute them in privileged browser pages like about:debugging, and you can't execute them on pages in the [addons.mozilla.org](https://addons.mozilla.org/) domain. If it does fail, `reportExecuteScriptError()` will hide the `<div id="popup-content">` element, show the `<div id="error-content"...` element, and log an error to the [console](https://extensionworkshop.com/documentation/develop/debugging/).
+
+If executing the content script is successful, we call `listenForClicks()`. This listens for clicks on the popup.
+
+  - If the click was not on a button in the popup, we ignore it and do nothing.
+  - If the click was on a button with `type="reset"`, then we call `reset()`.
+  - If the click was on any other button (i.e. the beast buttons), then we call `beastify()`.
+
+The `beastify()` function does three things:
+
+  - map the button clicked to a URL pointing to an image of a particular beast
+  - hide the page's whole content by injecting some CSS, using the [`browser.tabs.insertCSS()`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/insertCSS) API
+  - send a "beastify" message to the content script using the [`browser.tabs.sendMessage()`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/sendMessage) API, asking it to beastify the page, and passing it the URL to the beast image.
+
+The `reset()` function essentially undoes a beastify:
+  
+  - remove the CSS we added, using the [`browser.tabs.removeCSS()`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/removeCSS) API
+  - send a "reset" message to the content script asking it to reset the page.
+
+#### The content script
+
+Create a new directory, under the extension root, called "content_scripts" and create a new file in it called "beastify.js", with the following contents:
+
+```js
+(() => {
+  /**
+   * Check and set a global guard variable.
+   * If this content script is injected into the same page again,
+   * it will do nothing next time.
+   */
+  if (window.hasRun) {
+    return;
+  }
+  window.hasRun = true;
+
+  /**
+   * Given a URL to a beast image, remove all existing beasts, then
+   * create and style an IMG node pointing to
+   * that image, then insert the node into the document.
+   */
+  function insertBeast(beastURL) {
+    removeExistingBeasts();
+    const beastImage = document.createElement("img");
+    beastImage.setAttribute("src", beastURL);
+    beastImage.style.height = "100vh";
+    beastImage.className = "beastify-image";
+    document.body.appendChild(beastImage);
+  }
+
+  /**
+   * Remove every beast from the page.
+   */
+  function removeExistingBeasts() {
+    const existingBeasts = document.querySelectorAll(".beastify-image");
+    for (const beast of existingBeasts) {
+      beast.remove();
+    }
+  }
+
+  /**
+   * Listen for messages from the background script.
+   * Call "insertBeast()" or "removeExistingBeasts()".
+   */
+  browser.runtime.onMessage.addListener((message) => {
+    if (message.command === "beastify") {
+      insertBeast(message.beastURL);
+    } else if (message.command === "reset") {
+      removeExistingBeasts();
+    }
+  });
+})();
+```
+
