@@ -1074,3 +1074,45 @@ Click the Tip button located on the navigation bar to open the extension tip.
 - [About extension service workers](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers)
 - [The extension service worker lifecycle](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/lifecycle)
 - [Events in service workers](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/events)
+
+## Manage tabs
+
+Build your first tabs manager.
+
+### Overview
+
+This tutorial builds a tabs manager to organize your Chrome extension and Chrome Web store documentation tabs.
+
+In this guide, we're going to explain how to do the following:
+
+- Create an extension popup using the [Action](https://developer.chrome.com/docs/extensions/reference/api/action) API.
+- Query for specific tabs using the [Tabs](https://developer.chrome.com/docs/extensions/reference/api/tabs) API.
+- Preserve user privacy through narrow host permissions.
+- Change the focus of the tab.
+- Move tabs to the same window and group them.
+- Rename tab groups using the [TabGroups](https://developer.chrome.com/docs/extensions/reference/api/tabGroups) API.
+
+### Build the extension
+
+To start, create a new directory called `tabs-manager` to hold the extension's files.
+
+#### 1. Add the extension data and icons
+
+Create a file called `manifest.json` and add the following code:
+
+```json
+{
+  "manifest_version": 3,
+  "name": "Tab Manager for Chrome Dev Docs",
+  "version": "1.0",
+  "icons": {
+    "16": "images/icon-16.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  }
+}
+```
+
+Create an `images` folder then [download the icons](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.tabs-manager/images) into it.
+
