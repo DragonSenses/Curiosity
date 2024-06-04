@@ -547,3 +547,51 @@ You can automate the temporary installation step by using the [web-ext](https://
 cd beastify
 web-ext run
 ```
+
+# Anatomy of an extension
+
+An extension consists of a collection of files, packaged for distribution and installation. In this article, we will quickly go through the files that might be present in an extension.
+
+## manifest.json
+
+This is the only file that must be present in every extension. It contains basic metadata such as its name, version, and the permissions it requires. It also provides pointers to other files in the extension.
+
+The manifest can also contain pointers to several other types of files:
+
+
+Background scripts
+
+    Scripts that respond to browser events.
+
+Icons
+
+    For the extension and any buttons it might define.
+
+Sidebars, popups, and options pages
+
+    HTML documents that provide content for various user interface components.
+
+Content scripts
+
+    JavaScript included with your extension, that you will inject into web pages.
+
+Web-accessible resources
+
+    Make packaged content accessible to web pages and content scripts.
+
+![Web extension anatomy](webextension-anatomy.png)
+
+See the [`manifest.json`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json) reference page for all the details.
+
+Along with those already listed in the manifest, an extension may also include additional [Extension pages](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Extension_pages) and supporting files.
+
+## Background scripts
+
+Extensions often need to respond to events that occur in the browser independently of the lifetime of any particular web page or browser window. That is what background scripts are for.
+
+Background scripts can be persistent or non-persistent. Persistent background scripts load as soon as the extension loads and stay loaded until the extension is disabled or uninstalled. This background script behavior is only available in Manifest V2. Non-persistent background scripts load when needed to respond to an event and unload when they become idle. This background script behavior is an option in Manifest V2 and the only background script behavior available in Manifest V3.
+
+You can use any of the [WebExtension APIs](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API) in the script, if you have requested the necessary [permissions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions).
+
+See the [background scripts](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Background_scripts) article to learn more.
+
