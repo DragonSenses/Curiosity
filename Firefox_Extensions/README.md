@@ -507,3 +507,43 @@ After that, the place to start is line 40, where the content script listens for 
 Finally, we need to include the images of the beasts.
 
 Create a new directory called "beasts", and add the three images in that directory, with the appropriate names. You can get the images from [the GitHub repository](https://github.com/mdn/webextensions-examples/tree/main/beastify/beasts), or from here.
+
+### Testing it out
+
+First, double check that you have the right files in the right places:
+
+```sh
+beastify/
+
+    beasts/
+        frog.jpg
+        snake.jpg
+        turtle.jpg
+
+    content_scripts/
+        beastify.js
+
+    icons/
+        beasts-32.png
+        beasts-48.png
+
+    popup/
+        choose_beast.css
+        choose_beast.html
+        choose_beast.js
+
+    manifest.json
+```
+
+Now load the extension as a temporary add-on. Open "about:debugging" in Firefox, click "Load Temporary Add-on", and select your **manifest.json** file. You should then see the extension's icon appear in the Firefox toolbar.
+
+Open a web page, click the icon, select a beast, and see the web page change.
+
+#### Developing from the command line
+
+You can automate the temporary installation step by using the [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) tool. Try this:
+
+```sh
+cd beastify
+web-ext run
+```
