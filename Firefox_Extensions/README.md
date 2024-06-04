@@ -502,3 +502,8 @@ After that, the place to start is line 40, where the content script listens for 
   - if the message is "beastify", we expect it to contain a URL pointing to a beast image. We remove any beasts that might have been added by previous "beastify" calls, then construct and append an [`<img>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) element whose `src` attribute is set to the beast URL.
   - if the message is "reset", we just remove any beasts that might have been added.
 
+#### The beasts
+
+Finally, we need to include the images of the beasts.
+
+Create a new directory called "beasts", and add the three images in that directory, with the appropriate names. You can get the images from [the GitHub repository](https://github.com/mdn/webextensions-examples/tree/main/beastify/beasts), or from here.
