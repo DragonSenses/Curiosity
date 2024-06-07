@@ -1195,3 +1195,21 @@ p {
   margin: 0;
 }
 ```
+
+#### 3. Manage the tabs
+
+The [Tabs API](https://developer.chrome.com/docs/extensions/reference/api/tabs) allows an extension to create, query, modify, and rearrange tabs in the browser.
+
+##### **Query the tabs**
+
+You can retrieve the tabs from specific URLs using the [`tabs.query()`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query) method. Create a `popup.js` file and add the following code:
+
+`popup.js`
+```javascript
+const tabs = await chrome.tabs.query({
+  url: [
+    "https://developer.chrome.com/docs/webstore/*",
+    "https://developer.chrome.com/docs/extensions/*",
+  ]
+});
+```
