@@ -1135,6 +1135,7 @@ A popup is similar to a web page with one exception: it can't run inline JavaScr
 
 feat: Create content to display within popup
 
+`popup.html`
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -1169,6 +1170,7 @@ Next, you'll style the popup. Create a `popup.css` file and add the following co
 
 style: Improve layout and appearance of popup
 
+`popup.css`
 ```css
 body {
   width: 20rem;
@@ -1200,9 +1202,45 @@ p {
 
 The [Tabs API](https://developer.chrome.com/docs/extensions/reference/api/tabs) allows an extension to create, query, modify, and rearrange tabs in the browser.
 
+feat: Request title and URL using Tabs API
+
+Specify narrow host permissions for the tabs-manager extension. We only need access to sensitive properties (`title` and `URL`) of tabs on a specific site. This approach ensures user privacy by granting elevated permissions only where necessary.
+
+##### **Request permission**
+
+Many methods in the Tabs API can be used without requesting any permission. However, we need access to the `title` and the `URL` of the tabs; these sensitive properties require permission. We could request `"tabs"` permission, but this would give access to the sensitive properties of **all** tabs. Since we are only managing tabs of a specific site, we will request narrow host permissions.
+
+Narrow [host permissions](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns) allow us to protect user privacy by granting elevated permission to **specific sites**. This will grant access to the `title`, and `URL` properties, as well as additional capabilities. Add the highlighted code to the `manifest.json` file:
+
+feat: Specify host permissions in manifest
+
+```json
+{
+  "host_permissions": [
+    "https://developer.chrome.com/*"
+  ]
+}
+```
+
+##### **What are the main differences between the tabs permission and host permissions?**
+
+Both the `"tabs"` permission and host permissions have drawbacks.
+
+The `"tabs"` permission grants an extension the ability to read sensitive data on all tabs. Over time, this information could be used to collect a user's browsing history. As such, if you request this permission Chrome will display the following warning message at install time:
+
+![Warning message of extension requestion tabs permission](./img/tabs-permission-warning.png)
+
+Host permissions allow an extension to read and query a matching tab's sensitive properties, plus inject scripts on these tabs. Users will see the following warning message at install time:
+
+![Warning message of extension requestion host permissions](./img/host-permission-warning.png)
+
+These warning can be alarming for users. For a better onboarding experience, we recommend implementing [optional permissions](https://developer.chrome.com/docs/extensions/reference/api/permissions).
+
 ##### **Query the tabs**
 
 You can retrieve the tabs from specific URLs using the [`tabs.query()`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query) method. Create a `popup.js` file and add the following code:
+
+feat: Query the tabs from specific URLs
 
 `popup.js`
 ```javascript
