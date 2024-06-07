@@ -1164,3 +1164,34 @@ feat: Create content to display within popup
 ```
 
 **Tip**: You can use [top level await](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/await#top_level_await) by adding `type="module"` to the script tag.
+
+Next, you'll style the popup. Create a `popup.css` file and add the following code:
+
+style: Improve layout and appearance of popup
+
+```css
+body {
+  width: 20rem;
+}
+
+ul {
+  list-style-type: none;
+  padding-inline-start: 0;
+  margin: 1rem 0;
+}
+
+li {
+  padding: 0.25rem;
+}
+li:nth-child(odd) {
+  background: #80808030;
+}
+li:nth-child(even) {
+  background: #ffffff;
+}
+
+h3,
+p {
+  margin: 0;
+}
+```
