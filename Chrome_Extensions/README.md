@@ -1116,3 +1116,51 @@ Create a file called `manifest.json` and add the following code:
 
 Create an `images` folder then [download the icons](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.tabs-manager/images) into it.
 
+#### 2. Create and style the popup
+
+The [Action](https://developer.chrome.com/docs/extensions/reference/api/action) API controls the extension action (toolbar icon). When the user clicks on the extension action, it will either run some code or open a popup, like in this case. Start by declaring the popup in the `manifest.json`:
+
+
+feat: Declare popup in tabs-manager manifest
+
+```json
+{
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
+```
+
+A popup is similar to a web page with one exception: it can't run inline JavaScript. Create a `popup.html` file and add the following code:
+
+feat: Create content to display within popup
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body>
+    <template id="li_template">
+      <li>
+        <a>
+          <h3 class="title">Tab Title</h3>
+          <p class="pathname">Tab Pathname</p>
+        </a>
+      </li>
+    </template>
+
+    <h1>Google Dev Docs</h1>
+    <button>Group Tabs</button>
+    <ul></ul>
+
+    <script src="./popup.js" type="module"></script>
+  </body>
+</html>
+```
+
+**Tip**: You can use [top level await](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/await#top_level_await) by adding `type="module"` to the script tag.
