@@ -1251,3 +1251,40 @@ const tabs = await chrome.tabs.query({
   ]
 });
 ```
+
+**Can I use Chrome APIs directly in the popup?**
+
+A popup and other extension pages can call any [Chrome API](https://developer.chrome.com/docs/extensions/reference) because they are served from the chrome schema. For example `chrome-extension://EXTENSION_ID/popup.html`.
+
+##### **Focus on a tab**
+
+First, the extension will sort tab names (the titles of the contained HTML pages) alphabetically. Then, when a list item is clicked, it will focus on that tab using `tabs.update()` and bring the window to the front using `windows.update()`. Add the following code to the `popup.js` file:
+
+feat: Implement tab sorting and display logic
+
+feat(tabs-manager): Focus on a tab when clicked
+
+```javascript
+const collator = new Intl.Collator();
+tabs.sort((a, b) => collator.compare(a.title, b.title));
+
+const template = document.getElementById("li_template");
+const elements = new Set();
+for (const tab of tabs) {
+  const element = template.content.firstElementChild.cloneNode(true);
+
+  const title = tab.title.split("-")[0].trim();
+  const pathname = new URL(tab.url).pathname.slice("/docs".length);
+
+  element.querySelector(".title").textContent = title;
+  element.querySelector(".pathname").textContent = pathname;
+  element.querySelector("a").addEventListener("click", async () => {
+    // need to focus window as well as the active tab
+    await chrome.tabs.update(tab.id, { active: true });
+    await chrome.windows.update(tab.windowId, { focused: true });
+  });
+
+  elements.add(element);
+}
+document.querySelector("ul").append(...elements);
+```
