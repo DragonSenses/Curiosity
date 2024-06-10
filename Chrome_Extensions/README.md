@@ -1264,6 +1264,7 @@ feat: Implement tab sorting and display logic
 
 feat(tabs-manager): Focus on a tab when clicked
 
+`tabs-manager\popup.js`
 ```javascript
 const collator = new Intl.Collator();
 tabs.sort((a, b) => collator.compare(a.title, b.title));
@@ -1286,5 +1287,61 @@ for (const tab of tabs) {
 
   elements.add(element);
 }
+document.querySelector("ul").append(...elements);
+```
+  **Interesting JavaScript used in this code**
+    - The [Collator](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator) used to sort the tabs array by the user's preferred language.
+    - The [template tag](https://web.dev/webcomponents-template/) used to define an HTML element that can be cloned instead of using `document.createElement()` to create each item.
+    - The [URL constructor](https://developer.mozilla.org/docs/Web/API/URL/URL) used to create and parse URLs.
+    - The [Spread syntax](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Spread_syntax) used to convert the Set of elements into arguments in the `append()` call.
+
+docs: Add comments to tab manipulation
+
+- Sort tabs alphabetically by title
+- Extract title and pathname information
+- Create a list of elements for display
+
+`tabs-manager\popup.js`
+```js
+// Create a collator for string comparison
+const collator = new Intl.Collator();
+
+// Sort the tabs array based on tab titles
+tabs.sort((a, b) => collator.compare(a.title, b.title));
+
+// Get the template element with the ID "li_template"
+const template = document.getElementById("li_template");
+
+// Initialize a Set to store cloned elements
+const elements = new Set();
+
+// Iterate through each tab
+for (const tab of tabs) {
+  // Clone the first child of the template content
+  const element = template.content.firstElementChild.cloneNode(true);
+
+  // Extract the title and remove any trailing hyphens
+  const title = tab.title.split("-")[0].trim();
+
+  // Extract the pathname from the tab URL
+  const pathname = new URL(tab.url).pathname.slice("/docs".length);
+
+  // Set the text content for the title and pathname elements
+  element.querySelector(".title").textContent = title;
+  element.querySelector(".pathname").textContent = pathname;
+
+  // Add a click event listener to the anchor tag
+  element.querySelector("a").addEventListener("click", async () => {
+    // Need to focus window as well as the active tab
+    // Update the active tab and focused window
+    await chrome.tabs.update(tab.id, { active: true });
+    await chrome.windows.update(tab.windowId, { focused: true });
+  });
+
+  // Add the cloned element to the Set
+  elements.add(element);
+}
+
+// Append all elements from the Set to the <ul> element
 document.querySelector("ul").append(...elements);
 ```
