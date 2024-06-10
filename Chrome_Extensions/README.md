@@ -1345,3 +1345,21 @@ for (const tab of tabs) {
 // Append all elements from the Set to the <ul> element
 document.querySelector("ul").append(...elements);
 ```
+
+##### **Group the tabs**
+
+The [TabGroups](https://developer.chrome.com/docs/extensions/reference/api/tabGroups) API allows the extension to name the group and choose a background color. Add the `"tabGroups"` permission to the manifest by adding the highlighted code:
+
+feat: Add tabGroups permission to manifest
+
+- Enable tab grouping functionality
+- Specify necessary permissions for tab management
+
+`manifest.json`
+```json
+{
+  "permissions": [
+    "tabGroups"
+  ]
+}
+```
