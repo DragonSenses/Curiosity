@@ -12,6 +12,8 @@ import passportLocalMongoose from 'passport-local-mongoose';
 // Import the Google OAuth 2.0 authentication strategy
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
+import findOrCreate from 'mongoose-findorcreate';
+
 /* Constant variables */
 const port = 3000;
 const app = express();
@@ -43,6 +45,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
 
 // Create a user model from the user schema
 const User = new mongoose.model("User", userSchema);
