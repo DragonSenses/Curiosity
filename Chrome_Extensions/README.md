@@ -1384,3 +1384,41 @@ button.addEventListener("click", async () => {
   }
 });
 ```
+
+### Test that it works
+
+Verify that the file structure of your project matches the following directory tree:
+
+```sh
+-/tabs-manager
+  |- manifest.json
+  |- popup.css
+  |- popup.html
+  |- popup.js
+  |- /images
+    |- icon-16.png
+    |- icon-32.png
+    |- icon-48.png
+    |- icon-128.png
+```
+
+#### **Load your extension locally**
+
+To load an unpacked extension in developer mode, follow the steps in [Development Basics](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
+
+#### Test the extension
+
+**Open a few documentation pages**
+
+1. Open the following docs in different windows:
+
+  - [Design the user interface](https://developer.chrome.com/docs/extensions/develop/ui)
+  - [Discovery on the Chrome Web Store](https://developer.chrome.com/docs/webstore/discovery)
+  - [Extension development overview](https://developer.chrome.com/docs/extensions/develop)
+  - [Manifest file format](https://developer.chrome.com/docs/extensions/reference/manifest)
+  - [Publish in the Chrome Web Store](https://developer.chrome.com/docs/webstore/publish)
+
+2. Click the popup.
+
+3. Click the "Group tabs" button.
+
