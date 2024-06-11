@@ -2172,3 +2172,33 @@ passport.use(new GoogleStrategy({
   }
 ));
 ```
+
+### Issue: Due to Google deprecating Google Plus APIs, need to handle new userinfo endpoint
+
+[passport google oauth2 - fix: handle new userinfo endpoint #51](https://github.com/jaredhanson/passport-google-oauth2/pull/51)
+
+  "Google is deprecating and completely removing the Google Plus APIs early next year. The easiest migration path for users of this module is to provide `userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'`, in the strategy options (use the oauth userinfo endpoint instead of G+). This mostly works in its current state."
+
+To fix, we need to provide `userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',` in the strategy options (use the oauth userinfo endpoint instead of G+).
+
+feat: Use userinfo instead of G+ for user data
+
+fix: Handle new userinfo endpoint in strategy
+
+Add `userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'` to the GoogleStrategy options to use the OAuth userinfo endpoint instead of G+.
+
+```javascript
+// Fix based on PR #51: https://github.com/jaredhanson/passport-google-oauth2/pull/51
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:3000/auth/google/secrets",
+  userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+},
+  function (accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+```
