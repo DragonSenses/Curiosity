@@ -2115,8 +2115,21 @@ Now let's do it for our app.
 
 1. Import the Google OAuth 2.0 strategy
 
+
+For CJS:
+
 ```js
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+```
+
+For ES modules, use ES6 import syntax:
+
+refactor(auth): use ES6 import for GoogleStrategy
+
+Replace the CommonJS require statement with an ES6 import for the GoogleStrategy class from 'passport-google-oauth20'.
+
+```js
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 ```
 
 2. Configure passport with Google OAuth 2.0 strategy
@@ -2127,8 +2140,29 @@ feat: Configure Passport with Google OAuth2.0
 
 ```js
 passport.use(new GoogleStrategy({
-  clientID: GOOGLE_CLIENT_ID,
-  clientSecret: GOOGLE_CLIENT_SECRET,
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://www.example.com/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+```
+
+Now interpolate the relevant variables within the object passed into `GoogleStrategy`.
+
+feat: Configure GoogleStrategy with env variables
+
+- Interpolate the relevant variables (clientID and clientSecret) within the object passed into GoogleStrategy
+- The callbackURL is set to "http://localhost:3000/auth/google/secrets"
+
+```javascript
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: "http://localhost:3000/auth/google/secrets"
 },
   function (accessToken, refreshToken, profile, cb) {
