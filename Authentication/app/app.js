@@ -10,7 +10,7 @@ import passport from 'passport';
 import passportLocalMongoose from 'passport-local-mongoose';
 
 // Import the Google OAuth 2.0 authentication strategy
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 /* Constant variables */
 const port = 3000;
