@@ -1363,3 +1363,24 @@ feat: Add tabGroups permission to manifest
   ]
 }
 ```
+
+In `popup.js`, add the following code to create a button that will group all the tabs using [`tabs.group()`](https://developer.chrome.com/docs/extensions/reference/api/tabGroups) and move them into the current window.
+
+feat(tabs-manager): Add button to group tabs
+
+feat: Add button to group tabs as "DOCS"
+
+- Retrieve tab IDs and create a tab group
+- Update the group title to "DOCS" when the button is clicked
+
+`popup.js`
+```javascript
+const button = document.querySelector("button");
+button.addEventListener("click", async () => {
+  const tabIds = tabs.map(({ id }) => id);
+  if (tabIds.length) {
+    const group = await chrome.tabs.group({ tabIds });
+    await chrome.tabGroups.update(group, { title: "DOCS" });
+  }
+});
+```
