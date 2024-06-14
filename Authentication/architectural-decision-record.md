@@ -2314,3 +2314,48 @@ passport.use(new GoogleStrategy({
   }
 ));
 ```
+
+## Implement OAuth front-end
+
+Currently, there is no means for the user to log in via Google OAuth. It only works for the local authentication route.
+
+Navigate to `/views/register.ejs` and add the following code:
+
+feat: Add Google OAuth sign-up button
+
+`\app\views\register.ejs`
+```html
+<!-- ... -->
+    <!-- Google OAuth sign-up button -->
+    <div class="col-sm-4">
+      <div class="card social-block">
+        <div class="card-body">
+          <a class="btn btn-block" href="/auth/google" role="button">
+            <i class="fab fa-google"></i>
+            Sign Up with Google
+          </a>
+        </div>
+      </div>
+    </div>
+
+```
+
+Similarly, for the login page:
+
+feat: Add Google OAuth sign-in button
+
+`\app\views\login.ejs`
+```html
+<!-- ... -->
+    <!-- Google OAuth sign-in button -->
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+          <a class="btn btn-block" href="/auth/google" role="button">
+            <i class="fab fa-google"></i>
+            Sign In with Google
+          </a>
+        </div>
+      </div>
+    </div>
+```
