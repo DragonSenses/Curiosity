@@ -262,7 +262,7 @@ But we will discuss these in higher levels of security, we we will abstain only 
 
 ## User Database
 
-We are going to setup the database. We will be using MongoDB. Going to store the databse on MongoDB's database service : Atlas.
+We are going to setup the database. We will be using MongoDB. Going to store the database on MongoDB's database service : Atlas.
 
 Make an account if you do not have one, then connect to the Cluster.
 
@@ -1859,6 +1859,17 @@ app.post('/logout', function(req, res, next){
   });
 });
 ```
+
+## Backup version 5 of authentication app
+
+feat: Add v5 full backup of auth app
+
+This commit adds a full working backup copy of authentication app. The backup is stored in a separate directory named 'backups/v5' and in 'auth-app-v5.zip'. This preserves a full working version of the authentication application implemented with sessions and cookies. This also ensures that we have a safety net in case any breaking changes happen during the development of a newer version.
+
+- Created a new directory 'backups/v5' within the project root.
+- Copied a full working version 5 where user can register, login securely with authentication.
+- User can create and read a message.
+- The application uses **cookies and session** for password authentication.
 
 # Level 6: OAuth - Open Authorization
 
