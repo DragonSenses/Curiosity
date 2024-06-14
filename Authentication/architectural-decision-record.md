@@ -2202,3 +2202,115 @@ passport.use(new GoogleStrategy({
   }
 ));
 ```
+
+### Breakdown the code
+
+Take a step back and let's analyze the code that configures the Google authentication strategy.
+
+```javascript
+passport.use(new GoogleStrategy({
+  // Configuration options...
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:3000/auth/google/secrets",
+  userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+},
+  function (accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+```
+
+We passed in the configuration options when instantiating the `GoogleStrategy`. 
+
+Then we have an anonymous function with the parameters: `accessToken, refreshToken, profile, cb`. It serves as the callback function for handling Google authentication.
+
+1. `(accessToken, refreshToken, profile, cb)`: These are the parameters (arguments) of the function. Let's look at each one:
+   - `accessToken`: Represents the access token obtained from Google after successful authentication. It allows the application to access the user's Google resources.
+   - `refreshToken`: Represents the refresh token, which can be used to obtain a new access token when the current one expires.
+   - `profile`: Contains information about the authenticated user's profile (e.g., ID, name, email, etc.).
+   - `cb`: Stands for "callback." It's a function that you'll call once you've processed the authentication data. Typically, you pass an error (if any) and the user object to this callback.
+
+2. Inside the function:
+   - You'll find the logic for handling the user's data. In this case, it's using the `User.findOrCreate` method to find or create a user based on their Google ID.
+   - The `err` parameter is used to handle any errors that might occur during the process.
+   - The `user` parameter represents the user object returned from the database (or created if it doesn't exist).
+
+Overall, this function is part of the Passport.js authentication flow and is executed when a user logs in via Google OAuth. It processes the authentication data and interacts with the application's database or user management system.
+
+Again to put it simply:
+
+1. `accessToken` allows us to get data related to the user
+2. `refreshToken` allows us to access the user's data for a longer period of time
+3. `profile` contains the user information
+4. `cb` callback function
+
+Inside the function we use the data we get back to either:
+
+   - find the user with that ID OR 
+   - create the user with that ID
+
+#### Issue: `User.findOrCreate` is not a function in passport
+
+- [User.findOrCreate is not a function | stackoverflow](https://stackoverflow.com/questions/33682152/user-findorcreate-is-not-a-function-passport-facebook)
+- [User.findOrCreate is not a function | passport-google-oatuh2 GitHub](https://github.com/jaredhanson/passport-google-oauth2/issues/69)
+
+Notice that the `User.findOrCreate` that is called is not from MongoDB, Mongoose or passport.
+
+It's actually [**pseudocode**](https://en.wikipedia.org/wiki/Pseudocode#:~:text=In%20computer%20science%2C%20pseudocode%20is,notation%20of%20actions%20and%20conditions.), which describes the steps in an algorithm using a mix of conventions from programming languages along with informal (usually self-explanatory) notation for actions and conditions.
+
+In short, `User.findOrCreate` is not a function but pseudocode for some functionality that we are supposed to implement. In this case we need to find or create a user.
+
+#### Fix: Use mongoose-findorcreate
+
+However we can use [mongoose-findorcreate package](https://www.npmjs.com/package/mongoose-findorcreate) to make the function `User.findOrCreate()` work.
+
+**Usage**:
+
+```js
+var findOrCreate = require('mongoose-findorcreate')
+var ClickSchema = new Schema({ ... });
+ClickSchema.plugin(findOrCreate);
+var Click = mongoose.model('Click', ClickSchema);
+```
+
+Let's adapt this code to fit our application.
+
+  - Convert that to ES Module import.
+  - Declare the schema (we already have `userSchema`)
+  - Add `findOrCreate()` as a plugin to the schema
+  - Use `findOrCreate()` to handle the user data
+
+feat(auth): import findOrCreate and use as plugin
+
+Add findOrCreate as a plugin to the userSchema. Handle user data using the provided GoogleStrategy function.
+
+```js
+import findOrCreate from 'mongoose-findorcreate';
+
+userSchema.plugin(findOrCreate);
+
+mongoose.connect(process.env.MongoDB_Connection_String);
+
+// Define a user schema with email and password fields
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+});
+
+// ...
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:3000/auth/google/secrets",
+  userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+},
+  function (accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+```
