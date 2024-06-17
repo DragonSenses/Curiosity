@@ -1695,3 +1695,31 @@ Here's an example of the permissions section in a manifest file:
   "manifest_version": 3
 }
 ```
+
+# Develop
+
+[Chrome Extensions > Develop](https://developer.chrome.com/docs/extensions/develop)
+
+Use this guide as an outline of extension components, their capabilities in Manifest V3 and how to combine them. First familiarize yourself with what extensions are capable of: 
+
+    - [Design the user interface](https://developer.chrome.com/docs/extensions/develop#design-the-user-interface)
+    - [Control the browser](https://developer.chrome.com/docs/extensions/develop#control-the-browser)
+    - [Control the web](https://developer.chrome.com/docs/extensions/develop#control-the-web) 
+
+Then learn how to combine these features using the extensions [core concepts section](https://developer.chrome.com/docs/extensions/develop#core-concepts).
+
+## Design the user interface
+
+Most extensions need some kind of user interaction to work. The extensions platform provides a variety of ways to add interactions to your extension. These methods include popups triggered from the Chrome toolbar, side panels, context menus, and more.
+
+### [Side panel](https://developer.chrome.com/docs/extensions/reference/api/sidePanel)
+
+Use the `chrome.sidePanel` API to host content in the browser's side panel alongside the main content of a web page. 
+
+### [Action](https://developer.chrome.com/docs/extensions/reference/api/action)
+
+Control the display of an extension's icon in the toolbar.
+
+### [Menus](https://developer.chrome.com/docs/extensions/reference/api/contextMenus)
+
+Add items to Google Chrome's context menu.
