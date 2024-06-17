@@ -1548,3 +1548,42 @@ Also, if you have made changes to the service worker code, you can click **Updat
 
 **Note**: Note that this will not reload any other extension components.
 
+#### Debug the popup
+
+Now that the extension initializes correctly, let's break the popup by commenting out the highlighted lines below:
+
+`popup.js`
+```js
+...
+changeColorButton.addEventListener('click', (event) => {
+  const color = event.target.value;
+
+  // Query the active tab before injecting the content script
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => { 
+    // Use the Scripting API to execute a script
+    chrome.scripting.executeScript({
+      target: { tabId: tabs[0].id },
+      args: [color],
+      func: setColor
+    });
+  });
+});
+```
+
+Navigate back to the Extensions Management page. The **Errors** button reappears. Click it to view the new log. It shows the following error message:
+
+```sh
+Uncaught ReferenceError: tabs is not defined
+```
+
+"Extensions Management page displaying popup error."
+
+You can open the popup's DevTools by inspecting the popup.
+
+"DevTools displaying popup error."
+
+The error, `tabs is undefined`, says the extension doesn't know where to inject the content script. Correct this by calling tabs.query(), then selecting the active tab.
+
+To update the code, click the **Clear all** button in the upper right-hand corner, and then reload the extension.
+
+**Note**: For other extension pages displayed as a tab, such as [override pages](https://developer.chrome.com/docs/extensions/develop/ui/override-chrome-pages) and [full-page options](https://developer.chrome.com/docs/extensions/develop/ui/options-page#full_page), you can find logs by inspecting the page or by visiting the Extensions Management page.
