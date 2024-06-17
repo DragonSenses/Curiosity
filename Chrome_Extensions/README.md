@@ -1481,3 +1481,49 @@ Before moving on, change the permission back, click **Clear all** in the upper r
 
 **Note**: Using a manifest schema in your code editor is a way to ensure that the manifest has the proper formatting and required fields.
 
+#### Debug the service worker
+
+##### **Locating logs**
+
+The service worker sets the default color to storage and logs it to the console. To view this log, open the Chrome DevTools panel by selecting the blue link next to **Inspect views**.
+
+"Service worker logs in the Chrome DevTools panel."
+
+**Key point**: Inspecting the service worker keeps it active. To ensure your extension behaves correctly when your service worker is terminated, remember to close DevTools.
+
+##### **Locating errors**
+
+Let's break the service worker by changing `onInstalled` to lowercase `oninstalled`:
+
+`service-worker.js`
+```js
+// There's a typo in the line below;
+// ❌ oninstalled should be ✅ onInstalled.
+// chrome.runtime.onInstalled.addListener(() => { 
+chrome.runtime.oninstalled.addListener(() => { 
+  chrome.storage.sync.set({ color: '#3aa757' }, () => {
+    console.log('The background color is green.');
+  });
+});
+```
+
+Refresh and click **Errors** to view the error log. The first error lets you know that the service worker failed to register. This means something went wrong during initiation:
+
+```sh
+Service worker registration failed. Status code: 15.
+```
+
+"Service worker registration error message."
+
+**Note**: If the service worker fails to register, you will not be able to access Chrome DevTools until you fix the registration bug.
+
+The actual error comes after:
+
+```sh
+Uncaught TypeError: Cannot read properties of undefined (reading 'addListener')
+```
+
+"Uncaught TypeError message."
+
+Undo the bug we introduced, click **Clear all** in the upper right-hand corner, and reload the extension.
+
