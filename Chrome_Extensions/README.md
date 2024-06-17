@@ -1527,3 +1527,24 @@ Uncaught TypeError: Cannot read properties of undefined (reading 'addListener')
 
 Undo the bug we introduced, click **Clear all** in the upper right-hand corner, and reload the extension.
 
+###### **Check the service worker status**
+
+You can identify when the service worker wakes up to perform tasks by following these steps:
+
+  1. Copy your extension ID located above "Inspect views". 
+     - "Extension ID in the Extensions Management page."
+  2. Open your manifest file in the browser. For example: `text chrome-extension://YOUR_EXTENSION_ID/manifest.json`
+  3. Inspect the file.
+  4. Navigate to the **Application** panel.
+  5. Go to the **Service Workers** pane.
+   
+To test your code, start or stop the service worker using the links next to **status**.
+
+"Service worker status in the Application panel"
+
+Also, if you have made changes to the service worker code, you can click **Update** or **skipWaiting** to apply the changes immediately.
+
+"Refreshing the service worker in the Application panel."
+
+**Note**: Note that this will not reload any other extension components.
+
