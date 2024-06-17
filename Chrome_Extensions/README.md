@@ -1621,3 +1621,30 @@ To use DevTools from within the content script, click the dropdown arrow next to
 
 The error says `colors` is not defined. The extension must not be passing the variable correctly. Correct the injected script to pass the color variable into the code.
 
+### Monitor network requests
+
+The popup often makes all of the required network requests before even the speediest of developers can open DevTools. To view these requests, refresh from inside the network panel. It reloads the popup without closing the DevTools panel.
+
+"Refresh inside the network panel to view popup network requests."
+
+Regarding monitoring network requests for extensions, here's some additional information:
+
+1. **Network Requests in Extensions**:
+   - Extensions often need to make network requests to fetch data, communicate with APIs, or load external resources.
+   - You can use the `fetch` API or libraries like Axios to make HTTP requests from your extension code.
+
+2. **Monitoring Techniques**:
+   - To monitor network requests, consider using browser developer tools:
+     - **Chrome DevTools**: Open the "Network" tab to see all network requests made by your extension.
+     - **Firefox DevTools**: Similar to Chrome, you can inspect network activity in the "Network" tab.
+   - Look for:
+     - **XHR (XMLHttpRequest)**: Traditional AJAX requests.
+     - **Fetch API**: Modern replacement for XHR.
+     - **WebSocket connections**: For real-time communication.
+     - **Content scripts**: These scripts can also make network requests.
+
+3. **Security Considerations**:
+   - Be cautious about cross-origin requests. Extensions have different permissions than regular web pages.
+   - Use the `permissions` field in your extension's manifest to specify which domains your extension can access.
+   - Avoid exposing sensitive data in network requests.
+
