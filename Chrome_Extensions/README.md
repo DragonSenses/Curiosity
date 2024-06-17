@@ -1429,3 +1429,55 @@ Extensions can access the same [Chrome DevTools](https://developers.google.com/w
 ### Break the extension
 
 This tutorial will break one extension component at a time and then demonstrate how to fix it. **Remember to undo the bugs introduced in one section before continuing to the next section.** Start by downloading the [Broken Color sample](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.broken-color) on GitHub.
+
+#### Debug the manifest
+
+First, let's break the manifest file by changing the "`version"` key to `"versions"`:
+
+`manifest.json`
+```json
+{
+  "name": "Broken Background Color",
+  // "version": "1.0",
+  "versions": "1.0",
+  "description": "Fix an Extension!",
+  ...
+}
+```
+
+Now let's try loading the extension locally. You will see an error dialog box pointing to the problem:
+
+```sh
+Failed to load extension
+Required value version is missing or invalid. It must be between 1-4 dot-separated integers each between 0 and 65536.
+Could not load manifest.
+```
+
+An invalid manifest key error dialog.
+
+When a manifest key is invalid the extension fails to load, but Chrome gives you a hint of how to fix the problem.
+
+Undo that change and enter an invalid permission to see what happens. Change the `"activeTab"` permission to lowercase `"activetab"`:
+
+`manifest.json`
+```json
+{
+  ...
+  // "permissions": ["activeTab", "scripting", "storage"],
+  "permissions": ["activetab", "scripting", "storage"],
+  ...
+}
+```
+
+Save the extension and try loading it again. It should load successfully this time. In the extension Management page you will see three buttons: **Details**, **Remove** and **Errors**. The **Errors** button label turns red when there's an error. Click the **Errors** button to see the following error:
+
+```sh
+Permission 'activetab' is unknown or URL pattern is malformed.
+```
+
+"Finding an error message by clicking the Errors button."
+
+Before moving on, change the permission back, click **Clear all** in the upper right-hand corner to clear the logs, and reload the extension.
+
+**Note**: Using a manifest schema in your code editor is a way to ensure that the manifest has the proper formatting and required fields.
+
