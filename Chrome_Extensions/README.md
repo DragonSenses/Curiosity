@@ -1422,3 +1422,10 @@ To load an unpacked extension in developer mode, follow the steps in [Developmen
 
 3. Click the "Group tabs" button.
 
+## Debug extensions
+
+Extensions can access the same [Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools/) as web pages. To become an expert in debugging extensions, you will need to know how to locate logs and errors of the different extension components. This tutorial provides fundamental techniques for debugging your extension.
+
+### Break the extension
+
+This tutorial will break one extension component at a time and then demonstrate how to fix it. **Remember to undo the bugs introduced in one section before continuing to the next section.** Start by downloading the [Broken Color sample](https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/functional-samples/tutorial.broken-color) on GitHub.
