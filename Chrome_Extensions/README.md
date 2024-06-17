@@ -1587,3 +1587,37 @@ The error, `tabs is undefined`, says the extension doesn't know where to inject 
 To update the code, click the **Clear all** button in the upper right-hand corner, and then reload the extension.
 
 **Note**: For other extension pages displayed as a tab, such as [override pages](https://developer.chrome.com/docs/extensions/develop/ui/override-chrome-pages) and [full-page options](https://developer.chrome.com/docs/extensions/develop/ui/options-page#full_page), you can find logs by inspecting the page or by visiting the Extensions Management page.
+
+#### Debug content scripts
+
+Now let's break the content script by changing the variable "color" to "colors":
+
+`content.js`
+```js
+...
+function setColor(color) {
+  // There's a typo in the line below;
+  // ❌ colors should be ✅ color.
+  // document.body.style.backgroundColor = color;
+  document.body.style.backgroundColor = colors;
+}  
+```
+
+Refresh the page, open the popup and click the green box. Nothing happens.
+
+If you go to the Extensions Management page the **Errors** button does not appear. This is because only runtime errors, `console.warning` and, `console.error` are recorded on the Extensions Management page.
+
+[Content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts) run inside a website. So to find these errors we must inspect the web page the extension is trying to alter:
+
+```sh
+Uncaught ReferenceError: colors is not defined
+```
+
+"Extension error displayed in web page console."
+
+To use DevTools from within the content script, click the dropdown arrow next to **top** and select the extension.
+
+"Uncaught ReferenceError: colors is not defined."
+
+The error says `colors` is not defined. The extension must not be passing the variable correctly. Correct the injected script to pass the color variable into the code.
+
