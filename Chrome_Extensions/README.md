@@ -1648,3 +1648,50 @@ Regarding monitoring network requests for extensions, here's some additional inf
    - Use the `permissions` field in your extension's manifest to specify which domains your extension can access.
    - Avoid exposing sensitive data in network requests.
 
+### Declare permissions
+
+Some extension APIs require permissions. Refer to the [permissions](https://developer.chrome.com/docs/extensions/develop/concepts/declare-permissions) article and the [Chrome APIs](https://developer.chrome.com/docs/extensions/reference/api) to ensure an extension is requesting the correct permissions in the [manifest](https://developer.chrome.com/docs/extensions/reference/manifest).
+
+```json
+  {
+    "name": "Broken Background Color",
+    ...
+    "permissions": [
+      "activeTab",
+      "declarativeContent",
+      "storage"
+    ],
+  ...
+  }
+```
+
+**Key point**: To make `fetch()` calls to an external server, you must declare the URL as a [host permission](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns).
+
+Regarding declaring permissions in extensions, here's some additional context:
+
+1. **Permissions in Extension Manifests**:
+   - To use most Chrome APIs, your extension must declare its intent in the `"permissions"` field of the manifest.
+   - Each permission can be either a known string (e.g., `"geolocation"`) or a match pattern that grants access to specific hosts.
+
+2. **Types of Permissions**:
+   - `"permissions"`: Contains predefined strings for common permissions.
+   - `"optional_permissions"`: Granted by the user at runtime (not during installation).
+   - `"content_scripts.matches"`: Match patterns for content scripts to inject into specific hosts.
+   - `"host_permissions"`: Match patterns for broader host access.
+   - `"optional_host_permissions"`: User-granted host permissions at runtime.
+
+3. **Security Considerations**:
+   - Permissions help limit damage if your extension is compromised by malware.
+   - Consider using optional permissions to give users informed control over resource access.
+
+Here's an example of the permissions section in a manifest file:
+```json
+{
+  "name": "Permissions Extension",
+  "permissions": ["activeTab", "contextMenus", "storage"],
+  "optional_permissions": ["topSites"],
+  "host_permissions": ["https://example.com/*"],
+  "optional_host_permissions": ["https://*/*", "http://*/*"],
+  "manifest_version": 3
+}
+```
