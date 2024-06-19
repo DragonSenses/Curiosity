@@ -1800,3 +1800,42 @@ Learn about different approaches for [recording audio and video from a tab, wind
 
 Use the [`chrome.contentSettings`](https://developer.chrome.com/docs/extensions/reference/api/contentSettings) API to control whether websites can use features such as cookies, JavaScript, and plugins. More generally speaking, content settings allow you to customize Chrome's behavior on a per-site basis instead of globally. 
 
+## Core concepts
+
+Using web platform and extension APIs you can build more complex features by combining different UI components and extension platform features. 
+
+### [Service Workers](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers)
+
+An extension service worker (service-worker.js) is an event-based script that the browser runs in the background. It is often used to process data, coordinate tasks in different parts of an extension, and as an extension's event manager. 
+
+### [Permissons](https://developer.chrome.com/docs/extensions/develop/concepts/declare-permissions)
+
+Understand permissions: how they work and when to avoid asking for them when they're not needed.
+
+### [Content filtering](https://developer.chrome.com/docs/extensions/develop/concepts/content-filtering)
+
+There are different ways to implement content and network filtering in Chrome Extensions. Learn about the content filtering capabilities available to extensions and the different filtering approaches, techniques and APIs that can be used by Chrome Extensions. 
+
+### [Messaging](https://developer.chrome.com/docs/extensions/develop/concepts/messaging)
+
+Many times content scripts, or other extension pages, need to send or receive information from the extension service worker. In these cases, either side can listen for messages sent from the other end, and respond on the same channel.
+
+### [Native messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging)
+
+Enable your extensions to exchange messages with native applications. 
+
+### [Avoid remotely hosted code](https://developer.chrome.com/docs/extensions/develop/migrate/improve-security)
+
+In Manifest V3 extensions need to bundle all code they are using inside the extension itself. There are different strategies for doing this. 
+
+### [Storage](https://developer.chrome.com/docs/extensions/develop/concepts/storage-and-cookies)
+
+Chrome Extensions have a specialized Storage API, available to all extension components. It includes four separate storage areas for specific use cases and an event listener that tracks whenever data is updated. 
+
+### [Offscreen documents](https://developer.chrome.com/docs/extensions/reference/api/offscreen)
+
+Service workers don't have DOM access. The Offscreen API allows the extension to use DOM APIs in a hidden document without interrupting the user experience by opening new windows or tabs. 
+
+### [Cross origin isolation](https://developer.chrome.com/docs/extensions/develop/concepts/cross-origin-isolation)
+
+Cross-origin isolation enables a web page to use powerful features such as `SharedArrayBuffer`. An extension can opt into cross-origin isolation by specifying the appropriate values for the `"cross_origin_embedder_policy"` and `"cross_origin_opener_policy"` manifest keys. 
