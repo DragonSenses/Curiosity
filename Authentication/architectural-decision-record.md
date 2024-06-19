@@ -2419,3 +2419,17 @@ app.get("/auth/google/secrets",
     res.redirect("/secrets");
 });
 ```
+
+## Trace App Execution
+
+1. When the user clicks on the Google sign-up button:
+   - The app directs them to the "/auth/google" route.
+   - Authentication is initiated using Passport and the Google strategy.
+   - The user is authenticated on Google servers, requesting their profile information.
+
+2. Upon successful authentication, Google redirects them to "/auth/google/secrets":
+   - In this route, local authentication takes place, and the login session is saved.
+   - The callback function for the `GoogleStrategy` is invoked, attempting to create the user in our database.
+
+3. If local authentication is successful, the user is redirected to "/secrets".
+
