@@ -74,6 +74,11 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
+app.get("/auth/google", (req, res) => {
+  // Use passport to authenticate the user using the Google strategy
+  passport.authenticate("google", { scope: ["profile"] });
+});
+
 app.get("/login", (req, res) => {
   res.render("login");
 });
