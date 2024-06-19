@@ -1776,4 +1776,27 @@ Use the [`chrome.downloads`](https://developer.chrome.com/docs/extensions/refere
 
 Use the [`chrome.bookmarks`](https://developer.chrome.com/docs/extensions/reference/api/bookmarks) API and the [`chrome.readingList`](https://developer.chrome.com/docs/extensions/reference/api/readingList) API to create, organize, and otherwise manipulate these lists.
 
- 
+## Control the web 
+
+Dynamically change the content and behavior of web pages. You can control and modify the web by injecting scripts, intercepting network requests, and using web APIs to interact with web pages. 
+
+### Inject JavaScript and CSS 
+
+[Content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts) are files that run in the context of web pages. They use the standard Document Object Model (DOM), to read details of web pages the browser visits, make changes to them, and pass information to their parent extension.
+
+### Access the active tab 
+
+The [`"activeTab"`](https://developer.chrome.com/docs/extensions/develop/concepts/activeTab) permission gives an extension temporary access to the currently active tab when the user invokes the extension, for example by clicking its action. Access to the tab lasts while the user is on that page, and is revoked when the user navigates away or closes the tab. 
+
+### Control web requests 
+
+Use the [`chrome.declarativeNetRequest`](https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest), [`chrome.webRequest`](https://developer.chrome.com/docs/extensions/reference/api/webRequest) and [`chrome.webNavigation`](https://developer.chrome.com/docs/extensions/reference/api/webNavigation) APIs to observe, block, and modify network requests. 
+
+### Audio recording and screen capture 
+
+Learn about different approaches for [recording audio and video from a tab, window, or screen](https://developer.chrome.com/docs/extensions/how-to/web-platform/screen-capture) using web platform APIs such as `chrome.tabCapture` or `getDisplayMedia()`.
+
+### Modify website settings 
+
+Use the [`chrome.contentSettings`](https://developer.chrome.com/docs/extensions/reference/api/contentSettings) API to control whether websites can use features such as cookies, JavaScript, and plugins. More generally speaking, content settings allow you to customize Chrome's behavior on a per-site basis instead of globally. 
+
