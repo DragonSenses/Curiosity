@@ -1723,3 +1723,57 @@ Control the display of an extension's icon in the toolbar.
 ### [Menus](https://developer.chrome.com/docs/extensions/reference/api/contextMenus)
 
 Add items to Google Chrome's context menu.
+
+## Control the browser
+
+Chrome's extension APIs make it possible to change the way your browser works. 
+
+### Override Chrome pages and settings 
+
+[Settings overrides](https://developer.chrome.com/docs/extensions/reference/manifest/chrome-settings-override) are a way for extensions to override selected Chrome settings. Additionally, extensions can use HTML [override pages](https://developer.chrome.com/docs/extensions/develop/ui/override-chrome-pages) to replace a page Google Chrome normally provides. An extension can override the bookmark manager, the history tab, or the new tab
+
+### Extending DevTools
+
+DevTools extensions [add functionality to Chrome DevTools](https://developer.chrome.com/docs/extensions/how-to/devtools/extend-devtools) by accessing DevTools-specific extension APIs through a DevTools page added to the extension. You can also use the [`chrome.debugger`](https://developer.chrome.com/docs/extensions/reference/api/debugger) API to invoke Chrome's remote debugging protocol. Attach to one or more tabs to instrument network interaction, debug JavaScript, mutate the DOM, and more.
+
+### Display notifications 
+
+The [`chrome.notifications`](https://developer.chrome.com/docs/extensions/how-to/ui/notifications) API lets you create notifications using templates and show these notifications to users in the user's system tray.
+
+### Manage history
+
+Use the [`chrome.history`](https://developer.chrome.com/docs/extensions/reference/api/history) API to interact with the browser's record of visited pages, and the [`chrome.browsingData`](https://developer.chrome.com/docs/extensions/reference/api/browsingData) API to manage other browsing data. Use [`chrome.topSites`](https://developer.chrome.com/docs/extensions/reference/api/topSites) to access the most visited sites. 
+
+### Control tabs and windows
+
+Use APIs such as [`chrome.tabs`](https://developer.chrome.com/docs/extensions/reference/api/tabs), [`chrome.tabGroups`](https://developer.chrome.com/docs/extensions/reference/api/tabGroups) and [`chrome.windows`](https://developer.chrome.com/docs/extensions/reference/api/windows) to create, modify, and arrange the user's browser. 
+
+### Add keyboard shortcuts 
+
+Use the [`chrome.commands`](https://developer.chrome.com/docs/extensions/reference/api/commands) API to add keyboard shortcuts that trigger actions in your extension. For example, you can add a shortcut to open the browser action or send a command to the extension. 
+
+### Authenticate users
+
+Use the [`chrome.identity`](https://developer.chrome.com/docs/extensions/reference/api/identity) API to get OAuth 2.0 access tokens. 
+
+### Manage extensions 
+
+The [`chrome.management`](https://developer.chrome.com/docs/extensions/reference/api/management) API provides ways to manage the list of extensions that are installed and running. It is particularly useful for extensions that override the built-in New Tab page.
+
+### Provide suggestions 
+
+The [`chrome.omnibox`](https://developer.chrome.com/docs/extensions/reference/api/omnibox) API allows you to register a keyword with Google Chrome's omnibox (address bar).
+
+### Update Chrome settings 
+
+Use the [`chrome.privacy`](https://developer.chrome.com/docs/extensions/reference/api/privacy) API to control usage of features in Chrome that can affect a user's privacy. Also see the [`chrome.proxy`](https://developer.chrome.com/docs/extensions/reference/api/privacy) API to manage Chrome's proxy settings. 
+
+### Manage downloads 
+
+Use the [`chrome.downloads`](https://developer.chrome.com/docs/extensions/reference/api/downloads) API to programmatically initiate, monitor, manipulate, and search for downloads. 
+
+### Use bookmarks and the reading list 
+
+Use the [`chrome.bookmarks`](https://developer.chrome.com/docs/extensions/reference/api/bookmarks) API and the [`chrome.readingList`](https://developer.chrome.com/docs/extensions/reference/api/readingList) API to create, organize, and otherwise manipulate these lists.
+
+ 
