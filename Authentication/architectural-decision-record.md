@@ -2370,3 +2370,25 @@ feat: Add Google OAuth sign-in button
       </div>
     </div>
 ```
+
+Notice that for both buttons we set the `href` to `/auth/google`. When the user clicks on the button it makes a GET request to the path `/auth/google`.
+
+### Implement GET route for `/auth/google`
+
+feat: Implement authenticate GET route in auth app
+
+- [passport-google-oauth20 reference](https://www.passportjs.org/packages/passport-google-oauth20/)
+
+Use `passport.authenticate()`, specifying the `'google'` strategy, to authenticate requests
+
+feat: Add Google authenticate route using Passport
+
+In this commit, we've added an authentication route for Google using Passport. The route is accessible at "/auth/google". When users visit this endpoint, they will be redirected to Google for authentication. The scope is set to retrieve the user's profile information.
+
+```js
+app.get("/auth/google", (req, res) => {
+  passport.authenticate("google", { scope: ["profile"] });
+});
+```
+
+This will redirect the user to sign in to their Google account.
