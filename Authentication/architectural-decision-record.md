@@ -2392,3 +2392,30 @@ app.get("/auth/google", (req, res) => {
 ```
 
 This will redirect the user to sign in to their Google account.
+
+Now try registering or logging in through Google. We then get an error:
+
+```sh
+Cannot GET /auth/google/secrets
+```
+
+That's the endpoint we set in the google developers console. Its under the **Authorized redirect URIs**, this is where Google send the user after they've been authenticated on the Google server.
+
+### Implement GET route for `/auth/google/secrets`
+
+Now we need to add the route `/auth/google/secrets` to be able to authenticate them locally on our website and to save their login session using session and cookies.
+
+After Google has successfully authenticate the user on their servers, they will send them to the URI we specified `/auth/google/secrets`. If the authentication fails we redirect them to the login route. If authentication is successful we redirect them to the secrets route.
+
+feat: Add callback route to authenticate requests
+
+In this commit, we've added an authentication route for Google using Passport. The route is accessible at "/auth/google/secrets". When users visit this endpoint, they will be redirected to Google for authentication. If the authentication fails, they will be redirected to "/login". Upon successful authentication, they will be redirected to the "/secrets" page.
+
+```js
+app.get("/auth/google/secrets", 
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  function(req, res) {
+    // Successful authentication, redirect to secrets.
+    res.redirect("/secrets");
+});
+```
