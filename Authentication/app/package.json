@@ -24,7 +24,7 @@
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
-    "mongoose": "^8.4.1",
+    "mongoose": "^8.4.3",
     "mongoose-encryption": "^2.1.2",
     "mongoose-findorcreate": "^4.0.0",
     "passport": "^0.7.0",
