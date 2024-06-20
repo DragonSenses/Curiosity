@@ -52,8 +52,15 @@ const User = new mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(user, cb) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
 
 // Fix based on PR #51: https://github.com/jaredhanson/passport-google-oauth2/pull/51
 passport.use(new GoogleStrategy({
