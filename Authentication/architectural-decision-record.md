@@ -2433,3 +2433,63 @@ app.get("/auth/google/secrets",
 
 3. If local authentication is successful, the user is redirected to "/secrets".
 
+### Error: Failed to serialize user into session
+
+After testing the app again we may get the error:
+
+```sh
+Error: Failed to serialize user into session
+```
+
+This could be related to these lines of code:
+
+```js
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+```
+
+Which comes from the [npm passport-local-mongoose](https://www.npmjs.com/package/passport-local-mongoose) package.
+
+This comes into conflict with how Passport serializes/desiralizes users.
+
+- [passportjs authentication sessions](https://www.passportjs.org/concepts/authentication/sessions/)
+
+To maintain a login session, Passport serializes and deserializes user information to and from the session. The information that is stored is determined by the application, which supplies a `serializeUser` and a `deserializeUser` function.
+
+feat: Handle failed user serialization
+
+Now replace the code for local authentication:
+
+```js
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+```
+
+And use the passport's serializeUser/deserializeUser so that it can work for any kind of authentication:
+
+```js
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(user, cb) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+```
+
+fix: Update user serialization and deserialization
+
+```js
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(user, cb) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+```
+
