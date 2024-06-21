@@ -2731,3 +2731,57 @@ In the console we can see that we logged the Google profile that we were sent af
 
 What we should save in our database is the `id`, which identifies them the next time they try to log in. We will associate any data the user created on our website with this `id`. 
 
+### Link Google user ID with user database ID
+
+feat: Map OAuth user IDs to database records
+
+feat: Associate Google user IDs w/ DB user IDs
+
+In the database, the new user was created with automatically generated MongoDB id and nothing else. What this means is that their Google user ID is not connected to the user ID they have in the database. We can confirm this by registering with Google OAuth and get redirected to the `/secrets` page. Then manually type the link to the root route `/` and register again. We can see that two users were created in the database with no connection to each other.
+
+We can see in the line of code:
+
+```js
+  User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    return cb(err, user);
+  });
+```
+
+We try to find them in the database or create them in our database based on their `googleId`, which is suppose to exist on our collection of `User`s. At the moment, our collection of users only have 2 fields that we work with as we can see in the schema:
+
+```js
+// Define a user schema with email and password fields
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+});
+```
+
+This is old code based on the previous versions of the app where we only authenticate users using the local strategy.
+
+Let's add a new field called `googleId` in the `userSchema`.
+
+```js
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+  googleId: String,
+});
+```
+
+Then when a new user registers on our website we are going to find and see if we already have a record of their `googleId` on our `User` database. In this case we save all the the new data associated with that ID. Otherwise, we are going to create it and save that information for the future.
+
+Again on our database, their `_id` identifies them in our `User` database. While their `googleId` identifies them as a unique Google user.
+
+Now when a user logs in via OAuth the user is created in the database. And if they try to log in again they are redirected to the `/secrets` page. We can see that a new user is not created in the database as their Google ID is associated with their User ID in the database. This will also occur if they try to register again as another unique Google user.
+
+Because we are authenticating our users using Google, we only get what is equivalent to their username on the Google user database. We do not get their password. This reduces credential exposure and allows more layers of security and control.
+
+**OAuth** is considered **safer** than **Basic Authentication** for several reasons:
+
+1. **Credential Exposure**: With OAuth, users don't directly provide their credentials to third parties. Instead, they grant limited access (like a valet key) without revealing their full online identity. In contrast, Basic Authentication requires sending credentials with every request, which can be riskier.
+
+2. **Token Expiry**: OAuth 2.0 tokens have an expiry, restricting an attacker's window of opportunity. Basic Authentication lacks this feature, making it less secure.
+
+3. **Authorization vs. Authentication**: OAuth focuses on authorization, allowing third-party apps to access user data without sharing credentials. Basic Auth, on the other hand, is primarily for authentication, where users provide credentials directly.
+
