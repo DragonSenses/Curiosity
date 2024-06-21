@@ -2493,3 +2493,142 @@ passport.deserializeUser(function(user, cb) {
 });
 ```
 
+## Sessions in passport
+
+docs: Enable session-based state management
+
+This commit documents how to maintain state between the application server and the user's browser through sessions.
+
+[Authentication and Sessions | Passport.js docs](https://www.passportjs.org/concepts/authentication/sessions/)
+
+A web application needs the ability to identify users as they browse from page to page. This series of requests and responses, each associated with the same user, is known as a session.
+
+HTTP is a stateless protocol, meaning that each request to an application can be understood in isolation - without any context from previous requests. This poses a challenge for web applications with logged in users, as the authenticated user needs to be remembered across subsequent requests as they navigate the application.
+
+To solve this challenge, web applications make use of sessions, which allow state to be maintained between the application server and the user's browser. A session is established by setting an [HTTP cookie](https://en.wikipedia.org/wiki/HTTP_cookie) in the browser, which the browser then transmits to the server on every request. The server uses the value of the cookie to retrieve information it needs across multiple requests. In effect, this creates a stateful protocol on top of HTTP.
+
+While sessions are used to maintain authentication state, they can also be used by applications to maintain other state unrelated to authentication. Passport is carefully designed to isolate authentication state, referred to as a login session, from other state that may be stored in the session.
+
+Applications must initialize session support in order to make use of login sessions. In an [Express](https://expressjs.com/) app, session support is added by using [`express-session`](https://github.com/expressjs/session) middleware.
+
+- Install package `express-session`
+
+```sh
+npm install express-session
+```
+
+```sh
+import session from 'express-session';
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: true }
+}));
+```
+
+To maintain a login session, Passport serializes and deserializes user information to and from the session. The information that is stored is determined by the application, which supplies a `serializeUser` and a `deserializeUser` function.
+
+```js
+passport.serializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, {
+      id: user.id,
+      username: user.username,
+      picture: user.picture
+    });
+  });
+});
+
+passport.deserializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, user);
+  });
+});
+```
+
+1. **`serializeUser` Function**:
+   - This function is part of Passport.js, a popular authentication middleware for Node.js.
+   - It's used to serialize a user object (typically from a database) into a format that can be stored in a session.
+   - The `process.nextTick` function ensures that the callback is executed asynchronously.
+   - Inside the callback:
+     - The `user.id`, `user.username`, and `user.picture` properties are extracted.
+     - These properties are then bundled into an object and passed to the `cb` (callback) function.
+   - The `cb` function is called with `null` (no error) and the serialized user data.
+
+2. **`deserializeUser` Function**:
+   - This function is the counterpart to `serializeUser`.
+   - It deserializes the user data stored in the session back into a user object.
+   - Again, `process.nextTick` ensures asynchronous execution.
+   - Inside the callback:
+     - The `user` argument contains the serialized user data.
+     - The callback simply returns this user object via `cb`.
+
+3. **Overall Purpose**:
+   - These functions are essential for maintaining user sessions during authentication.
+   - `serializeUser` prepares user data for storage in the session.
+   - `deserializeUser` retrieves the user data from the session when needed.
+
+What's the difference between first set and second set of code?
+
+```js
+/* First set */
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(user, cb) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+/* Second set */
+passport.serializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, {
+      id: user.id,
+      username: user.username,
+      picture: user.picture
+    });
+  });
+});
+
+passport.deserializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, user);
+  });
+});
+```
+
+1. **First Set (Original Functions)**:
+   - `passport.serializeUser`:
+     - Takes a `user` object and a `done` callback.
+     - Serializes the user by storing only the `user.id` in the session.
+     - The `done` callback is called with `null` (no error) and the serialized user ID.
+   - `passport.deserializeUser`:
+     - Takes a `user` object and a `cb` callback.
+     - Retrieves the user from the database using `User.findById(id, ...)`.
+     - The `cb` callback is called with any errors (`err`) and the retrieved user.
+
+2. **Second Set (Your Updated Functions)**:
+   - `passport.serializeUser`:
+     - Takes a `user` object and a `cb` callback.
+     - Serializes the user by creating an object with `id`, `username`, and `picture`.
+     - The `cb` callback is called with `null` (no error) and the serialized user data.
+   - `passport.deserializeUser`:
+     - Takes a `user` object and a `cb` callback.
+     - Simply returns the `user` object (no database lookup needed).
+
+3. **Key Differences**:
+   - The updated functions store additional user properties (`username` and `picture`) during serialization.
+   - In the original functions, deserialization involved a database lookup (`User.findById(id, ...)`), while the updated functions directly return the user object.
+
+The choice of what to store during serialization depends on your application's requirements. If you need more user information in the session, the updated approach is preferable. Otherwise, the original approach is simpler and more lightweight.
+
+feat: Improve user serialization & deserialization
+
+- Store additional user properties (`id`, `username` and `picture`) during serialization
+- Optimize deserialization by directly returning the user object, eliminating the need for a database lookup
+
