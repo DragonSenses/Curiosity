@@ -2632,3 +2632,74 @@ feat: Improve user serialization & deserialization
 - Store additional user properties (`id`, `username` and `picture`) during serialization
 - Optimize deserialization by directly returning the user object, eliminating the need for a database lookup
 
+### Establish login session
+
+docs: Implement login session & explore tradeoffs
+
+A login session is established upon a user successfully authenticating using a credential. The following route will authenticate a user using a username and password. If successfully verified, Passport will call the `serializeUser` function, which in the above example is storing the user's ID, username, and picture. Any other properties of the user, such as an address or birthday, are not stored.
+
+```js
+app.post('/login/password',
+  passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
+  function(req, res) {
+    res.redirect('/~' + req.user.username);
+  });
+```
+
+As the user navigates from page to page, the session itself can be authenticated using the built-in `session` strategy. Because an authenticated session is typically needed for the majority of routes in an application, it is common to use this as [application-level middleware](https://expressjs.com/en/guide/using-middleware.html#middleware.application), after `session` middleware.
+
+```sh
+app.use(session(/* ... */);
+app.use(passport.authenticate('session'));
+```
+
+This can also be accomplished, more succinctly, using the passport.session() alias.
+
+```js
+app.use(session(/* ... */);
+app.use(passport.session());
+```
+
+When the session is authenticated, Passport will call the `deserializeUser` function, which in the above example is yielding the previously stored user ID, username, and picture. The `req.user` property is then set to the yielded information.
+
+There is an inherent tradeoff between the amount of data stored in a session and database load incurred when authenticating a session. This tradeoff is particularly pertinent when session data is stored on the client, rather than the server, using a package such as `cookie-session`. Storing less data in the session will require heavier queries to a database to obtain that information. Conversely, storing more data in the session reduces database queries while potentially exceeding the maximum amount of data that can be stored in a cookie.
+
+This tradeoff is controlled by the application and the `serializeUser` and `deserializeUser` functions it supplies. In contrast to the above example, the following example minimizes the data stored in the session at the expense of querying the database for every request in which the session is authenticated.
+
+```js
+passport.serializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, user.id);
+  });
+});
+
+passport.deserializeUser(function(id, cb) {
+  db.get('SELECT * FROM users WHERE id = ?', [ id ], function(err, user) {
+    if (err) { return cb(err); }
+    return cb(null, user);
+  });
+});
+```
+
+To balance this tradeoff, it is recommended that any user information needed on every request to the application be stored in the session. For example, if the application displays a user element containing the user's name, email address, and photo on every page, that information should be stored in the session to eliminate what would otherwise be frequent database queries. Specific routes, such as a checkout page, that need additional information such as a shipping address, can query the database for that data.
+
+### Summary of sessions with express and passport
+
+- **Session Authentication and User Serialization:**
+  - When a session is authenticated, Passport calls the `deserializeUser` function.
+  - In the example, this function yields the previously stored user ID, username, and picture.
+  - The `req.user` property is then set with this yielded information.
+
+- **Tradeoff Between Session Data and Database Load:**
+  - There's a tradeoff between session data size and database load during authentication.
+  - Storing less data in the session requires heavier database queries.
+  - Storing more data reduces queries but may exceed cookie storage limits.
+
+- **Controlled by `serializeUser` and `deserializeUser`:**
+  - The application's `serializeUser` and `deserializeUser` functions determine this tradeoff.
+  - The second example minimizes session data but queries the database for every authenticated request.
+
+- **Recommendation:**
+  - Store essential user information (needed on every request) in the session.
+  - For specific routes (e.g., checkout), query the database for additional data.
+
