@@ -2703,3 +2703,31 @@ To balance this tradeoff, it is recommended that any user information needed on 
   - Store essential user information (needed on every request) in the session.
   - For specific routes (e.g., checkout), query the database for additional data.
 
+## User information
+
+feat: Parse and use Google OAuth user data in app
+
+Let's trace the program again, we can log in via Google OAuth and the user will be authenticated. They will be redirected to a URL we specified, in our case the secrets page. Then with the added the log statements:
+
+```js
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:3000/auth/google/secrets",
+  userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+},
+function (accessToken, refreshToken, profile, cb) {
+  console.log("Access Token:", accessToken);
+  console.log("Refresh Token:", refreshToken);
+  console.log("User Profile:", profile);
+
+  User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    return cb(err, user);
+  });
+}));
+```
+
+In the console we can see that we logged the Google profile that we were sent after the user has been authenticated by Google. It is a json object with various properties such as `id`, `name`, `photos` and more.
+
+What we should save in our database is the `id`, which identifies them the next time they try to log in. We will associate any data the user created on our website with this `id`. 
+
