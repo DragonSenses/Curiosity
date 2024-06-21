@@ -42,6 +42,7 @@ mongoose.connect(process.env.MongoDB_Connection_String);
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
+  googleId: String,
 });
 
 userSchema.plugin(passportLocalMongoose);
