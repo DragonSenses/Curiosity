@@ -52,13 +52,23 @@ const User = new mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
+// Serialize user data for session storage
+passport.serializeUser(function(user, cb) {
+  process.nextTick(function() {
+    // Create an object with relevant user properties
+    return cb(null, {
+      id: user.id,
+      username: user.username,
+      picture: user.picture
+    });
+  });
 });
 
+// Deserialize user data from session
 passport.deserializeUser(function(user, cb) {
-  User.findById(id, function(err, user) {
-    done(err, user);
+  process.nextTick(function() {
+    // Return the user object retrieved from the session
+    return cb(null, user);
   });
 });
 
