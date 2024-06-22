@@ -137,10 +137,28 @@ app.get("/submit", (req, res) => {
   }
 });
 
-app.post("/submit", (req, res) => {
-  const submittedSecret = req.body.secret;
-  console.log(submittedSecret);
-  console.log(req.user);
+app.post("/submit", async (req, res) => {
+  try {
+    // Extract submitted secret from the request body
+    const submittedSecret = req.body.secret;
+
+    // Find user by their ID
+    const foundUser = await User.findById(req.user.id);
+
+    if (foundUser) {
+      // Update the user's secret
+      foundUser.secret = submittedSecret;
+
+      // Save the updated user object
+      await foundUser.save();
+
+      // After save has completed, redirect them to view secrets page
+      res.redirect("/secrets");
+    }
+  } catch (err) {
+    // Handle any errors that occur during the process
+    console.error(err);
+  }
 });
 
 app.post("/register", (req, res) => {
