@@ -2850,3 +2850,27 @@ style: Enhance OAuth sign-in button in auth app
 
 Now with that we can always add more social OAuth buttons by repeating the steps we did for Google and adding the styles on the front-end.
 
+## Only persisting login session on our website
+
+Notice that when we click **Log Out**, and try to login with OAuth again the user does not need to go to Google page to authenticate again to login to their account. The reason is because we are only persisting the login session on our website. Once they managed to be in `/secrets`, then they can access the authentication required routes as seen in the following code:
+
+```js
+app.get("/secrets", (req, res) => {
+  // Check if user is authenticated
+  if (req.isAuthenticated()) {
+    res.render("secrets");
+  } else {
+    res.redirect("/login");
+  }
+});
+```
+
+The login/logout session is tied to how our users access our web app. It **does not log them out of their Google accounts.** To implement that we need a button to redirect them to `https://acounts.google.com/logout`, though this isn't practical for many users as it logs them out for many other services not related to our app.
+
+In our case, we only need our session to persist for the user's login for our website and do not need to worry about logging them out of Google.
+
+# Finalizing the app - allow users to submit secrets
+
+Currently, the app is just a static page. We need to add the functionality to add secrets to our page.
+
+User should be able to submit a secret and see other secrets other users have submitted.
