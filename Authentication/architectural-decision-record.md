@@ -2874,3 +2874,113 @@ In our case, we only need our session to persist for the user's login for our we
 Currently, the app is just a static page. We need to add the functionality to add secrets to our page.
 
 User should be able to submit a secret and see other secrets other users have submitted.
+
+## submit functionality
+
+In the `/submit` route we want to check if the user is logged-in.
+
+We create a `GET` middleware for the submit route. Inside we check if the user is logged-in and authenticated. If they are then redirect them to the submit page (`submit.ejs`) so that the user can submit a secret. Otherwise redirect the user to login page if they are not logged-in and authenticated.
+
+feat: Implement submit route for auth app
+
+`app.js`
+```js
+app.get("/submit", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("submit");
+  } else {
+    res.redirect("/login");
+  }
+});
+```
+
+Then it will `POST` to the `/submit` route, because in our `submit.ejs` we have the submit `button` inside a `form` with the `action` property set to `/submit`.
+
+`submit.ejs`
+```html
+<div class="container">
+  <!-- ... -->
+    <form action="/submit" method="POST">
+
+      <div class="form-group">
+        <input type="text" class="form-control text-center" name="secret" placeholder="What's your secret?">
+      </div>
+      <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+```
+
+Notice that the `input` has the `name` property set to `"secret"`, so we can use this inside our POST middleware. 
+
+feat: Create post submit route in auth app
+
+```js
+app.post("/submit", (req, res) => {
+  const submittedSecret = req.body.secret;
+  console.log(submittedSecret);
+  console.log(req.user);
+});
+```
+
+Next, we need to find the current user and save the secret into their file. Passport saves the current user's details inside the request when we initiate a new log-in session. We can see this by logging like this: `console.log(req.user)`.
+
+This gives us the JSON object:
+
+```json
+{
+  _id: 1234,
+  username: 'user@test.com,
+  __v: 0
+}
+```
+
+We can now find this user using their ID in the database and save the secret they created to this document. We can access this through the `req.user.id`.
+
+To do that we need to add another field to the `userSchema` called `secret`.
+
+feat: Add 'secret' field to user schema
+
+```js
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+  googleId: String,
+  secret: String
+});
+```
+
+Finally to implement the POST submit route, here are the following steps:
+
+1. Extract submitted secret from the request body
+2. Find user by their ID
+3. Update the user's secret
+4. Save the updated user object
+5. After save has completed, redirect them to view secrets page
+6. Handle any errors that occur during the process
+
+feat: Implement submit POST route in auth app
+
+```js
+app.post("/submit", async (req, res) => {
+  try {
+    // Extract submitted secret from the request body
+    const submittedSecret = req.body.secret;
+
+    // Find user by their ID
+    const foundUser = await User.findById(req.user.id);
+
+    if (foundUser) {
+      // Update the user's secret
+      foundUser.secret = submittedSecret;
+
+      // Save the updated user object
+      await foundUser.save();
+
+      // After save has completed, redirect them to view secrets page
+      res.redirect("/secrets");
+    }
+  } catch (err) {
+    // Handle any errors that occur during the process
+    console.error(err);
+  }
+});
+```
