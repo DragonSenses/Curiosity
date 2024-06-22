@@ -136,6 +136,12 @@ app.get("/submit", (req, res) => {
   }
 });
 
+app.post("/submit", (req, res) => {
+  const submittedSecret = req.body.secret;
+  console.log(submittedSecret);
+  console.log(req.user);
+});
+
 app.post("/register", (req, res) => {
 
   User.register({ username: req.body.username }, req.body.password, function (err, user) {
