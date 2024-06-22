@@ -2785,3 +2785,68 @@ Because we are authenticating our users using Google, we only get what is equiva
 
 3. **Authorization vs. Authentication**: OAuth focuses on authorization, allowing third-party apps to access user data without sharing credentials. Basic Auth, on the other hand, is primarily for authentication, where users provide credentials directly.
 
+## Style the OAuth buttons
+
+feat: Polish the OAuth buttons
+
+Let's add the stylesheet `bootstrap-social.css` from [Social Buttons for Bootstrap](https://lipis.github.io/bootstrap-social/).
+
+After adding the stylesheet to `\app\public\css\bootstrap-social.css`, navigate to `header.ejs` and add it in as a link. Make sure to add it above our custom style sheet `styles.css` so that we may override any styles added from 3rd party style sheets.
+
+feat: Include bootstrap-social.css in header
+
+`app\views\partials\header.ejs`
+```html
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Secrets</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/bootstrap-social.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+```
+
+Now to style the OAuth button we can add the classes: `btn-social` and the social button class for the specific site such as `btn-google`
+
+style: Enhance OAuth sign-up button in auth app
+
+`register.ejs`
+```html
+    <!-- Google OAuth sign-up button -->
+    <div class="col-sm-4">
+      <div class="card social-block">
+        <div class="card-body">
+          <a class="btn btn-block btn-social btn-google" href="/auth/google" role="button">
+            <i class="fab fa-google"></i>
+            Sign Up with Google
+          </a>
+        </div>
+      </div>
+    </div>
+```
+
+style: Enhance OAuth sign-in button in auth app
+
+`login.ejs`
+```html
+    <!-- Google OAuth sign-in button -->
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+          <a class="btn btn-block btn-social btn-google" href="/auth/google" role="button">
+            <i class="fab fa-google"></i>
+            Sign In with Google
+          </a>
+        </div>
+      </div>
+    </div>
+```
+
+Now with that we can always add more social OAuth buttons by repeating the steps we did for Google and adding the styles on the front-end.
+
