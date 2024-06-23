@@ -96,3 +96,62 @@ here are merely some of the biggest stakeholders. Overall, Rust’s greatest
 ambition is to eliminate the trade-offs that programmers have accepted for
 decades by providing safety *and* productivity, speed *and* ergonomics. Give
 Rust a try and see if its choices work for you.
+
+## How to Use This Book
+
+1. **Audience and Assumptions**:
+   - The book assumes you've written code in another programming language but doesn't assume any specific language background.
+   - It aims to be broadly accessible to programmers from various backgrounds.
+   - If you're entirely new to programming, consider starting with an introductory programming book.
+
+2. **Book Structure**:
+   - Read the book sequentially from front to back.
+   - Later chapters build on concepts introduced earlier.
+   - Some earlier chapters provide high-level coverage, while later chapters delve into details.
+
+3. **Chapter Types**:
+   - **Concept Chapters**: Cover aspects of Rust.
+   - **Project Chapters**: Build small programs using what you've learned.
+   - Project chapters are labeled (e.g., Chapters 2, 12, and 20).
+
+4. **Chapter Highlights**:
+   - **Chapter 1**: Covers installing Rust, writing a "Hello, world!" program, and using Cargo (Rust's package manager).
+   - **Chapter 2**: Hands-on introduction to writing a Rust program (number guessing game).
+   - **Chapters 3 and 4**: Explore Rust features and ownership system.
+   - **Chapters 5 and 6**: Discuss structs, enums, match expressions, and control flow.
+   - **Chapters 7 to 9**: Cover modules, collection data structures, and error handling.
+   - **Chapters 10 and 11**: Dive into generics, traits, lifetimes, and testing.
+   - **Chapter 12**: Build functionality inspired by the grep command line tool.
+   - **Chapters 13 to 15**: Explore closures, iterators, Cargo, and smart pointers.
+   - **Chapter 16**: Concurrency models in Rust.
+   - **Chapter 17**: Compare Rust idioms to object-oriented principles.
+   - **Chapters 18 and 19**: Cover patterns, unsafe Rust, macros, and advanced topics.
+   - **Chapter 20**: Implement a low-level multithreaded web server.
+
+5. **Appendices**:
+   - Appendices provide reference-like information about Rust.
+   - Specific topics covered:
+     - **Appendix A**: Rust's keywords
+     - **Appendix B**: Rust's operators and symbols
+     - **Appendix C**: Derivable traits from the standard library
+     - **Appendix D**: Useful development tools
+     - **Appendix E**: Explanation of Rust editions
+     - **Appendix F**: Translations of the book
+     - **Appendix G**: Details about Rust's development and nightly Rust
+
+6. **Reading Approach**:
+   - There's no wrong way to read the book.
+   - Feel free to skip ahead if desired.
+   - If you encounter confusion, you can jump back to earlier chapters.
+
+7. **Learning from Error Messages**:
+   - Learning to read compiler error messages is crucial.
+   - Examples that don't compile will be provided, along with corresponding error messages.
+   - Be aware that random examples may not compile; check the context.
+   - Ferris icons indicate code behavior:
+     - Ferris with a question mark: Code doesn't compile.
+     - Ferris throwing up hands: Code panics.
+     - Ferris shrugging: Code doesn't produce desired behavior.
+
+8. **Guidance for Non-Compiling Code**:
+   - In most situations, the correct version of non-compiling code will be provided.
