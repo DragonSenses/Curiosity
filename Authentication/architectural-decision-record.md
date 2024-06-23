@@ -2984,3 +2984,75 @@ app.post("/submit", async (req, res) => {
   }
 });
 ```
+
+### Display secrets page correctly
+
+feat: Display secrets page correctly in auth app
+
+Currently, the secrets page is only a static page with a single secret. We need to update the GET middleware for the `/secrets` route.
+
+Previously, the GET secrets route had the following logic.
+
+```js
+app.get("/secrets", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("secrets");
+  } else {
+    res.redirect("/login");
+  }
+});
+```
+
+We no longer check if user is authenticated. The secrets page is no longer a privileged page, it will become public. Anyone should be able to see the collection of secrets display anonymously.
+
+feat: Make secrets page public in auth app
+
+The secrets page is no longer restricted to authenticated users. It will now be accessible to anyone, displaying the collection of secrets anonymously.
+
+```js
+app.get("/secrets", (req, res) => {
+ res.render("secrets");
+});
+```
+
+To do that we need to query the database by finding any Users whose `secret` field exists (i.e., not null). With these users we render the `secrets` page and handle any errors that may arise.
+
+feat: Retrieve users with secrets in the GET route
+
+```js
+app.get("/secrets", async (req, res) => {
+  try {
+    const foundUsers = await User.find({ secret: { $ne: null } });
+    res.render("secrets", { usersWithSecrets: foundUsers });
+  } catch (err) {
+    console.error(err);
+  }
+});
+```
+
+Next, let's modify the the `secrets.ejs` by mapping out each secret to render.
+
+feat: Display secrets for all users in auth app
+
+```html
+<%- include('partials/header') %>
+
+<div class="jumbotron text-center">
+  <div class="container">
+    <i class="fas fa-key fa-6x"></i>
+    <h1 class="display-3">You've Discovered My Secret!</h1>
+    
+    <% usersWithSecrets.forEach((user) => { %>
+      <p class="secret-text"><%=user.secret%></p>
+    <% }) %>
+
+    <!-- <p class="secret-text">My mom is my hero.</p> -->
+    <hr>
+    
+    <a class="btn btn-light btn-lg" href="/logout" role="button">Log Out</a>
+    <a class="btn btn-dark btn-lg" href="/submit" role="button">Submit a Secret</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+```
