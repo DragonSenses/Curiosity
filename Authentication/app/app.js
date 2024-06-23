@@ -120,8 +120,13 @@ app.get("/logout", (req, res) => {
   res.render("home");
 });
 
-app.get("/secrets", (req, res) => {
-  res.render("secrets");
+app.get("/secrets", async (req, res) => {
+  try {
+    const foundUsers = await User.find({ secret: { $ne: null } });
+    res.render("secrets", { usersWithSecrets: foundUsers });
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 app.get("/submit", (req, res) => {
