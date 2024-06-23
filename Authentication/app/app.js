@@ -121,12 +121,7 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/secrets", (req, res) => {
-  // Check if user is authenticated
-  if (req.isAuthenticated()) {
-    res.render("secrets");
-  } else {
-    res.redirect("/login");
-  }
+  res.render("secrets");
 });
 
 app.get("/submit", (req, res) => {
