@@ -115,6 +115,25 @@ fn main() {
 
 ### Building and Running a Cargo Project
 
+1. **Building and Running with Cargo:**
+   - To build your project using Cargo, run `cargo build` from your `hello_cargo` directory.
+   - The resulting executable file is located in `target/debug/hello_cargo` (or `target\debug\hello_cargo.exe` on Windows).
+   - By default, Cargo creates a debug build and places the binary in a `debug` directory.
+   - You can run the executable using `./target/debug/hello_cargo` (or `.\\target\\debug\\hello_cargo.exe` on Windows).
+
+2. **Cargo.lock File:**
+   - When you run `cargo build` for the first time, Cargo creates a `Cargo.lock` file at the top level.
+   - The `Cargo.lock` file keeps track of exact dependency versions.
+   - It's automatically managed by Cargo, and you won't need to modify it manually.
+
+3. **Using `cargo run`:**
+   - Instead of separately building and running, you can use `cargo run` to compile and execute the binary in one command.
+   - It's more convenient than specifying the whole path to the binary.
+
+4. **`cargo check`:**
+   - Use `cargo check` to quickly verify that your code compiles without producing an executable.
+   - It's faster than `cargo build` and useful for continuous code checking during development.
+
 Now let’s look at what’s different when we build and run the “Hello, world!”
 program with Cargo! From your *hello_cargo* directory, build your project by
 entering the following command:
@@ -186,3 +205,19 @@ speed up the process of letting you know if your project is still compiling! As
 such, many Rustaceans run `cargo check` periodically as they write their
 program to make sure it compiles. Then they run `cargo build` when they’re
 ready to use the executable.
+
+#### Cargo Summary
+
+Let’s recap what we’ve learned so far about Cargo:
+
+* We can create a project using `cargo new`.
+* We can build a project using `cargo build`.
+* We can build and run a project in one step using `cargo run`.
+* We can build a project without producing a binary to check for errors using
+  `cargo check`.
+* Instead of saving the result of the build in the same directory as our code,
+  Cargo stores it in the *target/debug* directory.
+
+An additional advantage of using Cargo is that the commands are the same no
+matter which operating system you’re working on. So, at this point, we’ll no
+longer provide specific instructions for Linux and macOS versus Windows.
