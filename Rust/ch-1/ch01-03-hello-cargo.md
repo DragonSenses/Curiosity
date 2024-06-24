@@ -221,3 +221,43 @@ Let’s recap what we’ve learned so far about Cargo:
 An additional advantage of using Cargo is that the commands are the same no
 matter which operating system you’re working on. So, at this point, we’ll no
 longer provide specific instructions for Linux and macOS versus Windows.
+
+### Building for Release
+
+When your project is finally ready for release, you can use `cargo build --release` to compile it with optimizations. This command will create an
+executable in *target/release* instead of *target/debug*. The optimizations
+make your Rust code run faster, but turning them on lengthens the time it takes
+for your program to compile. This is why there are two different profiles: one
+for development, when you want to rebuild quickly and often, and another for
+building the final program you’ll give to a user that won’t be rebuilt
+repeatedly and that will run as fast as possible. If you’re benchmarking your
+code’s running time, be sure to run `cargo build --release` and benchmark with
+the executable in *target/release*.
+
+### Cargo as Convention
+
+With simple projects, Cargo doesn’t provide a lot of value over just using
+`rustc`, but it will prove its worth as your programs become more intricate.
+Once programs grow to multiple files or need a dependency, it’s much easier to
+let Cargo coordinate the build.
+
+Even though the `hello_cargo` project is simple, it now uses much of the real
+tooling you’ll use in the rest of your Rust career. In fact, to work on any
+existing projects, you can use the following commands to check out the code
+using Git, change to that project’s directory, and build:
+
+```console
+$ git clone example.org/someproject
+$ cd someproject
+$ cargo build
+```
+
+For more information about Cargo, check out [its documentation](https://doc.rust-lang.org/cargo/).
+
+# Chapter 1 - Summary
+
+* Install the latest stable version of Rust using `rustup`
+* Update to a newer Rust version
+* Open locally installed documentation
+* Write and run a “Hello, world!” program using `rustc` directly
+* Create and run a new project using the conventions of Cargo
