@@ -66,11 +66,11 @@ Hello, world!
 
 The `run` command comes in handy when you need to rapidly iterate on a project, as we'll do in this game, quickly testing each iteration before moving on to the next one.
 
-Reopen the `src/main.rs` file. You’ll be writing all the code in this file.
+Reopen the `src/main.rs` file. You'll be writing all the code in this file.
 
 ## Processing a Guess
 
-The first part of the guessing game program will ask for user input, process that input, and check that the input is in the expected form. To start, we’ll allow the player to input a guess. Enter the code in Listing 2-1 into *src/main.rs*.
+The first part of the guessing game program will ask for user input, process that input, and check that the input is in the expected form. To start, we'll allow the player to input a guess. Enter the code in Listing 2-1 into *src/main.rs*.
 
 **Filename**: `src/main.rs`
 
@@ -120,3 +120,47 @@ Let's break down the Rust code:
      println!("Please input your guess.");
      ```
    - These lines provide prompts for the game and request user input.
+
+### Storing Values with Variables
+
+Next, create a *variable* to store the user input, like this:
+
+```rust,ignore
+  let mut guess = String::new();
+```
+
+We use the `let` statement to create the variable. Here's another example:
+
+```rust,ignore
+let apples = 5;
+```
+
+- This line creates a new variable named `apples` and binds it to the value 5. 
+- In Rust, variables are immutable by default, meaning once we give the variable a value, the value won't change. We'll be discussing this concept in detail in the ["Variables and Mutability"](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#variables-and-mutability) section in Chapter 3. 
+ 
+To make a variable mutable, we add `mut` before the variable name:
+
+```rust,ignore
+let apples = 5; // immutable
+let mut bananas = 5; // mutable
+```
+
+> Note: The `//` syntax starts a comment that continues until the end of the
+> line. Rust ignores everything in comments. We'll discuss comments in more
+> detail in [Chapter 3](https://doc.rust-lang.org/book/ch03-04-comments.html)
+
+1. **Creating a Mutable String Variable:**
+   - The line `let mut guess = String::new();` introduces a mutable variable named `guess`.
+   - The equal sign (`=`) binds a value to the variable.
+   - On the right side of the equal sign, we call `String::new()`, an associated function of the `String` type.
+     - `String::new()` function returns a new instance of a `String`. 
+   - [`String`](https://doc.rust-lang.org/std/string/struct.String.html) is a growable, UTF-8 encoded text type provided by the standard library.
+
+2. **Understanding Associated Functions:**
+   - The `::` syntax in the `::new` line indicates that `new` is an associated function of the `String` type
+   - **Associated functions** is a function that's implemented on a type, in this case String. 
+   - The `new` function creates a new, empty string.
+   - You'll find a `new` function on many types because it's a common name for a function that makes a new value of some kind.
+
+In summary, the line `let mut guess = String::new();` creates a mutable variable (`guess`) that is currently bound to a new, empty instance of a `String`.
+
