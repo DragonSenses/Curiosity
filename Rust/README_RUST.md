@@ -4,6 +4,8 @@
 [Rustlings course](https://github.com/rust-lang/rustlings/)
 [Rust by Example](https://doc.rust-lang.org/rust-by-example/)
 
+Note: This folder will contain reading notes and summarized sections from the Rust book to hone my learning.
+
 # Foreword
 
 1. **Empowerment**: Rust empowers programmers to reach farther and program with confidence across a wider variety of domains. Whether you're writing low-level systems code or high-level applications, Rust provides tools to help you succeed.
@@ -35,6 +37,22 @@ the most important groups.
 
 ### Teams of Developers
 
+- **Collaboration in Large Teams:**
+  - Rust is productive for collaborating among large teams with varying systems programming knowledge.
+  - The compiler catches subtle bugs (including concurrency issues) that might otherwise require extensive testing and manual code review.
+  - Low-level code is prone to various subtle bugs, which in most other languages can be caught only through extensive testing and careful code review by experienced developers
+  - In Rust, the compiler plays a gatekeeper role by refusing to compile code with these elusive bugs, including concurrency bugs.
+  - Developers can focus on program logic rather than debugging.
+
+- **Contemporary Developer Tools:**
+  - Rust introduces modern tools to the systems programming domain:
+    - **Cargo**: A dependency manager and build tool that simplifies dependency management across the Rust ecosystem.
+    - **Rustfmt**: Ensures consistent coding style among developers.
+    - **rust-analyzer**: Powers IDE integration for code completion and error messages.
+
+- **Productivity in Systems-Level Code:**
+  - By leveraging these tools, developers can maintain productivity while writing systems-level code.
+
 Rust is proving to be a productive tool for collaborating among large teams of
 developers with varying levels of systems programming knowledge. Low-level code
 is prone to various subtle bugs, which in most other languages can be caught
@@ -59,20 +77,15 @@ productive while writing systems-level code.
 
 ### Students
 
-Rust is for students and those who are interested in learning about systems
-concepts. Using Rust, many people have learned about topics like operating
-systems development. The community is very welcoming and happy to answer
-student questions. Through efforts such as this book, the Rust teams want to
-make systems concepts more accessible to more people, especially those new to
-programming.
+ - Rust is suitable for students and those interested in learning about systems concepts.
+ - Many people have used Rust to explore topics like operating systems development.
+ - The Rust community is welcoming and willing to assist students with their questions.
+ - Efforts like this book aim to make systems concepts more accessible, especially for newcomers to programming.
 
 ### Companies
 
-Hundreds of companies, large and small, use Rust in production for a variety of
-tasks, including command line tools, web services, DevOps tooling, embedded
-devices, audio and video analysis and transcoding, cryptocurrencies,
-bioinformatics, search engines, Internet of Things applications, machine
-learning, and even major parts of the Firefox web browser.
+ - Hundreds of companies, both large and small, use Rust in production.
+ - Rust serves various purposes, including command line tools, web services, DevOps, embedded devices, audio/video analysis, cryptocurrencies, bioinformatics, search engines, IoT applications, machine learning, and even parts of the Firefox web browser.
 
 ### Open Source Developers
 
@@ -82,20 +95,22 @@ language.
 
 ### People Who Value Speed and Stability
 
-Rust is for people who crave speed and stability in a language. By speed, we
-mean both how quickly Rust code can run and the speed at which Rust lets you
-write programs. The Rust compiler’s checks ensure stability through feature
-additions and refactoring. This is in contrast to the brittle legacy code in
-languages without these checks, which developers are often afraid to modify. By
-striving for zero-cost abstractions, higher-level features that compile to
-lower-level code as fast as code written manually, Rust endeavors to make safe
-code be fast code as well.
+- **Rust's Focus:**
+  - Rust caters to those who value both speed and stability in a programming language.
+  - Speed refers to runtime performance and development efficiency.
+    - i.e., how quickly Rust code can run and the speed at which Rust lets you write programs
+  - Rust's compiler checks ensure stability through feature additions and refactoring.
+  - Unlike brittle legacy code in languages lacking such checks, Rust encourages modification without fear.
 
-The Rust language hopes to support many other users as well; those mentioned
-here are merely some of the biggest stakeholders. Overall, Rust’s greatest
-ambition is to eliminate the trade-offs that programmers have accepted for
-decades by providing safety *and* productivity, speed *and* ergonomics. Give
-Rust a try and see if its choices work for you.
+- **Zero-Cost Abstractions:**
+  - Rust aims for zero-cost abstractions—high-level features that compile to efficient low-level code.
+  - Safe code should also be fast code.
+
+- **Broad User Base:**
+  - Rust aims to support diverse users beyond the mentioned stakeholders.
+  - Its ambition is to eliminate traditional trade-offs by providing safety, productivity, speed, and ergonomics.
+
+Overall, Rust’s greatest ambition is to eliminate the trade-offs that programmers have accepted for decades by providing safety *and* productivity, speed *and* ergonomics.
 
 ## How to Use This Book
 
