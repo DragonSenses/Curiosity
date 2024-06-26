@@ -164,3 +164,20 @@ let mut bananas = 5; // mutable
 
 In summary, the line `let mut guess = String::new();` creates a mutable variable (`guess`) that is currently bound to a new, empty instance of a `String`.
 
+### Receiving User Input
+
+1. The program includes input/output functionality from the standard library by importing `std::io` with `use std::io;`.
+2. To handle user input, it calls the `stdin()` function from the `io` module.
+  ```rust,ignore
+    io::stdin()
+        .read_line(&mut guess)
+  ```
+  - If we hadn't imported the `io` library with `use std::io;` at the beginning of the program we could still use the function by writing this function call as `std::io::stdin`.
+3. The `stdin()` function returns an instance of [`std::io::Stdin`](https://doc.rust-lang.org/std/io/struct.Stdin.html), representing a handle to the standard input for the terminal.
+2. The line `.read_line(&mut guess)` invokes the [`read_line`](https://doc.rust-lang.org/std/io/struct.Stdin.html#method.read_line) method on the standard input handle to read input from the user.
+3. The argument `&mut guess` specifies the mutable string where the user input will be stored.
+4. The full job of `read_line` is to take whatever the user types into standard input and append that into a string (without overwriting its contents), so we therefore pass that string as an argument. The string argument needs to be mutable so the method can change the string's content.
+5. The `&` indicates that this argument is a *reference*, which gives you a way to let multiple parts of your code access one piece of data without needing to copy that data into memory multiple times.
+
+Remember that references in Rust are immutable by default, so we use `&mut guess` to make it mutable. For more details on references, refer to Chapter 4 of the Rust documentation.
+
