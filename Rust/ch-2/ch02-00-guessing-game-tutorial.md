@@ -234,3 +234,28 @@ warning: `guessing_game` (bin "guessing_game") generated 1 warning
 Rust warns that you haven't used the `Result` value returned from `read_line`, indicating that the program hasn't handled a possible error.
 
 The right way to suppress the warning is to actually write error-handling code, but in our case we just want to crash this program when a problem occurs, so we can use `expect`. You'll learn about recovering from errors in [Chapter 9](https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html).
+
+#### Result recap
+
+1. **What is `Result`?**
+   - `Result` is a built-in enum in the Rust standard library.
+   - It has two variants:
+     - `Ok(T)`: Represents success and contains a value of type `T`.
+     - `Err(E)`: Represents failure and contains an error of type `E`.
+
+2. **Purpose of `Result`:**
+   - `Result` is used for functions that can return an error.
+   - It encodes error-handling information.
+
+3. **Methods on `Result`:**
+   - `expect`: If an instance of `Result` is an `Err` value, calling `expect` will crash the program and display the specified error message. If it's an `Ok` value, `expect` returns the contained value.
+   - Example:
+     ```rust
+     let result: Result<i32, &str> = Ok(-3);
+     let value = result.expect("An error occurred");
+     ```
+
+4. **Handling Warnings:**
+   - When using `Result`, Rust warns if you don't handle the returned value.
+   - To suppress the warning, you can use `let _ = ...` to ignore the result.
+   - In our case, we're intentionally crashing the program with `expect`.
