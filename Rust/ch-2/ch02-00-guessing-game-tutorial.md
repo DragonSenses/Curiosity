@@ -302,3 +302,22 @@ You guessed: 6
 
 At this point, the first part of the game is done: we're getting input from the keyboard and then printing it.
 
+## Generating a Secret Number
+
+1. **Purpose:**
+   - We want to create a secret number for the guessing game.
+   - The secret number should be different each time to keep the game interesting.
+   - We'll use a random number between 1 and 100.
+  - Rust doesn't yet include random number functionality in its standard library. However, the Rust team does provide a [`rand` crate](https://crates.io/crates/rand) with said functionality.
+
+2. **`rand` Crate:**
+   - The `rand` crate provides utilities for random number generation in Rust.
+   - It includes functions to generate random integers, floating-point numbers, and more.
+
+3. **Example:**
+   - To generate a random integer that fits in an `i8`, you can use:
+     ```rust
+     let random_i8: i8 = rand::random();
+     ```
+   - For a random floating-point number that fits in an `f32`, you can use similar methods.
+
