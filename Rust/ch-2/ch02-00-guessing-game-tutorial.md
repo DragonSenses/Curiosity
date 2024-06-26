@@ -259,3 +259,29 @@ The right way to suppress the warning is to actually write error-handling code, 
    - When using `Result`, Rust warns if you don't handle the returned value.
    - To suppress the warning, you can use `let _ = ...` to ignore the result.
    - In our case, we're intentionally crashing the program with `expect`.
+  
+### Printing Values with `println!` Placeholders
+
+Aside from the closing curly bracket, there's only one more line to discuss in the code so far:
+
+```rust
+    println!("You guessed: {}", guess);
+```
+
+1. `println!`: This is a Rust macro (denoted by the exclamation mark). It prints formatted text to the standard output (usually the console).
+2. `"You guessed: {}"`: This is the format string. The `{}` acts as a placeholder for the value that will be inserted.
+3. `, guess`: The comma-separated expression(s) following the format string provide the value(s) to be inserted into the placeholders. In this case, it inserts the value of the `guess` variable.
+
+So, when executed, this line will print the user's guessed value along with the text "You guessed: ".
+
+Printing a variable and the result of an expression in one call to `println!` would look like this:
+
+```rust
+let x = 5;
+let y = 10;
+
+println!("x = {x} and y + 2 = {}", y + 2);
+```
+
+This code would print `x = 5 and y + 2 = 12`.
+
