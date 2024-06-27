@@ -380,3 +380,16 @@ $ cargo build
 ```
 
 These lines show that Cargo only updates the build with your tiny change to the *src/main.rs* file. Your dependencies haven't changed, so Cargo knows it can reuse what it has already downloaded and compiled for those.
+
+#### Ensuring Reproducible Builds with the *Cargo.lock* File
+
+- **Cargo and Reproducible Builds**:
+  - Cargo ensures that you can rebuild the same artifact consistently.
+  - It uses only the versions of dependencies specified until you indicate otherwise.
+  - When you build a project for the first time, Cargo determines compatible dependency versions and writes them to the `Cargo.lock` file.
+  - The `Cargo.lock` file records dependency versions for reproducibility.
+  - In subsequent builds, Cargo uses the versions specified in `Cargo.lock`, ensuring reproducibility.
+  - In future builds, Cargo uses the versions specified in `Cargo.lock`.
+  - This maintains consistency, and your project remains at a specific version until explicitly upgraded.
+  - It's common practice to include the `Cargo.lock` file in source control.
+
