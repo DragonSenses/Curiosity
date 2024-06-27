@@ -393,3 +393,34 @@ These lines show that Cargo only updates the build with your tiny change to the 
   - This maintains consistency, and your project remains at a specific version until explicitly upgraded.
   - It's common practice to include the `Cargo.lock` file in source control.
 
+#### Updating a Crate to Get a New Version
+
+- **Updating Crates with Cargo**:
+  - To update a crate, use `cargo update`.
+  - It ignores the `Cargo.lock` file and finds the latest versions within your specified range in `Cargo.toml`.
+
+  - Next `cargo build` will reevaluate dependencies based on the new version.
+
+- **Example: Update rand Crate**
+  - For example, if the `rand` crate has versions 0.8.6 and 0.9.0:
+    - Running `cargo update` will update to 0.8.6.
+```sh
+$ cargo update
+    Updating crates.io index
+    Updating rand v0.8.5 -> v0.8.6
+```
+  - Cargo ignores the 0.9.0 release. At this point, you would also notice a change in your *Cargo.lock* file noting that the version of the `rand` crate you are now using is 0.8.6. 
+  - To use `rand` version 0.9.0 or any version in the 0.9.*x* series, you'd have to update the *Cargo.toml* file to look like this instead:
+
+  ```toml
+  [dependencies]
+  rand = "0.9.0"
+  ```
+
+  - The next time you run `cargo build`, Cargo will update the registry of crates available and reevaluate your `rand` requirements according to the new version you have specified.
+
+- **Cargo Ecosystem**:
+  - [Cargo](https://doc.rust-lang.org/cargo/) simplifies library reuse in Rust projects.
+    - [Cargo ecosystem](https://doc.rust-lang.org/cargo/reference/publishing.html)
+  - It allows assembling smaller projects from various packages.
+
