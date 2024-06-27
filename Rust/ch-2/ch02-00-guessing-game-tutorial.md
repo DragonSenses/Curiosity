@@ -528,3 +528,21 @@ fn main() {
 
 **Listing 2-4**: Handling the possible return values of comparing two numbers
 
+1. `std::cmp::Ordering`
+  - First we add another `use` statement, bringing a type called `std::cmp::Ordering` into scope from the standard library. 
+  - The `Ordering` type is another enum and has the variants `Less`, `Greater`, and `Equal`. 
+    - These are the three outcomes that are possible when you compare two values.
+
+2. `Ordering` type
+  - Then we add five new lines at the bottom that use the `Ordering` type. 
+  - The `cmp` method compares two values and can be called on anything that can be compared. 
+    - It takes a reference to whatever you want to compare with: here it’s comparing `guess` to `secret_number`. Then it returns a variant of the `Ordering` enum we brought into scope with the `use` statement. 
+    - We use a [`match`](https://doc.rust-lang.org/book/ch06-02-match.html) expression to decide what to do next based on which variant of `Ordering` was returned from the call to `cmp` with the values in `guess` and `secret_number`.
+
+3. `match` expression
+  - A `match` expression is made up of *arms*. 
+  - An arm consists of a *pattern* to match against, and the code that should be run if the value given to `match` fits that arm’s pattern. 
+  - Rust takes the value given to `match` and looks through each arm’s pattern in turn. 
+
+Patterns and the `match` construct are powerful Rust features: they let you express a variety of situations your code might encounter and they make sure you handle them all. These features will be covered in detail in Chapter 6 and Chapter 18, respectively.
+
