@@ -502,3 +502,29 @@ You guessed: 5
 
 You should get different random numbers, and they should all be numbers between 1 and 100.
 
+## Comparing the Guess to the Secret Number
+
+Now that we have user input and a random number, we can compare them. That step is shown in Listing 2-4. Note that this code won’t compile just yet, as we will explain.
+
+**Filename**: `src/main.rs`
+
+```rust,ignore,does_not_compile
+use rand::Rng;
+use std::cmp::Ordering;
+use std::io;
+
+fn main() {
+    // --snip--
+
+    println!("You guessed: {guess}");
+
+    match guess.cmp(&secret_number) {
+        Ordering::Less => println!("Too small!"),
+        Ordering::Greater => println!("Too big!"),
+        Ordering::Equal => println!("You win!"),
+    }
+}
+```
+
+**Listing 2-4**: Handling the possible return values of comparing two numbers
+
