@@ -211,7 +211,7 @@ If this instance of `Result` is an `Ok` value `expect` will take the return valu
 
 If you don't call `expect`, the program will compile, but you'll get a warning:
 
-```console
+```sh
 $ cargo build
    Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
 warning: unused `Result` that must be used
@@ -289,7 +289,7 @@ This code would print `x = 5 and y + 2 = 12`.
 
 Let's test the first part of the guessing game. Run it using `cargo run`:
 
-```console
+```sh
 $ cargo run
    Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
     Finished dev [unoptimized + debuginfo] target(s) in 6.44s
@@ -426,7 +426,7 @@ $ cargo update
 
 ### Generating a Random Number
 
-Let’s start using `rand` to generate a number to guess. The next step is to update *src/main.rs*, as shown in Listing 2-3.
+Let's start using `rand` to generate a number to guess. The next step is to update *src/main.rs*, as shown in Listing 2-3.
 
 **Listing 2-3**: Adding code to generate a random number
 
@@ -460,11 +460,45 @@ fn main() {
        - The `Rng` trait defines methods that random number generators implement, and this trait must be in scope for us to use those methods.
 
 2. **Random Number Generation**:
-  - Next, we’re adding two lines in the middle.
-    - In the first line, we call the `rand::thread_rng` function that gives us the particular random number generator we’re going to use: one that is local to the current thread of execution and is seeded by the operating system.
+  - Next, we're adding two lines in the middle.
+    - In the first line, we call the `rand::thread_rng` function that gives us the particular random number generator we're going to use: one that is local to the current thread of execution and is seeded by the operating system.
   - Then we call the `gen_range` method on the random number generator. 
     - This method is defined by the `Rng` trait that we brought into scope with the `use rand::Rng;` statement. 
     - The `gen_range` method takes a range expression as an argument and generates a random number in the range. 
-    - The kind of range expression we’re using here takes the form `start..=end` and is inclusive on the lower and upper bounds, so we need to specify `1..=100` to request a number between 1 and 100.
+    - The kind of range expression we're using here takes the form `start..=end` and is inclusive on the lower and upper bounds, so we need to specify `1..=100` to request a number between 1 and 100.
 
-> Note: When working with Rust crates, it's essential to consult their documentation for guidance on using traits, methods, and functions. Cargo, the Rust package manager, provides a convenient feature: running `cargo doc --open` generates local documentation for all your dependencies and opens it in your browser. If you’re interested in other functionality in the `rand` crate, for example, run `cargo doc --open` and click `rand` in the sidebar on the left.
+> Note: When working with Rust crates, it's essential to consult their documentation for guidance on using traits, methods, and functions. Cargo, the Rust package manager, provides a convenient feature: running `cargo doc --open` generates local documentation for all your dependencies and opens it in your browser. If you're interested in other functionality in the `rand` crate, for example, run `cargo doc --open` and click `rand` in the sidebar on the left.
+
+The second new line prints the secret number. 
+
+```rust
+    println!("The secret number is: {secret_number}");
+```
+
+This is useful while we're developing the program to be able to test it, but we'll delete it from the final version. It's not much of a game if the program prints the answer as soon as it starts!
+
+Try running the program a few times:
+
+```sh
+$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished dev [unoptimized + debuginfo] target(s) in 2.53s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 7
+Please input your guess.
+4
+You guessed: 4
+
+$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 83
+Please input your guess.
+5
+You guessed: 5
+```
+
+You should get different random numbers, and they should all be numbers between 1 and 100.
+
