@@ -125,13 +125,13 @@ Let's break down the Rust code:
 
 Next, create a *variable* to store the user input, like this:
 
-```rust,ignore
+```rust
   let mut guess = String::new();
 ```
 
 We use the `let` statement to create the variable. Here's another example:
 
-```rust,ignore
+```rust
 let apples = 5;
 ```
 
@@ -140,7 +140,7 @@ let apples = 5;
  
 To make a variable mutable, we add `mut` before the variable name:
 
-```rust,ignore
+```rust
 let apples = 5; // immutable
 let mut bananas = 5; // mutable
 ```
@@ -168,7 +168,7 @@ In summary, the line `let mut guess = String::new();` creates a mutable variable
 
 1. The program includes input/output functionality from the standard library by importing `std::io` with `use std::io;`.
 2. To handle user input, it calls the `stdin()` function from the `io` module.
-  ```rust,ignore
+  ```rust
     io::stdin()
         .read_line(&mut guess)
   ```
@@ -185,13 +185,13 @@ Remember that references in Rust are immutable by default, so we use `&mut guess
 
 We're still working on this line of code. We're now discussing a third line of text, but note that it's still part of a single logical line of code. The next part is this method:
 
-```rust,ignore
+```rust
         .expect("Failed to read line");
 ```
 
 We could have written this code as:
 
-```rust,ignore
+```rust
 io::stdin().read_line(&mut guess).expect("Failed to read line");
 ```
 
@@ -424,3 +424,47 @@ $ cargo update
     - [Cargo ecosystem](https://doc.rust-lang.org/cargo/reference/publishing.html)
   - It allows assembling smaller projects from various packages.
 
+### Generating a Random Number
+
+Let’s start using `rand` to generate a number to guess. The next step is to update *src/main.rs*, as shown in Listing 2-3.
+
+**Listing 2-3**: Adding code to generate a random number
+
+```rust
+use std::io;
+use rand::Rng;
+
+fn main() {
+    println!("Guess the number!");
+
+    let secret_number = rand::thread_rng().gen_range(1..=100);
+
+    println!("The secret number is: {secret_number}");
+
+    println!("Please input your guess.");
+
+    let mut guess = String::new();
+
+    io::stdin()
+        .read_line(&mut guess)
+        .expect("Failed to read line");
+
+    println!("You guessed: {guess}");
+}
+```
+
+1. **Importing Dependencies**:
+   - The code starts by importing the necessary dependencies:
+     - `std::io` for input/output operations.
+     - `rand::Rng` trait for random number generation.
+       - The `Rng` trait defines methods that random number generators implement, and this trait must be in scope for us to use those methods.
+
+2. **Random Number Generation**:
+  - Next, we’re adding two lines in the middle.
+    - In the first line, we call the `rand::thread_rng` function that gives us the particular random number generator we’re going to use: one that is local to the current thread of execution and is seeded by the operating system.
+  - Then we call the `gen_range` method on the random number generator. 
+    - This method is defined by the `Rng` trait that we brought into scope with the `use rand::Rng;` statement. 
+    - The `gen_range` method takes a range expression as an argument and generates a random number in the range. 
+    - The kind of range expression we’re using here takes the form `start..=end` and is inclusive on the lower and upper bounds, so we need to specify `1..=100` to request a number between 1 and 100.
+
+> Note: When working with Rust crates, it's essential to consult their documentation for guidance on using traits, methods, and functions. Cargo, the Rust package manager, provides a convenient feature: running `cargo doc --open` generates local documentation for all your dependencies and opens it in your browser. If you’re interested in other functionality in the `rand` crate, for example, run `cargo doc --open` and click `rand` in the sidebar on the left.
