@@ -709,3 +709,67 @@ Nice! Even though spaces were added before the guess, the program still figured 
 
 We have most of the game working now, but the user can make only one guess. Let's change that by adding a loop!
 
+## Allowing Multiple Guesses with Looping
+
+The `loop` keyword creates an infinite loop. We’ll add a loop to give users more chances at guessing the number:
+
+**Filename**: `src/main.rs`
+
+```rust,ignore
+    // --snip--
+
+    println!("The secret number is: {secret_number}");
+
+    loop {
+        println!("Please input your guess.");
+
+        // --snip--
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => println!("You win!"),
+        }
+    }
+}
+```
+
+1. **Loop Implementation:**
+   - We've moved the guess input prompt and related logic into a loop.
+   - Be sure to indent the lines inside the loop another four spaces each and run the program again.
+   - The program now now asks for another guess forever, which actually introduces a new problem
+  
+2. **New Problem: No Quit Option:**
+   - The user doesn't have a way to quit the program and exit gracefully.
+
+3. **User-Initiated Quit:**
+   - The user can interrupt the program using the keyboard shortcut `[ctrl]`-`[c]`.
+   - Additionally, if the user enters a non-numeric answer (which would cause a `parse` error), the program will crash.
+   - We can leverage this behavior to provide an escape option for the user.
+
+```sh
+$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.50s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 59
+Please input your guess.
+45
+You guessed: 45
+Too small!
+Please input your guess.
+60
+You guessed: 60
+Too big!
+Please input your guess.
+59
+You guessed: 59
+You win!
+Please input your guess.
+quit
+thread 'main' panicked at 'Please type a number!: ParseIntError { kind: InvalidDigit }', src/main.rs:28:47
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+```
+
+Typing `quit` will quit the game, but as you'll notice, so will entering any other non-number input. This is suboptimal, to say the least; we want the game to also stop when the correct number is guessed.
