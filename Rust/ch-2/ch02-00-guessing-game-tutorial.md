@@ -645,3 +645,23 @@ We'll cover the concept further in [Chapter 3](https://doc.rust-lang.org/book/ch
 let guess: u32 = guess.trim().parse().expect("Please type a number!");
 ```
 
+Let's see how the `guess` variable is bound to the expression `guess.trim().parse()`:
+
+1. **Binding the New Variable:**
+   - We create a new variable named `guess` and bind it to the expression `guess.trim().parse()`.
+   - The `guess` in the expression refers to the original `guess` variable that contained the user input as a string.
+
+2. **Trimming Whitespace:**
+   - The `trim` method is called on a `String` instance (the original `guess`).
+   - It removes any leading or trailing whitespace from the string.
+   - Trimming is necessary to compare the cleaned string to the `u32` type, which can only hold numerical data.
+
+3. **Handling Newline Characters:**
+   -  The user must press `[enter]` to satisfy `read_line` and input their guess
+   - When the user presses `[enter]` after typing their guess, it adds a newline character (e.g., `\n`) to the string.
+   - For example, if the user enters `[5]` and presses `[enter]`, the `guess` string looks like this: `5\n`.
+   - On Windows, pressing `[enter]` results in a carriage return and a newline (`\r\n`).
+
+4. **Result After Trimming:**
+   - The `trim` method eliminates the newline character, resulting in just the numeric value `5`.
+
