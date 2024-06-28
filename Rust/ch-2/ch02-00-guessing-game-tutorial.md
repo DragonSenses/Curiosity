@@ -504,7 +504,7 @@ You should get different random numbers, and they should all be numbers between 
 
 ## Comparing the Guess to the Secret Number
 
-Now that we have user input and a random number, we can compare them. That step is shown in Listing 2-4. Note that this code won’t compile just yet, as we will explain.
+Now that we have user input and a random number, we can compare them. That step is shown in Listing 2-4. Note that this code won't compile just yet, as we will explain.
 
 **Filename**: `src/main.rs`
 
@@ -536,13 +536,13 @@ fn main() {
 2. `Ordering` type
   - Then we add five new lines at the bottom that use the `Ordering` type. 
   - The `cmp` method compares two values and can be called on anything that can be compared. 
-    - It takes a reference to whatever you want to compare with: here it’s comparing `guess` to `secret_number`. Then it returns a variant of the `Ordering` enum we brought into scope with the `use` statement. 
+    - It takes a reference to whatever you want to compare with: here it's comparing `guess` to `secret_number`. Then it returns a variant of the `Ordering` enum we brought into scope with the `use` statement. 
     - We use a [`match`](https://doc.rust-lang.org/book/ch06-02-match.html) expression to decide what to do next based on which variant of `Ordering` was returned from the call to `cmp` with the values in `guess` and `secret_number`.
 
 3. `match` expression
   - A `match` expression is made up of *arms*. 
-  - An arm consists of a *pattern* to match against, and the code that should be run if the value given to `match` fits that arm’s pattern. 
-  - Rust takes the value given to `match` and looks through each arm’s pattern in turn. 
+  - An arm consists of a *pattern* to match against, and the code that should be run if the value given to `match` fits that arm's pattern. 
+  - Rust takes the value given to `match` and looks through each arm's pattern in turn. 
 
 Patterns and the `match` construct are powerful Rust features: they let you express a variety of situations your code might encounter and they make sure you handle them all. These features will be covered in detail in Chapter 6 and Chapter 18, respectively.
 
@@ -555,3 +555,42 @@ Patterns and the `match` construct are powerful Rust features: they let you expr
 5. The next arm's pattern is `Ordering::Greater`, which *does* match the value. Consequently, the associated code executes, printing `"Too big!"` to the screen.
 6. The `match` expression ends after the first successful match, so it doesn't consider the last arm in this scenario.
 
+However, the code in Listing 2-4 won't compile yet. Let's try it:
+
+```console
+$ cargo build
+   Compiling libc v0.2.86
+   Compiling getrandom v0.2.2
+   Compiling cfg-if v1.0.0
+   Compiling ppv-lite86 v0.2.10
+   Compiling rand_core v0.6.2
+   Compiling rand_chacha v0.3.0
+   Compiling rand v0.8.5
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+error[E0308]: mismatched types
+  --> src/main.rs:22:21
+   |
+22 |     match guess.cmp(&secret_number) {
+   |                 --- ^^^^^^^^^^^^^^ expected `&String`, found `&{integer}`
+   |                 |
+   |                 arguments to this method are incorrect
+   |
+   = note: expected reference `&String`
+              found reference `&{integer}`
+note: method defined here
+  --> /rustc/07dca489ac2d933c78d3c5158e3f43beefeb02ce/library/core/src/cmp.rs:814:8
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `guessing_game` (bin "guessing_game") due to 1 previous error
+```
+
+The core of the error states that there are *mismatched types*. Rust has a
+strong, static type system. However, it also has type inference. When we wrote
+`let mut guess = String::new()`, Rust was able to infer that `guess` should be
+a `String` and didn’t make us write the type. The `secret_number`, on the other
+hand, is a number type. A few of Rust’s number types can have a value between 1
+and 100: `i32`, a 32-bit number; `u32`, an unsigned 32-bit number; `i64`, a
+64-bit number; as well as others. Unless otherwise specified, Rust defaults to
+an `i32`, which is the type of `secret_number` unless you add type information
+elsewhere that would cause Rust to infer a different numerical type. The reason
+for the error is that Rust cannot compare a string and a number type.
