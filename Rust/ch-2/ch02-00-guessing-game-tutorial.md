@@ -625,3 +625,23 @@ The line is:
 ```rust,ignore
 let guess: u32 = guess.trim().parse().expect("Please type a number!");
 ```
+
+We create a variable named `guess`. But wait, doesn’t the program already have a variable named `guess`? It does, but helpfully Rust allows us to shadow the previous value of `guess` with a new one.
+
+*Shadowing* lets us reuse the `guess` variable name rather than forcing us to create two unique variables, such as `guess_str` and `guess`.
+
+1. **Variable Shadowing:**
+   - When we create a new variable with the same name as an existing one, we're effectively "shadowing" the original variable.
+   - Rust allows us to reuse the same variable name within a narrower scope, even if it was previously defined.
+   - This feature is helpful because it avoids the need to invent new variable names (e.g., `guess_str` and `guess`) when we want to update or transform an existing value.
+
+2. **Use Cases for Shadowing:**
+   - Shadowing is commonly used when converting a value from one type to another.
+   - For instance, we might start with a `String` named `guess`, but then shadow it with a new value of a different type (e.g., an integer) after parsing user input.
+
+We'll cover the concept further in [Chapter 3](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#shadowing).
+
+```rust,ignore
+let guess: u32 = guess.trim().parse().expect("Please type a number!");
+```
+
