@@ -590,7 +590,7 @@ The core of the error states that there are *mismatched types*.
    - Rust has a **strong, static type system**, but it also supports **type inference**.
    - When we wrote `let mut guess = String::new()`, Rust inferred that `guess` should be a `String` without requiring us to explicitly specify the type.
    - However, the `secret_number` is a numeric type (e.g., `i32`, `u32`, or `i64`).
-     - A few of Rust’s number types can have a value between 1 and 100: `i32`, a 32-bit number; `u32`, an unsigned 32-bit number; `i64`, a 64-bit number; as well as others.
+     - A few of Rust's number types can have a value between 1 and 100: `i32`, a 32-bit number; `u32`, an unsigned 32-bit number; `i64`, a 64-bit number; as well as others.
    - By default, Rust assumes `secret_number` is an `i32` unless we provide explicit type information elsewhere that would cause Rust to infer a different numerical type.
 
 2. **The Error:**
@@ -626,7 +626,7 @@ The line is:
 let guess: u32 = guess.trim().parse().expect("Please type a number!");
 ```
 
-We create a variable named `guess`. But wait, doesn’t the program already have a variable named `guess`? It does, but helpfully Rust allows us to shadow the previous value of `guess` with a new one.
+We create a variable named `guess`. But wait, doesn't the program already have a variable named `guess`? It does, but helpfully Rust allows us to shadow the previous value of `guess` with a new one.
 
 *Shadowing* lets us reuse the `guess` variable name rather than forcing us to create two unique variables, such as `guess_str` and `guess`.
 
@@ -664,4 +664,29 @@ Let's see how the `guess` variable is bound to the expression `guess.trim().pars
 
 4. **Result After Trimming:**
    - The `trim` method eliminates the newline character, resulting in just the numeric value `5`.
+
+Info about the `parse` method, type annotations, and handling potential errors in Rust:
+
+1. **The `parse` Method:**
+   - The [`parse` method](https://doc.rust-lang.org/std/primitive.str.html#method.parse) converts a string to another type.
+   - In our case, we use it to convert a string (user input) to a numeric value.
+
+2. **Type Annotation (`let guess: u32`):**
+   - We need to tell Rust the exact number type we want (via type annotation) by using `let guess: u32`. 
+   - The colon (`:`) after `guess` indicates to Rust that we're annotating the variable's type.
+   - Here, we choose `u32`, an unsigned 32-bit integer, as a good default choice for a small positive number.
+   - You'll learn about other number types in [Chapter 3](https://doc.rust-lang.org/book/ch03-02-data-types.html#integer-types).
+  
+3. **Inference for `secret_number`:**
+   - The `u32` annotation and the comparison with `secret_number` means Rust will infer that `secret_number` should be a `u32` as well.
+   - Now the comparison will be between two values of the same type.
+
+4. **Handling Errors with `Result`:**
+   - The `parse` method will only work on characters that can logically be converted into numbers and so can easily cause errors. 
+   - The `parse` method may fail if the string cannot logically be converted into a number (e.g., if it contains non-numeric characters like emojis).
+   - If, for example, the string contained `A👍%`, there would be no way to convert that to a number. Because it might fail, the `parse` method returns a `Result` type, much as the `read_line` method does (discussed earlier in ["Handling Potential Failure with `Result`"](https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html#handling-potential-failure-with-result)).
+   - We'll treat this `Result` the same way by using the `expect` method again.
+   - We use the `expect` method to handle potential errors:
+     - If `parse` returns an `Err` variant because it couldn't create a number from the string, the program crashes and displays the specified error message.
+     - If `parse` can successfully convert the string to a number, it returns the `Ok` variant of `Result`, and `expect` will return the number that we want from the `Ok` value.
 
