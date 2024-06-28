@@ -584,13 +584,44 @@ For more information about this error, try `rustc --explain E0308`.
 error: could not compile `guessing_game` (bin "guessing_game") due to 1 previous error
 ```
 
-The core of the error states that there are *mismatched types*. Rust has a
-strong, static type system. However, it also has type inference. When we wrote
-`let mut guess = String::new()`, Rust was able to infer that `guess` should be
-a `String` and didn’t make us write the type. The `secret_number`, on the other
-hand, is a number type. A few of Rust’s number types can have a value between 1
-and 100: `i32`, a 32-bit number; `u32`, an unsigned 32-bit number; `i64`, a
-64-bit number; as well as others. Unless otherwise specified, Rust defaults to
-an `i32`, which is the type of `secret_number` unless you add type information
-elsewhere that would cause Rust to infer a different numerical type. The reason
-for the error is that Rust cannot compare a string and a number type.
+The core of the error states that there are *mismatched types*. 
+
+1. **Type Inference and Explicit Type Annotations:**
+   - Rust has a **strong, static type system**, but it also supports **type inference**.
+   - When we wrote `let mut guess = String::new()`, Rust inferred that `guess` should be a `String` without requiring us to explicitly specify the type.
+   - However, the `secret_number` is a numeric type (e.g., `i32`, `u32`, or `i64`).
+     - A few of Rust’s number types can have a value between 1 and 100: `i32`, a 32-bit number; `u32`, an unsigned 32-bit number; `i64`, a 64-bit number; as well as others.
+   - By default, Rust assumes `secret_number` is an `i32` unless we provide explicit type information elsewhere that would cause Rust to infer a different numerical type.
+
+2. **The Error:**
+   - The error occurs because Rust cannot directly compare a string (`guess`) and a numeric type (`secret_number`).
+
+Ultimately, we want to convert the `String` the program reads as input into a number type so we can compare it numerically to the secret number. We do so by adding this line to the `main` function body:
+
+**Filename**: `src/main.rs`
+
+```rust,ignore
+    // --snip--
+
+    let mut guess = String::new();
+
+    io::stdin()
+        .read_line(&mut guess)
+        .expect("Failed to read line");
+
+    let guess: u32 = guess.trim().parse().expect("Please type a number!");
+
+    println!("You guessed: {guess}");
+
+    match guess.cmp(&secret_number) {
+        Ordering::Less => println!("Too small!"),
+        Ordering::Greater => println!("Too big!"),
+        Ordering::Equal => println!("You win!"),
+    }
+```
+
+The line is:
+
+```rust,ignore
+let guess: u32 = guess.trim().parse().expect("Please type a number!");
+```
