@@ -557,7 +557,7 @@ Patterns and the `match` construct are powerful Rust features: they let you expr
 
 However, the code in Listing 2-4 won't compile yet. Let's try it:
 
-```console
+```sh
 $ cargo build
    Compiling libc v0.2.86
    Compiling getrandom v0.2.2
@@ -689,4 +689,23 @@ Info about the `parse` method, type annotations, and handling potential errors i
    - We use the `expect` method to handle potential errors:
      - If `parse` returns an `Err` variant because it couldn't create a number from the string, the program crashes and displays the specified error message.
      - If `parse` can successfully convert the string to a number, it returns the `Ok` variant of `Result`, and `expect` will return the number that we want from the `Ok` value.
+
+Let's run the program now:
+
+```sh
+$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.43s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 58
+Please input your guess.
+  76
+You guessed: 76
+Too big!
+```
+
+Nice! Even though spaces were added before the guess, the program still figured out that the user guessed 76. Run the program a few times to verify the different behavior with different kinds of input: guess the number correctly, guess a number that is too high, and guess a number that is too low.
+
+We have most of the game working now, but the user can make only one guess. Let's change that by adding a loop!
 
