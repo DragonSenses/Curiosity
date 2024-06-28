@@ -546,3 +546,12 @@ fn main() {
 
 Patterns and the `match` construct are powerful Rust features: they let you express a variety of situations your code might encounter and they make sure you handle them all. These features will be covered in detail in Chapter 6 and Chapter 18, respectively.
 
+**Example:** Let's walk through an example with the `match` expression we use here.
+
+1. The user guesses 50, and the secret number is 38.
+2. The `cmp` method compares 50 to 38 and returns `Ordering::Greater` because 50 is indeed greater than 38.
+3. The `match` expression gets the `Ordering::Greater` value and evaluates each arm's pattern.
+4. It checks the first arm's pattern, which is `Ordering::Less`. Since `Ordering::Greater` doesn't match `Ordering::Less`, it ignores the code in that arm and moves to the next arm.
+5. The next arm's pattern is `Ordering::Greater`, which *does* match the value. Consequently, the associated code executes, printing `"Too big!"` to the screen.
+6. The `match` expression ends after the first successful match, so it doesn't consider the last arm in this scenario.
+
