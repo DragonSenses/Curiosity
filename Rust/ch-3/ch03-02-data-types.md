@@ -40,3 +40,45 @@ error: could not compile `no_type_annotations` (bin "no_type_annotations") due t
 ```
 
 You'll see different type annotations for other data types.
+
+### Scalar Types
+
+A *scalar* type represents a single value. 
+
+Rust has four primary scalar types:
+
+1. **Integer Types**:
+   - Integers represent whole numbers without fractional components.
+   - Rust provides various integer types, both signed and unsigned:
+     - `i8`, `i16`, `i32`, `i64`, `i128`: Signed integers with specific bit sizes.
+     - `u8`, `u16`, `u32`, `u64`, `u128`: Unsigned integers with specific bit sizes.
+     - `isize`, `usize`: Architecture-dependent signed and unsigned integers.
+   - Example:
+     ```rust
+     let my_number: i32 = 42;
+     ```
+
+2. **Floating-Point Numbers**:
+   - Represent real numbers with fractional components.
+   - Two variants: `f32` (single precision) and `f64` (double precision).
+   - Example:
+     ```rust
+     let pi_approx: f64 = 3.14159;
+     ```
+
+3. **Booleans**:
+   - Represent true or false values.
+   - Type: `bool`.
+   - Example:
+     ```rust
+     let is_sunny: bool = true;
+     ```
+
+4. **Characters**:
+   - Represent single Unicode characters.
+   - Type: `char`.
+   - Example:
+     ```rust
+     let first_letter: char = 'A';
+     ```
+
