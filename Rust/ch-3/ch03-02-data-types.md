@@ -187,3 +187,25 @@ When choosing an integer type, consider the following:
     - In short, values greater than the maximum value the type can hold "wrap around" to the minimum of the values the type can hold.
     - In the case of a `u8`, the value 256 becomes 0, the value 257 becomes 1, and so on. The program won't panic, but the variable will have a value that probably isn't what you were expecting it to have. Relying on integer overflow's wrapping behavior is considered an error.
 
+1. **Integer Overflow**:
+   - When working with integer types (e.g., `u8`, `i32`), exceeding their valid range can cause overflow.
+   - Example: A `u8` variable can hold values from 0 to 255.
+   - If you set a `u8` variable to 256, *integer overflow* occurs.
+  
+2. **Debug Mode**:
+   - In debug mode, Rust checks for integer overflow and panics at runtime if it occurs.
+   - Panicking means the program exits with an error.
+
+3. **Release Mode (`--release`)**:
+   - In release mode, Rust does not check for overflow.
+   - Instead, it performs two's complement wrapping:
+     - Values greater than the maximum wrap around to the minimum.
+     - Example: 256 becomes 0, 257 becomes 1, and so on.
+
+4. **Handling Overflow Explicitly**:
+   - To explicitly handle the possibility of overflow, you can use these families of methods provided by the standard library for primitive numeric types::
+     - `wrapping_*`: Wraps around in all modes (e.g., `wrapping_add`).
+     - `checked_*`: Returns `None` if overflow occurs.
+     - `overflowing_*`: Returns value and a boolean indicating whether there was overflow with the `overflowing_*` methods.
+     - `saturating_*`: Saturates at minimum or maximum values.
+
