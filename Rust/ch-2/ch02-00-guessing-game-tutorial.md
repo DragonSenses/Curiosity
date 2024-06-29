@@ -797,3 +797,25 @@ Let's program the game to quit when the user wins by adding a `break` statement:
 
 Adding the `break` line after `You win!` makes the program exit the loop when the user guesses the secret number correctly. Exiting the loop also means exiting the program, because the loop is the last part of `main`.
 
+### Handling Invalid Input
+
+To further refine the game's behavior, rather than crashing the program when the user inputs a non-number, let's make the game ignore a non-number so the user can continue guessing. We can do that by altering the line where `guess` is converted from a `String` to a `u32`, as shown in Listing 2-5.
+
+**Listing 2-5**: Ignoring a non-number guess and asking for another guess instead of crashing the program
+
+```rust,ignore
+        // --snip--
+
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
+
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
+
+        println!("You guessed: {guess}");
+
+        // --snip--
+```
