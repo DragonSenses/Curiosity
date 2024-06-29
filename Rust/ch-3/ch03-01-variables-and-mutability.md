@@ -9,7 +9,7 @@
 2. **Illustrating Immutability:**
    - When a variable is immutable, its value cannot be changed after binding.
    - To demonstrate this, create a new project named "variables" in your projects directory using `cargo new variables`.
-   - Then, in your new *variables* directory, open *src/main.rs* and replace its code with the following code, which won’t compile just yet:
+   - Then, in your new *variables* directory, open *src/main.rs* and replace its code with the following code, which won't compile just yet:
 
 **Filename**: `src/main.rs`
 
@@ -22,8 +22,7 @@ fn main() {
 }
 ```
 
-Save and run the program using `cargo run`. You should receive an error message
-regarding an immutability error, as shown in this output:
+Save and run the program using `cargo run`. You should receive an error message regarding an immutability error, as shown in this output:
 
 ```sh
 $ cargo run
@@ -63,7 +62,7 @@ error: could not compile `variables` (bin "variables") due to 1 previous error
    - Although variables are immutable by default, you can make them mutable by adding `mut` before the variable name.
    - Indicating mutability with `mut` clarifies intent for future readers of the code.
 
-For example, let’s change *src/main.rs* to the following:
+For example, let's change *src/main.rs* to the following:
 
 **Filename**: `src/main.rs`
 
@@ -87,5 +86,27 @@ The value of x is: 5
 The value of x is: 6
 ```
 
-We’re allowed to change the value bound to `x` from `5` to `6` when `mut` is used. Ultimately, deciding whether to use mutability or not is up to you and depends on what you think is clearest in that particular situation.
+We're allowed to change the value bound to `x` from `5` to `6` when `mut` is used. Ultimately, deciding whether to use mutability or not is up to you and depends on what you think is clearest in that particular situation.
 
+### Constants
+
+Like immutable variables, *constants* are values that are bound to a name and are not allowed to change, but there are a few differences between constants and variables.
+
+1. **Constants vs. Variables:**
+   - You aren't allowed to use `mut` with constants. Constants aren't just immutable by default—they're always immutable.
+   - Constants are always immutable (no `mut` allowed), unlike variables.
+   - Declare constants using the `const` keyword (instead of `let` for variables).
+   - The type of the constant value must be annotated.
+
+2. **Scope and Use:**
+   - Constants can be declared in any scope, including the global scope.
+   - Useful for values that many parts of code need to know about.
+
+3. **Expression Limitation:**
+   - Constants may be set only to a constant expression, not the result of a value that could only be computed at runtime.
+
+Here's an example of a constant declaration:
+
+```rust
+const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
+```
