@@ -134,3 +134,57 @@ const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
    - Naming hardcoded values used throughout your program as constants is useful in conveying the meaning of that value to future maintainers of the code.
    - Only one place to change if the value needs adjustment.
   
+### Shadowing
+
+Rustaceans say that the first variable is *shadowed* by the second, which means that the second
+variable is what the compiler will see when you use the name of the variable. In effect, the second variable overshadows the first, taking any uses of the variable name to itself until either it itself is shadowed or the scope ends.
+
+- **Variable Shadowing:**
+  - When a variable is declared with the same name as an existing variable in an inner scope, it "shadows" the outer variable.
+  - The shadowed variable is temporarily inaccessible within that inner scope.
+  - The compiler resolves references to the variable based on the innermost scope where it's declared.
+  - Shadowing allows reusing variable names without causing conflicts.
+
+We can shadow a variable by using the same variable’s name and repeating the use of the `let` keyword as follows:
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    let x = 5;
+
+    let x = x + 1;
+
+    {
+        let x = x * 2;
+        println!("The value of x in the inner scope is: {x}");
+    }
+
+    println!("The value of x is: {x}");
+}
+```
+
+Let's summarize the behavior of the given Rust program:
+
+1. The program starts by binding the variable `x` to the value `5`.
+2. It then creates a new variable `x` by adding `1` to the original value (`x + 1`), resulting in `6`.
+3. Within an inner scope (created by curly braces), the third `let` statement shadows `x` and creates a new variable with the value `12` (previous value multiplied by `2`).
+4. After the inner scope, the shadowing ends, and `x` returns to its outer value of `6`.
+
+So here's the output we expect:
+
+```sh
+The value of x in the inner scope is: 12
+The value of x is: 6
+```
+
+When the program runs, it will output the following:
+
+```sh
+$ cargo run
+   Compiling variables v0.1.0 (file:///projects/variables)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+     Running `target/debug/variables`
+The value of x in the inner scope is: 12
+The value of x is: 6
+```
