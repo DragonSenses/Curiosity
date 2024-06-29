@@ -209,3 +209,32 @@ When choosing an integer type, consider the following:
      - `overflowing_*`: Returns value and a boolean indicating whether there was overflow with the `overflowing_*` methods.
      - `saturating_*`: Saturates at minimum or maximum values.
 
+#### Floating-Point Types
+
+1. **Floating-Point Types**:
+   - Rust provides two primitive *floating-point* types: `f32` (single precision) and `f64` (double precision).
+   - `f32` is 32 bits, and `f64` is 64 bits.
+   - Default type: `f64`.
+   - All floating-point types are signed.
+
+2. **Precision and Performance**:
+   - `f64` is the default because it offers more precision.
+   - On modern CPUs, `f64` is roughly as fast as `f32`.
+   - Choose based on precision needs.
+
+3. **IEEE-754 Standard**:
+   - *Floating-point numbers*, which are numbers with decimal points, follow the IEEE-754 standard.
+   - `f32` type (single-precision float) and `f64` type (double-precision float) adhere to this standard.
+
+Here's an example that shows floating-point numbers in action:
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    let x = 2.0; // f64
+
+    let y: f32 = 3.0; // f32
+}
+```
+
