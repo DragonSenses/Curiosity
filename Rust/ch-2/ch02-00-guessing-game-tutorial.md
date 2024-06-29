@@ -856,3 +856,63 @@ Please input your guess.
 You guessed: 61
 You win!
 ```
+
+Awesome! With one tiny final tweak, we will finish the guessing game. Recall that the program is still printing the secret number. That worked well for testing, but it ruins the game. Let's delete the `println!` that outputs the secret number. Listing 2-6 shows the final code.
+
+**Filename**: `src/main.rs`
+
+```rust,ignore
+use rand::Rng;
+use std::cmp::Ordering;
+use std::io;
+
+fn main() {
+    println!("Guess the number!");
+
+    let secret_number = rand::thread_rng().gen_range(1..=100);
+
+    loop {
+        println!("Please input your guess.");
+
+        let mut guess = String::new();
+
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
+
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
+
+        println!("You guessed: {guess}");
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => {
+                println!("You win!");
+                break;
+            }
+        }
+    }
+}
+```
+
+**Listing 2-6**: Complete guessing game code
+
+
+At this point, you've successfully built the guessing game.
+
+## Summary
+
+1. **Introduction to Rust Concepts:**
+   - The project served as a hands-on introduction to several fundamental Rust concepts.
+   - These concepts include `let` bindings, `match` expressions, functions, and the use of external crates.
+
+2. **Upcoming Chapters:**
+   - In the upcoming chapters, you'll delve deeper into these concepts.
+   - Chapter 3 focuses on variables, data types, and functions - topics common to most programming languages.
+   - Chapter 4 explores ownership, a unique feature of Rust that ensures memory safety.
+   - Chapter 5 covers structs and method syntax.
+   - Chapter 6 explains how enums work.
