@@ -125,3 +125,30 @@ Table 3-1 shows the built-in integer types in Rust. We can use any of these vari
    - `isize`: Signed integer size (32 bits on 32-bit architecture, 64 bits on 64-bit architecture).
    - `usize`: Unsigned integer size (same as `isize` based on architecture).
 
+##### Integer literals
+
+Table 3-2: Integer Literals in Rust
+
+| Number literals  | Example       |
+|------------------|---------------|
+| Decimal          | `98_222`      |
+| Hex              | `0xff`        |
+| Octal            | `0o77`        |
+| Binary           | `0b1111_0000` |
+| Byte (`u8` only) | `b'A'`        |
+
+**Integer Literals**:
+   - You can represent integers in various forms (shown in Table 3-2).
+   - Types include decimal, hexadecimal, octal, binary, and byte literals.
+
+**Type Suffix and Visual Separators**:
+   - Use type suffixes (e.g., `57u8`) to specify the numeric type explicitly.
+   - Use underscores (`_`) as visual separators for readability (e.g., `1_000`).
+
+   - Note that number literals that can be multiple numeric types allow a type suffix, such as `57u8`, to designate the type. 
+   - Number literals can also use `_` as a visual separator to make the number easier to read, such as `1_000`, which will have the same value as if you had specified `1000`.
+
+So how do you know which type of integer to use? If you’re unsure, Rust’s defaults are generally good places to start: integer types default to `i32`.
+
+The primary situation in which you’d use `isize` or `usize` is when indexing some sort of collection.
+
