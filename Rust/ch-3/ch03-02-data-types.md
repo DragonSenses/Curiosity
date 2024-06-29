@@ -24,12 +24,12 @@ If we don't add the `: u32` type annotation shown in the preceding code, Rust wi
 $ cargo build
    Compiling no_type_annotations v0.1.0 (file:///projects/no_type_annotations)
 error[E0284]: type annotations needed
- --> src/main.rs:2:9
+ -- src/main.rs:2:9
   |
 2 |     let guess = "42".parse().expect("Not a number!");
   |         ^^^^^        ----- type must be known at this point
   |
-  = note: cannot satisfy `<_ as FromStr>::Err == _`
+  = note: cannot satisfy `<_ as FromStr::Err == _`
 help: consider giving `guess` an explicit type
   |
 2 |     let guess: /* Type */ = "42".parse().expect("Not a number!");
@@ -177,4 +177,13 @@ So how do you know which type of integer to use? If you're unsure, Rust's defaul
 When choosing an integer type, consider the following:
 - Rust defaults to `i32` for integers.
 - Use `isize` or `usize` for indexing collections (architecture-dependent).
+
+##### Integer Overflow
+
+*Integer overflow* results in one of two behaviors depending on the mode: panics at runtime or perform two's complement wrapping.
+  1. When you're compiling in debug mode, Rust includes checks for integer overflow that cause your program to *panic* at runtime if this behavior occurs.
+    - Rust uses the term *panicking* when a program exits with an error; we'll discuss panics in more depth in the ["Unrecoverable Errors with `panic!`"](https://doc.rust-lang.org/book/ch09-01-unrecoverable-errors-with-panic.html) section in Chapter 9.
+  2.  When you're compiling in release mode with the `--release` flag, Rust does *not* include checks for integer overflow that cause panics. Instead, if overflow occurs, Rust performs *two's complement wrapping*. 
+    - In short, values greater than the maximum value the type can hold "wrap around" to the minimum of the values the type can hold.
+    - In the case of a `u8`, the value 256 becomes 0, the value 257 becomes 1, and so on. The program won't panic, but the variable will have a value that probably isn't what you were expecting it to have. Relying on integer overflow's wrapping behavior is considered an error.
 
