@@ -110,3 +110,27 @@ Here's an example of a constant declaration:
 ```rust
 const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
 ```
+
+1. **Constant Declaration:**
+   - Constants are values bound to a name and are always immutable.
+   - The constant's name is `THREE_HOURS_IN_SECONDS` and its value is set to the result of multiplying 60 (the number of seconds in a minute) by 60 (the number of minutes in an hour) by 3 (the number of hours we want to count in this program). 
+   - The value of `THREE_HOURS_IN_SECONDS` is calculated at compile time (180 seconds).
+
+2. **Naming Convention:**
+   - Rust constants use all uppercase with underscores between words.
+   - Helps convey meaning and readability.
+
+3. **Compile-Time Evaluation:**
+   - Unlike variables, constants must have a value known at compile time.
+   - The compiler evaluates the expression during compilation, ensuring correctness.
+   - The compiler is able to evaluate a limited set of operations at compile time, which lets us choose to write out this value in a way that's easier to understand and verify, rather than setting this constant to the value 10,800. 
+   - See the [Rust Reference's section on constant evaluation](https://doc.rust-lang.org/reference/const_eval.html) for more information on what operations can be used when declaring constants.
+
+4. **Scope and Use:**
+   - Constants are valid throughout the program's execution within their declared scope.
+   - This property makes constants useful for values in your application domain that multiple parts of the program might need to know about, such as the maximum number of points any player of a game is allowed to earn, or the speed of light.
+
+5. **Maintainability:**
+   - Naming hardcoded values used throughout your program as constants is useful in conveying the meaning of that value to future maintainers of the code.
+   - Only one place to change if the value needs adjustment.
+  
