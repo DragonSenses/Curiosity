@@ -819,3 +819,40 @@ To further refine the game's behavior, rather than crashing the program when the
 
         // --snip--
 ```
+
+**Handling Invalid Input:**
+ - Instead of using `expect` (which crashes the program on any error), we switch to a `match` expression to handle errors gracefully. This moves from crashing on an error to handling the error.
+ - The `parse` method returns a `Result` type, which can be either enum variants`Ok` (successful) or `Err` (error).
+ - If `parse` successfully converts the input string to a number, it returns an `Ok` value containing the parsed resultant number.
+ - If `parse` encounters an error (e.g., non-numeric input), it returns an `Err` value that contains more information about the error.
+ - We use a `match` expression to handle both cases:
+   - If it's an `Ok` value, we extract the number and assign it to the `guess` variable.
+   - If it's an `Err` value (non-number input), we use `continue` to skip to the next iteration of the loop and prompt for another guess.
+     - The underscore, `_`, is a catchall value; in this example, we're saying we want to match all `Err` values, no matter what information they have inside them. So the program will execute the second arm's code, `continue`, which tells the program to go to the next iteration of the `loop` and ask for another guess.
+
+So, effectively, the program ignores all errors that `parse` might encounter!
+
+Now everything in the program should work as expected. Let's try it:
+
+```sh
+$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished dev [unoptimized + debuginfo] target(s) in 4.45s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 61
+Please input your guess.
+10
+You guessed: 10
+Too small!
+Please input your guess.
+99
+You guessed: 99
+Too big!
+Please input your guess.
+foo
+Please input your guess.
+61
+You guessed: 61
+You win!
+```
