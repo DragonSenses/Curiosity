@@ -711,7 +711,7 @@ We have most of the game working now, but the user can make only one guess. Let'
 
 ## Allowing Multiple Guesses with Looping
 
-The `loop` keyword creates an infinite loop. We’ll add a loop to give users more chances at guessing the number:
+The `loop` keyword creates an infinite loop. We'll add a loop to give users more chances at guessing the number:
 
 **Filename**: `src/main.rs`
 
@@ -773,3 +773,27 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
 Typing `quit` will quit the game, but as you'll notice, so will entering any other non-number input. This is suboptimal, to say the least; we want the game to also stop when the correct number is guessed.
+
+### Quitting After a Correct Guess
+
+Let's program the game to quit when the user wins by adding a `break` statement:
+
+**Filename**: `src/main.rs`
+
+```rust,ignore
+        // --snip--
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => {
+                println!("You win!");
+                break;
+            }
+        }
+    }
+}
+```
+
+Adding the `break` line after `You win!` makes the program exit the loop when the user guesses the secret number correctly. Exiting the loop also means exiting the program, because the loop is the last part of `main`.
+
