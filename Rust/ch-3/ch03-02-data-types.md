@@ -82,3 +82,46 @@ Rust has four primary scalar types:
      let first_letter: char = 'A';
      ```
 
+#### Integer Types
+
+An *integer* is a number without a fractional component. This type declaration indicates that the
+value it's associated with should be an unsigned integer (signed integer types start with `i` instead of `u`) that takes up 32 bits of space. 
+
+Table 3-1 shows the built-in integer types in Rust. We can use any of these variants to declare the type of an integer value.
+
+**Table 3-1**: Integer Types in Rust
+
+| Length  | Signed  | Unsigned |
+|---------|---------|----------|
+| 8-bit   | `i8`    | `u8`     |
+| 16-bit  | `i16`   | `u16`    |
+| 32-bit  | `i32`   | `u32`    |
+| 64-bit  | `i64`   | `u64`    |
+| 128-bit | `i128`  | `u128`   |
+| arch    | `isize` | `usize`  |
+
+1. **Signed and Unsigned**:
+   - Rust provides both signed and unsigned integer types.
+   - **Signed**: Can represent positive and negative values (with a sign).
+     - Signed numbers are stored using [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement) representation.
+   - **Unsigned**: Only represents positive values (no sign).
+     - It's like writing numbers on paper: when the sign matters, a number is shown with a plus sign or a minus sign; however, when it's safe to assume the number is positive, it's shown with no sign.
+   - Example:
+     - `i8` (signed): Range from -128 to 127.
+     - `u8` (unsigned): Range from 0 to 255.
+
+2. **Bit Sizes and Ranges**:
+   - Each variant has an explicit size (number of bits).
+   - The range of values each type can hold depends on the bit size.
+   - For signed integers:
+     - Range: -(2^(n-1)) to 2^(n-1) - 1 (where n is the bit size).
+     - Example: `i8` can store values from -128 to 127.
+   - For unsigned integers:
+     - Range: 0 to 2^n - 1.
+     - Example: `u8` can store values from 0 to 255.
+
+3. **`isize` and `usize`**:
+   - Architecture-dependent types.
+   - `isize`: Signed integer size (32 bits on 32-bit architecture, 64 bits on 64-bit architecture).
+   - `usize`: Unsigned integer size (same as `isize` based on architecture).
+
