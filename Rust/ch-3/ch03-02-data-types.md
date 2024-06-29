@@ -148,7 +148,33 @@ Table 3-2: Integer Literals in Rust
    - Note that number literals that can be multiple numeric types allow a type suffix, such as `57u8`, to designate the type. 
    - Number literals can also use `_` as a visual separator to make the number easier to read, such as `1_000`, which will have the same value as if you had specified `1000`.
 
-So how do you know which type of integer to use? If you’re unsure, Rust’s defaults are generally good places to start: integer types default to `i32`.
+So how do you know which type of integer to use? If you're unsure, Rust's defaults are generally good places to start: integer types default to `i32`. The primary situation in which you'd use `isize` or `usize` is when indexing some sort of collection.
 
-The primary situation in which you’d use `isize` or `usize` is when indexing some sort of collection.
+1. **Decimal Literal**:
+   - Written in base 10 (the most common form).
+   - Example: `98_222`.
+
+2. **Hexadecimal Literal**:
+   - Prefixed with `0x`.
+   - Represents values in base 16.
+   - Example: `0xff` (equivalent to decimal 255).
+
+3. **Octal Literal**:
+   - Prefixed with `0o`.
+   - Represents values in base 8.
+   - Example: `0o77` (equivalent to decimal 63).
+
+4. **Binary Literal**:
+   - Prefixed with `0b`.
+   - Represents values in base 2 (binary).
+   - Example: `0b1111_0000` (equivalent to decimal 240).
+
+5. **Byte Literal (`u8` only)**:
+   - Prefixed with `b`.
+   - Represents a single ASCII character.
+   - Example: `b'A'` (represents the character 'A').
+
+When choosing an integer type, consider the following:
+- Rust defaults to `i32` for integers.
+- Use `isize` or `usize` for indexing collections (architecture-dependent).
 
