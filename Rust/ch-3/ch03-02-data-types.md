@@ -448,3 +448,26 @@ let a = [3; 5]; // Creates an array with 5 elements, all set to the value 3
 ```
 
 The array named `a` will contain `5` elements that will all be set to the value `3` initially. This is the same as writing `let a = [3, 3, 3, 3, 3];` but in a more concise way.
+
+##### Accessing Array Elements
+
+1. **Array Basics**:
+   - An array is a single chunk of memory with a fixed size.
+   - It can be allocated on the stack.
+   - All elements in an array must have the same data type.
+
+2. **Accessing Elements**:
+   - You can access array elements using indexing, like this:
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    let a = [1, 2, 3, 4, 5];
+
+    let first = a[0];   // Value at index 0 (1)
+    let second = a[1];  // Value at index 1 (2)
+}
+```
+
+In this example, the variable named `first` will get the value `1` because that is the value at index `[0]` in the array. The variable named `second` will get the value `2` from index `[1]` in the array.
