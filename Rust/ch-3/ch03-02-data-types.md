@@ -426,3 +426,25 @@ However, arrays are more useful when you know the number of elements will not ne
 let months = ["January", "February", "March", "April", "May", "June", "July",
               "August", "September", "October", "November", "December"];
 ```
+
+##### Declaring an array
+
+1. To define an array's type:
+   - Use square brackets with the type of each element.
+   - Add a semicolon and specify the number of elements in the array.
+
+```rust
+let a: [i32; 5] = [1, 2, 3, 4, 5];
+```
+
+Here, `i32` is the type of each element. After the semicolon, the number `5` indicates the array contains five elements.
+
+2. Initializing an array with the same value for all elements:
+   - Specify the initial value followed by a semicolon.
+   - Indicate the length of the array in square brackets.
+
+```rust
+let a = [3; 5]; // Creates an array with 5 elements, all set to the value 3
+```
+
+The array named `a` will contain `5` elements that will all be set to the value `3` initially. This is the same as writing `let a = [3, 3, 3, 3, 3];` but in a more concise way.
