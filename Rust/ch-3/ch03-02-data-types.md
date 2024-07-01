@@ -282,5 +282,41 @@ fn main() {
 }
 ```
 
-The main way to use Boolean values is through conditionals, such as an `if` expression. We'll cover how `if` expressions work in Rust in the [“Control Flow”](https://doc.rust-lang.org/book/ch03-05-control-flow.html#control-flow) section.
+The main way to use Boolean values is through conditionals, such as an `if` expression. We'll cover how `if` expressions work in Rust in the ["Control Flow"](https://doc.rust-lang.org/book/ch03-05-control-flow.html#control-flow) section.
 
+#### The Character Type
+
+Rust's `char` type is the language's most primitive alphabetic type. Here are some examples of declaring `char` values:
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    let c = 'z';
+    let z: char = 'ℤ'; // with explicit type annotation
+    let heart_eyed_cat = '😻';
+}
+```
+
+1. **Character Literals**:
+   - In Rust, we specify `char` literals using single quotes (`'`), while string literals use double quotes (`"`).
+   - For example: `'A'` is a `char` literal, and `"hello"` is a string literal.
+
+2. **Size and Representation**:
+   - Rust's `char` type is always four bytes in size.
+   - It represents a Unicode Scalar Value, which means it can represent a lot more than just ASCII characters.
+   - Accented letters; Chinese, Japanese, Korean characters; emoji; and zero-width spaces are all valid `char` values in Rust.
+   - Four bytes is simply the smallest power of two in which you can store any Unicode scalar value. The decision was driven by the domain, not by architectural constraints.
+  
+3. **Unicode Scalar Values**:
+   - Unicode Scalar Values cover the entire range of valid `char` values.
+   - They range from `U+0000` to `U+D7FF` and from `U+E000` to `U+10FFFF`, inclusive.
+   - Note that not all Unicode scalar values represent real characters; some are reserved or noncharacters.
+
+4. **Human Intuition vs. Unicode Concepts**:
+   - However, a "character" isn't really a concept in Unicode, so your human intuition for what a "character" is may not match up with what a `char` is in Rust.
+   - While humans think of characters intuitively, Unicode's definition of a "character" may differ.
+   - Rust's `char` type aligns with Unicode Scalar Values, ensuring consistency across platforms.
+
+5. **Further Exploration**:
+   - We'll discuss this topic in detail in ["Storing UTF-8 Encoded Text with Strings"](https://doc.rust-lang.org/book/ch08-02-strings.html#storing-utf-8-encoded-text-with-strings) in Chapter 8 of the Rust book.
