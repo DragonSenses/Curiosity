@@ -267,3 +267,20 @@ fn main() {
 ```
 
 Each expression in these statements uses a mathematical operator and evaluates to a single value, which is then bound to a variable. [Appendix B](https://doc.rust-lang.org/book/appendix-02-operators.html) contains a list of all operators that Rust provides.
+
+#### The Boolean Type
+
+As in most other programming languages, a Boolean type in Rust has two possible values: `true` and `false`. Booleans are one byte in size. The Boolean type in Rust is specified using `bool`. For example:
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    let t = true;
+
+    let f: bool = false; // with explicit type annotation
+}
+```
+
+The main way to use Boolean values is through conditionals, such as an `if` expression. We'll cover how `if` expressions work in Rust in the [“Control Flow”](https://doc.rust-lang.org/book/ch03-05-control-flow.html#control-flow) section.
+
