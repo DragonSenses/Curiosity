@@ -511,3 +511,27 @@ index out of bounds: the len is 5 but the index is 10
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
+The program resulted in a *runtime* error at the point of using an invalid value in the indexing operation. The program exited with an error message and didn't execute the final `println!` statement. 
+
+When you attempt to access an element using indexing, Rust will check that the index you've specified is less than the array length. If the index is greater than or equal to the length, Rust will panic. This check has to happen at runtime, especially in this case, because the compiler can't possibly know what value a user will enter when they run the code later.
+
+This is an example of Rust's memory safety principles in action. In many low-level languages, this kind of check is not done, and when you provide an incorrect index, invalid memory can be accessed. Rust protects you against this kind of error by immediately exiting instead of allowing the memory access and continuing. 
+
+Chapter 9 discusses more of Rust's error handling and how you can write readable, safe code that neither panics nor allows invalid memory access.
+
+##### Invalid Array Element Access | Summary
+
+1. **Runtime Error Handling**:
+   - The provided program encountered a *runtime* error when attempting to access an invalid array index.
+   - As a result, the program exited with an error message and didn't execute the final `println!` statement.
+
+2. **Array Bounds Checking**:
+   - Rust checks array bounds at runtime because the compiler can't predict user input.
+   - If the specified index is out of bounds (greater than or equal to the array length), Rust panics.
+
+3. **Memory Safety in Rust**:
+   - Unlike many low-level languages, Rust prioritizes memory safety.
+   - Invalid memory access is prevented by immediate program termination (panic) when bounds are violated.
+
+4. **Chapter 9 Exploration**:
+   - [Chapter 9](https://doc.rust-lang.org/book/ch09-00-error-handling.html) of Rust's documentation covers error handling techniques and writing safe, readable code.
