@@ -320,3 +320,21 @@ fn main() {
 
 5. **Further Exploration**:
    - We'll discuss this topic in detail in ["Storing UTF-8 Encoded Text with Strings"](https://doc.rust-lang.org/book/ch08-02-strings.html#storing-utf-8-encoded-text-with-strings) in Chapter 8 of the Rust book.
+
+### Compound Types
+
+*Compound types* can group multiple values into one type. Rust has two primitive compound types: tuples and arrays.
+
+
+A *tuple* is a general way of grouping together a number of values with a variety of types into one compound type. Tuples have a fixed length: once declared, they cannot grow or shrink in size.
+
+We create a tuple by writing a comma-separated list of values inside parentheses. Each position in the tuple has a type, and the types of the different values in the tuple don’t have to be the same. We’ve added optional
+type annotations in this example:
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    let tup: (i32, f64, u8) = (500, 6.4, 1);
+}
+```
