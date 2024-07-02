@@ -27,7 +27,7 @@ as well. Rust doesn't care where you define your functions, only that they're de
 
 **Example:** Let's start a new binary project named *functions* to explore functions further. Place the `another_function` example in *src/main.rs* and run it. You should see the following output:
 
-```console
+```sh
 $ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
     Finished dev [unoptimized + debuginfo] target(s) in 0.28s
@@ -67,3 +67,62 @@ $ cargo run
      Running `target/debug/functions`
 The value of x is: 5
 ```
+
+The declaration of `another_function` has one parameter named `x`. The type of `x` is specified as `i32`. When we pass `5` in to `another_function`, the `println!` macro puts `5` where the pair of curly brackets containing `x` was in the format string.
+
+In function signatures, you *must* declare the type of each parameter. This is a deliberate decision in Rust’s design: requiring type annotations in function definitions means the compiler almost never needs you to use them elsewhere in the code to figure out what type you mean. The compiler is also able to give
+more helpful error messages if it knows what types the function expects.
+
+When defining multiple parameters, separate the parameter declarations with commas, like this:
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    print_labeled_measurement(5, 'h');
+}
+
+fn print_labeled_measurement(value: i32, unit_label: char) {
+    println!("The measurement is: {value}{unit_label}");
+}
+```
+
+This example creates a function named `print_labeled_measurement` with two parameters. The first parameter is named `value` and is an `i32`. The second is named `unit_label` and is type `char`. The function then prints text containing both the `value` and the `unit_label`.
+
+Let’s try running this code. Replace the program currently in your *functions* project’s *src/main.rs* file with the preceding example and run it using `cargo run`:
+
+```sh
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+     Running `target/debug/functions`
+The measurement is: 5h
+```
+
+Because we called the function with `5` as the value for `value` and `'h'` as the value for `unit_label`, the program output contains those values.
+
+#### Parameters recap
+
+```rust
+fn main() {
+    print_labeled_measurement(5, 'h');
+}
+
+fn print_labeled_measurement(value: i32, unit_label: char) {
+    println!("The measurement is: {value}{unit_label}");
+}
+```
+
+1. **Function Parameters**:
+   - When defining a function, you can specify parameters (variables) that it accepts.
+   - Parameters allow you to pass data into the function.
+   - In the example provided, the `print_labeled_measurement` function has two parameters: `value` and `unit_label`.
+
+2. **Type Annotations for Parameters**:
+   - In Rust, you must declare the type of each parameter explicitly.
+   - This deliberate design choice helps the compiler provide better error messages and ensures clarity.
+   - The type of `value` is `i32`, and the type of `unit_label` is `char`.
+
+3. **Calling the Function**:
+   - We call `print_labeled_measurement(5, 'h')`.
+   - The function prints the measurement with the provided values: `5` for `value` and `'h'` for `unit_label`.
