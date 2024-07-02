@@ -70,7 +70,7 @@ The value of x is: 5
 
 The declaration of `another_function` has one parameter named `x`. The type of `x` is specified as `i32`. When we pass `5` in to `another_function`, the `println!` macro puts `5` where the pair of curly brackets containing `x` was in the format string.
 
-In function signatures, you *must* declare the type of each parameter. This is a deliberate decision in Rust’s design: requiring type annotations in function definitions means the compiler almost never needs you to use them elsewhere in the code to figure out what type you mean. The compiler is also able to give
+In function signatures, you *must* declare the type of each parameter. This is a deliberate decision in Rust's design: requiring type annotations in function definitions means the compiler almost never needs you to use them elsewhere in the code to figure out what type you mean. The compiler is also able to give
 more helpful error messages if it knows what types the function expects.
 
 When defining multiple parameters, separate the parameter declarations with commas, like this:
@@ -89,7 +89,7 @@ fn print_labeled_measurement(value: i32, unit_label: char) {
 
 This example creates a function named `print_labeled_measurement` with two parameters. The first parameter is named `value` and is an `i32`. The second is named `unit_label` and is type `char`. The function then prints text containing both the `value` and the `unit_label`.
 
-Let’s try running this code. Replace the program currently in your *functions* project’s *src/main.rs* file with the preceding example and run it using `cargo run`:
+Let's try running this code. Replace the program currently in your *functions* project's *src/main.rs* file with the preceding example and run it using `cargo run`:
 
 ```sh
 $ cargo run
@@ -126,3 +126,68 @@ fn print_labeled_measurement(value: i32, unit_label: char) {
 3. **Calling the Function**:
    - We call `print_labeled_measurement(5, 'h')`.
    - The function prints the measurement with the provided values: `5` for `value` and `'h'` for `unit_label`.
+
+### Statements and Expressions
+
+Function bodies are made up of a series of statements optionally ending in an expression. So far, the functions we've covered haven't included an ending expression, but you have seen an expression as part of a statement. Because Rust is an expression-based language, this is an important distinction to
+understand. Other languages don't have the same distinctions, so let's look at what statements and expressions are and how their differences affect the bodies of functions.
+
+* **Statements** are instructions that perform some action and do not return
+  a value.
+* **Expressions** evaluate to a resultant value. 
+
+Let's look at some examples.
+
+We've actually already used statements and expressions. Creating a variable and assigning a value to it with the `let` keyword is a statement. In Listing 3-1, `let y = 6;` is a statement.
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    let y = 6;
+}
+```
+
+**Listing 3-1**: A `main` function declaration containing one statement
+
+Function definitions are also statements; the entire preceding example is a statement in itself.
+
+Statements do not return values. Therefore, you can't assign a `let` statement to another variable, as the following code tries to do; you'll get an error:
+
+**Filename**: `src/main.rs`
+
+```rust,ignore,does_not_compile
+fn main() {
+    let x = (let y = 6);
+}
+```
+
+When you run this program, the error you'll get looks like this:
+
+```sh
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+error: expected expression, found `let` statement
+ --> src/main.rs:2:14
+  |
+2 |     let x = (let y = 6);
+  |              ^^^
+  |
+  = note: only supported directly in conditions of `if` and `while` expressions
+
+warning: unnecessary parentheses around assigned value
+ --> src/main.rs:2:13
+  |
+2 |     let x = (let y = 6);
+  |             ^         ^
+  |
+  = note: `#[warn(unused_parens)]` on by default
+help: remove these parentheses
+  |
+2 -     let x = (let y = 6);
+2 +     let x = let y = 6;
+  |
+
+warning: `functions` (bin "functions") generated 1 warning
+error: could not compile `functions` (bin "functions") due to 1 previous error; 1 warning emitted
+```
