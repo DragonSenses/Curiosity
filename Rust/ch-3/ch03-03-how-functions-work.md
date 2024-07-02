@@ -267,3 +267,22 @@ fn main() {
      - This block evaluates to `4`.
      - The `x + 1` line lacks a semicolon because it's an expression.
      - Adding a semicolon would turn it into a statement (which doesn't return a value).
+
+### Functions with Return Values
+
+**Functions and Return Values**:
+ - Functions can return values to the code that calls them.
+ - In Rust, we declare the return type of a function using the arrow (`->`) syntax.
+ - The return value of a function is synonymous with the value of the final expression in its body.
+ - Most functions implicitly return the last expression.
+
+**Example**:
+ - The provided code snippet defines a function named `five`:
+   ```rust
+   fn five() -> i32 {
+       5
+   }
+   ```
+ - The function returns the value `5`.
+ - When calling `five()`, the returned value initializes the variable `x`.
+
