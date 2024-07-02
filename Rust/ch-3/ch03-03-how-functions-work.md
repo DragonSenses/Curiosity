@@ -25,7 +25,7 @@ as well. Rust doesn't care where you define your functions, only that they're de
 
 - Rust doesn't impose strict ordering of function definitions; you can define functions in any order as long as they're visible within their scope. In this case, `another_function` is defined after `main`, but it could have been defined before as well.
 
-**Example:** Let’s start a new binary project named *functions* to explore functions further. Place the `another_function` example in *src/main.rs* and run it. You should see the following output:
+**Example:** Let's start a new binary project named *functions* to explore functions further. Place the `another_function` example in *src/main.rs* and run it. You should see the following output:
 
 ```console
 $ cargo run
@@ -37,3 +37,33 @@ Another function.
 ```
 
 The lines execute in the order in which they appear in the `main` function. First the “Hello, world!” message prints, and then `another_function` is called and its message is printed.
+
+### Parameters
+
+- **Parameters**: These are special variables declared as part of a function's signature. They allow you to pass data into the function. Parameters define the input that the function expects.
+- **Arguments**: When you call a function, you provide specific values for its parameters. These values are called arguments. 
+- In casual conversation, people often use "parameter" and "argument" interchangeably for either the variables in a function's definition or the concrete values passed in when you call a function.
+
+In this version of `another_function` we add a parameter:
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    another_function(5);
+}
+
+fn another_function(x: i32) {
+    println!("The value of x is: {x}");
+}
+```
+
+Try running this program; you should get the following output:
+
+```sh
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.21s
+     Running `target/debug/functions`
+The value of x is: 5
+```
