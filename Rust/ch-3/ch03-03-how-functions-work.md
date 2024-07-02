@@ -223,3 +223,47 @@ This expression:
 
 is a block that, in this case, evaluates to `4`. That value gets bound to `y` as part of the `let` statement. Note that the `x + 1` line doesn't have a semicolon at the end, which is unlike most of the lines you've seen so far. Expressions do not include ending semicolons. If you add a semicolon to the end of an expression, you turn it into a statement, and it will then not return a value. Keep this in mind as you explore function return values and expressions next.
 
+#### Statements and Expressions recap
+
+1. **Statements**:
+   - Statements are instructions that perform actions but do not return a value.
+   - Examples of statements include variable declarations (`let y = 6;`) and function definitions.
+   - Statements are terminated by semicolons (`;`).
+
+2. **Expressions**:
+   - Expressions evaluate to a resultant value.
+   - In Rust, almost everything is an expression, including function calls, arithmetic operations, and blocks.
+   - Expressions do not end with semicolons; omitting the semicolon turns a statement into an expression.
+
+3. **Example 1**:
+
+```rust,ignore,does_not_compile
+fn main() {
+    let x = (let y = 6);
+}
+```
+   - In this code snippet, `let y = 6;` is a statement (assigning a value to `y`).
+   - Attempting to assign a `let` statement to another variable (`let x = (let y = 6);`) results in an error because statements do not return values.
+
+4. **Example 2**:
+  
+```rust
+fn main() {
+    let y = {
+        let x = 3;
+        x + 1
+    };
+
+    println!("The value of y is: {y}");
+}
+```
+   - The code snippet demonstrates a block expression:
+     ```rust,ignore
+     {
+         let x = 3;
+         x + 1
+     }
+     ```
+     - This block evaluates to `4`.
+     - The `x + 1` line lacks a semicolon because it's an expression.
+     - Adding a semicolon would turn it into a statement (which doesn't return a value).
