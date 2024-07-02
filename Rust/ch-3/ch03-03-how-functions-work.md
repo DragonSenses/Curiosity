@@ -304,7 +304,7 @@ fn main() {
 
 There are no function calls, macros, or even `let` statements in the `five`function—just the number `5` by itself. That's a perfectly valid function in Rust. Note that the function's return type is specified too, as `-> i32`. Try running this code; the output should look like this:
 
-```console
+```sh
 $ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
     Finished dev [unoptimized + debuginfo] target(s) in 0.30s
@@ -319,3 +319,65 @@ let x = 5;
 ```
 
 Second, the `five` function has no parameters and defines the type of the return value, but the body of the function is a lonely `5` with no semicolon because it's an expression whose value we want to return.
+
+**Another Example:**
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    let x = plus_one(5);
+
+    println!("The value of x is: {x}");
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1
+}
+```
+
+Running this code will print `The value of x is: 6`. But if we place a semicolon at the end of the line containing `x + 1`, changing it from an expression to a statement, we'll get an error:
+
+**Filename**: `src/main.rs`
+
+```rust,ignore,does_not_compile
+fn main() {
+    let x = plus_one(5);
+
+    println!("The value of x is: {x}");
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1;
+}
+```
+
+Compiling this code produces an error, as follows:
+
+```sh
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+error[E0308]: mismatched types
+ --> src/main.rs:7:24
+  |
+7 | fn plus_one(x: i32) -> i32 {
+  |    --------            ^^^ expected `i32`, found `()`
+  |    |
+  |    implicitly returns `()` as its body has no tail or `return` expression
+8 |     x + 1;
+  |          - help: remove this semicolon to return this value
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `functions` (bin "functions") due to 1 previous error
+
+```
+
+- **Issue**:
+  - The function `plus_one` is expected to return an `i32`.
+  - However, the body of the function contains a statement (`x + 1;`) that doesn't evaluate to a value.
+  - The statement ends with a semicolon, which turns it into a statement (with the unit type `()`), not an expression.
+
+- **Suggested Fix**:
+  - Remove the semicolon after `x + 1` to make it an expression that returns the desired value.
+
+The main error message, `mismatched types`, reveals the core issue with this code. The definition of the function `plus_one` says that it will return an `i32`, but statements don't evaluate to a value, which is expressed by `()`, the unit type. Therefore, nothing is returned, which contradicts the function definition and results in an error. In this output, Rust provides a message to possibly help rectify this issue: it suggests removing the semicolon, which would fix the error.
