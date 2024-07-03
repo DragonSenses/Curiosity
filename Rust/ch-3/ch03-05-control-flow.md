@@ -51,3 +51,81 @@ $ cargo run
      Running `target/debug/branches`
 condition was false
 ```
+
+#### if conditions must be a `bool`
+
+1. **Condition in `if` Expressions:**
+   - The condition in an `if` expression **must** be a `bool`.
+   - If it isn't a `bool`, Rust will throw an error.
+   - Example:
+
+     ```rust
+     fn main() {
+         let condition = 3; // Not a boolean value
+         if condition {
+             println!("This won't compile");
+         }
+     }
+     ```
+
+2. **Explicit Boolean Conditions:**
+   - Unlike some other languages, Rust does not automatically convert non-Boolean types to a Boolean.
+   - We must explicitly provide a `bool` as the condition for the `if` expression.
+   - Example:
+
+     ```rust
+     fn main() {
+         let number = 42;
+         if number != 0 {
+             println!("number was something other than zero");
+         }
+     }
+     ```
+
+   - Running this modified code will print the message "number was something other than zero." 
+
+It’s also worth noting that the condition in this code *must* be a `bool`. If the condition isn’t a `bool`, we’ll get an error. For example, try running the following code:
+
+**Filename**: `src/main.rs`
+
+```rust,ignore,does_not_compile
+fn main() {
+    let number = 3;
+
+    if number {
+        println!("number was three");
+    }
+}
+```
+
+The `if` condition evaluates to a value of `3` this time, and Rust throws an error:
+
+```sh
+$ cargo run
+   Compiling branches v0.1.0 (file:///projects/branches)
+error[E0308]: mismatched types
+ --> src/main.rs:4:8
+  |
+4 |     if number {
+  |        ^^^^^^ expected `bool`, found integer
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `branches` (bin "branches") due to 1 previous error
+```
+
+The error indicates that Rust expected a `bool` but got an integer. Unlike languages such as Ruby and JavaScript, Rust will not automatically try to convert non-Boolean types to a Boolean. You must be explicit and always provide `if` with a Boolean as its condition. If we want the `if` code block to run only when a number is not equal to `0`, for example, we can change the `if` expression to the following:
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    let number = 3;
+
+    if number != 0 {
+        println!("number was something other than zero");
+    }
+}
+```
+
+Running this code will print `number was something other than zero`.
+
