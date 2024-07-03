@@ -229,7 +229,7 @@ The expression in the `if` block evaluates to an integer, and the expression in 
 
 It's often useful to execute a block of code more than once. For this task, Rust provides several *loops*, which will run through the code inside the loop body to the end and then start immediately back at the beginning. To experiment with loops, let's make a new project called *loops*. 
 
-Rust has three kinds of loops: `loop`, `while`, and `for`. Let’s try each one.
+Rust has three kinds of loops: `loop`, `while`, and `for`. Let's try each one.
 
 #### Repeating Code with `loop`
 
@@ -247,7 +247,7 @@ fn main() {
 }
 ```
 
-When we run this program, we’ll see `again!` printed over and over continuously until we stop the program manually. Most terminals support the keyboard shortcut **[CTRL + C]** to interrupt a program that is stuck in a continual loop. Give it a try:
+When we run this program, we'll see `again!` printed over and over continuously until we stop the program manually. Most terminals support the keyboard shortcut **[CTRL + C]** to interrupt a program that is stuck in a continual loop. Give it a try:
 
 ```sh
 $ cargo run
@@ -305,3 +305,83 @@ fn main() {
 Before the loop, we declare a variable named `counter` and initialize it to `0`. Then we declare a variable named `result` to hold the value returned from the loop. On every iteration of the loop, we add `1` to the `counter` variable, and then check whether the `counter` is equal to `10`. When it is, we use the `break` keyword with the value `counter * 2`. After the loop, we use a semicolon to end the statement that assigns the value to `result`. Finally, we print the value in `result`, which in this case is `20`.
 
 You can also `return` from inside a loop. While `break` only exits the current loop, `return` always exits the current function.
+
+#### Loop Labels to Disambiguate Between Multiple Loops
+
+If you have loops within loops, `break` and `continue` apply to the innermost loop at that point. You can optionally specify a *loop label* on a loop that you can then use with `break` or `continue` to specify that those keywords apply to the labeled loop instead of the innermost loop. Loop labels must begin with a single quote. Here's an example with two nested loops:
+
+```rust
+fn main() {
+    let mut count = 0;
+    'counting_up: loop {
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+                break;
+            }
+            if count == 2 {
+                break 'counting_up;
+            }
+            remaining -= 1;
+        }
+
+        count += 1;
+    }
+    println!("End count = {count}");
+}
+```
+
+The outer loop has the label `'counting_up`, and it will count up from 0 to 2. The inner loop without a label counts down from 10 to 9. The first `break` that doesn't specify a label will exit the inner loop only. The `break 'counting_up;` statement will exit the outer loop. This code prints:
+
+```sh
+$ cargo run
+   Compiling loops v0.1.0 (file:///projects/loops)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.58s
+     Running `target/debug/loops`
+count = 0
+remaining = 10
+remaining = 9
+count = 1
+remaining = 10
+remaining = 9
+count = 2
+remaining = 10
+End count = 2
+```
+
+##### Loop labels | Recap
+
+- When dealing with nested loops (loops within loops), `break` and `continue` apply to the innermost loop by default.
+- To disambiguate and specify which loop to break or continue, you can use a *loop label*.
+- Loop labels must begin with a single quote (e.g., `'counting_up`).
+- Example code:
+  ```rust
+  fn main() {
+      let mut count = 0;
+      'counting_up: loop {
+          println!("count = {count}");
+          let mut remaining = 10;
+
+          loop {
+              println!("remaining = {remaining}");
+              if remaining == 9 {
+                  break;
+              }
+              if count == 2 {
+                  break 'counting_up;
+              }
+              remaining -= 1;
+          }
+
+          count += 1;
+      }
+      println!("End count = {count}");
+  }
+  ```
+- In this example, the outer loop labeled `'counting_up` counts up from 0 to 2.
+- The inner loop (without a label) counts down from 10 to 9.
+- The first `break` exits the inner loop, while `break 'counting_up;` exits the outer loop.
+- The final output demonstrates the behavior of the labeled loops.
