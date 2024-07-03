@@ -224,3 +224,61 @@ error: could not compile `branches` (bin "branches") due to 1 previous error
 ```
 
 The expression in the `if` block evaluates to an integer, and the expression in the `else` block evaluates to a string. This won't work because variables must have a single type, and Rust needs to know at compile time what type the `number` variable is, definitively. Knowing the type of `number` lets the compiler verify the type is valid everywhere we use `number`. Rust wouldn't be able to do that if the type of `number` was only determined at runtime; the compiler would be more complex and would make fewer guarantees about the code if it had to keep track of multiple hypothetical types for any variable.
+
+### Repetition with Loops
+
+It's often useful to execute a block of code more than once. For this task, Rust provides several *loops*, which will run through the code inside the loop body to the end and then start immediately back at the beginning. To experiment with loops, let's make a new project called *loops*. 
+
+Rust has three kinds of loops: `loop`, `while`, and `for`. Let’s try each one.
+
+#### Repeating Code with `loop`
+
+The `loop` keyword tells Rust to execute a block of code over and over again forever or until you explicitly tell it to stop.
+
+As an example, change the *src/main.rs* file in your *loops* directory to look like this:
+
+**Filename**: `src/main.rs`
+
+```rust,ignore
+fn main() {
+    loop {
+        println!("again!");
+    }
+}
+```
+
+When we run this program, we’ll see `again!` printed over and over continuously until we stop the program manually. Most terminals support the keyboard shortcut **[CTRL + C]** to interrupt a program that is stuck in a continual loop. Give it a try:
+
+```sh
+$ cargo run
+   Compiling loops v0.1.0 (file:///projects/loops)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.29s
+     Running `target/debug/loops`
+again!
+again!
+again!
+again!
+^Cagain!
+```
+
+The symbol `^C` represents where you pressed **[CTRL + C]**. You may or may not see the word `again!` printed after the `^C`, depending on where the code was in the loop when it received the interrupt signal.
+
+Fortunately, Rust also provides a way to break out of a loop using code. You can place the `break` keyword within the loop to tell the program when to stop executing the loop. 
+
+We also used `continue` in the guessing game, which in a loop tells the program to skip over any remaining code in this iteration of the loop and go to the next iteration.
+
+##### Repeating Code with `loop` | Recap
+
+- The `loop` keyword instructs Rust to execute a block of code repeatedly indefinitely or until explicitly stopped.
+- Example usage:
+  ```rust
+  fn main() {
+      loop {
+          println!("again!");
+      }
+  }
+  ```
+- When running this program, it continuously prints "again!" until manually interrupted (e.g., using **[CTRL + C]**).
+- The `^C` symbol represents where you pressed **[CTRL + C]** to stop the loop.
+- Rust also provides the `break` keyword to exit a loop and the `continue` keyword to skip the current iteration and proceed to the next one.
+
