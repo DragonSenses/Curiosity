@@ -385,3 +385,37 @@ End count = 2
 - The inner loop (without a label) counts down from 10 to 9.
 - The first `break` exits the inner loop, while `break 'counting_up;` exits the outer loop.
 - The final output demonstrates the behavior of the labeled loops.
+
+#### Conditional Loops with `while`
+
+In Rust, a `while` loop allows you to repeatedly execute a block of code while a condition remains true. Here's a summary of how it works:
+
+- **Purpose of `while` Loop:**
+  - A `while` loop evaluates a condition before each iteration.
+  - While the condition is true, the loop runs; when the condition becomes false, the loop stops.
+  - It's commonly used for scenarios where you want to repeat an action until a specific condition changes.
+
+- **Example:** In Listing 3-3, we use `while` to loop the program three times, counting down each time, and then, after the loop, print a message and exit.
+
+**Listing 3-3**: Using a while loop to run code while a condition holds true
+
+**Filename**: `src/main.rs`
+
+  ```rust
+  fn main() {
+      let mut number = 3;
+
+      while number != 0 {
+          println!("{number}!");
+          number -= 1;
+      }
+
+      println!("LIFTOFF!!!");
+  }
+  ```
+  - In this example, the loop counts down from 3 to 1, printing the value of `number` in each iteration.
+  - When `number` reaches 0, the loop exits, and "LIFTOFF!!!" is printed.
+
+Using `while` simplifies the code by avoiding nested constructs like `loop`, `if`, and `break`. It provides a clearer way to express looping behavior based on a condition. 
+
+This construct eliminates a lot of nesting that would be necessary if you used `loop`, `if`, `else`, and `break`, and it's clearer. While a condition evaluates to `true`, the code runs; otherwise, it exits the loop.
