@@ -419,3 +419,39 @@ In Rust, a `while` loop allows you to repeatedly execute a block of code while a
 Using `while` simplifies the code by avoiding nested constructs like `loop`, `if`, and `break`. It provides a clearer way to express looping behavior based on a condition. 
 
 This construct eliminates a lot of nesting that would be necessary if you used `loop`, `if`, `else`, and `break`, and it's clearer. While a condition evaluates to `true`, the code runs; otherwise, it exits the loop.
+
+#### Looping Through a Collection with `for`
+
+You can also use the `while` construct to loop over the elements of a collection, such as an array. For example, the loop in Listing 3-4 prints each element in the array `a`.
+
+**Listing 3-4**: Looping through each element of a collection using a `while` loop
+
+**Filename**: `src/main.rs`
+
+```rust
+fn main() {
+    let a = [10, 20, 30, 40, 50];
+    let mut index = 0;
+
+    while index < 5 {
+        println!("the value is: {}", a[index]);
+
+        index += 1;
+    }
+}
+```
+
+Here, the code counts up through the elements in the array. It starts at index `0`, and then loops until it reaches the final index in the array (that is, when `index < 5` is no longer `true`). Running this code will print every element in the array:
+
+```sh
+$ cargo run
+   Compiling loops v0.1.0 (file:///projects/loops)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.32s
+     Running `target/debug/loops`
+the value is: 10
+the value is: 20
+the value is: 30
+the value is: 40
+the value is: 50
+```
+
