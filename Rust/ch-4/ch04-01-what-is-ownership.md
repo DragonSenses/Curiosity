@@ -56,3 +56,14 @@ First, let's take a look at the ownership rules. Keep these rules in mind as we 
 * There can only be one owner at a time.
 * When the owner goes out of scope, the value will be dropped.
 
+### Variable Scope
+
+Now that we’re past basic Rust syntax, we won’t include all the `fn main() {` code in examples, so if you’re following along, make sure to put the following examples inside a `main` function manually. As a result, our examples will be a bit more concise, letting us focus on the actual details rather than boilerplate code.
+
+As a first example of ownership, we’ll look at the *scope* of some variables. A scope is the range within a program for which an item is valid. Take the following variable:
+
+```rust
+let s = "hello";
+```
+
+The variable `s` refers to a string literal, where the value of the string is hardcoded into the text of our program. The variable is valid from the point at which it’s declared until the end of the current *scope*. Listing 4-1 shows a program with comments annotating where the variable `s` would be valid.
