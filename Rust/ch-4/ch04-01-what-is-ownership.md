@@ -144,3 +144,24 @@ There is a natural point at which we can return the memory our `String` needs to
 > patterns.
 
 This pattern has a profound impact on the way Rust code is written. It may seem simple right now, but the behavior of code can be unexpected in more complicated situations when we want to have multiple variables use the data we’ve allocated on the heap. Let’s explore some of those situations now.
+
+
+Multiple variables can interact with the same data in different ways in Rust. Let’s look at an example using an integer in Listing 4-2.
+
+```rust
+    let x = 5;
+    let y = x;
+```
+
+**Listing 4-2**: Assigning the integer value of variable `x` to `y`
+
+We can probably guess what this is doing: “bind the value `5` to `x`; then make a copy of the value in `x` and bind it to `y`.” We now have two variables, `x` and `y`, and both equal `5`. This is indeed what is happening, because integers are simple values with a known, fixed size, and these two `5` values are pushed onto the stack.
+
+Now let’s look at the `String` version:
+
+```rust
+    let s1 = String::from("hello");
+    let s2 = s1;
+```
+
+This looks very similar, so we might assume that the way it works would be the same: that is, the second line would make a copy of the value in `s1` and bind it to `s2`. But this isn’t quite what happens.
