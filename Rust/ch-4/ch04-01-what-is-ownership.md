@@ -145,6 +145,7 @@ There is a natural point at which we can return the memory our `String` needs to
 
 This pattern has a profound impact on the way Rust code is written. It may seem simple right now, but the behavior of code can be unexpected in more complicated situations when we want to have multiple variables use the data we’ve allocated on the heap. Let’s explore some of those situations now.
 
+#### Variables and Data Interacting with Move
 
 Multiple variables can interact with the same data in different ways in Rust. Let’s look at an example using an integer in Listing 4-2.
 
@@ -165,3 +166,9 @@ Now let’s look at the `String` version:
 ```
 
 This looks very similar, so we might assume that the way it works would be the same: that is, the second line would make a copy of the value in `s1` and bind it to `s2`. But this isn’t quite what happens.
+
+Take a look at Figure 4-1 to see what is happening to `String` under the covers. A `String` is made up of three parts, shown on the left: a pointer to the memory that holds the contents of the string, a length, and a capacity. This group of data is stored on the stack. On the right is the memory on the heap that holds the contents.
+
+<img alt="Two tables: the first table contains the representation of s1 on the stack, consisting of its length (5), capacity (5), and a pointer to the first value in the second table. The second table contains the representation of the string data on the heap, byte by byte." src="../img/trpl04-01.svg" class="center" style="width: 50%;" />
+
+<span class="caption">Figure 4-1: Representation in memory of a `String` holding the value `"hello"` bound to `s1`</span>
