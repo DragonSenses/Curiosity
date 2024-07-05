@@ -120,3 +120,19 @@ With the `String` type, in order to support a mutable, growable piece of text, w
 * The memory must be requested from the memory allocator at runtime.
 * We need a way of returning this memory to the allocator when we’re done with
   our `String`.
+
+That first part is done by us: when we call `String::from`, its implementation requests the memory it needs. This is pretty much universal in programming languages.
+
+However, the second part is different. In languages with a *garbage collector (GC)*, the GC keeps track of and cleans up memory that isn’t being used anymore, and we don’t need to think about it. In most languages without a GC, it’s our responsibility to identify when memory is no longer being used and to call code to explicitly free it, just as we did to request it. Doing this correctly has historically been a difficult programming problem. If we forget, we’ll waste memory. If we do it too early, we’ll have an invalid variable. If we do it twice, that’s a bug too. We need to pair exactly one `allocate` with exactly one `free`.
+
+Rust takes a different path: the memory is automatically returned once the variable that owns it goes out of scope. Here’s a version of our scope example from Listing 4-1 using a `String` instead of a string literal:
+
+```rust
+    {
+        let s = String::from("hello"); // s is valid from this point forward
+
+        // do stuff with s
+    }                                  // this scope is now over, and s is no
+                                       // longer valid
+```
+
