@@ -186,3 +186,40 @@ The representation does *not* look like Figure 4-3, which is what memory would l
 <img alt="Four tables: two tables representing the stack data for s1 and s2, and each points to its own copy of string data on the heap." src="../img/trpl04-03.svg" class="center" style="width: 50%;" />
 
 <span class="caption">Figure 4-3: Another possibility for what `s2 = s1` might do if Rust copied the heap data as well</span>
+
+Earlier, we said that when a variable goes out of scope, Rust automatically calls the `drop` function and cleans up the heap memory for that variable. But Figure 4-2 shows both data pointers pointing to the same location. This is a problem: when `s2` and `s1` go out of scope, they will both try to free the same memory. This is known as a *double free* error and is one of the memory safety bugs we mentioned previously. Freeing memory twice can lead to memory corruption, which can potentially lead to security vulnerabilities.
+
+To ensure memory safety, after the line `let s2 = s1;`, Rust considers `s1` as no longer valid. Therefore, Rust doesn’t need to free anything when `s1` goes out of scope. Check out what happens when you try to use `s1` after `s2` is created; it won’t work:
+
+```rust,ignore,does_not_compile
+    let s1 = String::from("hello");
+    let s2 = s1;
+
+    println!("{s1}, world!");
+```
+
+You’ll get an error like this because Rust prevents you from using the invalidated reference:
+
+```sh
+$ cargo run
+   Compiling ownership v0.1.0 (file:///projects/ownership)
+error[E0382]: borrow of moved value: `s1`
+ --> src/main.rs:5:28
+  |
+2 |     let s1 = String::from("hello");
+  |         -- move occurs because `s1` has type `String`, which does not implement the `Copy` trait
+3 |     let s2 = s1;
+  |              -- value moved here
+4 |
+5 |     println!("{}, world!", s1);
+  |                            ^^ value borrowed here after move
+  |
+  = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider cloning the value if the performance cost is acceptable
+  |
+3 |     let s2 = s1.clone();
+  |                ++++++++
+
+For more information about this error, try `rustc --explain E0382`.
+error: could not compile `ownership` (bin "ownership") due to 1 previous error
+```
