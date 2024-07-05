@@ -180,3 +180,9 @@ When we assign `s1` to `s2`, the `String` data is copied, meaning we copy the po
 <img alt="Three tables: tables s1 and s2 representing those strings on the stack, respectively, and both pointing to the same string data on the heap." src="../img/trpl04-02.svg" class="center" style="width: 50%;" />
 
 <span class="caption">Figure 4-2: Representation in memory of the variable `s2` that has a copy of the pointer, length, and capacity of `s1`</span>
+
+The representation does *not* look like Figure 4-3, which is what memory would look like if Rust instead copied the heap data as well. If Rust did this, the operation `s2 = s1` could be very expensive in terms of runtime performance if the data on the heap were large.
+
+<img alt="Four tables: two tables representing the stack data for s1 and s2, and each points to its own copy of string data on the heap." src="../img/trpl04-03.svg" class="center" style="width: 50%;" />
+
+<span class="caption">Figure 4-3: Another possibility for what `s2 = s1` might do if Rust copied the heap data as well</span>
