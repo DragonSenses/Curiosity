@@ -136,3 +136,11 @@ Rust takes a different path: the memory is automatically returned once the varia
                                        // longer valid
 ```
 
+There is a natural point at which we can return the memory our `String` needs to the allocator: when `s` goes out of scope. When a variable goes out of scope, Rust calls a special function for us. This function is called [`drop`](https://doc.rust-lang.org/std/ops/trait.Drop.html#tymethod.drop), and it’s where the author of `String` can put the code to return the memory. Rust calls `drop` automatically at the closing curly bracket.
+
+> Note: In C++, this pattern of deallocating resources at the end of an item’s
+> lifetime is sometimes called *Resource Acquisition Is Initialization (RAII)*.
+> The `drop` function in Rust will be familiar to you if you’ve used RAII
+> patterns.
+
+This pattern has a profound impact on the way Rust code is written. It may seem simple right now, but the behavior of code can be unexpected in more complicated situations when we want to have multiple variables use the data we’ve allocated on the heap. Let’s explore some of those situations now.
