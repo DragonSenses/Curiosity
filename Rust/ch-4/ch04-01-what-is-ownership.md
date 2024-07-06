@@ -223,3 +223,15 @@ help: consider cloning the value if the performance cost is acceptable
 For more information about this error, try `rustc --explain E0382`.
 error: could not compile `ownership` (bin "ownership") due to 1 previous error
 ```
+
+##### Shallow copy, deep copy and move
+
+If you’ve heard the terms *shallow copy* and *deep copy* while working with other languages, the concept of copying the pointer, length, and capacity without copying the data probably sounds like making a shallow copy. But because Rust also invalidates the first variable, instead of being called a shallow copy, it’s known as a *move*. In this example, we would say that `s1` was *moved* into `s2`. So, what actually happens is shown in Figure 4-4.
+
+<img alt="Three tables: tables s1 and s2 representing those strings on the stack, respectively, and both pointing to the same string data on the heap. Table s1 is grayed out be-cause s1 is no longer valid; only s2 can be used to access the heap data." src="../img/trpl04-04.svg" class="center" style="width: 50%;" />
+
+<span class="caption">Figure 4-4: Representation in memory after `s1` has been invalidated</span>
+
+That solves our problem! With only `s2` valid, when it goes out of scope it alone will free the memory, and we’re done.
+
+In addition, there’s a design choice that’s implied by this: Rust will never automatically create “deep” copies of your data. Therefore, any *automatic* copying can be assumed to be inexpensive in terms of runtime performance.
