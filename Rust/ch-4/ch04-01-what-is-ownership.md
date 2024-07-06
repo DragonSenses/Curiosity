@@ -252,3 +252,18 @@ Here’s an example of the `clone` method in action:
 This works just fine and explicitly produces the behavior shown in Figure 4-3, where the heap data *does* get copied.
 
 When you see a call to `clone`, you know that some arbitrary code is being executed and that code may be expensive. It’s a visual indicator that something different is going on.
+
+#### Stack-Only Data: Copy
+
+There’s another wrinkle we haven’t talked about yet. This code using integers—part of which was shown in Listing 4-2—works and is valid:
+
+```rust
+    let x = 5;
+    let y = x;
+
+    println!("x = {x}, y = {y}");
+```
+
+But this code seems to contradict what we just learned: we don’t have a call to `clone`, but `x` is still valid and wasn’t moved into `y`.
+
+The reason is that types such as integers that have a known size at compile time are stored entirely on the stack, so copies of the actual values are quick to make. That means there’s no reason we would want to prevent `x` from being valid after we create the variable `y`. In other words, there’s no difference between deep and shallow copying here, so calling `clone` wouldn’t do anything different from the usual shallow copying, and we can leave it out.
