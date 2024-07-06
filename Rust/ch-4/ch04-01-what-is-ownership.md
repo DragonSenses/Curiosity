@@ -357,3 +357,29 @@ If we tried to use `s` after the call to `takes_ownership`, Rust would throw a c
 3. **Static Checks and Safety**:
    - Rust's ownership rules prevent accidental use-after-move bugs.
    - If you tried to use `s` after the call to `takes_ownership`, Rust would throw a compile-time error.
+
+### Return Values and Scope
+
+Returning values can also transfer ownership. Listing 4-4 shows an example of a function that returns some value, with similar annotations as those in Listing 4-3.
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+fn main() {
+    let s1 = String::from("hello");
+
+    let (s2, len) = calculate_length(s1);
+
+    println!("The length of '{s2}' is {len}.");
+}
+
+fn calculate_length(s: String) -> (String, usize) {
+    let length = s.len(); // len() returns the length of a String
+
+    (s, length)
+}
+```
+
+<span class="caption">Listing 4-4: Transferring ownership of return values</span>
+
+The ownership of a variable follows the same pattern every time: assigning a value to another variable moves it. When a variable that includes data on the heap goes out of scope, the value will be cleaned up by `drop` unless ownership of the data has been moved to another variable.
