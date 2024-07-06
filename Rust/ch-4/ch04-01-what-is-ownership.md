@@ -235,3 +235,20 @@ If you’ve heard the terms *shallow copy* and *deep copy* while working with ot
 That solves our problem! With only `s2` valid, when it goes out of scope it alone will free the memory, and we’re done.
 
 In addition, there’s a design choice that’s implied by this: Rust will never automatically create “deep” copies of your data. Therefore, any *automatic* copying can be assumed to be inexpensive in terms of runtime performance.
+
+#### Variables and Data Interacting with Clone
+
+If we *do* want to deeply copy the heap data of the `String`, not just the stack data, we can use a common method called `clone`. We’ll discuss method syntax in Chapter 5, but because methods are a common feature in many programming languages, you’ve probably seen them before.
+
+Here’s an example of the `clone` method in action:
+
+```rust
+    let s1 = String::from("hello");
+    let s2 = s1.clone();
+
+    println!("s1 = {s1}, s2 = {s2}");
+```
+
+This works just fine and explicitly produces the behavior shown in Figure 4-3, where the heap data *does* get copied.
+
+When you see a call to `clone`, you know that some arbitrary code is being executed and that code may be expensive. It’s a visual indicator that something different is going on.
