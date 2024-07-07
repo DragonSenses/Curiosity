@@ -155,3 +155,31 @@ Just as variables are immutable by default, so are references. We’re not allow
    - The error message indicates that we cannot mutate a borrowed value.
 
 Remember, references ensure memory safety and prevent accidental modifications. Rust's strict rules guarantee that references always point to valid objects.
+
+### Mutable References
+
+We can fix the code from Listing 4-6 to allow us to modify a borrowed value with just a few small tweaks that use, instead, a *mutable reference*:
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+fn main() {
+    let mut s = String::from("hello");
+
+    change(&mut s);
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+```
+
+ - To modify a borrowed value, we use *mutable references* in Rust.
+ - Mutable references allow us to change the value pointed to by the reference.
+   - `s` is declared as mutable (`mut`).
+   - We create a mutable reference with `&mut s`.
+   - The `change` function accepts a mutable reference (`some_string: &mut String`).
+   - This ensures that `change` can modify the borrowed value.
+
+First we change `s` to be `mut`. Then we create a mutable reference with `&mut s` where we call the `change` function, and update the function signature to accept a mutable reference with `some_string: &mut String`. This makes it very clear that the `change` function will mutate the value it borrows.
+
