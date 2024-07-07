@@ -304,3 +304,13 @@ The scopes of the immutable references `r1` and `r2` end after the `println!` wh
 
 Even though borrowing errors may be frustrating at times, remember that it’s the Rust compiler pointing out a potential bug early (at compile time rather than at runtime) and showing you exactly where the problem is. Then you don’t have to track down why your data isn’t what you thought it was.
 
+### Dangling References
+
+**Dangling References:**
+ - In Rust, references are guaranteed not to be dangling references.
+ - A dangling reference points to memory that may have been deallocated.
+ - Rust ensures that data referenced by a valid reference won't go out of scope before the reference does.
+ - Attempting to create a dangling reference results in a compile-time error.
+
+In languages with pointers, it’s easy to erroneously create a *dangling pointer*—a pointer that references a location in memory that may have been given to someone else—by freeing some memory while preserving a pointer to that memory. In Rust, by contrast, the compiler guarantees that references will never be dangling references: if you have a reference to some data, the compiler will ensure that the data will not go out of scope before the reference to the data does.
+
