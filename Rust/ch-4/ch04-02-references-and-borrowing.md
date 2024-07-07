@@ -83,3 +83,75 @@ fn calculate_length(s: &String) -> usize { // s is a reference to a String
 } // Here, s goes out of scope. But because it does not have ownership of what
   // it refers to, it is not dropped.
 ```
+
+The scope in which the variable `s` is valid is the same as any function parameter’s scope, but the value pointed to by the reference is not dropped when `s` stops being used, because `s` doesn’t have ownership. When functions have references as parameters instead of the actual values, we won’t need to return the values in order to give back ownership, because we never had ownership.
+
+We call the action of creating a reference *borrowing*. As in real life, if a person owns something, you can borrow it from them. When you’re done, you have to give it back. You don’t own it.
+
+So, what happens if we try to modify something we’re borrowing? Try the code in Listing 4-6. Spoiler alert: it doesn’t work!
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust,ignore,does_not_compile
+fn main() {
+    let s = String::from("hello");
+
+    change(&s);
+}
+
+fn change(some_string: &String) {
+    some_string.push_str(", world");
+}
+```
+
+<span class="caption">Listing 4-6: Attempting to modify a borrowed value</span>
+
+Here’s the error:
+
+```sh
+$ cargo run
+   Compiling ownership v0.1.0 (file:///projects/ownership)
+error[E0596]: cannot borrow `*some_string` as mutable, as it is behind a `&` reference
+ --> src/main.rs:8:5
+  |
+8 |     some_string.push_str(", world");
+  |     ^^^^^^^^^^^ `some_string` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+  |
+help: consider changing this to be a mutable reference
+  |
+7 | fn change(some_string: &mut String) {
+  |                         +++
+
+For more information about this error, try `rustc --explain E0596`.
+error: could not compile `ownership` (bin "ownership") due to 1 previous error
+```
+
+Just as variables are immutable by default, so are references. We’re not allowed to modify something we have a reference to.
+
+### References and Borrowing recap
+
+1. **References and Borrowing:**
+   - In Rust, references allow us to point to a resource (value) without owning it.
+   - When we create a reference, we're borrowing the value rather than taking ownership.
+   - The original owner of the resource remains the same.
+   - References are useful when passing values to functions without transferring ownership.
+
+2. **Reference and Dereference Operators:**
+   - The `&` symbol creates a reference to a value (borrowing).
+   - The `*` symbol is the dereference operator, used to access the value pointed to by a reference.
+
+3. **Borrowing Analogy:**
+   - Borrowing in Rust is similar to real-life borrowing.
+   - If someone owns something, you can borrow it from them.
+   - When you're done, you give it back; you don't own it.
+
+4. **Modifying Borrowed Values:**
+   - Rust treats references as immutable by default.
+   - We cannot modify something we're borrowing.
+   - Attempting to modify a borrowed value results in a compilation error.
+
+5. **Example (Listing 4-6):**
+   - The code snippet demonstrates an attempt to modify a borrowed value.
+   - The error message indicates that we cannot mutate a borrowed value.
+
+Remember, references ensure memory safety and prevent accidental modifications. Rust's strict rules guarantee that references always point to valid objects.
