@@ -32,8 +32,7 @@ fn first_word(s: &String) -> usize {
 }
 ```
 
-<span class="caption">Listing 4-7: The `first_word` function that returns a
-byte index value into the `String` parameter</span>
+<span class="caption">Listing 4-7: The `first_word` function that returns a byte index value into the `String` parameter</span>
 
 Because we need to go through the `String` element by element and check whether a value is a space, we’ll convert our `String` to an array of bytes using the `as_bytes` method.
 
@@ -64,3 +63,33 @@ Inside the `for` loop, we search for the byte that represents the space by using
 
 We now have a way to find out the index of the end of the first word in the string, but there’s a problem. We’re returning a `usize` on its own, but it’s only a meaningful number in the context of the `&String`. In other words, because it’s a separate value from the `String`, there’s no guarantee that it will still be valid in the future. 
 
+Consider the program in Listing 4-8 that uses the `first_word` function from Listing 4-7.
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+fn main() {
+    let mut s = String::from("hello world");
+
+    let word = first_word(&s); // word will get the value 5
+
+    s.clear(); // this empties the String, making it equal to ""
+
+    // word still has the value 5 here, but there's no more string that
+    // we could meaningfully use the value 5 with. word is now totally invalid!
+}
+```
+
+<span class="caption">Listing 4-8: Storing the result from calling the `first_word` function and then changing the `String` contents</span>
+
+This program compiles without any errors and would also do so if we used `word` after calling `s.clear()`. Because `word` isn’t connected to the state of `s` at all, `word` still contains the value `5`. We could use that value `5` with the variable `s` to try to extract the first word out, but this would be a bug because the contents of `s` have changed since we saved `5` in `word`.
+
+Having to worry about the index in `word` getting out of sync with the data in `s` is tedious and error prone! Managing these indices is even more brittle if we write a `second_word` function. Its signature would have to look like this:
+
+```rust,ignore
+fn second_word(s: &String) -> (usize, usize) {
+```
+
+Now we’re tracking a starting *and* an ending index, and we have even more values that were calculated from data in a particular state but aren’t tied to that state at all. We have three unrelated variables floating around that need to be kept in sync.
+
+Luckily, Rust has a solution to this problem: string slices.
