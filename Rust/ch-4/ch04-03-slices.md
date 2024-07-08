@@ -178,3 +178,46 @@ fn second_word(s: &String) -> &str {
 ```
 
 We now have a straightforward API that’s much harder to mess up because the compiler will ensure the references into the `String` remain valid. Remember the bug in the program in Listing 4-8, when we got the index to the end of the first word but then cleared the string so our index was invalid? That code was logically incorrect but didn’t show any immediate errors. The problems would show up later if we kept trying to use the first word index with an emptied string. Slices make this bug impossible and let us know we have a problem with our code much sooner.
+
+##### Using `first_word` throws compile-time error due to mutable and immutable reference conflict
+
+  - Avoid mutable and immutable reference conflict in `first_word` function
+
+Using the slice version of `first_word` will throw a compile-time error:
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust,ignore,does_not_compile
+fn main() {
+    let mut s = String::from("hello world");
+
+    let word = first_word(&s);
+
+    s.clear(); // error!
+
+    println!("the first word is: {word}");
+}
+```
+
+Here’s the compiler error:
+
+```sh
+$ cargo run
+   Compiling ownership v0.1.0 (file:///projects/ownership)
+error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immutable
+  --> src/main.rs:18:5
+   |
+16 |     let word = first_word(&s);
+   |                           -- immutable borrow occurs here
+17 |
+18 |     s.clear(); // error!
+   |     ^^^^^^^^^ mutable borrow occurs here
+19 |
+20 |     println!("the first word is: {}", word);
+   |                                       ---- immutable borrow later used here
+
+For more information about this error, try `rustc --explain E0502`.
+error: could not compile `ownership` (bin "ownership") due to 1 previous error
+```
+
+Recall from the borrowing rules that if we have an immutable reference to something, we cannot also take a mutable reference. Because `clear` needs to truncate the `String`, it needs to get a mutable reference. The `println!` after the call to `clear` uses the reference in `word`, so the immutable reference must still be active at that point. Rust disallows the mutable reference in `clear` and the immutable reference in `word` from existing at the same time, and compilation fails. Not only has Rust made our API easier to use, but it has also eliminated an entire class of errors at compile time!
