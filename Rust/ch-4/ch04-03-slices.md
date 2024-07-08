@@ -106,3 +106,11 @@ A *string slice* is a reference to part of a `String`, and it looks like this:
 ```
 
 Rather than a reference to the entire `String`, `hello` is a reference to a portion of the `String`, specified in the extra `[0..5]` bit. We create slices using a range within brackets by specifying `[starting_index..ending_index]`, where `starting_index` is the first position in the slice and `ending_index` is one more than the last position in the slice. Internally, the slice data structure stores the starting position and the length of the slice, which corresponds to `ending_index` minus `starting_index`. So, in the case of `let world = &s[6..11];`, `world` would be a slice that contains a pointer to the byte at index 6 of `s` with a length value of `5`.
+
+Figure 4-6 shows this in a diagram.
+
+<img alt="Three tables: a table representing the stack data of s, which points to the byte at index 0 in a table of the string data &quot;hello world&quot; on the heap. The third table rep-resents the stack data of the slice world, which has a length value of 5 and points to byte 6 of the heap data table." 
+src="../img/trpl04-06.svg" class="center" style="width: 50%;" />
+
+<span class="caption">Figure 4-6: String slice referring to part of a `String`</span>
+
