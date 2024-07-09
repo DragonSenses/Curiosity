@@ -221,3 +221,32 @@ error: could not compile `ownership` (bin "ownership") due to 1 previous error
 ```
 
 Recall from the borrowing rules that if we have an immutable reference to something, we cannot also take a mutable reference. Because `clear` needs to truncate the `String`, it needs to get a mutable reference. The `println!` after the call to `clear` uses the reference in `word`, so the immutable reference must still be active at that point. Rust disallows the mutable reference in `clear` and the immutable reference in `word` from existing at the same time, and compilation fails. Not only has Rust made our API easier to use, but it has also eliminated an entire class of errors at compile time!
+
+#### String Literals as Slices
+
+Recall that we talked about string literals being stored inside the binary. Now that we know about slices, we can properly understand string literals:
+
+```rust
+let s = "Hello, world!";
+```
+
+The type of `s` here is `&str`: it’s a slice pointing to that specific point of the binary. This is also why string literals are immutable; `&str` is an immutable reference.
+
+#### String Slices as Parameters
+
+Knowing that you can take slices of literals and `String` values leads us to one more improvement on `first_word`, and that’s its signature:
+
+```rust,ignore
+fn first_word(s: &String) -> &str {
+```
+
+A more experienced Rustacean would write the signature shown in Listing 4-9 instead because it allows us to use the same function on both `&String` values and `&str` values.
+
+```rust,ignore
+fn first_word(s: &str) -> &str {
+```
+
+<span class="caption">Listing 4-9: Improving the `first_word` function by using
+a string slice for the type of the `s` parameter</span>
+
+
