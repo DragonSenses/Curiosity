@@ -5,16 +5,16 @@
 ### Problem Example
 
 **Problem Statement:**
-Write a function that takes a string of words separated by spaces and returns the first word it finds in that string. If the function doesn’t find a space in the string, the entire string should be considered one word, and the whole string should be returned.
+Write a function that takes a string of words separated by spaces and returns the first word it finds in that string. If the function doesn't find a space in the string, the entire string should be considered one word, and the whole string should be returned.
 
 #### Solution without slices
 
-Let’s work through how we’d write the signature of this function without using slices, to understand the problem that slices will solve:
+Let's work through how we'd write the signature of this function without using slices, to understand the problem that slices will solve:
 
 ```rust,ignore
 fn first_word(s: &String) -> ?
 ```
-The `first_word` function has a `&String` as a parameter. We don’t want ownership, so this is fine. But what should we return? We don’t really have a way to talk about *part* of a string. However, we could return the index of the end of the word, indicated by a space. Let’s try that, as shown in Listing 4-7.
+The `first_word` function has a `&String` as a parameter. We don't want ownership, so this is fine. But what should we return? We don't really have a way to talk about *part* of a string. However, we could return the index of the end of the word, indicated by a space. Let's try that, as shown in Listing 4-7.
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -34,7 +34,7 @@ fn first_word(s: &String) -> usize {
 
 <span class="caption">Listing 4-7: The `first_word` function that returns a byte index value into the `String` parameter</span>
 
-Because we need to go through the `String` element by element and check whether a value is a space, we’ll convert our `String` to an array of bytes using the `as_bytes` method.
+Because we need to go through the `String` element by element and check whether a value is a space, we'll convert our `String` to an array of bytes using the `as_bytes` method.
 
 ```rust,ignore
     let bytes = s.as_bytes();
@@ -46,9 +46,9 @@ Next, we create an iterator over the array of bytes using the `iter` method:
     for (i, &item) in bytes.iter().enumerate() {
 ```
 
-We’ll discuss iterators in more detail in [Chapter 13](https://doc.rust-lang.org/book/ch13-02-iterators.html). For now, know that `iter` is a method that returns each element in a collection and that `enumerate` wraps the result of `iter` and returns each element as part of a tuple instead. The first element of the tuple returned from `enumerate` is the index, and the second element is a reference to the element. This is a bit more convenient than calculating the index ourselves.
+We'll discuss iterators in more detail in [Chapter 13](https://doc.rust-lang.org/book/ch13-02-iterators.html). For now, know that `iter` is a method that returns each element in a collection and that `enumerate` wraps the result of `iter` and returns each element as part of a tuple instead. The first element of the tuple returned from `enumerate` is the index, and the second element is a reference to the element. This is a bit more convenient than calculating the index ourselves.
 
-Because the `enumerate` method returns a tuple, we can use patterns to destructure that tuple. We’ll be discussing patterns more in [Chapter 6](https://doc.rust-lang.org/book/ch06-02-match.html#patterns-that-bind-to-values). In the `for` loop, we specify a pattern that has `i` for the index in the tuple and `&item` for the single byte in the tuple. Because we get a reference to the element from `.iter().enumerate()`, we use `&` in the pattern.
+Because the `enumerate` method returns a tuple, we can use patterns to destructure that tuple. We'll be discussing patterns more in [Chapter 6](https://doc.rust-lang.org/book/ch06-02-match.html#patterns-that-bind-to-values). In the `for` loop, we specify a pattern that has `i` for the index in the tuple and `&item` for the single byte in the tuple. Because we get a reference to the element from `.iter().enumerate()`, we use `&` in the pattern.
 
 Inside the `for` loop, we search for the byte that represents the space by using the byte literal syntax. If we find a space, we return the position. Otherwise, we return the length of the string by using `s.len()`.
 
@@ -61,7 +61,7 @@ Inside the `for` loop, we search for the byte that represents the space by using
     s.len()
 ```
 
-We now have a way to find out the index of the end of the first word in the string, but there’s a problem. We’re returning a `usize` on its own, but it’s only a meaningful number in the context of the `&String`. In other words, because it’s a separate value from the `String`, there’s no guarantee that it will still be valid in the future. 
+We now have a way to find out the index of the end of the first word in the string, but there's a problem. We're returning a `usize` on its own, but it's only a meaningful number in the context of the `&String`. In other words, because it's a separate value from the `String`, there's no guarantee that it will still be valid in the future. 
 
 Consider the program in Listing 4-8 that uses the `first_word` function from Listing 4-7.
 
@@ -82,7 +82,7 @@ fn main() {
 
 <span class="caption">Listing 4-8: Storing the result from calling the `first_word` function and then changing the `String` contents</span>
 
-This program compiles without any errors and would also do so if we used `word` after calling `s.clear()`. Because `word` isn’t connected to the state of `s` at all, `word` still contains the value `5`. We could use that value `5` with the variable `s` to try to extract the first word out, but this would be a bug because the contents of `s` have changed since we saved `5` in `word`.
+This program compiles without any errors and would also do so if we used `word` after calling `s.clear()`. Because `word` isn't connected to the state of `s` at all, `word` still contains the value `5`. We could use that value `5` with the variable `s` to try to extract the first word out, but this would be a bug because the contents of `s` have changed since we saved `5` in `word`.
 
 Having to worry about the index in `word` getting out of sync with the data in `s` is tedious and error prone! Managing these indices is even more brittle if we write a `second_word` function. Its signature would have to look like this:
 
@@ -90,7 +90,7 @@ Having to worry about the index in `word` getting out of sync with the data in `
 fn second_word(s: &String) -> (usize, usize) {
 ```
 
-Now we’re tracking a starting *and* an ending index, and we have even more values that were calculated from data in a particular state but aren’t tied to that state at all. We have three unrelated variables floating around that need to be kept in sync.
+Now we're tracking a starting *and* an ending index, and we have even more values that were calculated from data in a particular state but aren't tied to that state at all. We have three unrelated variables floating around that need to be kept in sync.
 
 Luckily, Rust has a solution to this problem: string slices.
 
@@ -114,7 +114,7 @@ src="../img/trpl04-06.svg" class="center" style="width: 50%;" />
 
 <span class="caption">Figure 4-6: String slice referring to part of a `String`</span>
 
-With Rust’s `..` range syntax, if you want to start at index 0, you can drop the value before the two periods. In other words, these are equal:
+With Rust's `..` range syntax, if you want to start at index 0, you can drop the value before the two periods. In other words, these are equal:
 
 ```rust
 let s = String::from("hello");
@@ -145,11 +145,11 @@ let slice = &s[0..len];
 let slice = &s[..];
 ```
 
-**Note**: String slice range indices must occur at valid UTF-8 character boundaries. If you attempt to create a string slice in the middle of a multibyte character, your program will exit with an error. For the purposes of introducing string slices, we are assuming ASCII only in this section; a more thorough discussion of UTF-8 handling is in the [“Storing UTF-8 Encoded Text with Strings”](https://doc.rust-lang.org/book/ch08-02-strings.html#storing-utf-8-encoded-text-with-strings) section of Chapter 8.
+**Note**: String slice range indices must occur at valid UTF-8 character boundaries. If you attempt to create a string slice in the middle of a multibyte character, your program will exit with an error. For the purposes of introducing string slices, we are assuming ASCII only in this section; a more thorough discussion of UTF-8 handling is in the ["Storing UTF-8 Encoded Text with Strings"](https://doc.rust-lang.org/book/ch08-02-strings.html#storing-utf-8-encoded-text-with-strings) section of Chapter 8.
 
 #### Solution with slices
 
-With all this information in mind, let’s rewrite `first_word` to return a slice. The type that signifies “string slice” is written as `&str`:
+With all this information in mind, let's rewrite `first_word` to return a slice. The type that signifies "string slice" is written as `&str`:
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -177,7 +177,7 @@ Returning a slice would also work for a `second_word` function:
 fn second_word(s: &String) -> &str {
 ```
 
-We now have a straightforward API that’s much harder to mess up because the compiler will ensure the references into the `String` remain valid. Remember the bug in the program in Listing 4-8, when we got the index to the end of the first word but then cleared the string so our index was invalid? That code was logically incorrect but didn’t show any immediate errors. The problems would show up later if we kept trying to use the first word index with an emptied string. Slices make this bug impossible and let us know we have a problem with our code much sooner.
+We now have a straightforward API that's much harder to mess up because the compiler will ensure the references into the `String` remain valid. Remember the bug in the program in Listing 4-8, when we got the index to the end of the first word but then cleared the string so our index was invalid? That code was logically incorrect but didn't show any immediate errors. The problems would show up later if we kept trying to use the first word index with an emptied string. Slices make this bug impossible and let us know we have a problem with our code much sooner.
 
 ##### Using `first_word` throws compile-time error due to mutable and immutable reference conflict
 
@@ -199,7 +199,7 @@ fn main() {
 }
 ```
 
-Here’s the compiler error:
+Here's the compiler error:
 
 ```sh
 $ cargo run
@@ -230,11 +230,11 @@ Recall that we talked about string literals being stored inside the binary. Now 
 let s = "Hello, world!";
 ```
 
-The type of `s` here is `&str`: it’s a slice pointing to that specific point of the binary. This is also why string literals are immutable; `&str` is an immutable reference.
+The type of `s` here is `&str`: it's a slice pointing to that specific point of the binary. This is also why string literals are immutable; `&str` is an immutable reference.
 
 #### String Slices as Parameters
 
-Knowing that you can take slices of literals and `String` values leads us to one more improvement on `first_word`, and that’s its signature:
+Knowing that you can take slices of literals and `String` values leads us to one more improvement on `first_word`, and that's its signature:
 
 ```rust,ignore
 fn first_word(s: &String) -> &str {
@@ -249,7 +249,7 @@ fn first_word(s: &str) -> &str {
 <span class="caption">Listing 4-9: Improving the `first_word` function by using
 a string slice for the type of the `s` parameter</span>
 
-If we have a string slice, we can pass that directly. If we have a `String`, we can pass a slice of the `String` or a reference to the `String`. This flexibility takes advantage of *deref coercions*, a feature we will cover in the [“Implicit Deref Coercions with Functions and Methods”](https://doc.rust-lang.org/book/ch15-02-deref.html#implicit-deref-coercions-with-functions-and-methods) section of Chapter 15.
+If we have a string slice, we can pass that directly. If we have a `String`, we can pass a slice of the `String` or a reference to the `String`. This flexibility takes advantage of *deref coercions*, a feature we will cover in the ["Implicit Deref Coercions with Functions and Methods"](https://doc.rust-lang.org/book/ch15-02-deref.html#implicit-deref-coercions-with-functions-and-methods) section of Chapter 15.
 
 Defining a function to take a string slice instead of a reference to a `String` makes our API more general and useful without losing any functionality:
 
@@ -277,3 +277,42 @@ fn main() {
     let word = first_word(my_string_literal);
 }
 ```
+
+### Other Slices
+
+String slices, as you might imagine, are specific to strings. But there's a more general slice type too. Consider this array:
+
+```rust
+let a = [1, 2, 3, 4, 5];
+```
+
+Just as we might want to refer to part of a string, we might want to refer to part of an array. We'd do so like this:
+
+```rust
+let a = [1, 2, 3, 4, 5];
+
+let slice = &a[1..3];
+
+assert_eq!(slice, &[2, 3]);
+```
+
+This slice has the type `&[i32]`. It works the same way as string slices do, by storing a reference to the first element and a length. You'll use this kind of slice for all sorts of other collections. 
+
+1. **String Slices:**
+   - String slices are specific to strings.
+   - They allow us to refer to a portion of a string.
+   - A string slice has the type `&str`.
+   - It stores a reference to the first element and a length.
+   - String slices are used for string manipulation and substring extraction.
+
+2. **General Slices:**
+   - There's a more general slice type applicable to arrays and other collections.
+   - For arrays, we can create slices to refer to part of the array.
+   - Example: `let slice = &a[1..3];` creates a slice of the array `a`.
+   - This slice has the type `&[i32]`, where `i32` represents the element type.
+   - General slices work similarly to string slices.
+
+3. **Usage:**
+   - You'll encounter general slices when working with arrays, vectors, and other data structures.
+   - We'll explore these collections further in Chapter 8.
+
