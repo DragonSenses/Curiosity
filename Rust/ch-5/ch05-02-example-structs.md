@@ -107,3 +107,34 @@ Here we’ve defined a struct and named it `Rectangle`. Inside the curly bracket
 Our `area` function is now defined with one parameter, which we’ve named `rectangle`, whose type is an immutable borrow of a struct `Rectangle` instance. As mentioned in Chapter 4, we want to borrow the struct rather than take ownership of it. This way, `main` retains its ownership and can continue using `rect1`, which is the reason we use the `&` in the function signature and where we call the function.
 
 The `area` function accesses the `width` and `height` fields of the `Rectangle` instance (note that accessing fields of a borrowed struct instance does not move the field values, which is why you often see borrows of structs). Our function signature for `area` now says exactly what we mean: calculate the area of `Rectangle`, using its `width` and `height` fields. This conveys that the width and height are related to each other, and it gives descriptive names to the values rather than using the tuple index values of `0` and `1`. This is a win for clarity.
+
+### Adding Useful Functionality with Derived Traits
+
+It’d be useful to be able to print an instance of `Rectangle` while we’re debugging our program and see the values for all its fields. Listing 5-11 tries using the [`println!` macro](https://doc.rust-lang.org/std/macro.println.html) as we have used in previous chapters. This won’t work, however.
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust,ignore,does_not_compile
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!("rect1 is {}", rect1);
+}
+```
+
+<span class="caption">Listing 5-11: Attempting to print a `Rectangle`
+instance</span>
+
+When we compile this code, we get an error with this core message:
+
+```sh
+error[E0277]: `Rectangle` doesn't implement `std::fmt::Display`
+```
