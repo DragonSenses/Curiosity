@@ -35,3 +35,11 @@ The area of the rectangle is 1500 square pixels.
 ```
 
 This code succeeds in figuring out the area of the rectangle by calling the `area` function with each dimension, but we can do more to make this code clear and readable.
+
+The issue with this code is evident in the signature of `area`:
+
+```rust,ignore
+fn area(width: u32, height: u32) -> u32 {
+```
+
+The `area` function is supposed to calculate the area of one rectangle, but the function we wrote has two parameters, and it’s not clear anywhere in our program that the parameters are related. It would be more readable and more manageable to group width and height together. We’ve already discussed one way we might do that in [“The Tuple Type”](https://doc.rust-lang.org/book/ch03-02-data-types.html#the-tuple-type) section of Chapter 3: by using tuples.
