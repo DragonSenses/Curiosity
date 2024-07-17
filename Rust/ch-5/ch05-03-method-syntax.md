@@ -175,3 +175,37 @@ p1.distance(&p2);
 
 Both of these lines achieve the same result. Rust's implicit borrowing for method receivers contributes to ergonomic ownership management.
 
+### Methods with More Parameters
+
+Let’s practice using methods by implementing a second method on the `Rectangle` struct. This time we want an instance of `Rectangle` to take another instance of `Rectangle` and return `true` if the second `Rectangle` can fit completely within `self` (the first `Rectangle`); otherwise, it should return `false`. That is, once we’ve defined the `can_hold` method, we want to be able to write the program shown in Listing 5-14.
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust,ignore
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+    let rect2 = Rectangle {
+        width: 10,
+        height: 40,
+    };
+    let rect3 = Rectangle {
+        width: 60,
+        height: 45,
+    };
+
+    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
+    println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
+}
+```
+
+<span class="caption">Listing 5-14: Using the as-yet-unwritten `can_hold` method</span>
+
+The expected output would look like the following because both dimensions of `rect2` are smaller than the dimensions of `rect1`, but `rect3` is wider than `rect1`:
+
+```sh
+Can rect1 hold rect2? true
+Can rect1 hold rect3? false
+```
