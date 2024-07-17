@@ -41,3 +41,37 @@
    - The `&self` parameter allows reading data from the struct without taking ownership.
    - If you need to modify the instance, use `&mut self` as the first parameter.
 
+
+Let’s change the `area` function that has a `Rectangle` instance as a parameter and instead make an `area` method defined on the `Rectangle` struct, as shown in Listing 5-13.
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        rect1.area()
+    );
+}
+```
+
+<span class="caption">Listing 5-13: Defining an `area` method on the
+`Rectangle` struct</span>
+
