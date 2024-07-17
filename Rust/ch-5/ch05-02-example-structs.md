@@ -172,4 +172,50 @@ Here is a recap:
 - **Debug Trait**: Attempting to use `Debug` formatting also results in an error because `Rectangle` doesn’t implement `Debug`.
 - **Solution**: The compiler advises adding `#[derive(Debug)]` to `Rectangle` or manually implementing `Debug` to enable debugging information printing.
 
-Rust *does* include functionality to print out debugging information, but we have to explicitly opt in to make that functionality available for our struct.
+#### `Debug` trait for debugging information
+
+Rust *does* include functionality to print out debugging information, but we have to explicitly opt in to make that functionality available for our struct. To do that, we add the outer attribute `#[derive(Debug)]` just before the struct definition, as shown in Listing 5-12.
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!("rect1 is {rect1:?}");
+}
+```
+
+<span class="caption">Listing 5-12: Adding the attribute to derive the `Debug` trait and printing the `Rectangle` instance using debug formatting</span>
+
+Now when we run the program, we won’t get any errors, and we’ll see the following output:
+
+```sh
+$ cargo run
+   Compiling rectangles v0.1.0 (file:///projects/rectangles)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.48s
+     Running `target/debug/rectangles`
+rect1 is Rectangle { width: 30, height: 50 }
+```
+
+Nice! It’s not the prettiest output, but it shows the values of all the fields for this instance, which would definitely help during debugging. When we have larger structs, it’s useful to have output that’s a bit easier to read; in those cases, we can use `{:#?}` instead of `{:?}` in the `println!` string. In this example, using the `{:#?}` style will output the following:
+
+```sh
+$ cargo run
+   Compiling rectangles v0.1.0 (file:///projects/rectangles)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.48s
+     Running `target/debug/rectangles`
+rect1 is Rectangle {
+    width: 30,
+    height: 50,
+}
+```
