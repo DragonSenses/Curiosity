@@ -84,3 +84,42 @@ We chose `&self` here for the same reason we used `&Rectangle` in the function v
 
 The main reason for using methods instead of functions, in addition to providing method syntax and not having to repeat the type of `self` in every method’s signature, is for organization. We’ve put all the things we can do with an instance of a type in one `impl` block rather than making future users of our code search for capabilities of `Rectangle` in various places in the library we provide.
 
+#### Method naming
+
+1. **Method Naming**:
+   - You can choose to give a method the same name as one of the struct's fields.
+   - For example, you can define a method on `Rectangle` that is also named `width`.
+
+2. **Example**:
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+impl Rectangle {
+    fn width(&self) -> bool {
+        self.width > 0
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    if rect1.width() {
+        println!("The rectangle has a nonzero width; it is {}", rect1.width);
+    }
+}
+```
+
+Here, we’re choosing to make the `width` method return `true` if the value in the instance’s `width` field is greater than `0` and `false` if the value is `0`: we can use a field within a method of the same name for any purpose. In `main`, when we follow `rect1.width` with parentheses, Rust knows we mean the method `width`. When we don’t use parentheses, Rust knows we mean the field `width`.
+
+3. **Getters**:
+   - Methods like this, which return the value of a field, are called getters.
+   - Rust does not automatically implement getters for struct fields.
+   - Getters allow read-only access to a field while keeping it private.
+   - You can control field visibility by making the field private and the method public.
+
+Often, but not always, when we give a method the same name as a field we want it to only return the value in the field and do nothing else. Methods like this are called *getters*, and Rust does not implement them automatically for struct fields as some other languages do. Getters are useful because you can make the field private but the method public, and thus enable read-only access to that field as part of the type’s public API. We will discuss what public and private are and how to designate a field or method as public or private in [Chapter 7](https://doc.rust-lang.org/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html#exposing-paths-with-the-pub-keyword).
+
