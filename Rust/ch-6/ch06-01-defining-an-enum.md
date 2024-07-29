@@ -79,6 +79,8 @@ And we can call this function with either variant:
     route(IpAddrKind::V6);
 ```
 
+#### Storing data through `struct`
+
 Using enums has even more advantages. Thinking more about our IP address type, at the moment we don't have a way to store the actual IP address *data*; we only know what *kind* it is. Given that you just learned about structs in Chapter 5, you might be tempted to tackle this problem with structs as shown in Listing 6-1.
 
 ```rust
@@ -104,3 +106,62 @@ Using enums has even more advantages. Thinking more about our IP address type, a
 ```
 
 <span class="caption">Listing 6-1: Storing the data and `IpAddrKind` variant of an IP address using a `struct`</span>
+
+Here, we've defined a struct `IpAddr` that has two fields: a `kind` field that is of type `IpAddrKind` (the enum we defined previously) and an `address` field of type `String`. We have two instances of this struct. The first is `home`, and it has the value `IpAddrKind::V4` as its `kind` with associated address data of `127.0.0.1`. The second instance is `loopback`. It has the other variant of `IpAddrKind` as its `kind` value, `V6`, and has address `::1` associated with it. We've used a struct to bundle the `kind` and `address` values together, so now the variant is associated with the value.
+
+#### Storing data through enum
+
+However, representing the same concept using just an enum is more concise: rather than an enum inside a struct, we can put data directly into each enum variant. This new definition of the `IpAddr` enum says that both `V4` and `V6` variants will have associated `String` values:
+
+```rust
+    enum IpAddr {
+        V4(String),
+        V6(String),
+    }
+
+    let home = IpAddr::V4(String::from("127.0.0.1"));
+
+    let loopback = IpAddr::V6(String::from("::1"));
+```
+
+We attach data to each variant of the enum directly, so there is no need for an extra struct. Here, it's also easier to see another detail of how enums work: the name of each enum variant that we define also becomes a function that constructs an instance of the enum. That is, `IpAddr::V4()` is a function call that takes a `String` argument and returns an instance of the `IpAddr` type. We automatically get this constructor function defined as a result of defining the enum.
+
+Key points:
+   - In this enum-only representation, each variant (`V4` and `V6`) directly holds the associated `String` value.
+   - The enum variants themselves act as constructor functions for creating instances of `IpAddr`.
+
+##### Storing data through enum | Overview
+
+1. **Enum Definition (`IpAddrKind`):**
+   - We define an enum called `IpAddrKind`.
+   - It has two variants: `V4` and `V6`.
+   - These variants represent IPv4 and IPv6 address kinds, respectively.
+
+2. **Struct Definition (`IpAddr`):**
+   - We define a struct called `IpAddr`.
+   - It has two fields:
+     - `kind`: An instance of the `IpAddrKind` enum (either `V4` or `V6`).
+     - `address`: A `String` containing the actual IP address value.
+
+3. **Creating Instances (`home` and `loopback`):**
+   - We create two instances of the `IpAddr` struct:
+     - `home`:
+       - `kind` is `IpAddrKind::V4`.
+       - `address` is `"127.0.0.1"`.
+     - `loopback`:
+       - `kind` is `IpAddrKind::V6`.
+       - `address` is `"::1"`.
+
+4. **Comparison with Enum-Only Representation:**
+   - The original code uses a struct to bundle the `kind` and `address` values together.
+   - However, we can represent the same concept more concisely using just an enum:
+     ```rust
+     enum IpAddr {
+         V4(String),
+         V6(String),
+     }
+     let home = IpAddr::V4(String::from("127.0.0.1"));
+     let loopback = IpAddr::V6(String::from("::1"));
+     ```
+   - In this enum-only representation, each variant (`V4` and `V6`) directly holds the associated `String` value.
+   - The enum variants themselves act as constructor functions for creating instances of `IpAddr`.
