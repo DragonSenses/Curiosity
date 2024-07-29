@@ -57,3 +57,50 @@ enum IpAddrKind {
      ```
    - However, enums simplify the representation of IP address kinds without storing the actual address data.
 
+### Enum Values
+
+We can create instances of each of the two variants of `IpAddrKind` like this:
+
+```rust
+    let four = IpAddrKind::V4;
+    let six = IpAddrKind::V6;
+```
+
+Note that the variants of the enum are namespaced under its identifier, and we use a double colon to separate the two. This is useful because now both values `IpAddrKind::V4` and `IpAddrKind::V6` are of the same type: `IpAddrKind`. We can then, for instance, define a function that takes any `IpAddrKind`:
+
+```rust
+fn route(ip_kind: IpAddrKind) {}
+```
+
+And we can call this function with either variant:
+
+```rust
+    route(IpAddrKind::V4);
+    route(IpAddrKind::V6);
+```
+
+Using enums has even more advantages. Thinking more about our IP address type, at the moment we don't have a way to store the actual IP address *data*; we only know what *kind* it is. Given that you just learned about structs in Chapter 5, you might be tempted to tackle this problem with structs as shown in Listing 6-1.
+
+```rust
+    enum IpAddrKind {
+        V4,
+        V6,
+    }
+
+    struct IpAddr {
+        kind: IpAddrKind,
+        address: String,
+    }
+
+    let home = IpAddr {
+        kind: IpAddrKind::V4,
+        address: String::from("127.0.0.1"),
+    };
+
+    let loopback = IpAddr {
+        kind: IpAddrKind::V6,
+        address: String::from("::1"),
+    };
+```
+
+<span class="caption">Listing 6-1: Storing the data and `IpAddrKind` variant of an IP address using a `struct`</span>
