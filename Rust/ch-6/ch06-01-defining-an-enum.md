@@ -306,6 +306,7 @@ The body of the method would use `self` to get the value that we called the meth
 
 Let's look at another enum in the standard library that is very common and useful: `Option`.
 
+### The `Option` Enum and Its Advantages Over Null Values
 
 This section explores a case study of `Option`, which is another enum defined by the standard library. The `Option` type encodes the very common scenario in which a value could be something or it could be nothing.
 
@@ -319,6 +320,26 @@ In his 2009 presentation "Null References: The Billion Dollar Mistake," Tony Hoa
 
 The problem with null values is that if you try to use a null value as a not-null value, you'll get an error of some kind. Because this null or not-null property is pervasive, it's extremely easy to make this kind of error.
 
-However, the concept that null is trying to express is still a useful one: a null is a value that is currently invalid or absent for some reason.
+However, the concept that null is trying to express is still a useful one: **a null is a value that is currently invalid or absent for some reason.**
 
 The problem isn't really with the concept but with the particular implementation.
+
+As such, **Rust does not have nulls**, but it does have an enum that can encode the concept of a value being present or absent. This enum is `Option<T>`, and it is [defined by the standard library](https://doc.rust-lang.org/std/option/enum.Option.html) as follows:
+
+```rust
+enum Option<T> {
+    None,
+    Some(T),
+}
+```
+
+The `Option<T>` enum is so useful that it's even included in the prelude; you don't need to bring it into scope explicitly. Its variants are also included in the prelude: you can use `Some` and `None` directly without the `Option::` prefix. The `Option<T>` enum is still just a regular enum, and `Some(T)` and `None` are still variants of type `Option<T>`.
+
+The `<T>` syntax is a feature of Rust we haven't talked about yet. It's a generic type parameter, and we'll cover generics in more detail in Chapter 10. For now, all you need to know is that `<T>` means that the `Some` variant of the `Option` enum can hold one piece of data of any type, and that each concrete type that gets used in place of `T` makes the overall `Option<T>` type a different type. Here are some examples of using `Option` values to hold number types and string types:
+
+```rust
+    let some_number = Some(5);
+    let some_char = Some('e');
+
+    let absent_number: Option<i32> = None;
+```
