@@ -273,3 +273,36 @@ But if we used the different structs, each of which has its own type, we couldn'
    - Enums group variants together under a single type (e.g., `Message`).
    - Using structs (unit, tuple, or named), each variant would have its own type.
 
+#### Defining Methods in Enums
+
+There is one more similarity between enums and structs: just as we're able to define methods on structs using `impl`, we're also able to define methods on enums. 
+
+In Rust, just like with structs, you can define methods on enums using the `impl` block. Here's an example using an enum called `Message`. Then we define a method named `call` that we could define on our `Message` enum:
+
+```rust
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+}
+
+impl Message {
+    fn call(&self) {
+        // Method body would be defined here
+    }
+}
+
+let m = Message::Write(String::from("hello"));
+m.call();
+```
+
+In this example:
+- We define an enum called `Message` with different variants.
+- The `call` method is associated with the `Message` enum.
+- When you call `m.call()`, `self` refers to the value of `m` (which is `Message::Write(String::from("hello"))`).
+
+The body of the method would use `self` to get the value that we called the method on. In this example, we've created a variable `m` that has the value `Message::Write(String::from("hello"))`, and that is what `self` will be in the body of the `call` method when `m.call()` runs.
+
+Let's look at another enum in the standard library that is very common and useful: `Option`.
+
