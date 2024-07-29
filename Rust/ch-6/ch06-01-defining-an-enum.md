@@ -235,3 +235,41 @@ struct ChangeColorMessage(i32, i32, i32); // tuple struct
 ```
 
 But if we used the different structs, each of which has its own type, we couldn't as easily define a function to take any of these kinds of messages as we could with the `Message` enum defined in Listing 6-2, which is a single type.
+
+##### Flexible data representation with enum variants | Summary
+
+1. **Advantages of Enums over Structs:**
+   - Enums allow each variant to have different types and amounts of associated data.
+   - For example, consider IP addresses:
+     - IPv4 addresses have four numeric components (ranging from 0 to 255).
+     - IPv6 addresses are expressed as a single `String`.
+   - Using a struct, we couldn't easily represent both variants with different data types.
+
+2. **IP Address Example Using Enums:**
+   - We define an enum called `IpAddr`.
+   - It has two variants:
+     - `V4`: Takes four `u8` values (representing IPv4 components).
+     - `V6`: Takes a `String` (representing IPv6 address).
+   - Example instances:
+     - `home`: IPv4 address `127.0.0.1`.
+     - `loopback`: IPv6 address `::1`.
+
+3. **Standard Library's `IpAddr` Definition:**
+   - The standard library provides its own `IpAddr` definition.
+   - It embeds address data inside the variants using two different structs:
+     - `Ipv4Addr` for `V4`.
+     - `Ipv6Addr` for `V6`.
+
+4. **Variety of Types in Enums:**
+   - Enums can hold various types:
+     - Strings, numeric types, or even other enums.
+   - Example: `Message` enum with different variants:
+     - `Quit`: No associated data.
+     - `Move`: Named fields (`x` and `y`).
+     - `Write`: Includes a single `String`.
+     - `ChangeColor`: Includes three `i32` values.
+
+5. **Comparison with Structs:**
+   - Enums group variants together under a single type (e.g., `Message`).
+   - Using structs (unit, tuple, or named), each variant would have its own type.
+
