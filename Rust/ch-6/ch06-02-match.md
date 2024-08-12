@@ -110,3 +110,38 @@ enum Coin {
 <span class="caption">Listing 6-4: A `Coin` enum in which the `Quarter` variant also holds a `UsState` value</span>
 
 Now, when dealing with quarters, we can access both the coin type (`Coin::Quarter`) and the associated state value (e.g., `UsState::Alaska`).
+
+1. **Scenario**:
+   - Imagine a friend collecting all 50 state quarters.
+   - While sorting loose change by coin type, we want to call out the associated state name for each quarter.
+
+2. **`match` Expression**:
+   - The code snippet defines a function called `value_in_cents(coin: Coin) -> u8`.
+   - Inside this function, there's a `match` expression that handles different coin variants.
+   - For example, we add a variable called `state` to the pattern that matches values of the variant `Coin::Quarter`.
+
+3. **Pattern Matching for `Coin::Quarter`**:
+   - When the input `coin` matches the `Coin::Quarter` variant, the `state` variable is bound to the value of that quarter's state.
+   - The `state` binding allows us to access the inner state value.
+
+```rust
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter(state) => {
+            println!("State quarter from {state:?}!");
+            25
+        }
+    }
+}
+```
+
+4. **Example Usage**:
+   - If we call `value_in_cents(Coin::Quarter(UsState::Alaska))`, the `coin` value is `Coin::Quarter(UsState::Alaska)`.
+   - The `match` expression checks each arm, and when it reaches `Coin::Quarter(state)`, the binding for `state` becomes `UsState::Alaska`.
+   - We can then use `state` in the `println!` expression to display the state name.
+
+In summary, this code snippet demonstrates how to extract the inner state value from the `Coin` enum variant for quarters. 
+
