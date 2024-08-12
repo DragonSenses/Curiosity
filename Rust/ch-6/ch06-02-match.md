@@ -145,3 +145,44 @@ fn value_in_cents(coin: Coin) -> u8 {
 
 In summary, this code snippet demonstrates how to extract the inner state value from the `Coin` enum variant for quarters. 
 
+### Matching with `Option<T>`
+
+1. **Scenario**:
+   - We're working with `Option<T>` where `T` represents a value (e.g., `i32`).
+   - The goal is to handle both the `Some` case (when there's a value) and the `None` case (when there's no value).
+
+2. **Using `match`**:
+   - Similar to how we used `match` with the `Coin` enum, we can use it with `Option<T>`.
+   - The `match` expression compares the variant of `Option<T>` and executes code based on the match.
+
+3. **Example Function: `plus_one`**:
+   - We define a function called `plus_one(x: Option<i32>) -> Option<i32>`.
+   - Inside the function, we use `match` to handle the different cases:
+     - If `x` is `None`, return `None`.
+     - If `x` is `Some(i)`, return `Some(i + 1)` (adding 1 to the inner value).
+
+   - We create an `Option<i32>` with the value `5` (`let five = Some(5)`).
+   - Calling `plus_one(five)` results in `Some(6)` (adding 1 to 5).
+   - Calling `plus_one(None)` returns `None`.
+
+In the previous section, we wanted to get the inner `T` value out of the `Some` case when using `Option<T>`; we can also handle `Option<T>` using `match`, as we did with the `Coin` enum! Instead of comparing coins, we’ll compare the variants of `Option<T>`, but the way the `match` expression works remains the same.
+
+Let’s say we want to write a function that takes an `Option<i32>` and, if there’s a value inside, adds 1 to that value. If there isn’t a value inside, the function should return the `None` value and not attempt to perform any operations.
+
+This function is very easy to write, thanks to `match`, and will look like Listing 6-5.
+
+```rust
+    fn plus_one(x: Option<i32>) -> Option<i32> {
+        match x {
+            None => None,
+            Some(i) => Some(i + 1),
+        }
+    }
+
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+```
+
+<span class="caption">Listing 6-5: A function that uses a `match` expression on an `Option<i32>`</span>
+
