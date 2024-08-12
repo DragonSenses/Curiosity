@@ -76,3 +76,37 @@ fn value_in_cents(coin: Coin) -> u8 {
     }
 }
 ```
+
+### Patterns That Bind to Values
+
+In Rust, match arms have a powerful feature: **they can bind to parts of the values that match the pattern**. This allows us to extract data from enum variants.
+
+As an example, consider the following scenario:
+
+- From 1999 to 2008, the United States minted quarters with different designs for each of the 50 states on one side.
+- No other coins had state designs; only quarters had this extra value.
+
+To incorporate this information into our `enum`, we modify the `Coin` variant:
+
+- We change the `Quarter` variant to include a `UsState` value stored inside it.
+- The `UsState` enum represents the different states (e.g., Alabama, Alaska, etc.).
+
+```rust
+#[derive(Debug)] // So we can inspect the state in a minute
+enum UsState {
+    Alabama,
+    Alaska,
+    // ... (other states)
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+```
+
+<span class="caption">Listing 6-4: A `Coin` enum in which the `Quarter` variant also holds a `UsState` value</span>
+
+Now, when dealing with quarters, we can access both the coin type (`Coin::Quarter`) and the associated state value (e.g., `UsState::Alaska`).
