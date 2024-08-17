@@ -4,7 +4,7 @@ Rust has an extremely powerful control flow construct called `match` that allows
 
 Think of a match expression like a coin-sorting machine: just as coins fall through the first hole that fits their size, values pass through each pattern in a match, and when a matching pattern is found, the associated code block is executed.
 
-Speaking of coins, let’s use them as an example using `match`! We can write a function that takes an unknown US coin and, in a similar way as the counting machine, determines which coin it is and returns its value in cents, as shown in Listing 6-3.
+Speaking of coins, let's use them as an example using `match`! We can write a function that takes an unknown US coin and, in a similar way as the counting machine, determines which coin it is and returns its value in cents, as shown in Listing 6-3.
 
 ```rust
 enum Coin {
@@ -28,9 +28,9 @@ fn value_in_cents(coin: Coin) -> u8 {
 
 1. **Syntax and Purpose**:
 
-  Let’s break down the `match` in the `value_in_cents` function. 
+  Let's break down the `match` in the `value_in_cents` function. 
   - First we list the `match` keyword followed by an expression, which in this case is the value `coin`. 
-  - This seems very similar to a conditional expression used with `if`, but there’s a big difference: with `if`, the condition needs to evaluate to a Boolean value, but here it can be any type. 
+  - This seems very similar to a conditional expression used with `if`, but there's a big difference: with `if`, the condition needs to evaluate to a Boolean value, but here it can be any type. 
   - The type of `coin` in this example is the `Coin` enum that we defined on the first line.
   - A `match` expression branches on a pattern. It compares a scrutinee value (in this case, the `coin` value) against different patterns.
    - The goal is to execute code associated with the first matching pattern.
@@ -47,7 +47,7 @@ fn value_in_cents(coin: Coin) -> u8 {
 
   When the `match` expression executes, it compares the resultant value against the pattern of each arm, in order. 
   - If a pattern matches the value, the code associated with that pattern is executed. 
-  - If that pattern doesn’t match the value, execution continues to the next arm (similar to a coin-sorting machine). 
+  - If that pattern doesn't match the value, execution continues to the next arm (similar to a coin-sorting machine). 
   - We can have as many arms as we need: in Listing 6-3, our `match` has four arms.
 
 4. **Expression Result**:
@@ -165,9 +165,9 @@ In summary, this code snippet demonstrates how to extract the inner state value 
    - Calling `plus_one(five)` results in `Some(6)` (adding 1 to 5).
    - Calling `plus_one(None)` returns `None`.
 
-In the previous section, we wanted to get the inner `T` value out of the `Some` case when using `Option<T>`; we can also handle `Option<T>` using `match`, as we did with the `Coin` enum! Instead of comparing coins, we’ll compare the variants of `Option<T>`, but the way the `match` expression works remains the same.
+In the previous section, we wanted to get the inner `T` value out of the `Some` case when using `Option<T>`; we can also handle `Option<T>` using `match`, as we did with the `Coin` enum! Instead of comparing coins, we'll compare the variants of `Option<T>`, but the way the `match` expression works remains the same.
 
-Let’s say we want to write a function that takes an `Option<i32>` and, if there’s a value inside, adds 1 to that value. If there isn’t a value inside, the function should return the `None` value and not attempt to perform any operations.
+Let's say we want to write a function that takes an `Option<i32>` and, if there's a value inside, adds 1 to that value. If there isn't a value inside, the function should return the `None` value and not attempt to perform any operations.
 
 This function is very easy to write, thanks to `match`, and will look like Listing 6-5.
 
@@ -186,13 +186,13 @@ This function is very easy to write, thanks to `match`, and will look like Listi
 
 <span class="caption">Listing 6-5: A function that uses a `match` expression on an `Option<i32>`</span>
 
-Let’s examine the first execution of `plus_one` in more detail. When we call `plus_one(five)`, the variable `x` in the body of `plus_one` will have the value `Some(5)`. We then compare that against each match arm:
+Let's examine the first execution of `plus_one` in more detail. When we call `plus_one(five)`, the variable `x` in the body of `plus_one` will have the value `Some(5)`. We then compare that against each match arm:
 
 ```rust,ignore
             None => None,
 ```
 
-The `Some(5)` value doesn’t match the pattern `None`, so we continue to the next arm:
+The `Some(5)` value doesn't match the pattern `None`, so we continue to the next arm:
 
 ```rust,ignore
             Some(i) => Some(i + 1),
@@ -200,19 +200,19 @@ The `Some(5)` value doesn’t match the pattern `None`, so we continue to the ne
 
 Does `Some(5)` match `Some(i)`? It does! We have the same variant. The `i` binds to the value contained in `Some`, so `i` takes the value `5`. The code in the match arm is then executed, so we add 1 to the value of `i` and create a new `Some` value with our total `6` inside.
 
-Now let’s consider the second call of `plus_one` in Listing 6-5, where `x` is `None`. We enter the `match` and compare to the first arm:
+Now let's consider the second call of `plus_one` in Listing 6-5, where `x` is `None`. We enter the `match` and compare to the first arm:
 
 ```rust,ignore
             None => None,
 ```
 
-It matches! There’s no value to add to, so the program stops and returns the `None` value on the right side of `=>`. Because the first arm matched, no other arms are compared.
+It matches! There's no value to add to, so the program stops and returns the `None` value on the right side of `=>`. Because the first arm matched, no other arms are compared.
 
-Combining `match` and enums is useful in many situations. You’ll see this pattern a lot in Rust code: `match` against an enum, bind a variable to the data inside, and then execute code based on it. It’s a bit tricky at first, but once you get used to it, you’ll wish you had it in all languages. It’s consistently a user favorite.
+Combining `match` and enums is useful in many situations. You'll see this pattern a lot in Rust code: `match` against an enum, bind a variable to the data inside, and then execute code based on it. It's a bit tricky at first, but once you get used to it, you'll wish you had it in all languages. It's consistently a user favorite.
 
 ### Matches Are Exhaustive
 
-There’s one other aspect of `match` we need to discuss: the arms’ patterns must cover all possibilities. Consider this version of our `plus_one` function, which has a bug and won’t compile:
+There's one other aspect of `match` we need to discuss: the arms' patterns must cover all possibilities. Consider this version of our `plus_one` function, which has a bug and won't compile:
 
 ```rust,ignore,does_not_compile
     fn plus_one(x: Option<i32>) -> Option<i32> {
@@ -222,7 +222,7 @@ There’s one other aspect of `match` we need to discuss: the arms’ patterns m
     }
 ```
 
-We didn’t handle the `None` case, so this code will cause a bug. Luckily, it’s a bug Rust knows how to catch. If we try to compile this code, we’ll get this error:
+We didn't handle the `None` case, so this code will cause a bug. Luckily, it's a bug Rust knows how to catch. If we try to compile this code, we'll get this error:
 
 ```sh
 $ cargo run
@@ -249,7 +249,7 @@ For more information about this error, try `rustc --explain E0004`.
 error: could not compile `enums` (bin "enums") due to 1 previous error
 ```
 
-Rust knows that we didn’t cover every possible case, and even knows which pattern we forgot! Matches in Rust are *exhaustive*: we must exhaust every last possibility in order for the code to be valid. Especially in the case of `Option<T>`, when Rust prevents us from forgetting to explicitly handle the `None` case, it protects us from assuming that we have a value when we might have null, thus making the billion-dollar mistake discussed earlier impossible.
+Rust knows that we didn't cover every possible case, and even knows which pattern we forgot! Matches in Rust are *exhaustive*: we must exhaust every last possibility in order for the code to be valid. Especially in the case of `Option<T>`, when Rust prevents us from forgetting to explicitly handle the `None` case, it protects us from assuming that we have a value when we might have null, thus making the billion-dollar mistake discussed earlier impossible.
 
 Key points about exhaustive pattern matching in Rust:
 
@@ -258,3 +258,41 @@ Key points about exhaustive pattern matching in Rust:
 - The `_` pattern serves as a wildcard catch-all case for remaining possibilities.
 - It's a powerful tool for avoiding costly mistakes.
 
+
+
+#### Catch-all Patterns and the `_` placeholder | Overview
+
+Key points about catch-all patterns and the `_` placeholder in Rust:
+
+1. **Catch-All Patterns:**
+   - Enums allow us to handle specific values differently while providing a default action for all other values.
+   - Example: Imagine a game where rolling a 3 results in a fancy hat, rolling a 7 causes the player to lose a hat, and other rolls move the player on the game board.
+   - We use a `match` expression to implement this logic, with patterns for `3` and `7`, and a catch-all pattern for other values.
+   - The catch-all pattern (usually named `other`) covers all remaining possibilities.
+   - The order of arms matters; the catch-all arm must come last to ensure other arms are evaluated first.
+
+2. **The `_` Placeholder:**
+   - `_` is a special pattern that matches any value without binding to it.
+   - It serves as a catch-all when we don't need to use the value.
+   - Rust won't warn about unused variables when `_` is used.
+   - Example: Changing the game rules so that any roll other than 3 or 7 requires a re-roll:
+
+   ```rust
+   match roll_result {
+       3 => get_fancy_hat(),
+       7 => lose_fancy_hat(),
+       _ => roll_again(),
+   }
+   ```
+
+3. **Using the Unit Value:**
+   - To express that nothing should happen for other values, use the unit value (empty tuple type) as the code for the catch-all arm.
+   - Example: If anything other than 3 or 7 occurs, no additional action is taken:
+
+   ```rust
+   match roll_result {
+       3 => get_fancy_hat(),
+       7 => lose_fancy_hat(),
+       _ => (),
+   }
+   ```
