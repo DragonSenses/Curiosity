@@ -80,3 +80,44 @@ Or we could use an `if let` and `else` expression, like this:
 ```
 
 If you have a situation in which your program has logic that is too verbose to express using a `match`, remember that `if let` is in your Rust toolbox as well.
+
+## Summary: Enums and Pattern Matching in Rust
+
+### Understanding Enums
+- In Rust, an **enum** (short for enumeration) is a type that can be any one of several variants.
+- Enums allow you to define a custom type by enumerating its possible variants.
+- Each variant can carry additional data or be empty.
+
+### Leveraging Pattern Matching
+- Pattern matching in Rust is primarily done through the `match` expression.
+- The `match` expression is similar to a switch statement in other languages but is far more powerful.
+- It allows you to run different code for different values of an enum.
+- Pattern matching ensures exhaustive handling of all possible cases.
+
+### Enums with Data
+- Enums can have associated data, making them versatile for modeling different scenarios.
+- For example, an enum representing different types of messages could have variants like `Text(String)`, `Image(Vec<u8>)`, etc.
+- The associated data allows you to encode meaning along with the variant.
+
+### Matching with Enums and Data
+- When working with enums that carry data, use pattern matching to extract and process the data.
+- The `match` expression allows you to handle each variant and its associated data separately.
+- You can bind variables to the data within each variant, making it accessible in the corresponding code block.
+
+### Advanced Pattern Matching
+- Rust's pattern matching capabilities extend beyond simple value checks.
+- You can match on nested enums, tuples, structs, and even ranges.
+- The `_` placeholder serves as a catch-all pattern for handling remaining cases.
+
+### Conclusion
+- Enums and pattern matching are powerful tools in Rust for expressing domain-specific concepts.
+- By creating custom types using enums, you ensure type safety and prevent errors.
+- Next, consider organizing your code using Rust's modules to provide a well-structured API.
+
+### Closing argument
+
+We've now covered how to use enums to create custom types that can be one of a set of enumerated values. We've shown how the standard library's `Option<T>` type helps you use the type system to prevent errors. When enum values have data inside them, you can use `match` or `if let` to extract and use those values, depending on how many cases you need to handle.
+
+Your Rust programs can now express concepts in your domain using structs and enums. Creating custom types to use in your API ensures type safety: the compiler will make certain your functions only get values of the type each function expects.
+
+In order to provide a well-organized API to your users that is straightforward to use and only exposes exactly what your users will need, let's now turn to Rust's modules.
