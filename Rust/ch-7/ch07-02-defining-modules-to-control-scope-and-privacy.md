@@ -92,4 +92,38 @@ Here, `pub mod vegetables;` means the code in *src/garden/vegetables.rs* is incl
 
 *Modules* allow us to organize code within a crate for readability and easy reuse. They also provide control over the *privacy* of items, as code within a module is private by default. Private items are internal implementation details not available for external use. However, we can choose to make modules and the items within them public, exposing them for external code to use and depend on.
 
+### Example: Restaurant Functionality
+
+Let's create a library crate named `restaurant` to illustrate how modules can help organize code. We'll define function signatures without implementing their bodies, focusing on code organization rather than restaurant functionality.
+
+In the restaurant industry, some areas are referred to as *front of house* and others as *back of house*:
+- **Front of house**:
+  - Where customers interact.
+  - Includes seating, order-taking, and bartending.
+- **Back of house**:
+  - Where chefs, cooks, dishwashers, and managers work.
+
+To structure our crate accordingly, we'll organize functions into nested modules. Start by creating a new library named `restaurant` using `cargo new restaurant --lib`. Then add the following code to *src/lib.rs* to define modules and function signatures for the front of house section:
+
+```rust
+mod front_of_house {
+    mod hosting {
+        fn add_to_waitlist() {}
+        fn seat_at_table() {}
+    }
+
+    mod serving {
+        fn take_order() {}
+        fn serve_order() {}
+        fn take_payment() {}
+    }
+}
+```
+
+Here's what's happening:
+- We define a module named `front_of_house` using the `mod` keyword.
+- Inside `front_of_house`, we have two nested modules: `hosting` and `serving`.
+- Modules can also hold other items like structs, enums, constants, and functions (as shown in Listing 7-1).
+
+By using modules, we group related definitions together and provide meaningful organization. Programmers can navigate the code based on these groups, making it easier to find relevant definitions. When adding new functionality, developers know where to place the code to maintain organization.
 
