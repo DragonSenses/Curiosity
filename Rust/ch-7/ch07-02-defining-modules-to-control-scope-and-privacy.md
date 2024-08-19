@@ -54,7 +54,7 @@ Before we get to the details of modules and paths, here we provide a quick refer
 
 Here, we create a binary crate named `backyard` that illustrates these rules. The crate’s directory, also named `backyard`, contains the following files and directories:
 
-```
+```sh
 backyard
 ├── Cargo.lock
 ├── Cargo.toml
@@ -120,6 +120,8 @@ mod front_of_house {
 }
 ```
 
+<span class="caption">Listing 7-1: A `front_of_house` module containing other modules that then contain functions</span>
+
 Here's what's happening:
 - We define a module named `front_of_house` using the `mod` keyword.
 - Inside `front_of_house`, we have two nested modules: `hosting` and `serving`.
@@ -127,3 +129,25 @@ Here's what's happening:
 
 By using modules, we group related definitions together and provide meaningful organization. Programmers can navigate the code based on these groups, making it easier to find relevant definitions. When adding new functionality, developers know where to place the code to maintain organization.
 
+### Module Tree
+
+The module tree for the structure in Listing 7-1 looks like this:
+
+```sh
+crate
+ └── front_of_house
+     ├── hosting
+     │   ├── add_to_waitlist
+     │   └── seat_at_table
+     └── serving
+         ├── take_order
+         ├── serve_order
+         └── take_payment
+```
+<span class="caption">Listing 7-2: The module tree for the code in Listing 7-1</span>
+
+- Some modules nest inside others (e.g., `hosting` within `front_of_house`).
+- Modules can be siblings (e.g., `hosting` and `serving` within `front_of_house`).
+- The entire module tree is rooted under the implicit module named `crate`.
+
+Think of the module tree like a filesystem directory structure—it serves a similar purpose for organizing code!
