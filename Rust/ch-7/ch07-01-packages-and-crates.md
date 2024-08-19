@@ -30,3 +30,27 @@ The first parts of the module system we'll cover are packages and crates.
   - A package can contain as many binary crates as you like, but at most only one library crate.
   - A package must contain at least one crate, whether that’s a library or binary crate.
 
+### Example: Package Creation
+
+Let’s walk through what happens when we create a package using Cargo. Here are the steps:
+
+1. First, we enter the command `cargo new my-project` in the terminal:
+
+    ```console
+    $ cargo new my-project
+         Created binary (application) `my-project` package
+    ```
+
+2. After running `cargo new my-project`, we use `ls` to see what Cargo creates:
+   - In the project directory (`my-project`), we find:
+     - A *Cargo.toml* file, which defines our package.
+     - A *src* directory that contains *main.rs*.
+   - Note that *Cargo.toml* does not explicitly mention *src/main.rs*. Cargo follows a convention:
+     - If *src/main.rs* exists, it serves as the crate root for a binary crate with the same name as the package.
+     - If the package directory contains *src/lib.rs*, it contains a library crate with the same name, and *src/lib.rs* is its crate root.
+     - Cargo passes the crate root files to `rustc` for building the library or binary.
+
+3. In this example:
+   - Our package contains only *src/main.rs*, resulting in a binary crate named `my-project`.
+   - If a package contains both *src/main.rs* and *src/lib.rs*, it has two crates: a binary and a library, both with the same name as the package.
+   - To have multiple binary crates, we can place files in the *src/bin* directory, where each file becomes a separate binary crate.
