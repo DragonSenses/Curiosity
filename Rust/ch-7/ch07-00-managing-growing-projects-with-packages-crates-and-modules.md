@@ -16,3 +16,27 @@ Rust provides several features to manage your code's organization, including whi
 - **Paths:** A way of naming an item, such as a struct, function, or module.
 
 In this chapter, we'll cover all these features, discuss how they interact, and explain how to use them to manage scope. By the end, you should have a solid understanding of the module system and be able to work with scopes effectively!
+
+## Packages, Crates, and Modules | Overview
+
+1. **Packages and Crates:**
+   - A **package** in Rust is a collection of one or more crates.
+   - A **crate** is a compilation unit that can produce a library or an executable.
+   - A package can contain multiple binary crates and optionally one library crate.
+   - As a project grows, you can extract parts into separate crates that become external dependencies.
+
+2. **Modules and Scope:**
+   - **Modules** allow you to organize code within a crate.
+   - Modules control the organization, scope, and privacy of paths (names).
+   - You can create nested modules to structure your code logically.
+   - Scopes define which names are in or out of scope, affecting how names are resolved.
+
+3. **Paths:**
+   - A **path** is a way of naming an item (e.g., struct, function, module) in Rust.
+   - Paths help identify where to find specific code.
+   - They include absolute paths (starting from the crate root) and relative paths (starting from the current module).
+
+4. **Encapsulation and Privacy:**
+   - Encapsulating implementation details allows you to reuse code at a higher level.
+   - Public interfaces expose only necessary details, while private implementation details remain hidden.
+   - Rust provides visibility modifiers (`pub` and `pub(crate)`) to control access to items.
