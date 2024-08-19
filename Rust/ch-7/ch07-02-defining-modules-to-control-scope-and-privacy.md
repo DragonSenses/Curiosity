@@ -88,3 +88,8 @@ pub mod vegetables;
 
 Here, `pub mod vegetables;` means the code in *src/garden/vegetables.rs* is included too. That code defines the `Asparagus` struct.
 
+## Grouping Related Code in Modules
+
+*Modules* allow us to organize code within a crate for readability and easy reuse. They also provide control over the *privacy* of items, as code within a module is private by default. Private items are internal implementation details not available for external use. However, we can choose to make modules and the items within them public, exposing them for external code to use and depend on.
+
+
