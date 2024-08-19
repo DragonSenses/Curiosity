@@ -50,3 +50,41 @@ Before we get to the details of modules and paths, here we provide a quick refer
   - For instance, in any scope that can refer to `crate::garden::vegetables::Asparagus`, you can create a shortcut with `use crate::garden::vegetables::Asparagus;`.
   - From then on, you only need to write `Asparagus` to use that type in the scope.
 
+#### Creating the `backyard` Binary Crate
+
+Here, we create a binary crate named `backyard` that illustrates these rules. The crate’s directory, also named `backyard`, contains the following files and directories:
+
+```
+backyard
+├── Cargo.lock
+├── Cargo.toml
+└── src
+    ├── garden
+    │   └── vegetables.rs
+    ├── garden.rs
+    └── main.rs
+```
+
+The crate root file in this case is *src/main.rs*, and it contains the following code:
+
+```rust
+use crate::garden::vegetables::Asparagus;
+
+pub mod garden;
+
+fn main() {
+    let plant = Asparagus {};
+    println!("I'm growing {plant:?}!");
+}
+```
+
+The `pub mod garden;` line tells the compiler to include the code it finds in *src/garden.rs*, which is as follows:
+
+**Filename: src/garden.rs**
+
+```rust
+pub mod vegetables;
+```
+
+Here, `pub mod vegetables;` means the code in *src/garden/vegetables.rs* is included too. That code defines the `Asparagus` struct.
+
