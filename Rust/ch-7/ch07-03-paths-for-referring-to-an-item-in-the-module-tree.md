@@ -288,3 +288,47 @@ Because the `toast` field in the `back_of_house::Breakfast` struct is public, in
 
 Also, note that because `back_of_house::Breakfast` has a private field, the struct needs to provide a public associated function that constructs an instance of `Breakfast` (we've named it `summer` here). If `Breakfast` didn't have such a function, we couldn't create an instance of `Breakfast` in `eat_at_restaurant` because we couldn't set the value of the private `seasonal_fruit` field in `eat_at_restaurant`.
 
+In contrast, if we make an enum public, all of its variants are then public. We only need the `pub` before the `enum` keyword, as shown in Listing 7-10.
+
+<span class="filename">Filename: src/lib.rs</span>
+
+```rust,noplayground
+mod back_of_house {
+    pub enum Appetizer {
+        Soup,
+        Salad,
+    }
+}
+
+pub fn eat_at_restaurant() {
+    let order1 = back_of_house::Appetizer::Soup;
+    let order2 = back_of_house::Appetizer::Salad;
+}
+```
+
+<span class="caption">Listing 7-10: Designating an enum as public makes all its variants public</span>
+
+Because we made the `Appetizer` enum public, we can use the `Soup` and `Salad` variants in `eat_at_restaurant`.
+
+Enums aren't very useful unless their variants are public; it would be annoying to have to annotate all enum variants with `pub` in every case, so the default for enum variants is to be public. Structs are often useful without their fields being public, so struct fields follow the general rule of everything being private by default unless annotated with `pub`.
+
+There's one more situation involving `pub` that we haven't covered, and that is our last module system feature: the `use` keyword. We'll cover `use` by itself first, and then we'll show how to combine `pub` and `use`.
+
+### Making Structs and Enums Public | Recap
+
+We can use `pub` to designate structs and enums as public, but there are some additional details to consider:
+
+1. **Structs**:
+   - If we use `pub` before a struct definition, we make the struct itself public, but the struct's fields will still be private.
+   - We can selectively make each field public or private on a case-by-case basis.
+   - Example: In **Listing 7-9**, we've defined a public `back_of_house::Breakfast` struct with a public `toast` field, but a private `seasonal_fruit` field.
+   - This models a restaurant scenario where customers can choose the type of bread (public `toast`), but the chef decides the fruit based on availability (private `seasonal_fruit`).
+   - Customers can't directly choose or see the fruit they'll get.
+   - Attempting to modify the private `seasonal_fruit` field in `eat_at_restaurant` would result in a compilation error.
+
+2. **Enums**:
+   - When we make an enum public (using `pub` before the `enum` keyword), all its variants become public.
+   - In **Listing 7-10**, the `back_of_house::Appetizer` enum is public, allowing us to use the `Soup` and `Salad` variants in `eat_at_restaurant`.
+   - Enum variants are public by default, avoiding the need to annotate each variant with `pub`.
+
+Remember that enums are most useful when their variants are public, while structs can be useful even with private fields. The `use` keyword, our last module system feature, will be covered next.
