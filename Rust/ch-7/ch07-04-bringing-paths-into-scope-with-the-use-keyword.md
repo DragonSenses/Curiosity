@@ -264,3 +264,44 @@ fn function2() -> io::Result<()> {
 
 As you can see, using the parent modules distinguishes the two `Result` types. If instead we specified `use std::fmt::Result` and `use std::io::Result`, we'd have two `Result` types in the same scope, and Rust wouldn't know which one we meant when we used `Result`.
 
+### Providing New Names with the `as` Keyword
+
+In Rust, when you need to bring two types with the same name into the same scope using `use` statements, you can use the `as` keyword to provide a new local name (alias) for one of the types.
+
+There's another solution to the problem of bringing two types of the same name into the same scope with `use`: after the path, we can specify `as` and a new local name, or *alias*, for the type. Listing 7-16 shows another way to write the code in Listing 7-15 by renaming one of the two `Result` types using `as`.
+
+<span class="filename">Filename: src/lib.rs</span>
+
+```rust,noplayground
+use std::fmt::Result;
+use std::io::Result as IoResult;
+
+fn function1() -> Result {
+    // --snip--
+}
+
+fn function2() -> IoResult<()> {
+    // --snip--
+}
+```
+
+<span class="caption">Listing 7-16: Renaming a type when it's brought into scope with the `as` keyword</span>
+
+In the second `use` statement, we chose the new name `IoResult` for the `std::io::Result` type, which won't conflict with the `Result` from `std::fmt` that we've also brought into scope. Listing 7-15 and Listing 7-16 are considered idiomatic, so the choice is up to you!
+
+**Recap:** Let's break down the example from Listing 7-16:
+
+1. **Problem Scenario:**
+   - Suppose you have two types named `Result` from different parent modules: `std::fmt::Result` and `std::io::Result`.
+   - Bringing both types into the same scope directly using `use` would cause a conflict.
+
+2. **Solution with `as` Keyword:**
+   - In Listing 7-16, we address this issue by renaming one of the `Result` types.
+   - The line `use std::io::Result as IoResult;` creates an alias named `IoResult` for `std::io::Result`.
+   - Now, you can use `IoResult` to refer specifically to the I/O-related `Result` type.
+
+3. **Idiomatic Approach:**
+   - Both Listing 7-15 (without alias) and Listing 7-16 (with alias) are considered idiomatic in Rust.
+   - The choice between them depends on your preference and readability.
+
+Using aliases with `as` helps distinguish between types with the same name, making your code clearer.
