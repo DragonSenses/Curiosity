@@ -151,3 +151,39 @@ The compiler error indicates that the shortcut (`hosting::add_to_waitlist()`) is
 
 To fix this problem, move the `use` within the `customer` module too, or reference the shortcut in the parent module with `super::hosting` within the child `customer` module.
 
+1. **Move the `use` Statement Inside the `customer` Module:**
+   - Place the `use` statement within the `customer` module. This way, the shortcut for `hosting::add_to_waitlist()` will be available within the `customer` scope.
+   - Here's how you can do it:
+     ```rust
+     mod front_of_house {
+         pub mod hosting {
+             pub fn add_to_waitlist() {}
+         }
+     }
+
+     mod customer {
+         // Move the `use` statement here
+         use crate::front_of_house::hosting;
+
+         pub fn eat_at_restaurant() {
+             hosting::add_to_waitlist();
+         }
+     }
+     ```
+
+2. **Use `super::hosting` to Reference the Parent Module's Shortcut:**
+   - Instead of using the `use` statement, you can directly reference the parent module's shortcut using `super::hosting`.
+   - Modify the `eat_at_restaurant` function like this:
+     ```rust
+     mod front_of_house {
+         pub mod hosting {
+             pub fn add_to_waitlist() {}
+         }
+     }
+
+     mod customer {
+         pub fn eat_at_restaurant() {
+             super::hosting::add_to_waitlist();
+         }
+     }
+     ```
