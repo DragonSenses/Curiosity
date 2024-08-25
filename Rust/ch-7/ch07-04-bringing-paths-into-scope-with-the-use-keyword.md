@@ -61,7 +61,7 @@ pub fn eat_at_restaurant() {
 
 <span class="caption">Listing 7-7: Adding the `pub` keyword to `mod hosting` and `fn add_to_waitlist` lets us call the function from `eat_at_restaurant`</span>
 
-Having to write out the paths to call functions can feel inconvenient and repetitive. In Listing 7-7, whether we chose the absolute or relative path to the `add_to_waitlist` function, every time we wanted to call `add_to_waitlist` we had to specify `front_of_house` and `hosting` too. Fortunately, there’s a way to simplify this process: we can create a shortcut to a path with the `use` keyword once, and then use the shorter name everywhere else in the scope.
+Having to write out the paths to call functions can feel inconvenient and repetitive. In Listing 7-7, whether we chose the absolute or relative path to the `add_to_waitlist` function, every time we wanted to call `add_to_waitlist` we had to specify `front_of_house` and `hosting` too. Fortunately, there's a way to simplify this process: we can create a shortcut to a path with the `use` keyword once, and then use the shorter name everywhere else in the scope.
 
 In Listing 7-11, we bring the `crate::front_of_house::hosting` module into the scope of the `eat_at_restaurant` function so we only have to specify `hosting::add_to_waitlist` to call the `add_to_waitlist` function in `eat_at_restaurant`.
 
@@ -84,3 +84,70 @@ pub fn eat_at_restaurant() {
 <span class="caption">Listing 7-11: Bringing a module into scope with `use`</span>
 
 Adding `use` and a path in a scope is similar to creating a symbolic link in the filesystem. By adding `use crate::front_of_house::hosting` in the crate root, `hosting` is now a valid name in that scope, just as though the `hosting` module had been defined in the crate root. Paths brought into scope with `use` also check privacy, like any other paths.
+
+### Shortcut for a path is limited to the specific scope where it occurs
+
+In Rust, the `use` keyword creates a shortcut for a path within the scope where it occurs. However, this shortcut is limited to that specific scope.
+
+Note that `use` only creates the shortcut for the particular scope in which the `use` occurs. Listing 7-12 moves the `eat_at_restaurant` function into a new child module named `customer`, which is then a different scope than the `use`statement, so the function body won't compile.
+
+<span class="filename">Filename: src/lib.rs</span>
+
+```rust,noplayground,test_harness,does_not_compile,ignore
+mod front_of_house {
+    pub mod hosting {
+        pub fn add_to_waitlist() {}
+    }
+}
+
+use crate::front_of_house::hosting;
+
+mod customer {
+    pub fn eat_at_restaurant() {
+        hosting::add_to_waitlist();
+    }
+}
+```
+
+<span class="caption">Listing 7-12: A `use` statement only applies in the scope it's in</span>
+
+The compiler error shows that the shortcut no longer applies within the `customer` module:
+
+```sh
+$ cargo build
+   Compiling restaurant v0.1.0 (file:///projects/restaurant)
+error[E0433]: failed to resolve: use of undeclared crate or module `hosting`
+  --> src/lib.rs:11:9
+   |
+11 |         hosting::add_to_waitlist();
+   |         ^^^^^^^ use of undeclared crate or module `hosting`
+   |
+help: consider importing this module through its public re-export
+   |
+10 +     use crate::hosting;
+   |
+
+warning: unused import: `crate::front_of_house::hosting`
+ --> src/lib.rs:7:5
+  |
+7 | use crate::front_of_house::hosting;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+For more information about this error, try `rustc --explain E0433`.
+warning: `restaurant` (lib) generated 1 warning
+error: could not compile `restaurant` (lib) due to 1 previous error; 1 warning emitted
+```
+
+Notice there's also a warning that the `use` is no longer used in its scope! 
+
+1. The code defines a module named `front_of_house` with a submodule `hosting`. The `add_to_waitlist` function is part of the `hosting` submodule.
+2. The `use` statement brings the `hosting` module into the current scope, allowing you to call `hosting::add_to_waitlist()` directly.
+3. Next, a new module named `customer` is defined, and the `eat_at_restaurant` function is placed inside it.
+4. However, the `use` statement from earlier doesn't apply within the `customer` module. As a result, the function body won't compile because it can't find the `hosting` module.
+
+The compiler error indicates that the shortcut (`hosting::add_to_waitlist()`) is no longer valid within the `customer` module. 
+
+To fix this problem, move the `use` within the `customer` module too, or reference the shortcut in the parent module with `super::hosting` within the child `customer` module.
+
