@@ -305,3 +305,46 @@ In the second `use` statement, we chose the new name `IoResult` for the `std::io
    - The choice between them depends on your preference and readability.
 
 Using aliases with `as` helps distinguish between types with the same name, making your code clearer.
+
+### Re-exporting Names with `pub use`
+
+When we bring a name into scope with the `use` keyword, the name available in the new scope is private. To enable the code that calls our code to refer to that name as if it had been defined in that code's scope, we can combine `pub` and `use`. This technique is called *re-exporting* because we're bringing an item into scope but also making that item available for others to bring into their scope.
+
+1. **Problem Scenario:**
+   - Suppose you have a module named `front_of_house` with a submodule `hosting`.
+   - Initially, external code would need to call the `add_to_waitlist` function using the path `restaurant::front_of_house::hosting::add_to_waitlist()`.
+   - Additionally, the `front_of_house` module would need to be marked as `pub`.
+
+Listing 7-17 shows the code in Listing 7-11 with `use` in the root module changed to `pub use`.
+
+<span class="filename">Filename: src/lib.rs</span>
+
+```rust,noplayground,test_harness
+mod front_of_house {
+    pub mod hosting {
+        pub fn add_to_waitlist() {}
+    }
+}
+
+pub use crate::front_of_house::hosting;
+
+pub fn eat_at_restaurant() {
+    hosting::add_to_waitlist();
+}
+```
+
+<span class="caption">Listing 7-17: Making a name available for any code to use from a new scope with `pub use`</span>
+
+2. **Solution with `pub use`:**
+   - In Listing 7-17, the `pub use` statement re-exports the `hosting` module from the root module.
+   - Now, external code can use the simpler path `restaurant::hosting::add_to_waitlist()` to call the function.
+   - Re-exporting allows you to expose a different structure to external users while maintaining your internal organization.
+
+Before this change, external code would have to call the `add_to_waitlist` function by using the path `restaurant::front_of_house::hosting::add_to_waitlist()`, which also would have required the `front_of_house` module to be marked as `pub`. Now that this `pub use` has re-exported the `hosting` module from the root module, external code can use the path `restaurant::hosting::add_to_waitlist()` instead.
+
+3. **Use Cases:**
+   - Re-exporting is useful when your internal code structure differs from how external programmers think about the domain.
+   - For example, in a restaurant metaphor, the staff might think in terms of "front of house" and "back of house," but customers visiting the restaurant won't use those terms.
+   - With `pub use`, you can create a well-organized library for both library developers and users.
+
+Re-exporting is useful when the internal structure of your code is different from how programmers calling your code would think about the domain. For example, in this restaurant metaphor, the people running the restaurant think about "front of house" and "back of house." But customers visiting a restaurant probably won't think about the parts of the restaurant in those terms. With `pub use`, we can write our code with one structure but expose a different structure. Doing so makes our library well organized for programmers working on the library and programmers calling the library. We'll look at another example of `pub use` and how it affects your crate's documentation in the ["Exporting a Convenient Public API with `pub use`"](https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#exporting-a-convenient-public-api-with-pub-use) section of Chapter 14.
