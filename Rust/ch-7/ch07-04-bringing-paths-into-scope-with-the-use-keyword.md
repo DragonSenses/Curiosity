@@ -190,6 +190,20 @@ To fix this problem, move the `use` within the `customer` module too, or referen
 
 ### Creating Idiomatic `use` Paths
 
+1. **Idiomatic `use` Paths:**
+   - In Rust, it's idiomatic to bring functions into scope using the parent module with `use`.
+   - Listing 7-11 demonstrates this approach. We specify `use crate::front_of_house::hosting` and then call `hosting::add_to_waitlist()` within the `eat_at_restaurant` function.
+   - This approach makes it clear that the function isn't locally defined while minimizing repetition of the full path.
+
+2. **Structs, Enums, and Other Items:**
+   - When bringing in structs, enums, and other items with `use`, it's idiomatic to specify the full path.
+   - Listing 7-14 shows how to bring the standard library's `HashMap` struct into scope in an idiomatic way.
+
+3. **Handling Items with the Same Name:**
+   - Rust doesn't allow bringing two items with the same name into the same scope using `use` statements.
+   - Listing 7-15 demonstrates how to bring two `Result` types (with the same name) into scope by using their parent modules (`std::fmt` and `std::io`).
+   - Using the parent modules distinguishes between the two `Result` types.
+
 In Listing 7-11, you might have wondered why we specified `use crate::front_of_house::hosting` and then called `hosting::add_to_waitlist` in `eat_at_restaurant`, rather than specifying the `use` path all the way out to the `add_to_waitlist` function to achieve the same result, as in Listing 7-13.
 
 <span class="filename">Filename: src/lib.rs</span>
