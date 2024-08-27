@@ -348,3 +348,25 @@ Before this change, external code would have to call the `add_to_waitlist` funct
    - With `pub use`, you can create a well-organized library for both library developers and users.
 
 Re-exporting is useful when the internal structure of your code is different from how programmers calling your code would think about the domain. For example, in this restaurant metaphor, the people running the restaurant think about "front of house" and "back of house." But customers visiting a restaurant probably won't think about the parts of the restaurant in those terms. With `pub use`, we can write our code with one structure but expose a different structure. Doing so makes our library well organized for programmers working on the library and programmers calling the library. We'll look at another example of `pub use` and how it affects your crate's documentation in the ["Exporting a Convenient Public API with `pub use`"](https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#exporting-a-convenient-public-api-with-pub-use) section of Chapter 14.
+
+### Using External Packages
+
+To use `rand` in our project, we added this line to *Cargo.toml*:
+
+<span class="filename">Filename: Cargo.toml</span>
+
+```toml
+rand = "0.8.5"
+```
+
+Adding `rand` as a dependency in *Cargo.toml* tells Cargo to download the `rand` package and any dependencies from [crates.io](https://crates.io/) and make `rand` available to our project.
+
+Then, to bring `rand` definitions into the scope of our package, we added a `use` line starting with the name of the crate, `rand`, and listed the items we wanted to bring into scope. Below we brought the `Rng` trait into scope and called the `rand::thread_rng` function:
+
+```rust,ignore
+use rand::Rng;
+
+fn main() {
+    let secret_number = rand::thread_rng().gen_range(1..=100);
+}
+```
