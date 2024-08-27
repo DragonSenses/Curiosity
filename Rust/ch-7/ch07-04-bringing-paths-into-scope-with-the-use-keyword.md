@@ -386,3 +386,27 @@ use std::collections::HashMap;
 
 This line uses an absolute path starting with `std`, the name of the standard library crate.
 
+### Using Nested Paths to Clean Up Large `use` Lists
+
+If we’re using multiple items defined in the same crate or same module, listing each item on its own line can take up a lot of vertical space in our files. For example, these two `use` statements bring items from `std` into scope:
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust,ignore
+// --snip--
+use std::cmp::Ordering;
+use std::io;
+// --snip--
+```
+
+Instead, we can use nested paths to bring the same items into scope in one line. We do this by specifying the common part of the path, followed by two colons, and then curly brackets around a list of the parts of the paths that differ, as shown in Listing 7-18.
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust,ignore
+// --snip--
+use std::{cmp::Ordering, io};
+// --snip--
+```
+
+<span class="caption">Listing 7-18: Specifying a nested path to bring multiple items with the same prefix into scope</span>
