@@ -94,3 +94,40 @@ For a module named `hosting` that is a submodule of `front_of_house`, the compil
 If you use both styles for the same module, you'll get a compiler error. Using a mix of both styles for different modules in the same project is allowed, but might be confusing for people navigating your project.
 
 The main downside to the style that uses files named *mod.rs* is that your project can end up with many files named *mod.rs*, which can get confusing when you have them open in your editor at the same time.
+
+## Summary
+
+Rust lets you split a package into multiple crates and a crate into modules so you can refer to items defined in one module from another module. You can do this by specifying absolute or relative paths. These paths can be brought into scope with a `use` statement so you can use a shorter path for multiple uses of the item in that scope. Module code is private by default, but you can make definitions public by adding the `pub` keyword.
+
+This modular structure helps manage and reuse code efficiently.
+
+### Crates and Modules
+
+- **Crates**: The fundamental unit of code compilation and distribution in Rust. A package can contain multiple crates.
+- **Modules**: Subdivisions within a crate that help organize code. Modules can be nested within other modules.
+
+### Paths
+
+- **Absolute Paths**: Start from the crate root and specify the full path to the item.
+- **Relative Paths**: Start from the current module and use `self`, `super`, or the current module's name to navigate.
+
+### Bringing Items into Scope
+
+- Use the `use` statement to bring items from a module or crate into scope, allowing shorter paths for repeated use.
+  
+  ```rust
+  use crate::module::Item;
+  ```
+
+### Visibility
+
+- **Private by Default**: Items in a module are private by default.
+- **Public Items**: Use the `pub` keyword to make items public and accessible from other modules.
+
+  ```rust
+  pub fn public_function() {
+      // Function code
+  }
+  ```
+
+This structure and these features make Rust a powerful language for building large, maintainable codebases.
