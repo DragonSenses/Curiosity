@@ -370,3 +370,19 @@ fn main() {
     let secret_number = rand::thread_rng().gen_range(1..=100);
 }
 ```
+
+Members of the Rust community have made many packages available at [crates.io](https://crates.io/). To use any of these packages in your project, follow these steps:
+
+1. **List the package in your `Cargo.toml` file**.
+2. **Use the `use` keyword** to bring items from their crates into scope.
+
+#### Using the Standard Library
+
+The standard `std` library is also a crate external to your package. Since it is shipped with Rust, you don't need to include it in `Cargo.toml`. However, you must use the `use` keyword to bring items from `std` into your package's scope. For example, to use `HashMap`:
+
+```rust
+use std::collections::HashMap;
+```
+
+This line uses an absolute path starting with `std`, the name of the standard library crate.
+
