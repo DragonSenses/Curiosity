@@ -410,3 +410,28 @@ use std::{cmp::Ordering, io};
 ```
 
 <span class="caption">Listing 7-18: Specifying a nested path to bring multiple items with the same prefix into scope</span>
+
+In bigger programs, bringing many items into scope from the same crate or module using nested paths can reduce the number of separate `use` statements needed by a lot!
+
+We can use a nested path at any level in a path, which is useful when combining two `use` statements that share a subpath. For example, Listing 7-19 shows two `use` statements: one that brings `std::io` into scope and one that brings `std::io::Write` into scope.
+
+<span class="filename">Filename: src/lib.rs</span>
+
+```rust,noplayground
+use std::io;
+use std::io::Write;
+```
+
+<span class="caption">Listing 7-19: Two `use` statements where one is a subpath of the other</span>
+
+The common part of these two paths is `std::io`, and that’s the complete first path. To merge these two paths into one `use` statement, we can use `self` in the nested path, as shown in Listing 7-20.
+
+<span class="filename">Filename: src/lib.rs</span>
+
+```rust,noplayground
+use std::io::{self, Write};
+```
+
+<span class="caption">Listing 7-20: Combining the paths in Listing 7-19 into one `use` statement</span>
+
+This line brings `std::io` and `std::io::Write` into scope.
