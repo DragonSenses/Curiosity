@@ -388,7 +388,7 @@ This line uses an absolute path starting with `std`, the name of the standard li
 
 ### Using Nested Paths to Clean Up Large `use` Lists
 
-If we’re using multiple items defined in the same crate or same module, listing each item on its own line can take up a lot of vertical space in our files. For example, these two `use` statements bring items from `std` into scope:
+If we're using multiple items defined in the same crate or same module, listing each item on its own line can take up a lot of vertical space in our files. For example, these two `use` statements bring items from `std` into scope:
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -424,7 +424,7 @@ use std::io::Write;
 
 <span class="caption">Listing 7-19: Two `use` statements where one is a subpath of the other</span>
 
-The common part of these two paths is `std::io`, and that’s the complete first path. To merge these two paths into one `use` statement, we can use `self` in the nested path, as shown in Listing 7-20.
+The common part of these two paths is `std::io`, and that's the complete first path. To merge these two paths into one `use` statement, we can use `self` in the nested path, as shown in Listing 7-20.
 
 <span class="filename">Filename: src/lib.rs</span>
 
@@ -435,3 +435,15 @@ use std::io::{self, Write};
 <span class="caption">Listing 7-20: Combining the paths in Listing 7-19 into one `use` statement</span>
 
 This line brings `std::io` and `std::io::Write` into scope.
+
+### The Glob Operator
+
+If we want to bring *all* public items defined in a path into scope, we can specify that path followed by the `*` glob operator:
+
+```rust
+use std::collections::*;
+```
+
+This `use` statement brings all public items defined in `std::collections` into the current scope. Be careful when using the glob operator! Glob can make it harder to tell what names are in scope and where a name used in your program was defined.
+
+The glob operator is often used when testing to bring everything under test into the `tests` module; we'll talk about that in the ["How to Write Tests"](https://doc.rust-lang.org/book/ch11-01-writing-tests.html#how-to-write-tests) section in Chapter 11. The glob operator is also sometimes used as part of the prelude pattern: see [the standard library documentation](https://doc.rust-lang.org/std/prelude/index.html#other-preludes) for more information on that pattern.
