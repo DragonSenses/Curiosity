@@ -74,3 +74,23 @@ pub fn add_to_waitlist() {}
 ```
 
 If we instead put *hosting.rs* in the *src* directory, the compiler would expect the *hosting.rs* code to be in a `hosting` module declared in the crate root, and not declared as a child of the `front_of_house` module. The compiler's rules for which files to check for which modules' code mean the directories and files more closely match the module tree.
+
+We've moved each module's code to a separate file, and the module tree remains the same. The function calls in `eat_at_restaurant` will work without any modification, even though the definitions live in different files. This technique lets you move modules to new files as they grow in size.
+
+Note that the `pub use crate::front_of_house::hosting` statement in *src/lib.rs* also hasn't changed, nor does `use` have any impact on what files are compiled as part of the crate. The `mod` keyword declares modules, and Rust looks in a file with the same name as the module for the code that goes into that module.
+
+#### Alternate File Paths
+
+So far we've covered the most idiomatic file paths the Rust compiler uses, but Rust also supports an older style of file path. For a module named `front_of_house` declared in the crate root, the compiler will look for the module's code in:
+
+  * *src/front_of_house.rs* (what we covered)
+  * *src/front_of_house/mod.rs* (older style, still supported path)
+
+For a module named `hosting` that is a submodule of `front_of_house`, the compiler will look for the module's code in:
+
+  * *src/front_of_house/hosting.rs* (what we covered)
+  * *src/front_of_house/hosting/mod.rs* (older style, still supported path)
+
+If you use both styles for the same module, you'll get a compiler error. Using a mix of both styles for different modules in the same project is allowed, but might be confusing for people navigating your project.
+
+The main downside to the style that uses files named *mod.rs* is that your project can end up with many files named *mod.rs*, which can get confusing when you have them open in your editor at the same time.
