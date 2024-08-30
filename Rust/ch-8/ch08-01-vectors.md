@@ -48,3 +48,35 @@ To add elements to a vector, use the `push` method. Here's an example:
 
 - **Mutability**: The vector must be mutable (`mut`) to allow changes.
 - **Type Inference**: Rust infers the type (`i32` in this case) from the data, so explicit type annotation (`Vec<i32>`) is not needed.
+
+### Reading Elements of Vectors
+
+There are two ways to reference a value stored in a vector: via indexing or by using the `get` method. Here are the details:
+
+- **Indexing**: Access an element directly using the index.
+- **`get` Method**: Access an element using the `get` method, which returns an `Option`.
+
+#### Example
+
+Listing 8-4 shows both methods of accessing a value in a vector:
+
+```rust
+    let v = vec![1, 2, 3, 4, 5];
+
+    let third: &i32 = &v[2];
+    println!("The third element is {third}");
+
+    let third: Option<&i32> = v.get(2);
+    match third {
+        Some(third) => println!("The third element is {third}"),
+        None => println!("There is no third element."),
+    }
+```
+
+<span class="caption">Listing 8-4: Using indexing syntax and using the `get` method to access an item in a vector</span>
+
+#### Key Points
+
+- **Indexing**: Use the index value of `2` to get the third element because vectors are zero-indexed.
+- **Reference**: Using `&` and `[]` gives a reference to the element at the index.
+- **`get` Method**: Returns an `Option<&T>`, which can be used with `match` to handle the possibility of the element not being present.
