@@ -164,3 +164,38 @@ error: could not compile `collections` (bin "collections") due to 1 previous err
 
 > Note: For more on the implementation details of the `Vec<T>` type, see ["The Rustonomicon"](https://doc.rust-lang.org/nomicon/vec/vec.html).
 
+### Iterating Over the Values in a Vector
+
+To access each element in a vector sequentially, you can iterate through all the elements rather than using indices to access them one at a time.
+
+#### Immutable Iteration
+
+Listing 8-7 shows how to use a `for` loop to get immutable references to each element in a vector of `i32` values and print them:
+
+```rust
+    let v = vec![100, 32, 57];
+    for i in &v {
+        println!("{i}");
+    }
+```
+
+<span class="caption">Listing 8-7: Printing each element in a vector by iterating over the elements using a `for` loop</span>
+
+#### Mutable Iteration
+
+You can also iterate over mutable references to each element in a mutable vector to modify all the elements. The `for` loop in Listing 8-8 will add `50` to each element:
+
+```rust
+    let mut v = vec![100, 32, 57];
+    for i in &mut v {
+        *i += 50;
+    }
+```
+
+<span class="caption">Listing 8-8: Iterating over mutable references to elements in a vector</span>
+
+To change the value that the mutable reference refers to, use the `*` dereference operator to access the value in `i` before using the `+=` operator. More details on the dereference operator can be found in the ["Following the Pointer to the Value with the Dereference Operator"](https://doc.rust-lang.org/book/ch15-02-deref.html#following-the-pointer-to-the-value-with-the-dereference-operator) section of Chapter 15.
+
+#### Safety and Borrow Checker
+
+Iterating over a vector, whether immutably or mutably, is safe due to the borrow checker's rules. If you attempt to insert or remove items in the `for` loop bodies in Listings 8-7 and 8-8, you would get a compiler error similar to the one in Listing 8-6. The reference to the vector that the `for` loop holds prevents simultaneous modification of the whole vector.
