@@ -32,3 +32,19 @@ let v = vec![1, 2, 3];
 Because we've given initial `i32` values, Rust can infer that the type of `v` is `Vec<i32>`, and the type annotation isn't necessary.
 
 Next, we'll look at how to modify a vector.
+
+### Updating a Vector
+
+To add elements to a vector, use the `push` method. Here's an example:
+
+```rust
+    let mut v = Vec::new();
+
+    v.push(5);
+    v.push(6);
+    v.push(7);
+    v.push(8);
+```
+
+- **Mutability**: The vector must be mutable (`mut`) to allow changes.
+- **Type Inference**: Rust infers the type (`i32` in this case) from the data, so explicit type annotation (`Vec<i32>`) is not needed.
