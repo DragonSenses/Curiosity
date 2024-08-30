@@ -80,3 +80,37 @@ Listing 8-4 shows both methods of accessing a value in a vector:
 - **Indexing**: Use the index value of `2` to get the third element because vectors are zero-indexed.
 - **Reference**: Using `&` and `[]` gives a reference to the element at the index.
 - **`get` Method**: Returns an `Option<&T>`, which can be used with `match` to handle the possibility of the element not being present.
+
+### Handling Out-of-Bounds Indexing in Vectors
+
+Rust provides two ways to reference an element in a vector, allowing you to choose how the program behaves when an index is out of range. Here's an example of accessing an element at index 100 in a vector of five elements (Listing 8-5):
+
+```rust,should_panic,panics
+    let v = vec![1, 2, 3, 4, 5];
+
+    let does_not_exist = &v[100];
+    let does_not_exist = v.get(100);
+```
+
+<span class="caption">Listing 8-5: Attempting to access the element at index 100 in a vector containing five elements</span>
+
+#### Indexing with `[]`
+
+- **Behavior**: Causes the program to panic if the index is out of bounds.
+- **Use Case**: Best used when you want the program to crash if an invalid index is accessed.
+
+When we run this code, the first `[]` method will cause the program to panic because it references a nonexistent element. This method is best used when you want your program to crash if there’s an attempt to access an element past the end of the vector.
+
+#### Using the `get` Method
+
+- **Behavior**: Returns `None` if the index is out of bounds, without panicking.
+- **Use Case**: Useful when out-of-bounds access might occur under normal circumstances. Allows handling of `Some(&element)` or `None` gracefully.
+
+When the `get` method is passed an index that is outside the vector, it returns
+`None` without panicking. You would use this method if accessing an element
+beyond the range of the vector may happen occasionally under normal
+circumstances. Your code will then have logic to handle having either
+`Some(&element)` or `None`.
+
+Example Scenario:
+- If the index comes from user input, using `get` allows you to handle invalid input more gracefully by informing the user and giving them another chance to enter a valid value, rather than crashing the program.
