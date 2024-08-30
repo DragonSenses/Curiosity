@@ -99,7 +99,7 @@ Rust provides two ways to reference an element in a vector, allowing you to choo
 - **Behavior**: Causes the program to panic if the index is out of bounds.
 - **Use Case**: Best used when you want the program to crash if an invalid index is accessed.
 
-When we run this code, the first `[]` method will cause the program to panic because it references a nonexistent element. This method is best used when you want your program to crash if there’s an attempt to access an element past the end of the vector.
+When we run this code, the first `[]` method will cause the program to panic because it references a nonexistent element. This method is best used when you want your program to crash if there's an attempt to access an element past the end of the vector.
 
 #### Using the `get` Method
 
@@ -114,3 +114,53 @@ circumstances. Your code will then have logic to handle having either
 
 Example Scenario:
 - If the index comes from user input, using `get` allows you to handle invalid input more gracefully by informing the user and giving them another chance to enter a valid value, rather than crashing the program.
+
+### Borrow Checker and References in Vectors
+
+When a program has a valid reference, the borrow checker enforces ownership and borrowing rules to ensure the reference and any other references to the contents of the vector remain valid. Recall the rule that you can't have mutable and immutable references in the same scope. This rule applies in Listing 8-6, where we hold an immutable reference to the first element in a vector and try to add an element to the end. This program won't work if we also try to refer to that element later in the function.
+
+#### Example
+
+```rust,ignore,does_not_compile
+    let mut v = vec![1, 2, 3, 4, 5];
+
+    let first = &v[0];
+
+    v.push(6);
+
+    println!("The first element is: {first}");
+```
+
+<span class="caption">Listing 8-6: Attempting to add an element to a vector while holding a reference to an item</span>
+
+#### Compilation Error
+
+Compiling this code will result in the following error:
+
+```sh
+$ cargo run
+   Compiling collections v0.1.0 (file:///projects/collections)
+error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable
+ --> src/main.rs:6:5
+  |
+4 |     let first = &v[0];
+  |                  - immutable borrow occurs here
+5 |
+6 |     v.push(6);
+  |     ^^^^^^^^^ mutable borrow occurs here
+7 |
+8 |     println!("The first element is: {first}");
+  |                                     ------- immutable borrow later used here
+
+For more information about this error, try `rustc --explain E0502`.
+error: could not compile `collections` (bin "collections") due to 1 previous error
+```
+
+#### Explanation
+
+- **Immutable and Mutable References**: The code in Listing 8-6 might look like it should work, but it fails because you cannot have both mutable and immutable references in the same scope.
+- **Memory Allocation**: Vectors store values contiguously in memory. Adding a new element might require reallocating memory and copying the old elements to the new space if there isn't enough room. This would invalidate the reference to the first element, which could point to deallocated memory.
+- **Borrowing Rules**: The borrowing rules prevent programs from ending up in such situations, ensuring memory safety.
+
+> Note: For more on the implementation details of the `Vec<T>` type, see ["The Rustonomicon"](https://doc.rust-lang.org/nomicon/vec/vec.html).
+
