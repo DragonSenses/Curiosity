@@ -55,7 +55,7 @@ This line creates a new, empty string called `s`, into which we can then load da
 
 #### Creating a String with Initial Data
 
-Often, we’ll have some initial data with which we want to start the string. For that, we use the `to_string` method, which is available on any type that implements the `Display` trait, as string literals do. Listing 8-12 shows two examples.
+Often, we'll have some initial data with which we want to start the string. For that, we use the `to_string` method, which is available on any type that implements the `Display` trait, as string literals do. Listing 8-12 shows two examples.
 
 ```rust
 let data = "initial contents";
@@ -69,3 +69,18 @@ let s = "initial contents".to_string();
 <span class="caption">Listing 8-12: Using the `to_string` method to create a `String` from a string literal</span>
 
 This code creates a string containing `initial contents`.
+
+#### Using `String::from`
+
+We can also use the function `String::from` to create a `String` from a string literal. The code in Listing 8-13 is equivalent to the code in Listing 8-12 that uses `to_string`.
+
+```rust
+let s = String::from("initial contents");
+```
+
+<span class="caption">Listing 8-13: Using the `String::from` function to create a `String` from a string literal</span>
+
+#### Flexibility and Redundancy
+
+Because strings are used for so many things, we can use many different generic APIs for strings, providing us with a lot of options. Some of them can seem redundant, but they all have their place! In this case, `String::from` and `to_string` do the same thing, so which one you choose is a matter of style and readability.
+
