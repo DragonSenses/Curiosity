@@ -34,3 +34,22 @@ The `String` type, provided by Rust's standard library rather than coded into th
 #### Usage in Rust
 
 When Rustaceans refer to "strings" in Rust, they might be referring to either the `String` or the string slice `&str` types, not just one of those types. Although this section is largely about `String`, both types are used heavily in Rust's standard library, and both `String` and string slices are UTF-8 encoded.
+
+### Creating a New String
+
+#### Introduction
+
+Many of the same operations available with `Vec<T>` are available with `String` as well because `String` is actually implemented as a wrapper around a vector of bytes with some extra guarantees, restrictions, and capabilities.
+
+#### Creating an Empty String
+
+An example of a function that works the same way with `Vec<T>` and `String` is the `new` function to create an instance, shown in Listing 8-11.
+
+```rust
+let mut s = String::new();
+```
+
+<span class="caption">Listing 8-11: Creating a new, empty `String`</span>
+
+This line creates a new, empty string called `s`, into which we can then load data.
+
