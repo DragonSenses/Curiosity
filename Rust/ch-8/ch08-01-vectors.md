@@ -236,3 +236,22 @@ If you don't know the exhaustive set of types a program will get at runtime to s
 
 Now that we've discussed some of the most common ways to use vectors, be sure to review [the API documentation](https://doc.rust-lang.org/std/vec/struct.Vec.html) for all of the many useful methods defined on `Vec<T>` by the standard library. For example, in addition to `push`, a `pop` method removes and returns the last element.
 
+### Dropping a Vector Drops Its Elements
+
+Like any other `struct`, a vector is freed when it goes out of scope, as annotated in Listing 8-10.
+
+#### Example: Vector Going Out of Scope
+
+```rust
+{
+    let v = vec![1, 2, 3, 4];
+
+    // do stuff with v
+} // <- v goes out of scope and is freed here
+```
+
+<span class="caption">Listing 8-10: Showing where the vector and its elements are dropped</span>
+
+#### Memory Cleanup
+
+When the vector gets dropped, all of its contents are also dropped, meaning the integers it holds will be cleaned up. The borrow checker ensures that any references to contents of a vector are only used while the vector itself is valid.
