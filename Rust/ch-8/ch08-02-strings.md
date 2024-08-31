@@ -53,3 +53,19 @@ let mut s = String::new();
 
 This line creates a new, empty string called `s`, into which we can then load data.
 
+#### Creating a String with Initial Data
+
+Often, we’ll have some initial data with which we want to start the string. For that, we use the `to_string` method, which is available on any type that implements the `Display` trait, as string literals do. Listing 8-12 shows two examples.
+
+```rust
+let data = "initial contents";
+
+let s = data.to_string();
+
+// the method also works on a literal directly:
+let s = "initial contents".to_string();
+```
+
+<span class="caption">Listing 8-12: Using the `to_string` method to create a `String` from a string literal</span>
+
+This code creates a string containing `initial contents`.
