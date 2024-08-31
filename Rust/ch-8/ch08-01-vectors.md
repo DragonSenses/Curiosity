@@ -199,3 +199,8 @@ To change the value that the mutable reference refers to, use the `*` dereferenc
 #### Safety and Borrow Checker
 
 Iterating over a vector, whether immutably or mutably, is safe due to the borrow checker's rules. If you attempt to insert or remove items in the `for` loop bodies in Listings 8-7 and 8-8, you would get a compiler error similar to the one in Listing 8-6. The reference to the vector that the `for` loop holds prevents simultaneous modification of the whole vector.
+
+### Using an Enum to Store Multiple Types
+
+Vectors can only store values of the same type. This can be inconvenient; there are definitely use cases for needing to store a list of items of different types. Fortunately, the variants of an enum are defined under the same enum type, so when we need one type to represent elements of different types, we can define and use an enum!
+
