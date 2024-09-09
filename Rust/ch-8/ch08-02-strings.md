@@ -103,3 +103,10 @@ let hello = String::from("Hola");
 ```
 
 <span class="caption">Listing 8-14: Storing greetings in different languages in strings</span>
+
+### Updating a String
+
+A `String` can grow in size and its contents can change, just like the contents of a `Vec<T>`, if you push more data into it. In addition, you can conveniently use the `+` operator or the `format!` macro to concatenate `String` values.
+
+- A `String` in Rust can grow in size and its contents can change.
+- You can use the `+` operator or the `format!` macro to concatenate `String` values.
