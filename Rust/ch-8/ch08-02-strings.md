@@ -128,4 +128,14 @@ A `String` can grow in size and its contents can change, just like the contents 
 
 These methods allow you to efficiently grow and modify `String` values in Rust.
 
+#### Appending to a String with `push_str` and `push`
+
+We can grow a `String` by using the `push_str` method to append a string slice, as shown in Listing 8-15.
+
+```rust
+let mut s = String::from("foo");
+s.push_str("bar");
+```
+
+<span class="caption">Listing 8-15: Appending a string slice to a `String` using the `push_str` method</span>
 
