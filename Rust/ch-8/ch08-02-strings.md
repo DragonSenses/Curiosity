@@ -139,3 +139,16 @@ s.push_str("bar");
 
 <span class="caption">Listing 8-15: Appending a string slice to a `String` using the `push_str` method</span>
 
+After these two lines, `s` will contain `foobar`. The `push_str` method takes a string slice because we don't necessarily want to take ownership of the parameter. For example, in the code in Listing 8-16, we want to be able to use `s2` after appending its contents to `s1`.
+
+```rust
+let mut s1 = String::from("foo");
+let s2 = "bar";
+s1.push_str(s2);
+println!("s2 is {s2}");
+```
+
+<span class="caption">Listing 8-16: Using a string slice after appending its contents to a `String`</span>
+
+If the `push_str` method took ownership of `s2`, we wouldn't be able to print its value on the last line. However, this code works as we'd expect!
+
