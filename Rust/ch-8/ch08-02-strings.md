@@ -84,3 +84,22 @@ let s = String::from("initial contents");
 
 Because strings are used for so many things, we can use many different generic APIs for strings, providing us with a lot of options. Some of them can seem redundant, but they all have their place! In this case, `String::from` and `to_string` do the same thing, so which one you choose is a matter of style and readability.
 
+#### UTF-8 Encoding
+
+Remember that strings are UTF-8 encoded, so we can include any properly encoded data in them, as shown in Listing 8-14.
+
+```rust
+let hello = String::from("السلام عليكم");
+let hello = String::from("Dobrý den");
+let hello = String::from("Hello");
+let hello = String::from("שלום");
+let hello = String::from("नमस्ते");
+let hello = String::from("こんにちは");
+let hello = String::from("안녕하세요");
+let hello = String::from("你好");
+let hello = String::from("Olá");
+let hello = String::from("Здравствуйте");
+let hello = String::from("Hola");
+```
+
+<span class="caption">Listing 8-14: Storing greetings in different languages in strings</span>
