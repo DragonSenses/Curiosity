@@ -110,3 +110,22 @@ A `String` can grow in size and its contents can change, just like the contents 
 
 - A `String` in Rust can grow in size and its contents can change.
 - You can use the `+` operator or the `format!` macro to concatenate `String` values.
+
+#### Appending to a String with `push_str` and `push` | Summary
+
+- **`push_str` method**: Appends a string slice to a `String` without taking ownership of the slice.
+  - Example: 
+    ```rust
+    let mut s = String::from("foo");
+    s.push_str("bar"); // s now contains "foobar"
+    ```
+- **`push` method**: Adds a single character to a `String`.
+  - Example:
+    ```rust
+    let mut s = String::from("lo");
+    s.push('l'); // s now contains "lol"
+    ```
+
+These methods allow you to efficiently grow and modify `String` values in Rust.
+
+
