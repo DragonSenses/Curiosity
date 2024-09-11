@@ -400,3 +400,39 @@ Rust provides different ways of interpreting the raw string data that computers 
 #### Indexing and Performance
 
 A final reason Rust doesn't allow us to index into a `String` to get a character is that indexing operations are expected to always take constant time (O(1)). But it isn't possible to guarantee that performance with a `String`, because Rust would have to walk through the contents from the beginning to the index to determine how many valid characters there were.
+
+### Slicing Strings
+
+#### Indexing Considerations
+
+Indexing into a string is often a bad idea because it's not clear what the return type of the string-indexing operation should be: a byte value, a character, a grapheme cluster, or a string slice. If you really need to use indices to create string slices, Rust asks you to be more specific.
+
+#### Creating String Slices
+
+Rather than indexing using `[]` with a single number, you can use `[]` with a range to create a string slice containing particular bytes:
+
+```rust
+let hello = "Здравствуйте";
+
+let s = &hello[0..4];
+```
+
+Here, `s` will be a `&str` that contains the first four bytes of the string. Earlier, we mentioned that each of these characters was two bytes, which means `s` will be `Зд`.
+
+#### Runtime Panics
+
+If we were to try to slice only part of a character's bytes with something like `&hello[0..1]`, Rust would panic at runtime in the same way as if an invalid index were accessed in a vector:
+
+```sh
+$ cargo run
+   Compiling collections v0.1.0 (file:///projects/collections)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.43s
+     Running `target/debug/collections`
+thread 'main' panicked at src/main.rs:4:19:
+byte index 1 is not a char boundary; it is inside 'З' (bytes 0..2) of `Здравствуйте`
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+```
+
+#### Caution with String Slices
+
+You should use caution when creating string slices with ranges, because doing so can crash your program.
