@@ -301,3 +301,24 @@ error: could not compile `collections` (bin "collections") due to 1 previous err
 
 The error and the note tell the story: Rust strings don't support indexing. But why not? To answer that question, we need to discuss how Rust stores strings in memory.
 
+#### Indexing into Strings | Summary
+
+- **Indexing in Rust**: Unlike many other languages, Rust does not allow accessing individual characters in a `String` using indexing syntax.
+- **Example of Invalid Code**:
+  ```rust,ignore,does_not_compile
+  let s1 = String::from("hello");
+  let h = s1[0];
+  ```
+- **Error Explanation**:
+  - Rust strings don't support indexing by integer.
+  - The error message indicates that `str` cannot be indexed by `{integer}`.
+  - Suggested alternatives include using `.chars().nth()` or `.bytes().nth()`.
+- **Reason**: To understand why Rust doesn't support string indexing, it's necessary to discuss how Rust stores strings in memory.
+
+- **Quick Overview**
+  - Rust does not support indexing into strings using integer indices.
+  - Example of invalid code: `let h = s1[0];`
+  - Error message explains that `str` cannot be indexed by `{integer}`.
+  - Suggested alternatives: `.chars().nth()` or `.bytes().nth()`.
+  - Reason: Rust's memory storage for strings requires a different approach.
+
