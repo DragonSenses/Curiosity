@@ -322,3 +322,25 @@ The error and the note tell the story: Rust strings don't support indexing. But 
   - Suggested alternatives: `.chars().nth()` or `.bytes().nth()`.
   - Reason: Rust's memory storage for strings requires a different approach.
 
+### Internal Representation
+
+#### UTF-8 Encoding
+
+A `String` in Rust is a wrapper over a `Vec<u8>`. Let's look at some properly encoded UTF-8 example strings:
+
+```rust
+let hello = String::from("Hola");
+```
+
+In this case, `len` will be `4`, which means the vector storing the string `"Hola"` is 4 bytes long. Each of these letters takes one byte when encoded in UTF-8.
+
+#### Unicode Scalar Values
+
+Consider the following string (note that it begins with the capital Cyrillic letter *Ze*, not the number 3):
+
+```rust
+let hello = String::from("Здравствуйте");
+```
+
+If you were asked how long the string is, you might say 12. In fact, Rust's answer is 24: that's the number of bytes it takes to encode “Здравствуйте” in UTF-8, because each Unicode scalar value in that string takes 2 bytes of storage. Therefore, an index into the string's bytes will not always correlate to a valid Unicode scalar value.
+
