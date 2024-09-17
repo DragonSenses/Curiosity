@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "Auto Clicker",
+  "version": "1.0",
+  "description": "Clicks the favorite and download buttons on a key press.",
+  "permissions": ["activeTab", "tabs"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "commands": {
+    "click-buttons": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y"
+      },
+      "description": "Click favorite and download buttons"
+    }
+  },
+  "browser_action": {
+    "default_popup": "popup.html"
+  }
+}
