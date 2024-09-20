@@ -183,7 +183,29 @@ It's common to check whether a particular key already exists in the hash map wit
 
 Hash maps have a special API called `entry` that takes the key you want to check as a parameter. The return value of the `entry` method is an enum called `Entry` that represents a value that might or might not exist.
 
+##### Example: Using `entry` to Insert Values
+
+Let's say we want to check whether the key for the Yellow team has a value associated with it. If it doesn't, we want to insert the value `50`, and do the same for the Blue team. Using the `entry` API, the code looks like Listing 8-24.
+
+```rust
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+scores.insert(String::from("Blue"), 10);
+
+scores.entry(String::from("Yellow")).or_insert(50);
+scores.entry(String::from("Blue")).or_insert(50);
+
+println!("{scores:?}");
+```
+
+<span class="caption">Listing 8-24: Using the `entry` method to only insert if the key does not already have a value</span>
+
 ##### How `or_insert` Works
 
 The `or_insert` method on `Entry` returns a mutable reference to the value for the corresponding `Entry` key if that key exists. If the key does not exist, it inserts the parameter as the new value for this key and returns a mutable reference to the new value. This technique is much cleaner than writing the logic ourselves and works well with the borrow checker.
+
+##### Output
+
+Running the code in Listing 8-24 will print `{"Yellow": 50, "Blue": 10}`. The first call to `entry` will insert the key for the Yellow team with the value `50` because the Yellow team doesn't have a value already. The second call to `entry` will not change the hash map because the Blue team already has the value `10`.
 
