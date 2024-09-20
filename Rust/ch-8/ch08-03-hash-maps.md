@@ -57,7 +57,7 @@ let score = scores.get(&team_name).copied().unwrap_or(0);
 
 <span class="caption">Listing 8-21: Accessing the score for the Blue team stored in the hash map</span>
 
-Here, `score` will have the value that’s associated with the Blue team, and the result will be `10`. The `get` method returns an `Option<&V>`; if there’s no value for that key in the hash map, `get` will return `None`. This program handles the `Option` by calling `copied` to get an `Option<i32>` rather than an `Option<&i32>`, then `unwrap_or` to set `score` to zero if `scores` doesn’t have an entry for the key.
+Here, `score` will have the value that's associated with the Blue team, and the result will be `10`. The `get` method returns an `Option<&V>`; if there's no value for that key in the hash map, `get` will return `None`. This program handles the `Option` by calling `copied` to get an `Option<i32>` rather than an `Option<&i32>`, then `unwrap_or` to set `score` to zero if `scores` doesn't have an entry for the key.
 
 #### Iterating Over Key-Value Pairs
 
@@ -82,3 +82,45 @@ This code will print each pair in an arbitrary order:
 Yellow: 50
 Blue: 10
 ```
+
+### Hash Maps and Ownership
+
+#### Copy Trait and Hash Maps
+
+For types that implement the `Copy` trait, like `i32`, the values are copied into the hash map.
+
+#### Owned Values and Hash Maps
+
+For owned values like `String`, the values will be moved and the hash map will be the owner of those values, as demonstrated in Listing 8-22.
+
+```rust
+use std::collections::HashMap;
+
+let field_name = String::from("Favorite color");
+let field_value = String::from("Blue");
+
+let mut map = HashMap::new();
+map.insert(field_name, field_value);
+// field_name and field_value are invalid at this point, try using them and
+// see what compiler error you get!
+```
+
+<span class="caption">Listing 8-22: Showing that keys and values are owned by the hash map once they're inserted</span>
+
+We aren't able to use the variables `field_name` and `field_value` after they've been moved into the hash map with the call to `insert`.
+
+When you insert owned values like `String` into the hash map, those values are moved into the hash map, and the hash map takes ownership of them. This means that after the insertion, the original variables (`field_name` and `field_value`) are no longer valid and cannot be used.
+
+Here's a quick recap of the key points:
+
+- **Copy Trait**: For types that implement the `Copy` trait (e.g., `i32`), values are copied into the hash map.
+- **Owned Values**: For owned types like `String`, values are moved into the hash map, and the hash map becomes the owner.
+- **References**: If you insert references into the hash map, the original values must remain valid for as long as the hash map is valid.
+
+#### References and Hash Maps
+
+If we insert references to values into the hash map, the values won't be moved into the hash map. The values that the references point to must be valid for at least as long as the hash map is valid.
+
+We'll talk more about these issues in the ["Validating References with Lifetimes"]([#](https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#validating-references-with-lifetimes)) section in Chapter 10.
+
+
