@@ -209,3 +209,15 @@ The `or_insert` method on `Entry` returns a mutable reference to the value for t
 
 Running the code in Listing 8-24 will print `{"Yellow": 50, "Blue": 10}`. The first call to `entry` will insert the key for the Yellow team with the value `50` because the Yellow team doesn't have a value already. The second call to `entry` will not change the hash map because the Blue team already has the value `10`.
 
+#### Updating a Value Based on the Old Value
+
+##### Use Case
+
+A common use case for hash maps is to look up a key's value and then update it based on the old value. For instance, you might want to count how many times each word appears in some text.
+
+##### Explanation
+
+- The `split_whitespace` method returns an iterator over subslices, separated by whitespace, of the value in `text`.
+- The `or_insert` method returns a mutable reference (`&mut V`) to the value for the specified key. If the key does not exist, it inserts the parameter as the new value for this key and returns a mutable reference to the new value.
+- We store that mutable reference in the `count` variable. To assign to that value, we must first dereference `count` using the asterisk (`*`).
+- The mutable reference goes out of scope at the end of the `for` loop, so all of these changes are safe and allowed by the borrowing rules.
