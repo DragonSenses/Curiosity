@@ -137,9 +137,36 @@ When updating a hash map, you need to decide how to handle cases where a key alr
    - Replace the old value with the new value, completely disregarding the old value.
 
 2. **Keep the Old Value**
-   - Ignore the new value and keep the old value, only adding the new value if the key doesn’t already have a value.
+   - Ignore the new value and keep the old value, only adding the new value if the key doesn't already have a value.
 
 3. **Combine Values**
    - Combine the old value and the new value in some way.
 
 Let's look at how to implement each of these approaches!
+
+#### Overwriting a Value
+
+##### Inserting a Key-Value Pair
+
+If we insert a key and a value into a hash map and then insert that same key with a different value, the value associated with that key will be replaced. 
+
+##### Example: Replacing a Value
+
+Even though the code in Listing 8-23 calls `insert` twice, the hash map will only contain one key-value pair because we're inserting the value for the Blue team's key both times.
+
+```rust
+  use std::collections::HashMap;
+
+  let mut scores = HashMap::new();
+
+  scores.insert(String::from("Blue"), 10);
+  scores.insert(String::from("Blue"), 25);
+
+  println!("{scores:?}");
+```
+
+<span class="caption">Listing 8-23: Replacing a value stored with a particular key</span>
+
+##### Output
+
+This code will print `{"Blue": 25}`. The original value of `10` has been overwritten.
