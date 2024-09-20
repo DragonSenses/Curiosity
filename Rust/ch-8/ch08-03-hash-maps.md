@@ -170,3 +170,20 @@ Even though the code in Listing 8-23 calls `insert` twice, the hash map will onl
 ##### Output
 
 This code will print `{"Blue": 25}`. The original value of `10` has been overwritten.
+
+#### Adding a Key and Value Only If a Key Isn't Present
+
+##### Checking for Existing Keys
+
+It's common to check whether a particular key already exists in the hash map with a value and then take the following actions:
+- If the key exists, the existing value should remain the way it is.
+- If the key doesn't exist, insert it along with a value.
+
+##### Using the `entry` API
+
+Hash maps have a special API called `entry` that takes the key you want to check as a parameter. The return value of the `entry` method is an enum called `Entry` that represents a value that might or might not exist.
+
+##### How `or_insert` Works
+
+The `or_insert` method on `Entry` returns a mutable reference to the value for the corresponding `Entry` key if that key exists. If the key does not exist, it inserts the parameter as the new value for this key and returns a mutable reference to the new value. This technique is much cleaner than writing the logic ourselves and works well with the borrow checker.
+
