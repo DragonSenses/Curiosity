@@ -123,4 +123,23 @@ If we insert references to values into the hash map, the values won't be moved i
 
 We'll talk more about these issues in the ["Validating References with Lifetimes"]([#](https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#validating-references-with-lifetimes)) section in Chapter 10.
 
+### Updating a Hash Map
 
+#### Unique Key-Value Association
+
+Although the number of key-value pairs in a hash map is growable, each unique key can only have one value associated with it at a time. However, multiple keys can have the same value. For example, both the Blue team and the Yellow team could have the value `10` stored in the `scores` hash map.
+
+#### Handling Existing Keys
+
+When updating a hash map, you need to decide how to handle cases where a key already has an associated value. Here are the options:
+
+1. **Replace the Old Value**
+   - Replace the old value with the new value, completely disregarding the old value.
+
+2. **Keep the Old Value**
+   - Ignore the new value and keep the old value, only adding the new value if the key doesn’t already have a value.
+
+3. **Combine Values**
+   - Combine the old value and the new value in some way.
+
+Let's look at how to implement each of these approaches!
