@@ -246,3 +246,25 @@ This code will print `{"world": 2, "hello": 1, "wonderful": 1}`. You might see t
 - The `or_insert` method returns a mutable reference (`&mut V`) to the value for the specified key. If the key does not exist, it inserts the parameter as the new value for this key and returns a mutable reference to the new value.
 - We store that mutable reference in the `count` variable. To assign to that value, we must first dereference `count` using the asterisk (`*`).
 - The mutable reference goes out of scope at the end of the `for` loop, so all of these changes are safe and allowed by the borrowing rules.
+
+### Hashing Functions
+
+#### Default Hashing Function
+
+By default, `HashMap` uses a hashing function called *SipHash* that provides resistance to denial-of-service (DoS) attacks involving hash tables. For more details, see [SipHash](https://en.wikipedia.org/wiki/SipHash).
+
+#### Performance Trade-off
+
+While SipHash is not the fastest hashing algorithm available, the trade-off for better security is considered worth the drop in performance.
+
+#### Custom Hashing Functions
+
+If you profile your code and find that the default hash function is too slow for your purposes, you can switch to another function by specifying a different hasher.
+
+##### Implementing a Hasher
+
+A *hasher* is a type that implements the `BuildHasher` trait. We'll discuss traits and how to implement them in [Chapter 10](https://doc.rust-lang.org/book/ch10-02-traits.html).
+
+##### Using Existing Hashers
+
+You don't necessarily have to implement your own hasher from scratch. [crates.io](https://crates.io/) has libraries shared by other Rust users that provide hashers implementing many common hashing algorithms.
