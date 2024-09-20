@@ -268,3 +268,28 @@ A *hasher* is a type that implements the `BuildHasher` trait. We'll discuss trai
 ##### Using Existing Hashers
 
 You don't necessarily have to implement your own hasher from scratch. [crates.io](https://crates.io/) has libraries shared by other Rust users that provide hashers implementing many common hashing algorithms.
+
+## Wrap Up | Chapter 8
+
+### Functionality of Vectors, Strings, and Hash Maps
+
+Vectors, strings, and hash maps provide essential functionality for storing, accessing, and modifying data in programs.
+
+### Exercises
+
+1. **Median and Mode Calculation**
+   - Given a list of integers, use a vector to return the median (the middle value when sorted) and the mode (the value that occurs most often). A hash map will be helpful for finding the mode.
+
+2. **Convert Strings to Pig Latin**
+   - Convert strings to pig latin. The first consonant of each word is moved to the end of the word and *ay* is added (e.g., *first* becomes *irst-fay*). Words that start with a vowel have *hay* added to the end (e.g., *apple* becomes *apple-hay*). Remember to handle UTF-8 encoding details!
+
+3. **Employee Management System**
+   - Using a hash map and vectors, create a text interface to allow a user to add employee names to a department in a company (e.g., “Add Sally to Engineering” or “Add Amir to Sales”). Then, let the user retrieve a list of all people in a department or all people in the company by department, sorted alphabetically.
+
+### Helpful Resources
+
+The standard library API documentation describes methods that vectors, strings, and hash maps have, which will be useful for these exercises.
+
+### Next Steps
+
+As we move into more complex programs where operations can fail, it's a perfect time to discuss error handling. We'll cover that next!
