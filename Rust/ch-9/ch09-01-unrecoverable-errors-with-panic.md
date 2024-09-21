@@ -64,3 +64,25 @@ The call to `panic!` causes the error message contained in the last two lines. T
 
 In this case, the line indicated is part of our code, and if we go to that line, we see the `panic!` macro call. In other cases, the `panic!` call might be in code that our code calls, and the filename and line number reported by the error message will be someone else's code where the `panic!` macro is called, not the line of our code that eventually led to the `panic!` call.
 
+## Using Backtrace to Debug `panic!`
+
+We can use the backtrace of the functions the `panic!` call came from to figure out the part of our code that is causing the problem. To understand how to use a `panic!` backtrace, let's look at another example and see what it's like when a `panic!` call comes from a library because of a bug in our code instead of from our code calling the macro directly.
+
+### Example Code
+
+**Filename:** `src/main.rs`
+
+```rust,should_panic,panics
+fn main() {
+    let v = vec![1, 2, 3];
+
+    v[99];
+}
+```
+
+### Explanation
+
+**Listing 9-1:** Attempting to access an element beyond the end of a vector, which will cause a call to `panic!`.
+
+Here, we're attempting to access the 100th element of our vector (which is at index 99 because indexing starts at zero), but the vector has only three elements. In this situation, Rust will panic. Using `[]` is supposed to return an element, but if you pass an invalid index, there's no element that Rust could return here that would be correct.
+
