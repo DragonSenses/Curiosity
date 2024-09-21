@@ -31,3 +31,36 @@ Memory that the program was using will then need to be cleaned up by the operati
 [profile.release]
 panic = 'abort'
 ```
+
+### Example: Calling `panic!` in a Simple Program
+
+Let's try calling `panic!` in a simple program:
+
+**Filename:** `src/main.rs`
+
+```rust,should_panic,panics
+fn main() {
+  panic!("crash and burn");
+}
+```
+
+### Running the Program
+
+When you run the program, you'll see something like this:
+
+```sh
+$ cargo run
+   Compiling panic v0.1.0 (file:///projects/panic)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.25s
+     Running `target/debug/panic`
+thread 'main' panicked at src/main.rs:2:5:
+crash and burn
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+```
+
+### Explanation
+
+The call to `panic!` causes the error message contained in the last two lines. The first line shows our panic message and the place in our source code where the panic occurred: `src/main.rs:2:5` indicates that it's the second line, fifth character of our `src/main.rs` file.
+
+In this case, the line indicated is part of our code, and if we go to that line, we see the `panic!` macro call. In other cases, the `panic!` call might be in code that our code calls, and the filename and line number reported by the error message will be someone else's code where the `panic!` macro is called, not the line of our code that eventually led to the `panic!` call.
+
