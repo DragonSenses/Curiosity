@@ -179,3 +179,31 @@ Although this code has the same behavior as Listing 9-5, it doesn’t contain an
 #### Further Reading
 
 Come back to this example after you’ve read Chapter 13, and look up the `unwrap_or_else` method in the standard library documentation. Many more of these methods can clean up huge nested `match` expressions when you’re dealing with errors.
+
+### Shortcuts for Panic on Error: `unwrap` and `expect`
+
+Using `match` works well enough, but it can be a bit verbose and doesn’t always communicate intent well. The `Result<T, E>` type has many helper methods defined on it to do various, more specific tasks.
+
+#### The `unwrap` Method
+
+The `unwrap` method is a shortcut implemented just like the `match` expression we wrote in Listing 9-4. If the `Result` value is the `Ok` variant, `unwrap` will return the value inside the `Ok`. If the `Result` is the `Err` variant, `unwrap` will call the `panic!` macro for us. Here is an example of `unwrap` in action:
+
+#### Filename: src/main.rs
+
+```rust
+use std::fs::File;
+
+fn main() {
+    let greeting_file = File::open("hello.txt").unwrap();
+}
+```
+
+#### Example Output
+
+If we run this code without a *hello.txt* file, we’ll see an error message from the `panic!` call that the `unwrap` method makes:
+
+```sh
+thread 'main' panicked at src/main.rs:4:49:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+```
+
