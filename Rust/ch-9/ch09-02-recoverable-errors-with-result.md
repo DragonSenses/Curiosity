@@ -113,3 +113,35 @@ fn main() {
 }
 ```
 
+#### Listing 9-5: Handling different kinds of errors in different ways
+
+### Error Handling with `io::Error`
+
+The type of the value that `File::open` returns inside the `Err` variant is `io::Error`, which is a struct provided by the standard library. This struct has a method `kind` that we can call to get an `io::ErrorKind` value. The enum `io::ErrorKind` is provided by the standard library and has variants representing the different kinds of errors that might result from an `io` operation. The variant we want to use is `ErrorKind::NotFound`, which indicates the file we’re trying to open doesn’t exist yet. So we match on `greeting_file_result`, but we also have an inner match on `error.kind()`.
+
+### Inner `match` Expression
+
+The condition we want to check in the inner match is whether the value returned by `error.kind()` is the `NotFound` variant of the `ErrorKind` enum. If it is, we try to create the file with `File::create`. However, because `File::create` could also fail, we need a second arm in the inner `match` expression. When the file can’t be created, a different error message is printed. The second arm of the outer `match` stays the same, so the program panics on any error besides the missing file error.
+
+### Matching on Different Errors | Key Points
+
+1. **Different Actions for Different Errors**:
+   - Instead of panicking for all errors, handle specific errors differently.
+   - For example, if a file doesn't exist, create it; otherwise, panic.
+
+2. **Using `io::Error` and `io::ErrorKind`**:
+   - `File::open` returns an `io::Error` inside the `Err` variant.
+   - Use the `kind` method on `io::Error` to get an `io::ErrorKind` value.
+
+3. **Matching on `ErrorKind`**:
+   - Match on the result of `File::open`.
+   - Use an inner `match` to handle specific `ErrorKind` variants.
+   - For `ErrorKind::NotFound`, attempt to create the file.
+   - For other errors, panic with an appropriate message.
+
+4. **Example Code**:
+   - Demonstrates how to use nested `match` expressions to handle different error kinds.
+
+5. **Handling File Creation Errors**:
+   - When trying to create a file, handle potential errors from `File::create`.
+   - Provide a specific error message if file creation fails.
