@@ -16,11 +16,11 @@ enum Result<T, E> {
 ```
 ### Generic Type Parameters
 
-The `T` and `E` are generic type parameters. We’ll discuss generics in more detail in Chapter 10. What you need to know right now is that `T` represents the type of the value that will be returned in a success case within the `Ok` variant, and `E` represents the type of the error that will be returned in a failure case within the `Err` variant. Because `Result` has these generic type parameters, we can use the `Result` type and the functions defined on it in many different situations where the success value and error value we want to return may differ.
+The `T` and `E` are generic type parameters. We'll discuss generics in more detail in Chapter 10. What you need to know right now is that `T` represents the type of the value that will be returned in a success case within the `Ok` variant, and `E` represents the type of the error that will be returned in a failure case within the `Err` variant. Because `Result` has these generic type parameters, we can use the `Result` type and the functions defined on it in many different situations where the success value and error value we want to return may differ.
 
 ### Example: Opening a File
 
-Let’s call a function that returns a `Result` value because the function could fail. In Listing 9-3, we try to open a file.
+Let's call a function that returns a `Result` value because the function could fail. In Listing 9-3, we try to open a file.
 
 #### Filename: src/main.rs
 
@@ -65,13 +65,13 @@ fn main() {
 
 ### Scope of `Result` Enum
 
-Note that, like the `Option` enum, the `Result` enum and its variants have been brought into scope by the prelude, so we don’t need to specify `Result::` before the `Ok` and `Err` variants in the `match` arms.
+Note that, like the `Option` enum, the `Result` enum and its variants have been brought into scope by the prelude, so we don't need to specify `Result::` before the `Ok` and `Err` variants in the `match` arms.
 
 ### Explanation of `match` Expression
 
 When the result is `Ok`, this code will return the inner `file` value out of the `Ok` variant, and we then assign that file handle value to the variable `greeting_file`. After the `match`, we can use the file handle for reading or writing.
 
-The other arm of the `match` handles the case where we get an `Err` value from `File::open`. In this example, we’ve chosen to call the `panic!` macro. If there’s no file named *hello.txt* in our current directory and we run this code, we’ll see the following output from the `panic!` macro:
+The other arm of the `match` handles the case where we get an `Err` value from `File::open`. In this example, we've chosen to call the `panic!` macro. If there's no file named *hello.txt* in our current directory and we run this code, we'll see the following output from the `panic!` macro:
 
 ```sh
 $ cargo run
@@ -89,7 +89,7 @@ As usual, this output tells us exactly what has gone wrong.
 
 ## Matching on Different Errors
 
-The code in Listing 9-4 will `panic!` no matter why `File::open` failed. However, we want to take different actions for different failure reasons. If `File::open` failed because the file doesn’t exist, we want to create the file and return the handle to the new file. If `File::open` failed for any other reason—for example, because we didn’t have permission to open the file—we still want the code to `panic!` in the same way it did in Listing 9-4. For this, we add an inner `match` expression, shown in Listing 9-5.
+The code in Listing 9-4 will `panic!` no matter why `File::open` failed. However, we want to take different actions for different failure reasons. If `File::open` failed because the file doesn't exist, we want to create the file and return the handle to the new file. If `File::open` failed for any other reason—for example, because we didn't have permission to open the file—we still want the code to `panic!` in the same way it did in Listing 9-4. For this, we add an inner `match` expression, shown in Listing 9-5.
 
 #### Filename: src/main.rs
 
@@ -117,11 +117,11 @@ fn main() {
 
 ### Error Handling with `io::Error`
 
-The type of the value that `File::open` returns inside the `Err` variant is `io::Error`, which is a struct provided by the standard library. This struct has a method `kind` that we can call to get an `io::ErrorKind` value. The enum `io::ErrorKind` is provided by the standard library and has variants representing the different kinds of errors that might result from an `io` operation. The variant we want to use is `ErrorKind::NotFound`, which indicates the file we’re trying to open doesn’t exist yet. So we match on `greeting_file_result`, but we also have an inner match on `error.kind()`.
+The type of the value that `File::open` returns inside the `Err` variant is `io::Error`, which is a struct provided by the standard library. This struct has a method `kind` that we can call to get an `io::ErrorKind` value. The enum `io::ErrorKind` is provided by the standard library and has variants representing the different kinds of errors that might result from an `io` operation. The variant we want to use is `ErrorKind::NotFound`, which indicates the file we're trying to open doesn't exist yet. So we match on `greeting_file_result`, but we also have an inner match on `error.kind()`.
 
 ### Inner `match` Expression
 
-The condition we want to check in the inner match is whether the value returned by `error.kind()` is the `NotFound` variant of the `ErrorKind` enum. If it is, we try to create the file with `File::create`. However, because `File::create` could also fail, we need a second arm in the inner `match` expression. When the file can’t be created, a different error message is printed. The second arm of the outer `match` stays the same, so the program panics on any error besides the missing file error.
+The condition we want to check in the inner match is whether the value returned by `error.kind()` is the `NotFound` variant of the `ErrorKind` enum. If it is, we try to create the file with `File::create`. However, because `File::create` could also fail, we need a second arm in the inner `match` expression. When the file can't be created, a different error message is printed. The second arm of the outer `match` stays the same, so the program panics on any error besides the missing file error.
 
 ### Matching on Different Errors | Key Points
 
@@ -149,11 +149,11 @@ The condition we want to check in the inner match is whether the value returned 
 
 ### Alternatives to Using `match` with `Result<T, E>`
 
-That’s a lot of `match`! The `match` expression is very useful but also very much a primitive. In Chapter 13, you’ll learn about closures, which are used with many of the methods defined on `Result<T, E>`. These methods can be more concise than using `match` when handling `Result<T, E>` values in your code.
+That's a lot of `match`! The `match` expression is very useful but also very much a primitive. In Chapter 13, you'll learn about closures, which are used with many of the methods defined on `Result<T, E>`. These methods can be more concise than using `match` when handling `Result<T, E>` values in your code.
 
 #### Using Closures and `unwrap_or_else`
 
-For example, here’s another way to write the same logic as shown in Listing 9-5, this time using closures and the `unwrap_or_else` method:
+For example, here's another way to write the same logic as shown in Listing 9-5, this time using closures and the `unwrap_or_else` method:
 
 ```rust
 use std::fs::File;
@@ -174,15 +174,15 @@ fn main() {
 
 #### Benefits of Using `unwrap_or_else`
 
-Although this code has the same behavior as Listing 9-5, it doesn’t contain any `match` expressions and is cleaner to read. 
+Although this code has the same behavior as Listing 9-5, it doesn't contain any `match` expressions and is cleaner to read. 
 
 #### Further Reading
 
-Come back to this example after you’ve read Chapter 13, and look up the `unwrap_or_else` method in the standard library documentation. Many more of these methods can clean up huge nested `match` expressions when you’re dealing with errors.
+Come back to this example after you've read Chapter 13, and look up the `unwrap_or_else` method in the standard library documentation. Many more of these methods can clean up huge nested `match` expressions when you're dealing with errors.
 
 ### Shortcuts for Panic on Error: `unwrap` and `expect`
 
-Using `match` works well enough, but it can be a bit verbose and doesn’t always communicate intent well. The `Result<T, E>` type has many helper methods defined on it to do various, more specific tasks.
+Using `match` works well enough, but it can be a bit verbose and doesn't always communicate intent well. The `Result<T, E>` type has many helper methods defined on it to do various, more specific tasks.
 
 #### The `unwrap` Method
 
@@ -200,7 +200,7 @@ fn main() {
 
 #### Example Output
 
-If we run this code without a *hello.txt* file, we’ll see an error message from the `panic!` call that the `unwrap` method makes:
+If we run this code without a *hello.txt* file, we'll see an error message from the `panic!` call that the `unwrap` method makes:
 
 ```sh
 thread 'main' panicked at src/main.rs:4:49:
@@ -224,7 +224,7 @@ fn main() {
 
 #### Example Output
 
-We use `expect` in the same way as `unwrap`: to return the file handle or call the `panic!` macro. The error message used by `expect` in its call to `panic!` will be the parameter that we pass to `expect`, rather than the default `panic!` message that `unwrap` uses. Here’s what it looks like:
+We use `expect` in the same way as `unwrap`: to return the file handle or call the `panic!` macro. The error message used by `expect` in its call to `panic!` will be the parameter that we pass to `expect`, rather than the default `panic!` message that `unwrap` uses. Here's what it looks like:
 
 ```sh
 thread 'main' panicked at src/main.rs:5:10:
@@ -234,3 +234,8 @@ hello.txt should be included in this project: Os { code: 2, kind: NotFound, mess
 #### Best Practices
 
 In production-quality code, most Rustaceans choose `expect` rather than `unwrap` and give more context about why the operation is expected to always succeed. That way, if your assumptions are ever proven wrong, you have more information to use in debugging.
+
+### Propagating Errors
+
+When a function's implementation calls something that might fail, instead of handling the error within the function itself, you can return the error to the calling code so that it can decide what to do. This is known as *propagating* the error and gives more control to the calling code, where there might be more information or logic that dictates how the error should be handled than what you have available in the context of your code.
+
