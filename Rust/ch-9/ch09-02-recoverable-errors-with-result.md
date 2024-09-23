@@ -86,3 +86,30 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ### Output Explanation
 
 As usual, this output tells us exactly what has gone wrong.
+
+## Matching on Different Errors
+
+The code in Listing 9-4 will `panic!` no matter why `File::open` failed. However, we want to take different actions for different failure reasons. If `File::open` failed because the file doesn’t exist, we want to create the file and return the handle to the new file. If `File::open` failed for any other reason—for example, because we didn’t have permission to open the file—we still want the code to `panic!` in the same way it did in Listing 9-4. For this, we add an inner `match` expression, shown in Listing 9-5.
+
+#### Filename: src/main.rs
+
+```rust
+use std::fs::File;
+use std::io::ErrorKind;
+
+fn main() {
+    let greeting_file_result = File::open("hello.txt");
+
+    let greeting_file = match greeting_file_result {
+        Ok(file) => file,
+        Err(error) => match error.kind() {
+            ErrorKind::NotFound => match File::create("hello.txt") {
+                Ok(fc) => fc,
+                Err(e) => panic!("Problem creating the file: {e:?}"),
+            },
+            other_error => panic!("Problem opening the file: {other_error:?}"),
+        },
+    };
+}
+```
+
