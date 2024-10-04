@@ -316,3 +316,34 @@ We chose `io::Error` as the return type because it is the type of the error valu
 - `File::open`
 - `read_to_string`
 
+### Function Body
+
+1. **Opening the File**:
+   - The function starts by calling `File::open`.
+   - The `Result` value is handled with a `match`.
+   - If `File::open` succeeds, the file handle is assigned to `username_file`.
+   - If `File::open` fails, the function returns early with the error value.
+
+2. **Reading the File**:
+   - If the file handle is valid, a new `String` is created in `username`.
+   - The `read_to_string` method is called on the file handle to read the contents into `username`.
+   - The `Result` from `read_to_string` is handled with another `match`.
+   - If `read_to_string` succeeds, the function returns the `username` wrapped in an `Ok`.
+   - If `read_to_string` fails, the function returns the error value.
+
+### Handling the Result
+
+The calling code will handle either:
+- An `Ok` value containing a username
+- An `Err` value containing an `io::Error`
+
+### Calling Code's Responsibility
+
+The calling code decides what to do with the values:
+- It could call `panic!` and crash the program.
+- Use a default username.
+- Look up the username from another source.
+
+### Propagating Errors
+
+This pattern of propagating errors is common in Rust. Rust provides the question mark operator `?` to make this easier.
