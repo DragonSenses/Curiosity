@@ -375,3 +375,24 @@ fn read_username_from_file() -> Result<String, io::Error> {
 - **Success Case**: If the `Result` is `Ok`, the value inside `Ok` is returned, and the program continues.
 - **Error Case**: If the `Result` is `Err`, the `Err` is returned from the function, propagating the error to the calling code.
 
+#### Difference from `match`
+
+- **Conversion**: The `?` operator calls the `from` function from the `From` trait to convert error types.
+- **Utility**: This is useful when a function returns one error type to represent multiple failure reasons.
+
+#### Custom Error Type Example
+
+- **Custom Error**: You can define a custom error type, e.g., `OurError`.
+- **Conversion Implementation**: Implement `From<io::Error>` for `OurError`.
+- **Automatic Conversion**: The `?` operator will convert `io::Error` to `OurError` using the `from` function.
+
+#### Context of Listing 9-7
+
+- **File Opening**: The `?` after `File::open` returns the `Ok` value to `username_file` or propagates the `Err`.
+- **Reading File**: The `?` after `read_to_string` does the same for reading the file contents.
+
+#### Simplification
+
+- **Boilerplate Reduction**: The `?` operator reduces boilerplate code.
+- **Further Shortening**: Method calls can be chained immediately after the `?`, as shown in Listing 9-8.
+
