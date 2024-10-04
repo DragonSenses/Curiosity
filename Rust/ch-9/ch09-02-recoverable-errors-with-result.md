@@ -450,3 +450,31 @@ fn read_username_from_file() -> Result<String, io::Error> {
 - **Error Handling**: The `?` operator simplifies error propagation.
 - **Ergonomics**: Chaining method calls and using `fs::read_to_string` make the code more concise and readable.
 - **Educational Value**: The longer approach was used initially to explain error handling in detail.
+
+### Where The `?` Operator Can Be Used
+
+#### Compatibility Requirement
+
+- **Return Type**: The `?` operator can only be used in functions whose return type is compatible with the value the `?` is used on.
+- **Early Return**: The `?` operator performs an early return of a value out of the function, similar to a `match` expression.
+
+#### Example from Listing 9-6
+
+- **Result Handling**: In Listing 9-6, the `match` expression handled a `Result` value, returning an `Err(e)` for errors.
+- **Function Return Type**: The function's return type must be a `Result` to be compatible with the `?` operator.
+
+#### Incompatible Return Type Example
+
+- **Error Demonstration**: Listing 9-10 shows the error when using the `?` operator in a `main` function with an incompatible return type.
+
+#### Filename: `src/main.rs`
+
+```rust,ignore,does_not_compile
+use std::fs::File;
+
+fn main() {
+    let greeting_file = File::open("hello.txt")?;
+}
+```
+
+*Listing 9-10: Attempting to use the `?` in the `main` function that returns `()` won’t compile.*
