@@ -396,3 +396,32 @@ fn read_username_from_file() -> Result<String, io::Error> {
 - **Boilerplate Reduction**: The `?` operator reduces boilerplate code.
 - **Further Shortening**: Method calls can be chained immediately after the `?`, as shown in Listing 9-8.
 
+### Chaining Method Calls with the `?` Operator
+
+#### Filename: `src/main.rs`
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let mut username = String::new();
+
+    File::open("hello.txt")?.read_to_string(&mut username)?;
+
+    Ok(username)
+}
+```
+*Listing 9-8: Chaining method calls after the `?` operator*
+
+#### Explanation
+
+- **String Initialization**: The creation of the new `String` in `username` is moved to the beginning of the function.
+- **Chaining Calls**: Instead of creating a variable `username_file`, the call to `read_to_string` is chained directly onto the result of `File::open("hello.txt")?`.
+- **Error Handling**: The `?` operator is used at the end of the `read_to_string` call to propagate any errors.
+- **Return Value**: The function returns an `Ok` value containing `username` when both `File::open` and `read_to_string` succeed.
+
+#### Functionality
+
+- The functionality remains the same as in Listings 9-6 and 9-7.
+- This approach is more ergonomic and concise.
+
