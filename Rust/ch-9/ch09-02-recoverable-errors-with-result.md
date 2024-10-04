@@ -347,3 +347,31 @@ The calling code decides what to do with the values:
 ### Propagating Errors
 
 This pattern of propagating errors is common in Rust. Rust provides the question mark operator `?` to make this easier.
+
+### A Shortcut for Propagating Errors: the `?` Operator
+
+#### Introduction
+
+Listing 9-7 shows an implementation of `read_username_from_file` that has the same functionality as in Listing 9-6, but this implementation uses the `?` operator.
+
+#### Filename: `src/main.rs`
+
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let mut username_file = File::open("hello.txt")?;
+    let mut username = String::new();
+    username_file.read_to_string(&mut username)?;
+    Ok(username)
+}
+```
+*Listing 9-7: A function that returns errors to the calling code using the `?` operator*
+
+#### Explanation of the `?` Operator
+
+- **Functionality**: The `?` operator works similarly to the `match` expressions used to handle `Result` values.
+- **Success Case**: If the `Result` is `Ok`, the value inside `Ok` is returned, and the program continues.
+- **Error Case**: If the `Result` is `Err`, the `Err` is returned from the function, propagating the error to the calling code.
+
