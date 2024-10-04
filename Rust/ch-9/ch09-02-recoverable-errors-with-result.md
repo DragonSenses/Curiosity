@@ -273,3 +273,46 @@ fn read_username_from_file() -> Result<String, io::Error> {
 - **Error Propagation**: Instead of handling errors within the function, return them to the caller.
 - **Control to Calling Code**: This approach gives more control to the calling code, which might have more context or logic to handle the error appropriately.
 - **Example Function**: The example function attempts to read a username from a file and propagates any errors encountered during file opening or reading.
+
+### Example Breakdown
+
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let username_file_result = File::open("hello.txt");
+
+    let mut username_file = match username_file_result {
+        Ok(file) => file,
+        Err(e) => return Err(e),
+    };
+
+    let mut username = String::new();
+
+    match username_file.read_to_string(&mut username) {
+        Ok(_) => Ok(username),
+        Err(e) => Err(e),
+    }
+}
+```
+
+This function can be written in a much shorter way, but we're going to start by doing a lot of it manually in order to explore error handling. At the end, we'll show the shorter way.
+
+### Return Type
+
+The return type of the function is `Result<String, io::Error>`. This means the function returns a value of the type `Result<T, E>`, where:
+- `T` is the concrete type `String`
+- `E` is the concrete type `io::Error`
+
+### Success and Error Handling
+
+- **Success**: If the function succeeds, the calling code receives an `Ok` value containing a `String` (the `username` read from the file).
+- **Error**: If the function encounters any problems, the calling code receives an `Err` value containing an instance of `io::Error` with more information about the problem.
+
+### Error Type Choice
+
+We chose `io::Error` as the return type because it is the type of the error value returned from both operations in the function that might fail:
+- `File::open`
+- `read_to_string`
+
