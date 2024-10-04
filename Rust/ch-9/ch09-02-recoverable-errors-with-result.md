@@ -425,3 +425,28 @@ fn read_username_from_file() -> Result<String, io::Error> {
 - The functionality remains the same as in Listings 9-6 and 9-7.
 - This approach is more ergonomic and concise.
 
+### Using `fs::read_to_string`
+
+#### Filename: `src/main.rs`
+
+```rust
+use std::fs;
+use std::io;
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    fs::read_to_string("hello.txt")
+}
+```
+*Listing 9-9: Using `fs::read_to_string` instead of opening and then reading the file*
+
+#### Explanation
+
+- **Convenience**: The standard library provides the `fs::read_to_string` function for reading a file into a string.
+- **Functionality**: This function opens the file, creates a new `String`, reads the contents into the `String`, and returns it.
+- **Simplification**: Using `fs::read_to_string` simplifies the code further by eliminating the need to manually handle file opening and reading.
+
+#### Summary
+
+- **Error Handling**: The `?` operator simplifies error propagation.
+- **Ergonomics**: Chaining method calls and using `fs::read_to_string` make the code more concise and readable.
+- **Educational Value**: The longer approach was used initially to explain error handling in detail.
