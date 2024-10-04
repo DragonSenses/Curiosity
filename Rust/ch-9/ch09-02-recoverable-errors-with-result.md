@@ -239,3 +239,37 @@ In production-quality code, most Rustaceans choose `expect` rather than `unwrap`
 
 When a function's implementation calls something that might fail, instead of handling the error within the function itself, you can return the error to the calling code so that it can decide what to do. This is known as *propagating* the error and gives more control to the calling code, where there might be more information or logic that dictates how the error should be handled than what you have available in the context of your code.
 
+### Example: Reading a Username from a File
+
+For example, Listing 9-6 shows a function that reads a username from a file. If the file doesn't exist or can't be read, this function will return those errors to the code that called the function.
+
+#### Filename: src/main.rs
+
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let username_file_result = File::open("hello.txt");
+
+    let mut username_file = match username_file_result {
+        Ok(file) => file,
+        Err(e) => return Err(e),
+    };
+
+    let mut username = String::new();
+
+    match username_file.read_to_string(&mut username) {
+        Ok(_) => Ok(username),
+        Err(e) => Err(e),
+    }
+}
+```
+
+#### Listing 9-6: A function that returns errors to the calling code using `match`
+
+### Explanation
+
+- **Error Propagation**: Instead of handling errors within the function, return them to the caller.
+- **Control to Calling Code**: This approach gives more control to the calling code, which might have more context or logic to handle the error appropriately.
+- **Example Function**: The example function attempts to read a username from a file and propagates any errors encountered during file opening or reading.
