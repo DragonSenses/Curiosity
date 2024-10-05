@@ -549,3 +549,22 @@ This function returns `Option<char>` because it's possible that there is a chara
 - **Empty String Case**: If `text` is the empty string, this call to `next` will return `None`, in which case we use `?` to stop and return `None` from `last_char_of_first_line`.
 - **Non-Empty String Case**: If `text` is not the empty string, `next` will return a `Some` value containing a string slice of the first line in `text`.
 
+### Using the `?` Operator
+
+The `?` extracts the string slice, and we can call `chars` on that string slice to get an iterator of its characters. We're interested in the last character in this first line, so we call `last` to return the last item in the iterator. This is an `Option` because it's possible that the first line is the empty string; for example, if `text` starts with a blank line but has characters on other lines, as in `"\nhi"`. However, if there is a last character on the first line, it will be returned in the `Some` variant. 
+
+The `?` operator in the middle gives us a concise way to express this logic, allowing us to implement the function in one line. If we couldn't use the `?` operator on `Option`, we'd have to implement this logic using more method calls or a `match` expression.
+
+The logic being referred to is the sequence of steps needed to handle potential `None` values when working with `Option<T>` types. Specifically, it involves:
+
+1. **Extracting the First Line**: Using `text.lines().next()` to get the first line of the text. If the text is empty, this returns `None`.
+2. **Handling `None` Early**: The `?` operator checks if the result is `None`. If it is, the function returns `None` immediately.
+3. **Continuing with `Some`**: If the result is `Some`, the `?` operator extracts the value inside the `Some` and continues with the next step.
+4. **Getting the Last Character**: Calling `chars().last()` on the extracted line to get the last character, which is also an `Option`.
+
+By using the `?` operator, these steps are handled concisely in one line, without needing additional `match` statements or method calls to manually check and handle `None` values at each step. This makes the code more readable and succinct.
+
+### Important Note
+
+You can use the `?` operator on a `Result` in a function that returns `Result`, and you can use the `?` operator on an `Option` in a function that returns `Option`, but you can't mix and match. The `?` operator won't automatically convert a `Result` to an `Option` or vice versa; in those cases, you can use methods like the `ok` method on `Result` or the `ok_or` method on `Option` to do the conversion explicitly.
+
