@@ -591,3 +591,15 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 <span class="caption">Listing 9-12: Changing `main` to return `Result<(), E>` allows the use of the `?` operator on `Result` values.</span>
 
+### Understanding `Box<dyn Error>`
+
+The `Box<dyn Error>` type is a *trait object*, which we'll talk about in the ["Using Trait Objects that Allow for Values of Different Types"](https://doc.rust-lang.org/book/ch17-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types) section in Chapter 17. For now, you can read `Box<dyn Error>` to mean "any kind of error." Using `?` on a `Result` value in a `main` function with the error type `Box<dyn Error>` is allowed because it allows any `Err` value to be returned early. Even though the body of this `main` function will only ever return errors of type `std::io::Error`, by specifying `Box<dyn Error>`, this signature will continue to be correct even if more code that returns other errors is added to the body of `main`.
+
+### What is `Box<dyn Error>`?
+
+`Box<dyn Error>` is a way to handle errors in Rust using dynamic dispatch. Here's a breakdown of the components:
+
+- **`Box`**: This is a smart pointer that allocates data on the heap. It allows you to store data that has a size unknown at compile time or data that is too large to store on the stack.
+- **`dyn`**: This keyword stands for "dynamic" and is used to indicate that we are working with a trait object. A trait object allows for dynamic dispatch, meaning the exact type that implements the trait is determined at runtime.
+- **`Error`**: This is a trait provided by the standard library that represents the basic expectations for error values, such as the ability to display an error message.
+
