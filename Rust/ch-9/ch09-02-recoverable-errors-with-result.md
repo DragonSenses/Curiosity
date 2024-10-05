@@ -518,3 +518,15 @@ error: could not compile `error-handling` (bin "error-handling") due to 1 previo
 
 This error points out that we’re only allowed to use the `?` operator in a function that returns `Result`, `Option`, or another type that implements `FromResidual`.
 
+### Fixing the Error
+
+To fix the error, you have two choices:
+1. **Change the Return Type**: Change the return type of your function to be compatible with the value you’re using the `?` operator on, as long as you have no restrictions preventing that.
+2. **Handle the `Result` Manually**: Use a `match` or one of the `Result<T, E>` methods to handle the `Result<T, E>` in whatever way is appropriate.
+
+### Using `?` with `Option<T>`
+
+The error message also mentioned that `?` can be used with `Option<T>` values as well. As with using `?` on `Result`, you can only use `?` on `Option` in a function that returns an `Option`.
+
+The behavior of the `?` operator when called on an `Option<T>` is similar to its behavior when called on a `Result<T, E>`: if the value is `None`, the `None` will be returned early from the function at that point. If the value is `Some`, the value inside the `Some` is the resultant value of the expression, and the function continues.
+
