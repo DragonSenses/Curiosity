@@ -568,3 +568,26 @@ By using the `?` operator, these steps are handled concisely in one line, withou
 
 You can use the `?` operator on a `Result` in a function that returns `Result`, and you can use the `?` operator on an `Option` in a function that returns `Option`, but you can't mix and match. The `?` operator won't automatically convert a `Result` to an `Option` or vice versa; in those cases, you can use methods like the `ok` method on `Result` or the `ok_or` method on `Option` to do the conversion explicitly.
 
+### Special Nature of `main` Function
+
+So far, all the `main` functions we've used return `()`. The `main` function is special because it's the entry point and exit point of an executable program, and there are restrictions on what its return type can be for the program to behave as expected.
+
+### Returning `Result<(), E>` from `main`
+
+Luckily, `main` can also return a `Result<(), E>`. Listing 9-12 has the code from Listing 9-10, but we've changed the return type of `main` to be `Result<(), Box<dyn Error>>` and added a return value `Ok(())` to the end. This code will now compile.
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+use std::error::Error;
+use std::fs::File;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let greeting_file = File::open("hello.txt")?;
+
+    Ok(())
+}
+```
+
+<span class="caption">Listing 9-12: Changing `main` to return `Result<(), E>` allows the use of the `?` operator on `Result` values.</span>
+
