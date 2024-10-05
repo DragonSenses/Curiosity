@@ -477,7 +477,7 @@ fn main() {
 }
 ```
 
-*Listing 9-10: Attempting to use the `?` in the `main` function that returns `()` won’t compile.*
+*Listing 9-10: Attempting to use the `?` in the `main` function that returns `()` won't compile.*
 
 ### Opening a File with Potential Failure
 
@@ -489,7 +489,7 @@ fn main() {
 }
 ```
 
-*Listing 9-10: Attempting to use the `?` in the `main` function that returns `()` won’t compile.*
+*Listing 9-10: Attempting to use the `?` in the `main` function that returns `()` won't compile.*
 
 This code opens a file, which might fail. The `?` operator follows the `Result` value returned by `File::open`, but this `main` function has the return type of `()`, not `Result`.
 
@@ -516,12 +516,12 @@ error: could not compile `error-handling` (bin "error-handling") due to 1 previo
 
 ### Explanation
 
-This error points out that we’re only allowed to use the `?` operator in a function that returns `Result`, `Option`, or another type that implements `FromResidual`.
+This error points out that we're only allowed to use the `?` operator in a function that returns `Result`, `Option`, or another type that implements `FromResidual`.
 
 ### Fixing the Error
 
 To fix the error, you have two choices:
-1. **Change the Return Type**: Change the return type of your function to be compatible with the value you’re using the `?` operator on, as long as you have no restrictions preventing that.
+1. **Change the Return Type**: Change the return type of your function to be compatible with the value you're using the `?` operator on, as long as you have no restrictions preventing that.
 2. **Handle the `Result` Manually**: Use a `match` or one of the `Result<T, E>` methods to handle the `Result<T, E>` in whatever way is appropriate.
 
 ### Using `?` with `Option<T>`
@@ -529,4 +529,23 @@ To fix the error, you have two choices:
 The error message also mentioned that `?` can be used with `Option<T>` values as well. As with using `?` on `Result`, you can only use `?` on `Option` in a function that returns an `Option`.
 
 The behavior of the `?` operator when called on an `Option<T>` is similar to its behavior when called on a `Result<T, E>`: if the value is `None`, the `None` will be returned early from the function at that point. If the value is `Some`, the value inside the `Some` is the resultant value of the expression, and the function continues.
+
+### Example
+
+Listing 9-11 has an example of a function that finds the last character of the first line in the given text.
+
+```rust
+fn last_char_of_first_line(text: &str) -> Option<char> {
+    text.lines().next()?.chars().last()
+}
+```
+
+<span class="caption">Listing 9-11: Using the `?` operator on an `Option<T>` value</span>
+
+### Explanation
+
+This function returns `Option<char>` because it's possible that there is a character there, but it's also possible that there isn't. This code takes the `text` string slice argument and calls the `lines` method on it, which returns an iterator over the lines in the string. Because this function wants to examine the first line, it calls `next` on the iterator to get the first value from the iterator. 
+
+- **Empty String Case**: If `text` is the empty string, this call to `next` will return `None`, in which case we use `?` to stop and return `None` from `last_char_of_first_line`.
+- **Non-Empty String Case**: If `text` is not the empty string, `next` will return a `Some` value containing a string slice of the first line in `text`.
 
