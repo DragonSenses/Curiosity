@@ -603,3 +603,17 @@ The `Box<dyn Error>` type is a *trait object*, which we'll talk about in the ["U
 - **`dyn`**: This keyword stands for "dynamic" and is used to indicate that we are working with a trait object. A trait object allows for dynamic dispatch, meaning the exact type that implements the trait is determined at runtime.
 - **`Error`**: This is a trait provided by the standard library that represents the basic expectations for error values, such as the ability to display an error message.
 
+### Why Use `Box<dyn Error>`?
+
+1. **Flexibility**: `Box<dyn Error>` allows you to return different types of errors from a function. Since `Box<dyn Error>` can represent any error type that implements the `Error` trait, it provides a flexible way to handle various error types without specifying them explicitly.
+
+2. **Dynamic Dispatch**: By using `dyn`, you enable dynamic dispatch, which means the exact type of the error is determined at runtime. This is useful when you want to handle multiple error types in a uniform way.
+
+3. **Heap Allocation**: Using `Box` means the error is stored on the heap, which can be beneficial for large error types or when the size of the error type is not known at compile time.
+
+
+
+### Trait Objects and `Box<dyn Error>`
+
+The `Box<dyn Error>` type is a trait object. A trait object is a way to use traits as types. It allows for dynamic dispatch, meaning the method to call is determined at runtime based on the actual type of the object. This is different from static dispatch, where the method to call is determined at compile time.
+
