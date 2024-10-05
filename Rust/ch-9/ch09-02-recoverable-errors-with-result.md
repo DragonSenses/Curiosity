@@ -478,3 +478,18 @@ fn main() {
 ```
 
 *Listing 9-10: Attempting to use the `?` in the `main` function that returns `()` won’t compile.*
+
+### Opening a File with Potential Failure
+
+```rust,ignore,does_not_compile
+use std::fs::File;
+
+fn main() {
+    let greeting_file = File::open("hello.txt")?;
+}
+```
+
+*Listing 9-10: Attempting to use the `?` in the `main` function that returns `()` won’t compile.*
+
+This code opens a file, which might fail. The `?` operator follows the `Result` value returned by `File::open`, but this `main` function has the return type of `()`, not `Result`.
+
