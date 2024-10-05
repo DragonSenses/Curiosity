@@ -595,7 +595,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 The `Box<dyn Error>` type is a *trait object*, which we'll talk about in the ["Using Trait Objects that Allow for Values of Different Types"](https://doc.rust-lang.org/book/ch17-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types) section in Chapter 17. For now, you can read `Box<dyn Error>` to mean "any kind of error." Using `?` on a `Result` value in a `main` function with the error type `Box<dyn Error>` is allowed because it allows any `Err` value to be returned early. Even though the body of this `main` function will only ever return errors of type `std::io::Error`, by specifying `Box<dyn Error>`, this signature will continue to be correct even if more code that returns other errors is added to the body of `main`.
 
-### What is `Box<dyn Error>`?
+#### What is `Box<dyn Error>`?
 
 `Box<dyn Error>` is a way to handle errors in Rust using dynamic dispatch. Here's a breakdown of the components:
 
@@ -603,7 +603,7 @@ The `Box<dyn Error>` type is a *trait object*, which we'll talk about in the ["U
 - **`dyn`**: This keyword stands for "dynamic" and is used to indicate that we are working with a trait object. A trait object allows for dynamic dispatch, meaning the exact type that implements the trait is determined at runtime.
 - **`Error`**: This is a trait provided by the standard library that represents the basic expectations for error values, such as the ability to display an error message.
 
-### Why Use `Box<dyn Error>`?
+#### Why Use `Box<dyn Error>`?
 
 1. **Flexibility**: `Box<dyn Error>` allows you to return different types of errors from a function. Since `Box<dyn Error>` can represent any error type that implements the `Error` trait, it provides a flexible way to handle various error types without specifying them explicitly.
 
@@ -611,7 +611,7 @@ The `Box<dyn Error>` type is a *trait object*, which we'll talk about in the ["U
 
 3. **Heap Allocation**: Using `Box` means the error is stored on the heap, which can be beneficial for large error types or when the size of the error type is not known at compile time.
 
-### Example Usage
+#### Example Usage
 
 Here's an example of how you might use `Box<dyn Error>` in a `main` function:
 
@@ -629,11 +629,11 @@ In this example:
 - The `main` function returns `Result<(), Box<dyn Error>>`, allowing it to use the `?` operator with any error type that implements the `Error` trait.
 - If `File::open` fails, it returns an error that is automatically converted into a `Box<dyn Error>` and propagated up the call stack.
 
-### Trait Objects and `Box<dyn Error>`
+#### Trait Objects and `Box<dyn Error>`
 
 The `Box<dyn Error>` type is a trait object. A trait object is a way to use traits as types. It allows for dynamic dispatch, meaning the method to call is determined at runtime based on the actual type of the object. This is different from static dispatch, where the method to call is determined at compile time.
 
-### Implementing `From` for `Box<dyn Error>`
+#### Implementing `From` for `Box<dyn Error>`
 
 Rust provides implementations of the `From` trait for converting common error types into `Box<dyn Error>`. For example, you can convert a `String` into a `Box<dyn Error>`:
 
@@ -647,7 +647,18 @@ fn main() {
 
 This works because Rust has an implementation of `From<&str>` for `Box<dyn Error>`, allowing you to use `.into()` to convert a string slice into a boxed error.
 
-### Conclusion
+#### Conclusion
 
 Using `Box<dyn Error>` is a powerful way to handle errors in Rust, providing flexibility and dynamic dispatch. It allows you to write functions that can return different types of errors without needing to specify each type explicitly, making your error handling code more flexible and easier to maintain.
 
+### Exit Codes and Compatibility
+
+When a `main` function returns a `Result<(), E>`, the executable will exit with a value of `0` if `main` returns `Ok(())` and will exit with a nonzero value if `main` returns an `Err` value. Executables written in C return integers when they exit: programs that exit successfully return the integer `0`, and programs that error return some integer other than `0`. Rust also returns integers from executables to be compatible with this convention.
+
+### Implementing `Termination` Trait
+
+The `main` function may return any types that implement [the `std::process::Termination` trait](https://doc.rust-lang.org/std/process/trait.Termination.html), which contains a function `report` that returns an `ExitCode`. Consult the standard library documentation for more information on implementing the `Termination` trait for your own types.
+
+### Deciding Between `panic!` and `Result`
+
+Now that we've discussed the details of calling `panic!` or returning `Result`, let's return to the topic of how to decide which is appropriate to use in which cases.
