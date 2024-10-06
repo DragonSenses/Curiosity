@@ -75,3 +75,11 @@ We're creating an `IpAddr` instance by parsing a hardcoded string. We can see th
 #### Handling User Input
 
 If the IP address string came from a user rather than being hardcoded into the program and therefore *did* have a possibility of failure, we'd definitely want to handle the `Result` in a more robust way instead. Mentioning the assumption that this IP address is hardcoded will prompt us to change `expect` to better error-handling code if, in the future, we need to get the IP address from some other source instead.
+
+#### When to Use `panic!`
+
+It's advisable to have your code panic when it's possible that your code could end up in a bad state. In this context, a *bad state* is when some assumption, guarantee, contract, or invariant has been broken, such as when invalid values, contradictory values, or missing values are passed to your code—plus one or more of the following:
+
+- The bad state is something that is unexpected, as opposed to something that will likely happen occasionally, like a user entering data in the wrong format.
+- Your code after this point needs to rely on not being in this bad state, rather than checking for the problem at every step.
+- There's not a good way to encode this information in the types you use. We'll work through an example of what we mean in the ["Encoding States and Behavior as Types"](https://doc.rust-lang.org/book/ch17-03-oo-design-patterns.html#encoding-states-and-behavior-as-types) section of Chapter 17.
