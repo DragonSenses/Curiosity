@@ -76,6 +76,8 @@ We're creating an `IpAddr` instance by parsing a hardcoded string. We can see th
 
 If the IP address string came from a user rather than being hardcoded into the program and therefore *did* have a possibility of failure, we'd definitely want to handle the `Result` in a more robust way instead. Mentioning the assumption that this IP address is hardcoded will prompt us to change `expect` to better error-handling code if, in the future, we need to get the IP address from some other source instead.
 
+### Guidelines for Error Handling
+
 #### When to Use `panic!`
 
 It's advisable to have your code panic when it's possible that your code could end up in a bad state. In this context, a *bad state* is when some assumption, guarantee, contract, or invariant has been broken, such as when invalid values, contradictory values, or missing values are passed to your code—plus one or more of the following:
@@ -103,3 +105,33 @@ Functions often have *contracts*: their behavior is only guaranteed if the input
 #### Using Rust's Type System
 
 Having lots of error checks in all of your functions would be verbose and annoying. Fortunately, you can use Rust's type system (and thus the type checking done by the compiler) to do many of the checks for you. If your function has a particular type as a parameter, you can proceed with your code's logic knowing that the compiler has already ensured you have a valid value. For example, if you have a type rather than an `Option`, your program expects to have *something* rather than *nothing*. Your code then doesn't have to handle two cases for the `Some` and `None` variants: it will only have one case for definitely having a value. Code trying to pass nothing to your function won't even compile, so your function doesn't have to check for that case at runtime. Another example is using an unsigned integer type such as `u32`, which ensures the parameter is never negative.
+
+### Guidelines for Error Handling | Summary
+
+- **When to Use `panic!`**:
+  - Use `panic!` when your code could end up in a bad state (e.g., invalid, contradictory, or missing values).
+  - Bad state is unexpected and can't be easily encoded in types.
+  - Example: Out-of-bounds memory access.
+
+- **Handling Invalid Values**:
+  - Return an error if possible to let the user decide how to handle it.
+  - Use `panic!` if continuing could be insecure or harmful.
+  - Example: Calling external code that returns an invalid state.
+
+- **Expected Failures**:
+  - Return a `Result` for expected failures (e.g., malformed data, rate limits).
+  - Indicates that failure is an expected possibility.
+
+- **Safety and Security**:
+  - Verify values are valid before performing operations that could put a user at risk.
+  - Use `panic!` for invalid values to prevent vulnerabilities.
+
+- **Function Contracts**:
+  - Functions have contracts that guarantee behavior if inputs meet requirements.
+  - Panicking on contract violations indicates a caller-side bug.
+  - Document contracts in API documentation.
+
+- **Using Rust's Type System**:
+  - Use Rust's type system to perform checks at compile time.
+  - Example: Using a type instead of `Option` to ensure a value is always present.
+  - Example: Using unsigned integers to prevent negative values.
