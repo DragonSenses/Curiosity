@@ -662,3 +662,103 @@ The `main` function may return any types that implement [the `std::process::Term
 ### Deciding Between `panic!` and `Result`
 
 Now that we've discussed the details of calling `panic!` or returning `Result`, let's return to the topic of how to decide which is appropriate to use in which cases.
+
+### Recoverable Errors with `Result` | Summary
+
+Rust provides a robust way to handle recoverable errors using the `Result` type. This approach encourages developers to write code that explicitly handles potential failures, making programs more reliable and easier to debug.
+
+#### The `Result` Enum
+
+The `Result` enum is defined as follows:
+
+```rust
+enum Result<T, E> {
+    Ok(T),
+    Err(E),
+}
+```
+
+- **`Ok(T)`**: Indicates a successful operation, containing a value of type `T`.
+- **`Err(E)`**: Indicates a failure, containing an error of type `E`.
+
+#### Basic Usage
+
+When a function can fail, it returns a `Result`. For example, opening a file might fail if the file does not exist or if there are permission issues:
+
+```rust
+use std::fs::File;
+
+fn main() {
+    let greeting_file_result = File::open("hello.txt");
+}
+```
+
+The return type of `File::open` is `Result<File, std::io::Error>`, meaning it can either return a `File` on success or an `std::io::Error` on failure.
+
+#### Handling `Result` with `match`
+
+One way to handle a `Result` is using a `match` expression:
+
+```rust
+use std::fs::File;
+
+fn main() {
+    let greeting_file_result = File::open("hello.txt");
+
+    let greeting_file = match greeting_file_result {
+        Ok(file) => file,
+        Err(error) => panic!("Problem opening the file: {:?}", error),
+    };
+}
+```
+
+This code attempts to open a file and handles the potential error by panicking if the file cannot be opened.
+
+#### The `?` Operator
+
+The `?` operator provides a concise way to propagate errors. It can be used in functions that return `Result` or `Option`:
+
+```rust
+use std::fs::File;
+use std::io::Error;
+
+fn main() -> Result<(), Error> {
+    let greeting_file = File::open("hello.txt")?;
+    Ok(())
+}
+```
+
+In this example, if `File::open` fails, the error is returned from `main` immediately.
+
+#### Using `Box<dyn Error>`
+
+For more flexibility, you can use `Box<dyn Error>` to handle different error types:
+
+```rust
+use std::error::Error;
+use std::fs::File;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let greeting_file = File::open("hello.txt")?;
+    Ok(())
+}
+```
+
+This allows the `main` function to return any error type that implements the `Error` trait⁴.
+
+#### Exit Codes and Compatibility
+
+When a `main` function returns `Result<(), E>`, the executable will exit with a value of `0` if `main` returns `Ok(())` and a nonzero value if `main` returns an `Err` value. This behavior is compatible with the convention used in C programs⁴.
+
+#### Implementing the `Termination` Trait
+
+The `main` function can return any type that implements the `std::process::Termination` trait, which defines how the program should report its exit status⁴.
+
+#### Deciding Between `panic!` and `Result`
+
+- **Use `panic!`**: For unrecoverable errors where the program cannot continue.
+- **Use `Result`**: For recoverable errors where the program can handle the failure and continue running.
+
+### Conclusion
+
+Using `Result` for error handling in Rust makes your code more robust and explicit about potential failures. It encourages handling errors gracefully and provides tools like the `?` operator to simplify error propagation.
