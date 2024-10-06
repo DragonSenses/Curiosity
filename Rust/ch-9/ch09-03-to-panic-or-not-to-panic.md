@@ -1,18 +1,37 @@
 ## To `panic!` or Not to `panic!`
 
-So how do you decide when you should call `panic!` and when you should return
-`Result`? When code panics, there's no way to recover. You could call `panic!`
-for any error situation, whether there's a possible way to recover or not, but
-then you're making the decision that a situation is unrecoverable on behalf of
-the calling code. When you choose to return a `Result` value, you give the
-calling code options. The calling code could choose to attempt to recover in a
-way that's appropriate for its situation, or it could decide that an `Err`
-value in this case is unrecoverable, so it can call `panic!` and turn your
-recoverable error into an unrecoverable one. Therefore, returning `Result` is a
-good default choice when you're defining a function that might fail.
+### Deciding Between `panic!` and `Result`
 
-In situations such as examples, prototype code, and tests, it's more
-appropriate to write code that panics instead of returning a `Result`. Let's
-explore why, then discuss situations in which the compiler can't tell that
-failure is impossible, but you as a human can. The chapter will conclude with
-some general guidelines on how to decide whether to panic in library code.
+- **When to Use `panic!`**:
+  - Use `panic!` when there is no way to recover from an error.
+  - Calling `panic!` makes the decision that a situation is unrecoverable on behalf of the calling code.
+
+- **When to Return `Result`**:
+  - Returning `Result` gives the calling code options to handle the error.
+  - The calling code can attempt to recover or decide that the error is unrecoverable and call `panic!` itself.
+  - Returning `Result` is a good default choice for functions that might fail.
+
+#### Situations for Using `panic!`
+
+- **Examples, Prototype Code, and Tests**:
+  - In these cases, it's more appropriate to write code that panics instead of returning a `Result`.
+
+#### Compiler Limitations and Human Judgment
+
+- **Compiler Limitations**:
+  - There are situations where the compiler can't tell that failure is impossible, but you as a human can.
+
+#### Guidelines for Library Code
+
+- **General Guidelines**:
+  - The chapter concludes with guidelines on how to decide whether to panic in library code.
+
+### Additional Considerations
+
+- **Using the `?` Operator**:
+  - The `?` operator can be used to propagate errors in functions that return `Result` or `Option`.
+  - It simplifies error handling by reducing boilerplate code.
+
+- **Error Handling in Production Code**:
+  - In production code, prefer returning `Result` to allow for graceful error handling.
+  - Reserve `panic!` for truly unrecoverable situations or bugs.
