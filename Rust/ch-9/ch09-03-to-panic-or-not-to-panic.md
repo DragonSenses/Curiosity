@@ -175,3 +175,41 @@ The `if` expression checks if the value is out of range, informs the user, and c
 This approach is not ideal for several reasons:
 - If the program must operate only on values between 1 and 100, repeating this check in every function is tedious and might impact performance.
 
+#### Creating a Custom Type
+
+A better solution is to create a new type and put the validations in a function that creates an instance of this type. This ensures that functions using the new type can confidently rely on the validity of the values they receive. Here's how to define a `Guess` type that only allows values between 1 and 100:
+
+<span class="filename">Filename: src/lib.rs</span>
+
+```rust
+pub struct Guess {
+    value: i32,
+}
+
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 || value > 100 {
+            panic!("Guess value must be between 1 and 100, got {value}.");
+        }
+
+        Guess { value }
+    }
+
+    pub fn value(&self) -> i32 {
+        self.value
+    }
+}
+```
+
+<span class="caption">Listing 9-13: A `Guess` type that will only continue with values between 1 and 100</span>
+
+#### Defining the Struct
+
+First, we define a struct named `Guess` that has a field named `value` that holds an `i32`. This is where the number will be stored.
+
+```rust
+pub struct Guess {
+    value: i32,
+}
+```
+
