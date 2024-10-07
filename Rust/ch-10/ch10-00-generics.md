@@ -64,3 +64,51 @@ fn main() {
 - **Final Output**: After considering all the numbers in the list, `largest` should refer to the largest number, which in this case is 100.
 
 By understanding this example, you can see how to identify duplicated code that can be extracted into a function. This sets the stage for applying the same technique to create a generic function, reducing code duplication and enhancing code reusability.
+
+#### Task Overview
+
+We've been tasked with finding the largest number in two different lists of numbers. One approach is to duplicate the code from Listing 10-1 and use the same logic in two different places in the program, as shown in Listing 10-2.
+
+#### Example Program
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+fn main() {
+    let number_list = vec![34, 50, 25, 100, 65];
+
+    let mut largest = &number_list[0];
+
+    for number in &number_list {
+        if number > largest {
+            largest = number;
+        }
+    }
+
+    println!("The largest number is {largest}");
+
+    let number_list = vec![102, 34, 6000, 89, 54, 2, 43, 8];
+
+    let mut largest = &number_list[0];
+
+    for number in &number_list {
+        if number > largest {
+            largest = number;
+        }
+    }
+
+    println!("The largest number is {largest}");
+}
+```
+
+<span class="caption">Listing 10-2: Code to find the largest number in *two* lists of numbers</span>
+
+#### Issues with Code Duplication
+
+Although this code works, duplicating code is tedious and error-prone. We also have to remember to update the code in multiple places whenever we want to make changes. This increases the risk of inconsistencies and bugs.
+
+#### Creating an Abstraction
+
+To eliminate this duplication, we'll create an abstraction by defining a function that operates on any list of integers passed as a parameter. This solution makes our code clearer and allows us to express the concept of finding the largest number in a list more abstractly.
+
+By defining a function, we can reuse the logic for finding the largest number without duplicating code. This approach not only reduces redundancy but also makes our code easier to maintain and understand.
