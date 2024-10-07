@@ -135,3 +135,43 @@ Having lots of error checks in all of your functions would be verbose and annoyi
   - Use Rust's type system to perform checks at compile time.
   - Example: Using a type instead of `Option` to ensure a value is always present.
   - Example: Using unsigned integers to prevent negative values.
+
+### Creating Custom Types for Validation
+
+#### Introduction
+
+Using Rust's type system to ensure valid values can be taken a step further by creating custom types for validation. For example, in the guessing game from Chapter 2, we asked the user to guess a number between 1 and 100 but didn't validate the range of the guess. Enhancing this validation can guide users toward valid guesses and handle out-of-range guesses differently from invalid inputs like letters.
+
+#### Initial Approach
+
+One way to validate the guess is to parse it as an `i32` (to allow potentially negative numbers) and then check if the number is within the valid range:
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+loop {
+    // --snip--
+
+    let guess: i32 = match guess.trim().parse() {
+        Ok(num) => num,
+        Err(_) => continue,
+    };
+
+    if guess < 1 || guess > 100 {
+        println!("The secret number will be between 1 and 100.");
+        continue;
+    }
+
+    match guess.cmp(&secret_number) {
+        // --snip--
+    }
+}
+```
+
+The `if` expression checks if the value is out of range, informs the user, and calls `continue` to prompt for another guess. After this check, we can safely compare `guess` with the secret number.
+
+#### Limitations of the Initial Approach
+
+This approach is not ideal for several reasons:
+- If the program must operate only on values between 1 and 100, repeating this check in every function is tedious and might impact performance.
+
