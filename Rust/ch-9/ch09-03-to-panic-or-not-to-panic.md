@@ -213,3 +213,21 @@ pub struct Guess {
 }
 ```
 
+#### Implementing the `new` Function
+
+Next, we implement an associated function named `new` on `Guess` that creates instances of `Guess` values. The `new` function is defined to have one parameter named `value` of type `i32` and to return a `Guess`.
+
+```rust
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 || value > 100 {
+            panic!("Guess value must be between 1 and 100, got {value}.");
+        }
+
+        Guess { value }
+    }
+}
+```
+
+The code in the body of the `new` function tests `value` to make sure it's between 1 and 100. If `value` doesn't pass this test, we make a `panic!` call, which will alert the programmer who is writing the calling code that they have a bug they need to fix. Creating a `Guess` with a `value` outside this range would violate the contract that `Guess::new` is relying on. The conditions in which `Guess::new` might panic should be discussed in its public-facing API documentation. If `value` does pass the test, we create a new `Guess` with its `value` field set to the `value` parameter and return the `Guess`.
+
