@@ -112,3 +112,57 @@ Although this code works, duplicating code is tedious and error-prone. We also h
 To eliminate this duplication, we'll create an abstraction by defining a function that operates on any list of integers passed as a parameter. This solution makes our code clearer and allows us to express the concept of finding the largest number in a list more abstractly.
 
 By defining a function, we can reuse the logic for finding the largest number without duplicating code. This approach not only reduces redundancy but also makes our code easier to maintain and understand.
+
+#### Introduction
+
+In Listing 10-3, we extract the code that finds the largest number into a function named `largest`. This allows us to call the function to find the largest number in the two lists from Listing 10-2. We can also use the function on any other list of `i32` values in the future.
+
+#### Example Program
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+fn largest(list: &[i32]) -> &i32 {
+    let mut largest = &list[0];
+
+    for item in list {
+        if item > largest {
+            largest = item;
+        }
+    }
+
+    largest
+}
+
+fn main() {
+    let number_list = vec![34, 50, 25, 100, 65];
+
+    let result = largest(&number_list);
+    println!("The largest number is {result}");
+
+    let number_list = vec![102, 34, 6000, 89, 54, 2, 43, 8];
+
+    let result = largest(&number_list);
+    println!("The largest number is {result}");
+}
+```
+
+<span class="caption">Listing 10-3: Abstracted code to find the largest number in two lists</span>
+
+#### Explanation of the `largest` Function
+
+- **Parameter**: The `largest` function has a parameter called `list`, which represents any concrete slice of `i32` values we might pass into the function.
+- **Function Logic**: The function iterates through the list, updating the `largest` variable whenever it finds a larger value.
+- **Return Value**: The function returns a reference to the largest value found in the list.
+
+#### Steps to Refactor the Code
+
+1. **Identify Duplicate Code**: Recognize the repeated logic in the original code.
+2. **Extract the Function**: Move the duplicated code into a function, specifying the inputs and return values in the function signature.
+3. **Update Calls**: Replace the duplicated code with calls to the new function.
+
+#### Moving Forward with Generics
+
+Next, we’ll use these same steps with generics to reduce code duplication further. Just as the function body can operate on an abstract `list` instead of specific values, generics allow code to operate on abstract types.
+
+For example, if we had two functions—one that finds the largest item in a slice of `i32` values and one that finds the largest item in a slice of `char` values—we could eliminate that duplication using generics. Let’s explore how to achieve this!
