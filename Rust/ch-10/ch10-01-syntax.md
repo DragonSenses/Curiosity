@@ -152,3 +152,62 @@ fn main() {
 <span class="caption">Listing 10-6: A `Point<T>` struct that holds `x` and `y` values of type `T`</span>
 
 The syntax for using generics in struct definitions is similar to that used in function definitions. First we declare the name of the type parameter inside angle brackets just after the name of the struct. Then we use the generic type in the struct definition where we would otherwise specify concrete data types.
+
+#### Summary of Using Generics in Struct Definitions
+
+##### Defining Structs with Generics
+
+- Define structs to use a generic type parameter using the `<>` syntax.
+- **Example**: 
+  - `Point<T>` struct holds `x` and `y` values of any type `T`.
+  - Usage:
+    ```rust
+    struct Point<T> {
+        x: T,
+        y: T,
+    }
+    fn main() {
+        let integer = Point { x: 5, y: 10 };
+        let float = Point { x: 1.0, y: 4.0 };
+    }
+    ```
+- Syntax similar to function definitions: declare the type parameter name inside angle brackets after the struct name.
+- Note: Using one generic type `Point<T>` means `x` and `y` are the same type.
+- **Error Example**:
+  - Instance with different types for `x` and `y` will not compile:
+    ```rust,ignore,does_not_compile
+    struct Point<T> {
+        x: T,
+        y: T,
+    }
+    fn main() {
+        let wont_work = Point { x: 5, y: 4.0 };
+    }
+    ```
+  - Error message example:
+    ```sh
+    $ cargo run
+       Compiling chapter10 v0.1.0 (file:///projects/chapter10)
+    error[E0308]: mismatched types
+     --> src/main.rs:7:38
+      |
+    7 |     let wont_work = Point { x: 5, y: 4.0 };
+      |                                      ^^^ expected integer, found floating-point number
+    ```
+
+##### Multiple Generic Types
+
+- To define a `Point` struct where `x` and `y` can have different types, use multiple generic type parameters:
+  ```rust
+  struct Point<T, U> {
+      x: T,
+      y: U,
+  }
+  fn main() {
+      let both_integer = Point { x: 5, y: 10 };
+      let both_float = Point { x: 1.0, y: 4.0 };
+      let integer_and_float = Point { x: 5, y: 4.0 };
+  }
+```
+
+- Use as many generic type parameters as needed, but avoid overusing them to keep code readable. Too many generic types may indicate a need for code restructuring.
