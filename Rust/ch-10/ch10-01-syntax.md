@@ -121,3 +121,13 @@ help: consider restricting type parameter `T`
 For more information about this error, try `rustc --explain E0369`.
 error: could not compile `chapter10` (bin "chapter10") due to 1 previous error
 ```
+
+### Enabling Comparisons with Traits
+
+- The help text mentions `std::cmp::PartialOrd`, a *trait*.
+- This error indicates that the body of `largest` won't work for all possible types that `T` could be.
+- To compare values of type `T` in the body, we can only use types whose values can be ordered.
+- The standard library has the `std::cmp::PartialOrd` trait for enabling comparisons.
+- By following the help text's suggestion, we restrict `T` to types that implement `PartialOrd`.
+- This example will compile because the standard library implements `PartialOrd` on both `i32` and `char`.
+
