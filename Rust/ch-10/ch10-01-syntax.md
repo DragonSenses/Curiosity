@@ -131,3 +131,24 @@ error: could not compile `chapter10` (bin "chapter10") due to 1 previous error
 - By following the help text's suggestion, we restrict `T` to types that implement `PartialOrd`.
 - This example will compile because the standard library implements `PartialOrd` on both `i32` and `char`.
 
+### In Struct Definitions
+
+We can also define structs to use a generic type parameter in one or more fields using the `<>` syntax. Listing 10-6 defines a `Point<T>` struct to hold `x` and `y` coordinate values of any type.
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+fn main() {
+    let integer = Point { x: 5, y: 10 };
+    let float = Point { x: 1.0, y: 4.0 };
+}
+```
+
+<span class="caption">Listing 10-6: A `Point<T>` struct that holds `x` and `y` values of type `T`</span>
+
+The syntax for using generics in struct definitions is similar to that used in function definitions. First we declare the name of the type parameter inside angle brackets just after the name of the struct. Then we use the generic type in the struct definition where we would otherwise specify concrete data types.
