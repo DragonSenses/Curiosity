@@ -400,3 +400,33 @@ fn main() {
 In `main`, we've defined a `Point` that has an `i32` for `x` (with value `5`) and an `f64` for `y` (with value `10.4`). The `p2` variable is a `Point` struct that has a string slice for `x` (with value `"Hello"`) and a `char` for `y` (with value `c`). Calling `mixup` on `p1` with the argument `p2` gives us `p3`, which will have an `i32` for `x` because `x` came from `p1`. The `p3` variable will have a `char` for `y` because `y` came from `p2`. The `println!` macro call will print `p3.x = 5, p3.y = c`.
 
 The purpose of this example is to demonstrate a situation in which some generic parameters are declared with `impl` and some are declared with the method definition. Here, the generic parameters `X1` and `Y1` are declared after `impl` because they go with the struct definition. The generic parameters `X2` and `Y2` are declared after `fn mixup` because they're only relevant to the method.
+
+### Summary of Using Generics in Method Definitions
+
+#### Implementing Methods on Structs and Enums
+
+- You can implement methods on structs and enums using generic types.
+- Example: `Point<T>` struct with a method named `x` that returns a reference to the `x` field.
+
+#### Declaring Type Parameters in Methods
+
+- Declare the generic type after `impl` to specify you're implementing methods on `Point<T>`.
+- Rust uses the generic type in angle brackets to identify it as a generic type rather than a concrete type.
+- It's conventional to use the same generic type name as declared in the struct definition.
+
+#### Defining Methods with Constraints
+
+- Specify constraints on generic types when defining methods on the type.
+- Example: `Point<f32>` with a `distance_from_origin` method that only applies to `Point<f32>` instances.
+- The method measures the distance from the origin using floating-point operations.
+
+#### Using Different Generic Types in Methods
+
+- Generic type parameters in a struct definition can differ from those in method signatures.
+- Example: `Point<X1, Y1>` struct with a `mixup` method that uses `X2, Y2` for its parameters.
+- The method creates a new `Point` with the `x` value from `self` and the `y` value from the passed-in `Point`.
+
+#### Practical Example
+
+- Demonstrates creating `Point` instances with different types and using the `mixup` method to combine them.
+- Example: Combining an `i32` and `f64` `Point` with a `string slice` and `char` `Point`.
