@@ -316,3 +316,9 @@ When you recognize situations in your code with multiple struct or enum definiti
 
 - **Avoiding Duplication**:
   - Use generic types to avoid duplication when you have multiple struct or enum definitions that differ only in the types of values they hold.
+
+### In Method Definitions
+
+#### Using Generics in Method Definitions
+
+We can implement methods on structs and enums (as we did in Chapter 5) and use generic types in their definitions too. Listing 10-9 shows the `Point<T>` struct we defined in Listing 10-6 with a method named `x` implemented on it.
