@@ -291,3 +291,28 @@ The `Result` enum is generic over two types, `T` and `E`, and has two variants: 
 
 When you recognize situations in your code with multiple struct or enum definitions that differ only in the types of the values they hold, you can avoid duplication by using generic types instead.
 
+#### In Enum Definitions - Summary
+
+- **Defining Enums with Generics**:
+  - Enums can be defined to hold generic data types using the `<>` syntax.
+  - Example: The `Option<T>` enum is generic over type `T` and has two variants:
+    - `Some(T)`: Holds a value of type `T`.
+    - `None`: Doesn't hold any value.
+
+- **Usage of `Option<T>`**:
+  - Expresses the abstract concept of an optional value.
+  - Can be used with any type due to its generic nature.
+
+- **Multiple Generic Types in Enums**:
+  - Example: The `Result<T, E>` enum is generic over two types, `T` and `E`.
+    - `Ok(T)`: Holds a value of type `T`.
+    - `Err(E)`: Holds a value of type `E`.
+
+- **Usage of `Result<T, E>`**:
+  - Convenient for operations that might succeed (return a value of type `T`) or fail (return an error of type `E`).
+  - Example: Opening a file where:
+    - `T` is `std::fs::File` on success.
+    - `E` is `std::io::Error` on failure.
+
+- **Avoiding Duplication**:
+  - Use generic types to avoid duplication when you have multiple struct or enum definitions that differ only in the types of values they hold.
