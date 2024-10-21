@@ -430,3 +430,24 @@ The purpose of this example is to demonstrate a situation in which some generic 
 
 - Demonstrates creating `Point` instances with different types and using the `mixup` method to combine them.
 - Example: Combining an `i32` and `f64` `Point` with a `string slice` and `char` `Point`.
+
+### Performance of Code Using Generics - Summary
+
+- **No Runtime Cost**: Using generic types won't make your program run any slower than using concrete types.
+
+- **Monomorphization**:
+  - *Definition*: Monomorphization is the process of turning generic code into specific code by filling in concrete types used at compile time.
+  - *Process*: The compiler looks at all the places where generic code is called and generates code for the concrete types the generic code is called with.
+
+- **Example with `Option<T>` Enum**:
+  - When Rust compiles code using `Option<T>`, it performs monomorphization to create specific code for each concrete type used.
+  - For example, `Option<i32>` and `Option<f64>` are generated for `i32` and `f64` types used with `Option<T>`.
+
+- **Monomorphized Version of the Code**:
+  - The compiler creates specific definitions for each type, replacing the generic definition with specific ones.
+  - Example: `Option_i32` and `Option_f64` are generated for `i32` and `f64`.
+
+- **Efficiency**:
+  - Rust compiles generic code into code that specifies the type in each instance, leading to no runtime cost for using generics.
+  - The code runs as efficiently as if each definition was written by hand.
+
