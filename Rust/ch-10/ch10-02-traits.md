@@ -40,3 +40,9 @@ Instead of providing an implementation within curly brackets, we use a semicolon
 
 #### Multiple Methods
 A trait can have multiple methods in its body. Method signatures are listed one per line, each ending in a semicolon.
+
+### Implementing a Trait on a Type
+
+#### Overview
+Now that we've defined the desired signatures of the `Summary` trait's methods, we can implement it on the types in our media aggregator.
+
