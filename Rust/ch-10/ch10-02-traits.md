@@ -7,3 +7,8 @@ certain behavior.
 
 > Note: Traits are similar to a feature often called *interfaces* in other
 > languages, although with some differences.
+
+### Defining a Trait
+
+#### Overview
+A type's behavior consists of the methods we can call on that type. Different types share the same behavior if we can call the same methods on all of those types. Trait definitions group method signatures together to define a set of behaviors necessary to accomplish some purpose.
