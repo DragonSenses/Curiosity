@@ -46,3 +46,37 @@ A trait can have multiple methods in its body. Method signatures are listed one 
 #### Overview
 Now that we've defined the desired signatures of the `Summary` trait's methods, we can implement it on the types in our media aggregator.
 
+#### Implementation
+Listing 10-13 shows an implementation of the `Summary` trait on the `NewsArticle` struct that uses the headline, the author, and the location to create the return value of `summarize`. For the `Tweet` struct, we define `summarize` as the username followed by the entire text of the tweet, assuming the tweet content is already limited to 280 characters.
+
+**Filename**: src/lib.rs
+```rust
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+impl Summary for NewsArticle {
+    fn summarize(&self) -> String {
+        format!("{}, by {} ({})", self.headline, self.author, self.location)
+    }
+}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summary for Tweet {
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.username, self.content)
+    }
+}
+```
+
+<span class="caption">Listing 10-13: Implementing the `Summary` trait on the `NewsArticle` and `Tweet` types</span>
+
