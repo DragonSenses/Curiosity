@@ -281,3 +281,32 @@ pub fn notify<T: Summary + Display>(item: &T) {
 
 With the two trait bounds specified, the body of `notify` can call `summarize` and use `{}` to format `item`.
 
+#### Clearer Trait Bounds with `where` Clauses
+
+#### Overview
+Using too many trait bounds has its downsides. Each generic has its own trait bounds, so functions with multiple generic type parameters can contain lots of trait bound information between the function's name and its parameter list, making the function signature hard to read.
+
+#### Alternate Syntax: `where` Clause
+For this reason, Rust has alternate syntax for specifying trait bounds inside a `where` clause after the function signature.
+
+#### Example Without `where` Clause
+
+So, instead of writing this:
+
+```rust,ignore
+fn some_function<T: Display + Clone, U: Clone + Debug>(t: &T, u: &U) -> i32 {
+```
+
+#### Example With `where` Clause
+We can use a `where` clause, like this:
+
+```rust,ignore
+fn some_function<T, U>(t: &T, u: &U) -> i32
+where
+    T: Display + Clone,
+    U: Clone + Debug,
+{
+```
+
+#### Explanation
+This function's signature is less cluttered: the function name, parameter list, and return type are close together, similar to a function without lots of trait bounds.
