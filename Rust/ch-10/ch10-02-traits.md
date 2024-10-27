@@ -310,3 +310,25 @@ where
 
 #### Explanation
 This function's signature is less cluttered: the function name, parameter list, and return type are close together, similar to a function without lots of trait bounds.
+
+### Returning Types That Implement Traits
+
+#### Overview
+We can use the `impl Trait` syntax in the return position to return a value of some type that implements a trait, as shown here:
+
+```rust,ignore
+fn returns_summarizable() -> impl Summary {
+    Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from(
+            "of course, as you probably already know, people",
+        ),
+        reply: false,
+        retweet: false,
+    }
+}
+```
+
+#### Example
+By using `impl Summary` for the return type, we specify that the `returns_summarizable` function returns some type that implements the `Summary` trait without naming the concrete type. In this case, `returns_summarizable` returns a `Tweet`, but the code calling this function doesn't need to know that.
+
