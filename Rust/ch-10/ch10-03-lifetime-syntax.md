@@ -128,3 +128,23 @@ In the fixed version, `x` has the lifetime `'b`, which is larger than `'a`. This
 #### Next Steps
 Now that you know what the lifetimes of references are and how Rust analyzes lifetimes to ensure references will always be valid, let's explore generic lifetimes of parameters and return values in the context of functions.
 
+
+We'll write a function that returns the longer of two string slices. This function will take two string slices and return a single string slice.
+
+#### Implementation
+After we've implemented the `longest` function, the code in Listing 10-19 should print `The longest string is abcd`.
+
+**Filename**: src/main.rs
+
+```rust,ignore
+fn main() {
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+
+    let result = longest(string1.as_str(), string2);
+    println!("The longest string is {result}");
+}
+```
+
+**Listing 10-19**: A `main` function that calls the `longest` function to find the longer of two string slices.
+
