@@ -225,3 +225,21 @@ Instead of a concrete type for the `item` parameter, we specify the `impl` keywo
 
 #### Usage
 We can call `notify` and pass in any instance of `NewsArticle` or `Tweet`. Code that calls the function with any other type, such as a `String` or an `i32`, won't compile because those types don't implement `Summary`.
+
+### Trait Bound Syntax
+
+#### Overview
+The `impl Trait` syntax works for straightforward cases but is actually syntax sugar for a longer form known as a *trait bound*; it looks like this:
+
+```rust,ignore
+pub fn notify<T: Summary>(item: &T) {
+    println!("Breaking news! {}", item.summarize());
+}
+```
+
+#### Example of Trait Bound Syntax
+This longer form is equivalent to the example in the previous section but is more verbose. We place trait bounds with the declaration of the generic type parameter after a colon and inside angle brackets.
+
+#### Convenience vs. Complexity
+The `impl Trait` syntax is convenient and makes for more concise code in simple cases, while the fuller trait bound syntax can express more complexity in other cases.
+
