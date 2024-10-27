@@ -243,3 +243,16 @@ This longer form is equivalent to the example in the previous section but is mor
 #### Convenience vs. Complexity
 The `impl Trait` syntax is convenient and makes for more concise code in simple cases, while the fuller trait bound syntax can express more complexity in other cases.
 
+#### Using `impl Trait` with Multiple Parameters
+For example, we can have two parameters that implement `Summary`. Doing so with the `impl Trait` syntax looks like this:
+
+```rust,ignore
+pub fn notify(item1: &impl Summary, item2: &impl Summary) {
+```
+
+Using `impl Trait` is appropriate if we want this function to allow `item1` and `item2` to have different types (as long as both types implement `Summary`). If we want to force both parameters to have the same type, however, we must use a trait bound, like this:
+
+```rust,ignore
+pub fn notify<T: Summary>(item1: &T, item2: &T) {
+```
+
