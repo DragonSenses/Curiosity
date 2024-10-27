@@ -256,3 +256,28 @@ Using `impl Trait` is appropriate if we want this function to allow `item1` and 
 pub fn notify<T: Summary>(item1: &T, item2: &T) {
 ```
 
+#### Generic Type Constraint
+The generic type `T` specified as the type of the `item1` and `item2` parameters constrains the function such that the concrete type of the value passed as an argument for `item1` and `item2` must be the same.
+
+#### Specifying Multiple Trait Bounds with the `+` Syntax
+
+We can also specify more than one trait bound. 
+
+#### Example: Using Multiple Trait Bounds
+Say we wanted `notify` to use display formatting as well as `summarize` on `item`: we specify in the `notify` definition that `item` must implement both `Display` and `Summary`.
+
+#### Syntax
+We can do so using the `+` syntax:
+
+```rust,ignore
+pub fn notify(item: &(impl Summary + Display)) {
+```
+
+The `+` syntax is also valid with trait bounds on generic types:
+
+```rust,ignore
+pub fn notify<T: Summary + Display>(item: &T) {
+```
+
+With the two trait bounds specified, the body of `notify` can call `summarize` and use `{}` to format `item`.
+
