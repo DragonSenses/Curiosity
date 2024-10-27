@@ -80,3 +80,8 @@ Rust uses a borrow checker to determine that this code is invalid. The borrow ch
 #### Conclusion
 Understanding lifetimes and the borrow checker is crucial to prevent dangling references, ensuring safe and valid references in Rust.
 
+### The Borrow Checker
+
+#### Overview
+The Rust compiler has a *borrow checker* that compares scopes to determine whether all borrows are valid.
+
