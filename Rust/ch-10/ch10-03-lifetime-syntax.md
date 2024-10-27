@@ -106,3 +106,25 @@ fn main() {
 #### Explanation
 In this example, the lifetime of `r` is annotated with `'a`, and the lifetime of `x` with `'b`. The inner `'b` block is much smaller than the outer `'a` lifetime block. At compile time, Rust compares the size of the two lifetimes and sees that `r` has a lifetime of `'a` but refers to memory with a lifetime of `'b`. The program is rejected because `'b` is shorter than `'a`.
 
+#### Fixing Dangling References
+Listing 10-18 fixes the code so it doesn't have a dangling reference and compiles without any errors.
+
+```rust
+fn main() {
+    let x = 5;            // ----------+-- 'b
+                          //           |
+    let r = &x;           // --+-- 'a  |
+                          //   |       |
+    println!("r: {r}");   //   |       |
+                          // --+       |
+}                         // ----------+
+```
+
+<span class="caption">Listing 10-18: A valid reference because the data has a longer lifetime than the reference</span>
+
+#### Valid Reference
+In the fixed version, `x` has the lifetime `'b`, which is larger than `'a`. This means `r` can reference `x` because Rust knows that the reference in `r` will always be valid while `x` is valid.
+
+#### Next Steps
+Now that you know what the lifetimes of references are and how Rust analyzes lifetimes to ensure references will always be valid, let's explore generic lifetimes of parameters and return values in the context of functions.
+
