@@ -85,3 +85,24 @@ Understanding lifetimes and the borrow checker is crucial to prevent dangling re
 #### Overview
 The Rust compiler has a *borrow checker* that compares scopes to determine whether all borrows are valid.
 
+#### Example: Annotated Lifetimes
+Listing 10-17 shows the same code as Listing 10-16 but with annotations showing the lifetimes of the variables.
+
+```rust,ignore,does_not_compile
+fn main() {
+    let r;                // ---------+-- 'a
+                          //          |
+    {                     //          |
+        let x = 5;        // -+-- 'b  |
+        r = &x;           //  |       |
+    }                     // -+       |
+                          //          |
+    println!("r: {r}");   //          |
+}                         // ---------+
+```
+
+<span class="caption">Listing 10-17: Annotations of the lifetimes of `r` and `x`, named `'a` and `'b`, respectively</span>
+
+#### Explanation
+In this example, the lifetime of `r` is annotated with `'a`, and the lifetime of `x` with `'b`. The inner `'b` block is much smaller than the outer `'a` lifetime block. At compile time, Rust compares the size of the two lifetimes and sees that `r` has a lifetime of `'a` but refers to memory with a lifetime of `'b`. The program is rejected because `'b` is shorter than `'a`.
+
