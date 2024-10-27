@@ -46,4 +46,37 @@ fn main() {
 #### Explanation
 In the outer scope, a variable named `r` is declared without an initial value. In the inner scope, a variable named `x` with the initial value of `5` is declared. Inside the inner scope, we attempt to set `r` as a reference to `x`. When the inner scope ends, `x` goes out of scope, but `r` is still valid in the outer scope.
 
+#### Error Message
+```sh
+$ cargo run
+   Compiling chapter10 v0.1.0 (file:///projects/chapter10)
+error[E0597]: `x` does not live long enough
+ --> src/main.rs:6:13
+  |
+5 |         let x = 5;
+  |             - binding `x` declared here
+6 |         r = &x;
+  |             ^^ borrowed value does not live long enough
+7 |     }
+  |     - `x` dropped here while still borrowed
+8 |
+9 |     println!("r: {r}");
+  |                  --- borrow later used here
+
+For more information about this error, try `rustc --explain E0597`.
+error: could not compile `chapter10` (bin "chapter10") due to 1 previous error
+```
+
+#### Compile-Time Error
+This code won't compile because `r` is referring to a value (`x`) that has gone out of scope. The error message indicates that `x` "does not live long enough."
+
+#### Borrow Checker
+Rust uses a borrow checker to determine that this code is invalid. The borrow checker ensures that references are valid as long as they are used, preventing issues like dangling references.
+
+#### Additional Notes
+- Declares variables without initial values, explaining Rust's behavior of not allowing null values.
+- Error Message: Provides details about why the code fails to compile, referencing the lifecycle of `x` and `r`.
+
+#### Conclusion
+Understanding lifetimes and the borrow checker is crucial to prevent dangling references, ensuring safe and valid references in Rust.
 
