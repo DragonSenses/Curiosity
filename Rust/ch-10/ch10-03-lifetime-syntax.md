@@ -190,3 +190,12 @@ help: consider introducing a named lifetime parameter
 For more information about this error, try `rustc --explain E0106`.
 error: could not compile `chapter10` (bin "chapter10") due to 1 previous error
 ```
+
+#### Error Explanation
+The help text reveals that the return type needs a generic lifetime parameter on it because Rust can't tell whether the reference being returned refers to `x` or `y`. Actually, we don't know either, because the `if` block in the body of this function returns a reference to `x` and the `else` block returns a reference to `y`!
+
+#### Lifetimes and Borrow Checker
+When we're defining this function, we don't know the concrete values that will be passed into this function, so we don't know whether the `if` case or the `else` case will execute. We also don't know the concrete lifetimes of the references that will be passed in, so we can't look at the scopes as we did in Listings 10-17 and 10-18 to determine whether the reference we return will always be valid. The borrow checker can't determine this either, because it doesn't know how the lifetimes of `x` and `y` relate to the lifetime of the return value.
+
+#### Solution
+To fix this error, we'll add generic lifetime parameters that define the relationship between the references so the borrow checker can perform its analysis.
