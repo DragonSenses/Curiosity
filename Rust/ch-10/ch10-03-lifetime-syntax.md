@@ -235,3 +235,22 @@ Here are some examples: a reference to an `i32` without a lifetime parameter, a 
 - The signature should express that the returned reference will be valid as long as both parameters are valid. This relationship between the lifetimes of the parameters and the return value is crucial.
 - Name the lifetime `'a` and add it to each reference, as shown in Listing 10-21.
 
+#### Example
+- *Listing 10-21* demonstrates the `longest` function definition specifying that all references in the signature must have the same lifetime `'a`.
+
+**Filename**: src/main.rs
+
+```rust
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+```
+
+Listing 10-21: The `longest` function definition specifying that all the references in the signature must have the same lifetime `'a`
+
+This code should compile and produce the result we want when we use it with the `main` function in Listing 10-19.
+
