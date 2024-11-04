@@ -199,3 +199,29 @@ When we're defining this function, we don't know the concrete values that will b
 
 #### Solution
 To fix this error, we'll add generic lifetime parameters that define the relationship between the references so the borrow checker can perform its analysis.
+
+### Lifetime Annotation Syntax
+
+#### **Purpose:**
+- Lifetime annotations describe the relationships of the lifetimes of multiple references to each other without affecting their actual lifetimes.
+- Functions can accept references with any lifetime by specifying a generic lifetime parameter, similar to generic type parameters.
+
+#### **Syntax:**
+- Lifetime parameter names must start with an apostrophe (`'`) and are usually short and lowercase.
+- Common convention: use `'a` for the first lifetime annotation.
+- Place lifetime parameter annotations after the `&` of a reference, separated by a space.
+
+#### **Examples:**
+
+Here are some examples: a reference to an `i32` without a lifetime parameter, a reference to an `i32` that has a lifetime parameter named `'a`, and a mutable reference to an `i32` that also has the lifetime `'a`.
+
+```rust,ignore
+&i32        // a reference
+&'a i32     // a reference with an explicit lifetime
+&'a mut i32 // a mutable reference with an explicit lifetime
+```
+
+#### Context
+
+- One lifetime annotation alone doesn't convey much meaning. They are meant to show how generic lifetime parameters of multiple references relate to each other.
+- Let's examine how lifetime annotations relate in the context of the longest function.
