@@ -263,3 +263,12 @@ This code should compile and produce the result we want when we use it with the 
 - Specifying lifetime parameters in the function signature does not change the lifetimes of any values passed in or returned. It tells the borrow checker to reject values that don't adhere to these constraints.
 - The `longest` function doesn't need to know exactly how long `x` and `y` will live, only that some scope can be substituted for `'a` that will satisfy this signature.
 
+#### Function Signature and Lifetime Contract
+- Annotations go in the function signature, not in the function body. They become part of the function's contract, similar to the types in the signature.
+- Having function signatures contain the lifetime contract simplifies the Rust compiler's analysis, making error detection more precise.
+- If there's a problem with the way a function is annotated or the way it is called, the compiler errors can point to the part of our code and the constraints more precisely. If, instead, the Rust compiler made more inferences about what we intended the relationships of the lifetimes to be, the compiler might only be able to point to a use of our code many steps away from the cause of the problem.
+
+#### Concrete Lifetime Substitution
+- When passing concrete references to `longest`, the concrete lifetime substituted for `'a` is the part of the scope of `x` that overlaps with the scope of `y`.
+- The generic lifetime `'a` will have the concrete lifetime equal to the smaller of the lifetimes of `x` and `y`.
+- The returned reference will be valid for the length of the smaller of the lifetimes of `x` and `y`.
