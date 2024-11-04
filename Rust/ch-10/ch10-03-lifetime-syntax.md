@@ -225,3 +225,13 @@ Here are some examples: a reference to an `i32` without a lifetime parameter, a 
 
 - One lifetime annotation alone doesn't convey much meaning. They are meant to show how generic lifetime parameters of multiple references relate to each other.
 - Let's examine how lifetime annotations relate in the context of the longest function.
+
+### Lifetime Annotations in Function Signatures
+
+#### Declaring Lifetime Parameters
+- To use lifetime annotations in function signatures, declare the generic *lifetime* parameters inside angle brackets between the function name and the parameter list, similar to generic *type* parameters.
+
+#### Expressing Constraints
+- The signature should express that the returned reference will be valid as long as both parameters are valid. This relationship between the lifetimes of the parameters and the return value is crucial.
+- Name the lifetime `'a` and add it to each reference, as shown in Listing 10-21.
+
