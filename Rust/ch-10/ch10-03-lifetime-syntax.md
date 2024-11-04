@@ -272,3 +272,32 @@ This code should compile and produce the result we want when we use it with the 
 - When passing concrete references to `longest`, the concrete lifetime substituted for `'a` is the part of the scope of `x` that overlaps with the scope of `y`.
 - The generic lifetime `'a` will have the concrete lifetime equal to the smaller of the lifetimes of `x` and `y`.
 - The returned reference will be valid for the length of the smaller of the lifetimes of `x` and `y`.
+
+### Lifetime Annotations and Restrictions
+
+#### Different Concrete Lifetimes
+- Analyze how lifetime annotations restrict the `longest` function by passing in references with different concrete lifetimes.
+- Refer to *Listing 10-22* for a straightforward example.
+
+#### Listing 10-22
+
+**Filename**: src/main.rs
+
+```rust
+fn main() {
+    let string1 = String::from("long string is long");
+
+    {
+        let string2 = String::from("xyz");
+        let result = longest(string1.as_str(), string2.as_str());
+        println!("The longest string is {result}");
+    }
+}
+```
+
+**Listing 10-22**: Using the `longest` function with references to `String` values that have different concrete lifetimes
+
+#### Example Overview
+- In the example, `string1` is valid until the end of the outer scope, `string2` is valid until the end of the inner scope, and `result` references something valid until the end of the inner scope.
+- The code will compile and print `The longest string is long string is long`.
+
