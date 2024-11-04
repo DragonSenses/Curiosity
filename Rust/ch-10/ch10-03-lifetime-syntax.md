@@ -324,3 +324,35 @@ fn main() {
 
 **Listing 10-23**: Attempting to use `result` after `string2` has gone out of scope
 
+When we try to compile this code, we get this error:
+
+```sh
+$ cargo run
+   Compiling chapter10 v0.1.0 (file:///projects/chapter10)
+error[E0597]: `string2` does not live long enough
+ --> src/main.rs:6:44
+  |
+5 |         let string2 = String::from("xyz");
+  |             ------- binding `string2` declared here
+6 |         result = longest(string1.as_str(), string2.as_str());
+  |                                            ^^^^^^^ borrowed value does not live long enough
+7 |     }
+  |     - `string2` dropped here while still borrowed
+8 |     println!("The longest string is {result}");
+  |                                     -------- borrow later used here
+
+For more information about this error, try `rustc --explain E0597`.
+error: could not compile `chapter10` (bin "chapter10") due to 1 previous error
+```
+
+#### Compilation Error
+- Compilation will fail, showing that for `result` to be valid for the `println!` statement, `string2` needs to be valid until the end of the outer scope.
+- This is known because the lifetimes of the function parameters and return values were annotated using the same lifetime parameter `'a`.
+
+#### Human vs Compiler Perspective
+- Humans can see that `string1` is longer than `string2`, and `result` will reference `string1` which is still valid.
+- However, the compiler disallows the code because the lifetime of the reference returned by the `longest` function is the same as the smaller of the lifetimes of the references passed in.
+
+#### Experiment and Hypothesize
+- Design experiments varying the values and lifetimes of references passed to the `longest` function and the usage of the returned reference.
+- Make hypotheses about whether the experiments will pass the borrow checker before compiling and then check to see if you're right.
