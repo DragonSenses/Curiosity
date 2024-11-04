@@ -254,3 +254,12 @@ Listing 10-21: The `longest` function definition specifying that all the referen
 
 This code should compile and produce the result we want when we use it with the `main` function in Listing 10-19.
 
+#### Function Signature Analysis
+- The function signature informs Rust that for some lifetime `'a`, the function takes two parameters, both of which are string slices that live at least as long as lifetime `'a`.
+- The returned string slice will live at least as long as lifetime `'a`, meaning the reference returned by the `longest` function is valid for the smaller of the lifetimes of the values referred to by the function arguments.
+- These relationships are what we want Rust to use when analyzing this code.
+
+#### Borrow Checker Constraints
+- Specifying lifetime parameters in the function signature does not change the lifetimes of any values passed in or returned. It tells the borrow checker to reject values that don't adhere to these constraints.
+- The `longest` function doesn't need to know exactly how long `x` and `y` will live, only that some scope can be substituted for `'a` that will satisfy this signature.
+
