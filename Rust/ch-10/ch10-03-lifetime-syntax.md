@@ -301,3 +301,26 @@ fn main() {
 - In the example, `string1` is valid until the end of the outer scope, `string2` is valid until the end of the inner scope, and `result` references something valid until the end of the inner scope.
 - The code will compile and print `The longest string is long string is long`.
 
+#### Lifetime of Reference in `result`
+- Next, let's try an example where the lifetime of `result` must be the smaller lifetime of the two arguments.
+- Move the declaration of `result` outside the inner scope, keep the assignment inside, and move the `println!` to outside the inner scope.
+- Refer to *Listing 10-23* for this example which will not compile.
+
+#### **Listing 10-23**
+
+**Filename**: src/main.rs
+
+```rust,ignore,does_not_compile
+fn main() {
+    let string1 = String::from("long string is long");
+    let result;
+    {
+        let string2 = String::from("xyz");
+        result = longest(string1.as_str(), string2.as_str());
+    }
+    println!("The longest string is {result}");
+}
+```
+
+**Listing 10-23**: Attempting to use `result` after `string2` has gone out of scope
+
