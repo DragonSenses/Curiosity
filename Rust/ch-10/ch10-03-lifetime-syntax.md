@@ -128,7 +128,9 @@ In the fixed version, `x` has the lifetime `'b`, which is larger than `'a`. This
 #### Next Steps
 Now that you know what the lifetimes of references are and how Rust analyzes lifetimes to ensure references will always be valid, let's explore generic lifetimes of parameters and return values in the context of functions.
 
+### Generic Lifetimes in Functions
 
+#### Overview
 We'll write a function that returns the longer of two string slices. This function will take two string slices and return a single string slice.
 
 #### Implementation
@@ -148,3 +150,43 @@ fn main() {
 
 **Listing 10-19**: A `main` function that calls the `longest` function to find the longer of two string slices.
 
+#### Note
+We want the function to take string slices, which are references, rather than strings, because we don't want the `longest` function to take ownership of its parameters. Refer to the ["String Slices as Parameters"](https://doc.rust-lang.org/book/ch04-03-slices.html#string-slices-as-parameters) section in Chapter 4 for more discussion about why the parameters we use in Listing 10-19 are the ones we want.
+
+#### Compilation Error
+If we try to implement the `longest` function as shown in Listing 10-20, it won't compile.
+
+**Filename**: src/main.rs
+
+```rust,ignore,does_not_compile
+fn longest(x: &str, y: &str) -> &str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+```
+
+**Listing 10-20**: An implementation of the `longest` function that returns the longer of two string slices but does not yet compile.
+
+Instead, we get the following error that talks about lifetimes:
+
+```sh
+$ cargo run
+   Compiling chapter10 v0.1.0 (file:///projects/chapter10)
+error[E0106]: missing lifetime specifier
+ --> src/main.rs:9:33
+  |
+9 | fn longest(x: &str, y: &str) -> &str {
+  |               ----     ----     ^ expected named lifetime parameter
+  |
+  = help: this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `x` or `y`
+help: consider introducing a named lifetime parameter
+  |
+9 | fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+  |           ++++     ++          ++          ++
+
+For more information about this error, try `rustc --explain E0106`.
+error: could not compile `chapter10` (bin "chapter10") due to 1 previous error
+```
