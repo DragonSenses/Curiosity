@@ -382,3 +382,18 @@ fn longest<'a>(x: &'a str, y: &str) -> &'a str {
 
 When returning a reference from a function, the return type's lifetime parameter must match the lifetime parameter of one of the input parameters. If not, the returned reference must relate to a value created within the function, which can lead to a dangling reference.
 
+##### Example: Dangling Reference (Won't Compile)
+
+This `longest` function tries to return a reference to a locally created value, which leads to compilation errors:
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust,ignore,does_not_compile
+fn longest<'a>(x: &str, y: &str) -> &'a str {
+    let result = String::from("really long string");
+    result.as_str()
+}
+```
+
+- This code fails to compile because the return value's lifetime does not relate to the parameters' lifetimes. The `result` variable goes out of scope at the end of the function, leading to a dangling reference.
+
