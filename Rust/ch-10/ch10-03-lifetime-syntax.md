@@ -356,3 +356,9 @@ error: could not compile `chapter10` (bin "chapter10") due to 1 previous error
 #### Experiment and Hypothesize
 - Design experiments varying the values and lifetimes of references passed to the `longest` function and the usage of the returned reference.
 - Make hypotheses about whether the experiments will pass the borrow checker before compiling and then check to see if you're right.
+
+### Thinking in Terms of Lifetimes
+
+Understanding how to specify lifetime parameters is crucial for writing Rust functions.
+
+The way in which you need to specify lifetime parameters depends on what your function is doing. 
