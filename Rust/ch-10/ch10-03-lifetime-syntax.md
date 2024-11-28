@@ -362,3 +362,19 @@ error: could not compile `chapter10` (bin "chapter10") due to 1 previous error
 Understanding how to specify lifetime parameters is crucial for writing Rust functions.
 
 The way in which you need to specify lifetime parameters depends on what your function is doing. 
+
+#### Example: Returning the First Parameter
+
+If the implementation of the `longest` function is changed to always return the first parameter rather than the longest string slice, there's no need to specify a lifetime for the `y` parameter. This code compiles without issue:
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+fn longest<'a>(x: &'a str, y: &str) -> &'a str {
+    x
+}
+```
+
+- Lifetime parameter `'a` is specified for `x` and the return type.
+- No lifetime is specified for `y` as its lifetime is unrelated to `x` or the return value.
+
