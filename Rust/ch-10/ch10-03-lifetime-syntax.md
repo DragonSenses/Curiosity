@@ -378,3 +378,7 @@ fn longest<'a>(x: &'a str, y: &str) -> &'a str {
 - Lifetime parameter `'a` is specified for `x` and the return type.
 - No lifetime is specified for `y` as its lifetime is unrelated to `x` or the return value.
 
+#### Returning References with Lifetimes
+
+When returning a reference from a function, the return type's lifetime parameter must match the lifetime parameter of one of the input parameters. If not, the returned reference must relate to a value created within the function, which can lead to a dangling reference.
+
