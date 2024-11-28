@@ -397,3 +397,27 @@ fn longest<'a>(x: &str, y: &str) -> &'a str {
 
 - This code fails to compile because the return value's lifetime does not relate to the parameters' lifetimes. The `result` variable goes out of scope at the end of the function, leading to a dangling reference.
 
+Here, even though we've specified a lifetime parameter `'a` for the return type, this implementation will fail to compile because the return value lifetime is not related to the lifetime of the parameters at all. Here is the error message we get:
+
+```sh
+$ cargo run
+   Compiling chapter10 v0.1.0 (file:///projects/chapter10)
+error[E0515]: cannot return value referencing local variable `result`
+  --> src/main.rs:11:5
+   |
+11 |     result.as_str()
+   |     ------^^^^^^^^^
+   |     |
+   |     returns a value referencing data owned by the current function
+   |     `result` is borrowed here
+
+For more information about this error, try `rustc --explain E0515`.
+error: could not compile `chapter10` (bin "chapter10") due to 1 previous error
+```
+
+The error message received highlights that returning a value referencing a local variable that gets cleaned up at the function's end results in a dangling reference.
+
+The problem is that `result` goes out of scope and gets cleaned up at the end of the `longest` function. We're also trying to return a reference to `result` from the function. There is no way we can specify lifetime parameters that would change the dangling reference, and Rust won't let us create a dangling reference. 
+
+In this case, the best fix would be to return an owned data type rather than a reference so the calling function is then responsible for cleaning up the value.
+
