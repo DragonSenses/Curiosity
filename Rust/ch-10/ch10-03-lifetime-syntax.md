@@ -458,6 +458,7 @@ This struct has the single field `part` that holds a string slice, which is a re
 
 The `main` function here creates an instance of the `ImportantExcerpt` struct that holds a reference to the first sentence of the `String` owned by the variable `novel`. The data in `novel` exists before the `ImportantExcerpt` instance is created. In addition, `novel` doesn't go out of scope until after the `ImportantExcerpt` goes out of scope, so the reference in the `ImportantExcerpt` instance is valid.
 
+### Lifetime Elision
 
 You've learned that every reference has a lifetime and that you need to specify lifetime parameters for functions or structs that use references. However, we had a function in Listing 4-9, shown again in Listing 10-25, that compiled without lifetime annotations.
 
@@ -478,4 +479,14 @@ fn first_word(s: &str) -> &str {
 ```
 
 <span class="caption">Listing 10-25: A function we defined in Listing 4-9 that compiled without lifetime annotations, even though the parameter and return type are references</span>
+
+#### Historical Context
+
+The reason this function compiles without lifetime annotations is historical. In early versions (pre-1.0) of Rust, this code wouldn't have compiled because every reference needed an explicit lifetime. At that time, the function signature would have been written like this:
+
+```rust,ignore
+fn first_word<'a>(s: &'a str) -> &'a str {
+```
+
+After writing a lot of Rust code, the Rust team found that Rust programmers were entering the same lifetime annotations over and over in particular situations. These situations were predictable and followed a few deterministic patterns. The developers programmed these patterns into the compiler's code so the borrow checker could infer the lifetimes in these situations and wouldn't need explicit annotations.
 
