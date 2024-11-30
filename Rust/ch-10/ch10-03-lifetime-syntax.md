@@ -542,3 +542,16 @@ fn first_word<'a>(s: &'a str) -> &'a str {
 
 Now all the references in this function signature have lifetimes, and the compiler can continue its analysis without needing the programmer to annotate the lifetimes in this function signature.
 
+Let's look at another example, this time using the `longest` function that had no lifetime parameters when we started working with it in Listing 10-20:
+
+```rust,ignore
+fn longest(x: &str, y: &str) -> &str {
+```
+
+Let's apply the first rule: each parameter gets its own lifetime. This time we have two parameters instead of one, so we have two lifetimes:
+
+```rust,ignore
+fn longest<'a, 'b>(x: &'a str, y: &'b str) -> &str {
+```
+
+You can see that the second rule doesn't apply because there is more than one input lifetime. The third rule doesn't apply either, because `longest` is a function rather than a method, so none of the parameters are `self`. After working through all three rules, we still haven't figured out what the return type's lifetime is. This is why we got an error trying to compile the code in Listing 10-20: the compiler worked through the lifetime elision rules but still couldn't figure out all the lifetimes of the references in the signature.
