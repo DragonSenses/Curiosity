@@ -555,3 +555,20 @@ fn longest<'a, 'b>(x: &'a str, y: &'b str) -> &str {
 ```
 
 You can see that the second rule doesn't apply because there is more than one input lifetime. The third rule doesn't apply either, because `longest` is a function rather than a method, so none of the parameters are `self`. After working through all three rules, we still haven't figured out what the return type's lifetime is. This is why we got an error trying to compile the code in Listing 10-20: the compiler worked through the lifetime elision rules but still couldn't figure out all the lifetimes of the references in the signature.
+
+#### Method Signatures
+
+Because the third rule really only applies in method signatures, we'll look at lifetimes in that context next to see why the third rule means we don't have to annotate lifetimes in method signatures very often.
+
+### Lifetime Annotations in Method Definitions
+
+When we implement methods on a struct with lifetimes, we use the same syntax as that of generic type parameters. Where we declare and use the lifetime parameters depends on whether they're related to the struct fields or the method parameters and return values.
+
+#### Declaring Lifetime Names for Struct Fields
+
+Lifetime names for struct fields always need to be declared after the `impl` keyword and then used after the struct's name because those lifetimes are part of the struct's type.
+
+#### Lifetime Annotations in Method Signatures
+
+In method signatures inside the `impl` block, references might be tied to the lifetime of references in the struct's fields, or they might be independent. In addition, the lifetime elision rules often make it so that lifetime annotations aren't necessary in method signatures. Let's look at some examples using the struct named `ImportantExcerpt`.
+
