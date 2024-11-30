@@ -520,3 +520,25 @@ The compiler uses three rules to figure out the lifetimes of the references when
    
 3. **Third Rule**: If there are multiple input lifetime parameters, but one of them is `&self` or `&mut self` because this is a method, the lifetime of `self` is assigned to all output lifetime parameters. This rule makes methods much nicer to read and write because fewer symbols are necessary.
 
+#### Applying the Rules
+
+Let's pretend we're the compiler. We'll apply these rules to figure out the lifetimes of the references in the signature of the `first_word` function in Listing 10-25. The signature starts without any lifetimes associated with the references:
+
+```rust,ignore
+fn first_word(s: &str) -> &str {
+```
+
+Then the compiler applies the first rule, which specifies that each parameter gets its own lifetime. We'll call it `'a` as usual, so now the signature is this:
+
+```rust,ignore
+fn first_word<'a>(s: &'a str) -> &str {
+```
+
+The second rule applies because there is exactly one input lifetime. The second rule specifies that the lifetime of the one input parameter gets assigned to the output lifetime, so the signature is now this:
+
+```rust,ignore
+fn first_word<'a>(s: &'a str) -> &'a str {
+```
+
+Now all the references in this function signature have lifetimes, and the compiler can continue its analysis without needing the programmer to annotate the lifetimes in this function signature.
+
