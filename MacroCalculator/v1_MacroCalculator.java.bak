@@ -1,0 +1,117 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class MacroCalculator {
+
+  public static void main(String[] args) {
+    // Predefined nutritional data (macros per 100 grams)
+    Map<String, FoodItem> foodDatabase = new HashMap<>();
+    // foodDatabase.put("apple", new FoodItem("Apple", 52, 0.2, 14.0, 2.4, 10.4, 0.3));
+    foodDatabase.put("carrot", new FoodItem("Carrot", 41, 0.1, 9.0,2.7, 5.1, 0.8));
+    // foodDatabase.put("chicken", new FoodItem("Chicken", 165, 3.6, 0.0, 0.0, 0.0, 31.0));
+    foodDatabase.put("chicken rotisserie breast", new FoodItem("Chicken Rotisserie Breast", 129.3378604, 2.939496828, 0.0, 0.0, 0.0, 23.51597463));
+    // foodDatabase.put("rice", new FoodItem("Rice", 130, 0.3, 28.0, 0.4, 0.1, 2.7));
+    foodDatabase.put("kiwi", new FoodItem("Kiwi", 56, 0.5, 13.5, 2.8, 9, 1.1));
+    foodDatabase.put("onion", new FoodItem("Onion", 40, 0.125, 9.375,1.875, 4.375, 1.25));
+
+    Scanner scanner = new Scanner(System.in);
+
+    System.out.println("Enter food item:");
+    String foodName = scanner.nextLine().toLowerCase();
+
+    System.out.println("Enter weight (in grams or oz):");
+    String weightInput = scanner.nextLine().toLowerCase();
+
+    double weightInGrams = convertToGrams(weightInput);
+
+    FoodItem foodItem = foodDatabase.get(foodName);
+
+    if (foodItem != null && weightInGrams > 0) {
+      double calories = (foodItem.getCalories() * weightInGrams) / 100;
+      double fat = (foodItem.getFat() * weightInGrams) / 100;
+      double carbs = (foodItem.getCarbs() * weightInGrams) / 100;
+      double fiber = (foodItem.getFiber() * weightInGrams) / 100;
+      double sugar = (foodItem.getSugar() * weightInGrams) / 100;
+      double protein = (foodItem.getProtein() * weightInGrams) / 100;
+
+      System.out.println("Nutritional information for " + weightInGrams + " grams of " + foodItem.getName() + ":");
+      System.out.println("Calories: " + calories);
+      System.out.println("Fat: " + fat + "g");
+      System.out.println("Carbohydrates: " + carbs + "g");
+      System.out.println("Fiber: " + fiber + "g");
+      System.out.println("Sugar: " + sugar + "g");
+      System.out.println("Protein: " + protein + "g");
+    } else {
+      System.out.println("Food item not found or invalid weight input.");
+    }
+
+    scanner.close();
+  }
+
+  public static double convertToGrams(String weightInput) {
+    double weightInGrams = 0.0;
+    if (weightInput.endsWith("oz")) {
+      try {
+        weightInGrams = Double.parseDouble(weightInput.replace("oz", "").trim()) * 28.3495;
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid weight input.");
+      }
+    } else {
+      try {
+        weightInGrams = Double.parseDouble(weightInput.replace("grams", "").trim());
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid weight input.");
+      }
+    }
+    return weightInGrams;
+  }
+}
+
+class FoodItem {
+  private String name;
+  private double calories;
+  private double fat;
+  private double carbs;
+  private double fiber;
+  private double sugar;
+  private double protein;
+
+  public FoodItem(String name, double calories, double fat, double carbs, double fiber, double sugar, double protein) {
+    this.name = name;
+    this.calories = calories;
+    this.fat = fat;
+    this.carbs = carbs;
+    this.fiber = fiber;
+    this.sugar = sugar;
+    this.protein = protein;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public double getCalories() {
+    return calories;
+  }
+
+  public double getFat() {
+    return fat;
+  }
+
+  public double getCarbs() {
+    return carbs;
+  }
+
+  public double getFiber() {
+    return fiber;
+  }
+
+  public double getSugar() {
+    return sugar;
+  }
+
+  public double getProtein() {
+    return protein;
+  }
+}
