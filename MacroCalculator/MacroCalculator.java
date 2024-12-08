@@ -1,0 +1,152 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+public class MacroCalculator {
+
+  public static void main(String[] args) {
+    // Predefined nutritional data (macros per 100 grams)
+    Map<String, FoodItem> foodDatabase = loadFoodDatabase("MacroCalculator\\food_data.csv");
+
+    if (foodDatabase != null) {
+      runMacroCalculator(foodDatabase);
+    } else {
+      System.out.println("Failed to load food database.");
+    }
+  }
+
+  public static void runMacroCalculator(Map<String, FoodItem> foodDatabase) {
+    Scanner scanner = new Scanner(System.in);
+
+    System.out.println("Enter food item:");
+    String foodName = scanner.nextLine().toLowerCase();
+
+    System.out.println("Enter weight (in grams or oz):");
+    String weightInput = scanner.nextLine().toLowerCase();
+
+    double weightInGrams = convertToGrams(weightInput);
+    calculateAndPrintMacros(foodDatabase, foodName, weightInGrams);
+
+    scanner.close();
+  }
+
+  public static Map<String, FoodItem> loadFoodDatabase(String filePath) {
+    Map<String, FoodItem> foodDatabase = new HashMap<>();
+    try {
+      List<String> lines = Files.readAllLines(Paths.get(filePath));
+      for (String line : lines.subList(1, lines.size())) { // Skip header line
+        String[] fields = line.split(",");
+        String foodName = fields[0].toLowerCase();
+        String displayName = fields[0];
+        double calories = Double.parseDouble(fields[1]);
+        double fat = Double.parseDouble(fields[2]);
+        double carbs = Double.parseDouble(fields[3]);
+        double fiber = Double.parseDouble(fields[4]);
+        double sugar = Double.parseDouble(fields[5]);
+        double protein = Double.parseDouble(fields[6]);
+        foodDatabase.put(foodName, new FoodItem(displayName, calories, fat, carbs, fiber, sugar, protein));
+      }
+    } catch (IOException e) {
+      System.out.println("Error reading CSV file: " + e.getMessage());
+    } catch (NumberFormatException e) {
+      System.out.println("Error parsing number: " + e.getMessage());
+    } catch (ArrayIndexOutOfBoundsException e) {
+      System.out.println("Error processing line (missing data): " + e.getMessage());
+    }
+    return foodDatabase;
+  }
+
+  public static void calculateAndPrintMacros(Map<String, FoodItem> foodDatabase, String foodName,
+      double weightInGrams) {
+    FoodItem foodItem = foodDatabase.get(foodName);
+
+    if (foodItem != null && weightInGrams > 0) {
+      double calories = (foodItem.getCalories() * weightInGrams) / 100;
+      double fat = (foodItem.getFat() * weightInGrams) / 100;
+      double carbs = (foodItem.getCarbs() * weightInGrams) / 100;
+      double fiber = (foodItem.getFiber() * weightInGrams) / 100;
+      double sugar = (foodItem.getSugar() * weightInGrams) / 100;
+      double protein = (foodItem.getProtein() * weightInGrams) / 100;
+
+      System.out.println("Nutritional information for " + weightInGrams + " grams of " + foodItem.getName() + ":");
+      System.out.println("Calories: " + calories);
+      System.out.println("Fat: " + fat + "g");
+      System.out.println("Carbohydrates: " + carbs + "g");
+      System.out.println("Fiber: " + fiber + "g");
+      System.out.println("Sugar: " + sugar + "g");
+      System.out.println("Protein: " + protein + "g");
+    } else {
+      System.out.println("Food item not found or invalid weight input.");
+    }
+  }
+
+  public static double convertToGrams(String weightInput) {
+    double weightInGrams = 0.0;
+    if (weightInput.endsWith("oz")) {
+      try {
+        weightInGrams = Double.parseDouble(weightInput.replace("oz", "").trim()) * 28.3495;
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid weight input.");
+      }
+    } else {
+      try {
+        weightInGrams = Double.parseDouble(weightInput.replace("grams", "").trim());
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid weight input.");
+      }
+    }
+    return weightInGrams;
+  }
+}
+
+class FoodItem {
+  private final String name;
+  private final double calories;
+  private final double fat;
+  private final double carbs;
+  private final double fiber;
+  private final double sugar;
+  private final double protein;
+
+  public FoodItem(String name, double calories, double fat, double carbs, double fiber, double sugar, double protein) {
+    this.name = name;
+    this.calories = calories;
+    this.fat = fat;
+    this.carbs = carbs;
+    this.fiber = fiber;
+    this.sugar = sugar;
+    this.protein = protein;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public double getCalories() {
+    return calories;
+  }
+
+  public double getFat() {
+    return fat;
+  }
+
+  public double getCarbs() {
+    return carbs;
+  }
+
+  public double getFiber() {
+    return fiber;
+  }
+
+  public double getSugar() {
+    return sugar;
+  }
+
+  public double getProtein() {
+    return protein;
+  }
+}
