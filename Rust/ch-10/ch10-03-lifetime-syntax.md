@@ -620,3 +620,8 @@ You might see suggestions to use the `'static` lifetime in error messages. But b
 Most of the time, an error message suggesting the `'static` lifetime results from attempting to create a dangling reference or a mismatch of the available lifetimes. In such cases, the solution is to fix those problems, not to specify the `'static` lifetime.
 
 
+
+#### Combining Lifetimes and Generics
+
+Because lifetimes are a type of generic, the declarations of the lifetime parameter `'a` and the generic type parameter `T` go in the same list inside the angle brackets after the function name.
+
