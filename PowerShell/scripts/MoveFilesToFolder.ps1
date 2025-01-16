@@ -25,6 +25,14 @@ ForEach ($file in $files) {
         $folder = Get-Item -LiteralPath $folderPath
     }
     
+    # Verify folder is correctly set
+    if ($null -eq $folder) {
+        Write-Host "Folder creation failed for: $folderPath"
+        continue
+    } else {
+        Write-Host "Folder path: $($folder.FullName)"
+    }
+    
     # Move the file into the directory
     Move-Item -LiteralPath $file.FullName -Destination $folder.FullName
     
