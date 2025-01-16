@@ -19,14 +19,14 @@ ForEach ($file in $files) {
 
     # Create a new directory with the base name of the file if it doesn't already exist
     $folderPath = Join-Path -Path $file.DirectoryName -ChildPath $file.BaseName
-    if (-not (Test-Path -Path $folderPath -PathType Container)) {
-        $folder = New-Item -ItemType Directory -Path $folderPath
+    if (-not (Test-Path -LiteralPath $folderPath -PathType Container)) {
+        $folder = New-Item -ItemType Directory -LiteralPath $folderPath
     } else {
-        $folder = Get-Item -Path $folderPath
+        $folder = Get-Item -LiteralPath $folderPath
     }
     
     # Move the file into the directory
-    Move-Item -Path $file.FullName -Destination $folder.FullName
+    Move-Item -LiteralPath $file.FullName -Destination $folder.FullName
     
     # Write to the host what is being done
     Write-Host "Moved file '$($file.Name)' to folder '$($folder.Name)' ($currentFileNumber of $totalFiles)"
