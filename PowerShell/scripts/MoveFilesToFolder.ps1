@@ -20,7 +20,7 @@ ForEach ($file in $files) {
     # Create a new directory with the base name of the file if it doesn't already exist
     $folderPath = Join-Path -Path $file.DirectoryName -ChildPath $file.BaseName
     if (-not (Test-Path -LiteralPath $folderPath -PathType Container)) {
-        $folder = New-Item -ItemType Directory -LiteralPath $folderPath
+        $folder = New-Item -ItemType Directory -Path $folderPath
     } else {
         $folder = Get-Item -LiteralPath $folderPath
     }
