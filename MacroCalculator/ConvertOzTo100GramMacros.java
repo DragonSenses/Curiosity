@@ -35,9 +35,7 @@ public class ConvertOzTo100GramMacros {
   // Example usage
   public static void main(String[] args) {
     try {
-      // String csvData = convertOzTo100GramMacros("Chicken Rotisserie", 3, 140, 7.0, 0.5, 0.0, 0.0, 19.0);
-      // String csvData = convertOzTo100GramMacros("Chicken Rotisserie Skin", 1, 115, 10.6, 0, 0, 0, 5.0);
-      String csvData = convertOzTo100GramMacros("Chicken Rotisserie Skin", 1, 115, 10.6, 0, 0, 0, 5.0);
+      String csvData = convertOzTo100GramMacros("Chicken Rotisserie", 3, 140, 7.0, 0.5, 0.0, 0.0, 19.0);
       System.out.println(csvData);
     } catch (IllegalArgumentException e) {
       System.err.println(e.getMessage());
