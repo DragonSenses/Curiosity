@@ -18,6 +18,42 @@ Whenever we make a new library project with Cargo, a test module with a test fun
 ### Experimenting with Template Tests
 We'll explore some aspects of how tests work by experimenting with the template test before we actually test any code. Then we'll write some real-world tests that call some code that we've written and assert that its behavior is correct.
 
+## Creating a New Library Project
+
+Let's create a new library project called `adder` that will add two numbers:
+
+```sh
+$ cargo new adder --lib
+     Created library `adder` project
+$ cd adder
+```
+
+## Initial Code in src/lib.rs
+
+The contents of the *src/lib.rs* file in your `adder` library should look like Listing 11-1.
+
+#### Listing 11-1: The code generated automatically by cargo new
+
+Filename: src/lib.rs
+
+The test module and function generated automatically by `cargo new`:
+
+```rust,noplayground
+pub fn add(left: usize, right: usize) -> usize {
+    left + right
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        let result = add(2, 2);
+        assert_eq!(result, 4);
+    }
+}
+```
 
 
 ## Ignoring Some Tests
