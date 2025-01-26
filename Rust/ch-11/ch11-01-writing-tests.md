@@ -20,6 +20,12 @@ We'll explore some aspects of how tests work by experimenting with the template 
 
 
 
+
+
+## Benchmark Tests
+
+The `0 measured` statistic is for benchmark tests that measure performance. Benchmark tests are, as of this writing, only available in nightly Rust. See [the documentation about benchmark tests](https://doc.rust-lang.org/unstable-book/library-features/test.html) to learn more.
+
 ## Filtering Tests
 
 We can also pass an argument to the `cargo test` command to run only tests whose name matches a string; this is called *filtering* and we'll cover that in the ["Running a Subset of Tests by Name"](https://doc.rust-lang.org/book/ch11-02-running-tests.html#running-a-subset-of-tests-by-name) section. We also haven't filtered the tests being run, so the end of the summary shows `0 filtered out`.
