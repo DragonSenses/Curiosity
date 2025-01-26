@@ -20,7 +20,9 @@ We'll explore some aspects of how tests work by experimenting with the template 
 
 
 
+## Ignoring Some Tests
 
+It's possible to mark a test as ignored so it doesn't run in a particular instance; we'll cover that in the ["Ignoring Some Tests Unless Specifically Requested"](https://doc.rust-lang.org/book/ch11-02-running-tests.html#ignoring-some-tests-unless-specifically-requested) section later in this chapter. Because we haven't done that here, the summary shows `0 ignored`.
 
 ## Benchmark Tests
 
