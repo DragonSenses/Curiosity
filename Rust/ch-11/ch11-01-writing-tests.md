@@ -105,3 +105,26 @@ We can also pass an argument to the `cargo test` command to run only tests whose
 
 The next part of the test output starting at `Doc-tests adder` is for the results of any documentation tests. We don't have any documentation tests yet, but Rust can compile any code examples that appear in our API documentation. This feature helps keep your docs and your code in sync! We'll discuss how to write documentation tests in the ["Documentation Comments as Tests"](https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#documentation-comments-as-tests) section of Chapter 14. For now, we'll ignore the `Doc-tests` output.
 
+## Customizing the Test
+
+Let's start to customize the test to our own needs. First, change the name of the `it_works` function to a different name, such as `exploration`, like so:
+
+### Filename: src/lib.rs
+
+```rust
+pub fn add(left: usize, right: usize) -> usize {
+    left + right
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn exploration() {
+        let result = add(2, 2);
+        assert_eq!(result, 4);
+    }
+}
+```
+
