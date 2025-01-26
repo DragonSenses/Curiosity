@@ -20,6 +20,10 @@ We'll explore some aspects of how tests work by experimenting with the template 
 
 
 
+## Filtering Tests
+
+We can also pass an argument to the `cargo test` command to run only tests whose name matches a string; this is called *filtering* and we'll cover that in the ["Running a Subset of Tests by Name"](https://doc.rust-lang.org/book/ch11-02-running-tests.html#running-a-subset-of-tests-by-name) section. We also haven't filtered the tests being run, so the end of the summary shows `0 filtered out`.
+
 ## Documentation Tests
 
 The next part of the test output starting at `Doc-tests adder` is for the results of any documentation tests. We don't have any documentation tests yet, but Rust can compile any code examples that appear in our API documentation. This feature helps keep your docs and your code in sync! We'll discuss how to write documentation tests in the ["Documentation Comments as Tests"](https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#documentation-comments-as-tests) section of Chapter 14. For now, we'll ignore the `Doc-tests` output.
