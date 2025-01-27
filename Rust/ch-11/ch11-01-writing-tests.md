@@ -222,3 +222,19 @@ The `assert!` macro, provided by the standard library, is useful when you want t
 ### Using the `Rectangle` Struct
 
 In Chapter 5, Listing 5-15, we used a `Rectangle` struct and a `can_hold` method, which are repeated here in Listing 11-5. Let's put this code in the *src/lib.rs* file, then write some tests for it using the `assert!` macro.
+
+#### Listing 11-5: The `Rectangle` struct and its `can_hold` method
+
+```rust,noplayground
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+}
+```
