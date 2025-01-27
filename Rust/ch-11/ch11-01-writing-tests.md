@@ -213,3 +213,12 @@ Instead of `ok`, the line `test tests::another` shows `FAILED`. Two new sections
 
 The summary line displays at the end: overall, our test result is `FAILED`. We had one test pass and one test fail.
 
+Now that you've seen what the test results look like in different scenarios, let's look at some macros other than `panic!` that are useful in tests.
+
+## Checking Results with the `assert!` Macro
+
+The `assert!` macro, provided by the standard library, is useful when you want to ensure that some condition in a test evaluates to `true`. We give the `assert!` macro an argument that evaluates to a Boolean. If the value is `true`, nothing happens and the test passes. If the value is `false`, the `assert!` macro calls `panic!` to cause the test to fail. Using the `assert!` macro helps us check that our code is functioning in the way we intend.
+
+### Using the `Rectangle` Struct
+
+In Chapter 5, Listing 5-15, we used a `Rectangle` struct and a `can_hold` method, which are repeated here in Listing 11-5. Let's put this code in the *src/lib.rs* file, then write some tests for it using the `assert!` macro.
