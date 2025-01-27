@@ -350,3 +350,18 @@ mod tests {
 }
 ```
 
+### Introducing a Bug
+
+Two tests that pass! Now let's see what happens to our test results when we introduce a bug in our code. We'll change the implementation of the `can_hold` method by replacing the greater-than sign with a less-than sign when it compares the widths:
+
+#### Code with Introduced Bug
+
+```rust
+// --snip--
+impl Rectangle {
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width < other.width && self.height > other.height
+    }
+}
+```
+
