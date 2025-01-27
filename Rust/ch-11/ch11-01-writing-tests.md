@@ -400,3 +400,7 @@ Our tests caught the bug! Because `larger.width` is 8 and `smaller.width` is 5, 
 
 Now that you've seen what the test results look like in different scenarios, let's look at some macros other than `panic!` that are useful in tests.
 
+## Testing Equality with the `assert_eq!` and `assert_ne!` Macros
+
+A common way to verify functionality is to test for equality between the result of the code under test and the value you expect the code to return. You could do this using the `assert!` macro and passing it an expression using the `==` operator. However, this is such a common test that the standard library provides a pair of macros—`assert_eq!` and `assert_ne!`—to perform this test more conveniently. These macros compare two arguments for equality or inequality, respectively. They'll also print the two values if the assertion fails, which makes it easier to see *why* the test failed; conversely, the `assert!` macro only indicates that it got a `false` value for the `==` expression, without printing the values that led to the `false` value.
+
