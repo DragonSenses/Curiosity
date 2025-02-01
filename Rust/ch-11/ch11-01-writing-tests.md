@@ -536,3 +536,19 @@ mod tests {
 }
 ```
 
+### Testing the Greeting Function
+
+The requirements for this program haven't been agreed upon yet, and we're pretty sure the `Hello` text at the beginning of the greeting will change. We decided we don't want to have to update the test when the requirements change, so instead of checking for exact equality to the value returned from the `greeting` function, we'll just assert that the output contains the text of the input parameter.
+
+### Introducing a Bug
+
+Now let's introduce a bug into this code by changing `greeting` to exclude `name` to see what the default test failure looks like:
+
+#### Code with Introduced Bug
+
+```rust
+pub fn greeting(name: &str) -> String {
+    String::from("Hello!")
+}
+```
+
