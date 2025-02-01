@@ -493,3 +493,7 @@ test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; 
 error: test failed, to rerun pass `--lib`
 ```
 
+### Understanding the Test Output
+
+Our test caught the bug! The `it_adds_two` test failed, and the message tells us that the assertion that fails was `assertion `left == right` failed` and what the `left` and `right` values are. This message helps us start debugging: the `left` argument was `4` but the `right` argument, where we had `add_two(2)`, was `5`. You can imagine that this would be especially helpful when we have a lot of tests going on.
+
