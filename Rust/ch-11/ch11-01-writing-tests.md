@@ -497,3 +497,7 @@ error: test failed, to rerun pass `--lib`
 
 Our test caught the bug! The `it_adds_two` test failed, and the message tells us that the assertion that fails was `assertion `left == right` failed` and what the `left` and `right` values are. This message helps us start debugging: the `left` argument was `4` but the `right` argument, where we had `add_two(2)`, was `5`. You can imagine that this would be especially helpful when we have a lot of tests going on.
 
+### Note on Order of Arguments
+
+Note that in some languages and test frameworks, the parameters to equality assertion functions are called `expected` and `actual`, and the order in which we specify the arguments matters. However, in Rust, they're called `left` and `right`, and the order in which we specify the value we expect and the value the code produces doesn't matter. We could write the assertion in this test as `assert_eq!(4, add_two(2))`, which would result in the same failure message that displays `assertion failed: (left == right)`.
+
