@@ -513,3 +513,26 @@ Under the surface, the `assert_eq!` and `assert_ne!` macros use the operators `=
 
 You can also add a custom message to be printed with the failure message as optional arguments to the `assert!`, `assert_eq!`, and `assert_ne!` macros. Any arguments specified after the required arguments are passed along to the `format!` macro (discussed in Chapter 8 in the ["Concatenation with the `+` Operator or the `format!` Macro"](https://doc.rust-lang.org/book/ch08-02-strings.html#concatenation-with-the--operator-or-the-format-macro) section), so you can pass a format string that contains `{}` placeholders and values to go in those placeholders. Custom messages are useful for documenting what an assertion means; when a test fails, you'll have a better idea of what the problem is with the code.
 
+### Example: Greeting Function
+
+For example, let's say we have a function that greets people by name and we want to test that the name we pass into the function appears in the output:
+
+#### Filename: src/lib.rs
+
+```rust
+pub fn greeting(name: &str) -> String {
+    format!("Hello {name}!")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn greeting_contains_name() {
+        let result = greeting("Carol");
+        assert!(result.contains("Carol"));
+    }
+}
+```
+
