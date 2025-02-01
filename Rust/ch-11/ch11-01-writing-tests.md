@@ -451,3 +451,15 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 We pass `4` as the argument to `assert_eq!`, which is equal to the result of calling `add_two(2)`. The line for this test is `test tests::it_adds_two ... ok`, and the `ok` text indicates that our test passed!
 
+### Introducing a Bug
+
+Let's introduce a bug into our code to see what `assert_eq!` looks like when it fails. Change the implementation of the `add_two` function to instead add `3`:
+
+#### Code with Introduced Bug
+
+```rust
+pub fn add_two(a: usize) -> usize {
+    a + 3
+}
+```
+
