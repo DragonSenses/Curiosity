@@ -595,3 +595,9 @@ fn greeting_contains_name() {
 }
 ```
 
+### Running the Test with the Custom Message
+
+Now when we run the test, we'll get a more informative error message:
+
+We can see the value we actually got in the test output, which would help us debug what happened instead of what we were expecting to happen.
+
