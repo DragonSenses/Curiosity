@@ -631,3 +631,37 @@ In addition to checking return values, it's important to check that our code han
 
 We do this by adding the attribute `should_panic` to our test function. The test passes if the code inside the function panics; the test fails if the code inside the function doesn't panic.
 
+### Writing a `should_panic` Test
+
+Listing 11-8 shows a test that checks that the error conditions of `Guess::new` happen when we expect them to.
+
+#### Listing 11-8: Testing that a condition will cause a `panic!`
+
+```rust
+pub struct Guess {
+    value: i32,
+}
+
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 || value > 100 {
+            panic!("Guess value must be between 1 and 100, got {value}.");
+        }
+
+        Guess { value }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    #[should_panic]
+    fn greater_than_100() {
+        Guess::new(200);
+    }
+}
+```
+
+
