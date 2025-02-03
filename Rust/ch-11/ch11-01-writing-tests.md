@@ -664,4 +664,7 @@ mod tests {
 }
 ```
 
+### Running the `should_panic` Test
+
+We place the `#[should_panic]` attribute after the `#[test]` attribute and before the test function it applies to. Let's look at the result when this test passes:
 
