@@ -688,5 +688,20 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 Looks good! Now let's introduce a bug in our code by removing the condition that the `new` function will panic if the value is greater than 100:
 
+### Code with Introduced Bug
+
+```rust
+// --snip--
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 {
+            panic!("Guess value must be between 1 and 100, got {value}.");
+        }
+
+        Guess { value }
+    }
+}
+```
+
 
 
