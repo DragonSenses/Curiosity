@@ -625,3 +625,9 @@ error: test failed, to rerun pass `--lib`
 
 We can see the value we actually got in the test output, which would help us debug what happened instead of what we were expecting to happen.
 
+## Checking for Panics with `should_panic`
+
+In addition to checking return values, it's important to check that our code handles error conditions as we expect. For example, consider the `Guess` type that we created in Chapter 9, Listing 9-13. Other code that uses `Guess` depends on the guarantee that `Guess` instances will contain only values between 1 and 100. We can write a test that ensures that attempting to create a `Guess` instance with a value outside that range panics.
+
+We do this by adding the attribute `should_panic` to our test function. The test passes if the code inside the function panics; the test fails if the code inside the function doesn't panic.
+
