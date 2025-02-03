@@ -552,3 +552,9 @@ pub fn greeting(name: &str) -> String {
 }
 ```
 
+### Running the Test with the Bug
+
+Running this test produces the following:
+
+This result just indicates that the assertion failed and which line the assertion is on. A more useful failure message would print the value from the `greeting` function. Let's add a custom failure message composed of a format string with a placeholder filled in with the actual value we got from the `greeting` function:
+
