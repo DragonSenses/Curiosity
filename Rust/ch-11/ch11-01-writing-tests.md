@@ -826,4 +826,24 @@ error: test failed, to rerun pass `--lib`
 
 The failure message indicates that this test did indeed panic as we expected, but the panic message did not include the expected string `less than or equal to 100`. The panic message that we did get in this case was `Guess value must be greater than or equal to 1, got 200.` Now we can start figuring out where our bug is!
 
+## Using `Result<T, E>` in Tests
+
+Our tests so far all panic when they fail. We can also write tests that use `Result<T, E>`! Here's the test from Listing 11-1, rewritten to use `Result<T, E>` and return an `Err` instead of panicking:
+
+### Listing 11-1: Rewriting the Test to Use `Result<T, E>`
+
+```rust
+#[test]
+fn it_works() -> Result<(), String> {
+    let result = add(2, 2);
+
+    if result == 4 {
+        Ok(())
+    } else {
+        Err(String::from("two plus two does not equal four"))
+    }
+}
+```
+
+The `it_works` function now has the `Result<(), String>` return type. In the body of the function, rather than calling the `assert_eq!` macro, we return `Ok(())` when the test passes and an `Err` with a `String` inside when the test fails.
 
