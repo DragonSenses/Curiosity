@@ -703,5 +703,9 @@ impl Guess {
 }
 ```
 
+### Running the Test with the Bug
 
+When we run the test in Listing 11-8, it will fail:
+
+We don't get a very helpful message in this case, but when we look at the test function, we see that it's annotated with `#[should_panic]`. The failure we got means that the code in the test function did not cause a panic.
 
