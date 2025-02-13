@@ -57,3 +57,12 @@ $ cargo test -- --test-threads=1
 
 - Setting the number of test threads to `1` disables parallelism, preventing interference.
 - Running tests with one thread takes longer but avoids shared state issues.
+
+## Showing Function Output
+
+### Default Output Behavior
+
+- By default, if a test passes, Rust’s test library captures anything printed to standard output.
+- For example, `println!` output in a passing test is not shown in the terminal; only the line indicating the test passed is displayed.
+- If a test fails, the output printed to standard output appears with the rest of the failure message.
+
