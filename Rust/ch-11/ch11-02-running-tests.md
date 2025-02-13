@@ -34,6 +34,16 @@
 - By default, tests run in parallel using threads, allowing faster completion and quicker feedback.
 - Ensure tests don't depend on each other or shared state, such as the current working directory or environment variables.
 
+### Example Issue with Parallel Tests
+
+- If multiple tests write to the same file (e.g., *test-output.txt*), one test might overwrite the file between another test's writing and reading.
+- This interference can cause test failures unrelated to code correctness.
+
+### Solutions to Prevent Interference
+
+- **Use Different Files:** Ensure each test writes to a different file.
+- **Run Tests Sequentially:** Run tests one at a time.
+
 ### Customizing Test Runs
 
 - You can specify command line options to change default behavior.
