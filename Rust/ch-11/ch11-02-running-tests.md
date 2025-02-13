@@ -96,4 +96,49 @@ mod tests {
 }
 ```
 
+### Running the Tests
+
+When running these tests with `cargo test`, the output will be as follows:
+
+```sh
+$ cargo test
+   Compiling silly-function v0.1.0 (file:///projects/silly-function)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.58s
+     Running unittests src/lib.rs (target/debug/deps/silly_function-160869f38cff9166)
+
+running 2 tests
+test tests::this_test_will_fail ... FAILED
+test tests::this_test_will_pass ... ok
+
+failures:
+
+---- tests::this_test_will_fail stdout ----
+I got the value 8
+thread 'tests::this_test_will_fail' panicked at src/lib.rs:19:9:
+assertion `left == right` failed
+  left: 10
+ right: 5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tests::this_test_will_fail
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`
+```
+
+### Output Explanation
+
+- The output `I got the value 4` from the test that passes is not shown because it has been captured.
+- The output `I got the value 8` from the test that fails is displayed in the test summary output, along with the cause of the test failure.
+
+### Showing Output for Passing Tests
+
+- To see printed values for passing tests, use the `--show-output` flag:
+
+```sh
+$ cargo test -- --show-output
+```
 
