@@ -26,3 +26,24 @@
 
 - Running `cargo test --help` displays options you can use with `cargo test`.
 - Running `cargo test -- --help` displays options you can use after the separator.
+
+## Running Tests in Parallel or Consecutively
+
+### Default Parallel Execution
+
+- By default, tests run in parallel using threads, allowing faster completion and quicker feedback.
+- Ensure tests don't depend on each other or shared state, such as the current working directory or environment variables.
+
+### Customizing Test Runs
+
+- You can specify command line options to change default behavior.
+- Use the `--test-threads` flag to control the number of threads for running tests.
+
+### Example Command
+
+```sh
+$ cargo test -- --test-threads=1
+```
+
+- Setting the number of test threads to `1` disables parallelism, preventing interference.
+- Running tests with one thread takes longer but avoids shared state issues.
