@@ -66,3 +66,34 @@ $ cargo test -- --test-threads=1
 - For example, `println!` output in a passing test is not shown in the terminal; only the line indicating the test passed is displayed.
 - If a test fails, the output printed to standard output appears with the rest of the failure message.
 
+### Example: Printing and Returning a Value
+
+Listing 11-10 illustrates a function that prints the value of its parameter and returns 10, with a test that passes and a test that fails.
+
+#### Listing 11-10: Tests for a function that calls `println!`
+
+```rust
+fn prints_and_returns_10(a: i32) -> i32 {
+    println!("I got the value {a}");
+    10
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn this_test_will_pass() {
+        let value = prints_and_returns_10(4);
+        assert_eq!(value, 10);
+    }
+
+    #[test]
+    fn this_test_will_fail() {
+        let value = prints_and_returns_10(8);
+        assert_eq!(value, 5);
+    }
+}
+```
+
+
