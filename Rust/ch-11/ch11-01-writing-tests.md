@@ -847,3 +847,14 @@ fn it_works() -> Result<(), String> {
 
 The `it_works` function now has the `Result<(), String>` return type. In the body of the function, rather than calling the `assert_eq!` macro, we return `Ok(())` when the test passes and an `Err` with a `String` inside when the test fails.
 
+### Benefits of Using `Result<T, E>`
+
+Writing tests so they return a `Result<T, E>` enables you to use the question mark operator in the body of tests, which can be a convenient way to write tests that should fail if any operation within them returns an `Err` variant.
+
+### Limitations of `Result<T, E>` in Tests
+
+You can't use the `#[should_panic]` annotation on tests that use `Result<T, E>`. To assert that an operation returns an `Err` variant, *don't* use the question mark operator on the `Result<T, E>` value. Instead, use `assert!(value.is_err())`.
+
+### Conclusion
+
+Now that you know several ways to write tests, let's look at what is happening when we run our tests and explore the different options we can use with `cargo test`.
