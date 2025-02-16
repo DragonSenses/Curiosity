@@ -287,3 +287,31 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; fini
 ```
 
 This command ran all tests with `add` in the name and filtered out the test named `one_hundred`. Also note that the module in which a test appears becomes part of the test’s name, so we can run all the tests in a module by filtering on the module’s name.
+
+## Ignoring Some Tests Unless Specifically Requested
+
+### Excluding Time-Consuming Tests
+
+Sometimes a few specific tests can be very time-consuming to execute, so you might want to exclude them during most runs of `cargo test`. Rather than listing as arguments all tests you do want to run, you can instead annotate the time-consuming tests using the `ignore` attribute to exclude them, as shown here:
+
+**Filename: src/lib.rs**
+
+```rust,noplayground
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        let result = add(2, 2);
+        assert_eq!(result, 4);
+    }
+
+    #[test]
+    #[ignore]
+    fn expensive_test() {
+        // code that takes an hour to run
+    }
+}
+```
+
