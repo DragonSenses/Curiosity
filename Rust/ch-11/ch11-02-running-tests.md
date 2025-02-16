@@ -184,6 +184,16 @@ test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; 
 error: test failed, to rerun pass `--lib`
 ```
 
+## Running a Subset of Tests by Name
+
+### Choosing Specific Tests
+
+Sometimes, running a full test suite can take a long time. If you’re working on code in a particular area, you might want to run only the tests pertaining to that code. You can choose which tests to run by passing `cargo test` the name or names of the test(s) you want to run as an argument.
+
+### Example: `add_two` Function Tests
+
+To demonstrate how to run a subset of tests, we’ll first create three tests for our `add_two` function, as shown in Listing 11-11, and choose which ones to run.
+
 #### Listing 11-11: Three Tests with Three Different Names
 
 ```rust
