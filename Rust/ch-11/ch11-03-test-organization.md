@@ -115,3 +115,17 @@ adder
 └── tests
     └── integration_test.rs
 ```
+
+Enter the code in Listing 11-13 into the *tests/integration_test.rs* file:
+
+##### Listing 11-13: An Integration Test of a Function in the `adder` Crate
+
+```rust,ignore
+use adder::add_two;
+
+#[test]
+fn it_adds_two() {
+    let result = add_two(2);
+    assert_eq!(result, 4);
+}
+```
