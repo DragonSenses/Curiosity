@@ -197,5 +197,15 @@ This command runs only the tests in the *tests/integration_test.rs* file.
 
 As you add more integration tests, you might want to make more files in the *tests* directory to help organize them; for example, you can group the test functions by the functionality they’re testing. Each file in the *tests* directory is compiled as its own separate crate, which is useful for creating separate scopes to more closely imitate the way end users will be using your crate. However, this means files in the *tests* directory don’t share the same behavior as files in *src* do.
 
+### Sharing Helper Functions
 
+The different behavior of *tests* directory files is most noticeable when you have a set of helper functions to use in multiple integration test files. If we create *tests/common.rs* and place a function named `setup` in it, we can add some code to `setup` that we want to call from multiple test functions in multiple test files.
+
+**Filename: tests/common.rs**
+
+```rust,noplayground
+pub fn setup() {
+    // setup code specific to your library's tests would go here
+}
+```
 
