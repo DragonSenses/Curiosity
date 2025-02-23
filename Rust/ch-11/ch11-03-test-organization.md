@@ -258,3 +258,22 @@ To avoid having `common` appear in the test output, instead of creating *tests/c
 ```
 
 This naming convention tells Rust not to treat the `common` module as an integration test file. When we move the `setup` function code into *tests/common/mod.rs* and delete the *tests/common.rs* file, the section in the test output will no longer appear. Files in subdirectories of the *tests* directory don’t get compiled as separate crates or have sections in the test output.
+
+### Using the Shared Module
+
+After we’ve created *tests/common/mod.rs*, we can use it from any of the integration test files as a module. Here’s an example of calling the `setup` function from the `it_adds_two` test in *tests/integration_test.rs*:
+
+**Filename: tests/integration_test.rs**
+
+```rust,ignore
+use common::setup;
+
+#[test]
+fn it_adds_two() {
+    setup();
+    let result = add_two(2);
+    assert_eq!(result, 4);
+}
+```
+
+Note that the `mod common;` declaration is the same as the module declaration we demonstrated in Listing 7-21. Then in the test function, we can call the `common::setup()` function.
