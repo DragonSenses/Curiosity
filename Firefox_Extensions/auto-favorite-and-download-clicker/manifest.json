@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Auto Clicker",
+  "name": "Auto Favorite and Download Clicker",
   "version": "1.0",
   "description": "Clicks the favorite and download buttons on a key press.",
   "permissions": ["activeTab", "tabs"],
@@ -17,7 +17,7 @@
   "commands": {
     "click-buttons": {
       "suggested_key": {
-        "default": "Ctrl+Shift+Y"
+        "default": "Alt+X"
       },
       "description": "Click favorite and download buttons"
     }
