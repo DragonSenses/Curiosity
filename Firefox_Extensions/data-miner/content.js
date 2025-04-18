@@ -15,3 +15,23 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
   }
 });
+
+
+function getVideoTitle() {
+  const titleDiv = document.querySelector("body.main div#content div#rightcolumn div#video_title");
+  if (!titleDiv) {
+    console.error("video_title div not found!");
+    return null;
+  }
+
+  const titleElement = titleDiv.querySelector("h3.post-title.text a"); // Target the <a> tag
+  if (!titleElement) {
+    console.error("Anchor tag inside post-title not found!");
+    return null;
+  }
+
+  return titleElement.textContent.trim(); // Extract text safely
+}
+
+// Example usage
+console.log(getVideoTitle()); // Should log: "ABC-931 Example Name"
