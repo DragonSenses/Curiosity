@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (downloadLink) {
         setTimeout(() => {
           downloadLink.click();
-        }, 1000); // 1000 milliseconds = 1 second
+        }, 1265); // 1000 milliseconds = 1 second || Avg Human Reaction Time is 265ms
       }
     }
   }
