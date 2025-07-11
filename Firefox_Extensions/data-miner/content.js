@@ -24,7 +24,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     videoData.push({ id: videoID, date: videoDate, title: videoName });
     
     console.log(videoData); // Verify stored data
-
+    
+    function copyToClipboard() {
+      // Convert the array to CSV format
+      const csvData = videoData.map(item => `${item.id},${item.date},${item.title}`).join("\n");
+    
+      // Copy CSV string to clipboard
+      navigator.clipboard.writeText(csvData).then(() => {
+        console.log("Data copied to clipboard as CSV!");
+        alert("Data successfully copied to clipboard!"); // Optional user feedback
+      }).catch(err => {
+        console.error("Failed to copy text: ", err);
+      });
+    }
+    
+    // Call function after extracting data
+    copyToClipboard();
   }
 });
 
