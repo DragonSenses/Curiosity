@@ -1,4 +1,6 @@
-module blink_led (
+module blink_led #(
+    parameter integer TOGGLE_INTERVAL = 24'd5_000_000  // Number of clock cycles between LED toggles
+)(
     input        clk,     // Clock input
     output reg   led      // LED output (active high)
 );
@@ -10,10 +12,10 @@ module blink_led (
         // Increment counter on each clock cycle
         counter <= counter + 1;
 
-        // Toggle LED every 5 million clock cycles
-        if (counter == 24'd5_000_000) begin
-            led     <= ~led;     // Toggle LED state
-            counter <= 24'd0;    // Reset counter
+        // Toggle LED when counter reaches the interval
+        if (counter == TOGGLE_INTERVAL) begin
+            led     <= ~led;           // Toggle LED state
+            counter <= 24'd0;          // Reset counter
         end
     end
 
