@@ -1,11 +1,17 @@
-// strutils.c
-#include <../include/strutils.h>
+#include "../include/strutils.h"
 
-// Reverses a string in place.
-void reverseString(char* str)
-{
+void reverseString(char *str) {
+    // Add null check to prevent segmentation faults
+    if (!str) return;
+
     int start = 0;
-    int end = strlen(str) - 1;
+    int end = 0;
+
+    // Find the end of the string
+    while (str[end] != '\0') {
+        end++;
+    }
+    end--; // Move to last valid character
 
     // Swap characters from both ends
     while (start < end) {
