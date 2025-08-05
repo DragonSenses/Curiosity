@@ -1,25 +1,38 @@
 module traffic_light_controller (
-    input clk,             // Clock signal
-    input reset,           // Asynchronous reset
-    output reg [1:0] light // Traffic light output: 00=Red, 01=Green, 10=Yellow
+    input wire clk,           // Clock signal
+    input wire reset,         // Asynchronous reset
+    output reg [1:0] light    // Traffic light output: 00=Red, 01=Green, 10=Yellow
 );
-    reg [1:0] state;
 
-    // State transition logic
+    // State encoding using local parameters
+    localparam RED    = 2'b00;
+    localparam GREEN  = 2'b01;
+    localparam YELLOW = 2'b10;
+
+    // Internal state register
+    reg [1:0] current_state;
+
+    // Sequential state transition logic
     always @(posedge clk or posedge reset) begin
         if (reset) begin
-            state <= 2'b00; // Start with Red on reset
+            current_state <= RED; // Initialize to RED on reset
         end else begin
-            case (state)
-                2'b00: state <= 2'b01; // Red to Green
-                2'b01: state <= 2'b10; // Green to Yellow
-                2'b10: state <= 2'b00; // Yellow to Red
+            case (current_state)
+                RED:    current_state <= GREEN;
+                GREEN:  current_state <= YELLOW;
+                YELLOW: current_state <= RED;
+                default: current_state <= RED; // Fallback for safety
             endcase
         end
     end
-    
-    // Output logic (synthesis stability)
-    always @(*) begin
-        light = state;
+
+    // Output assignment (registered for timing stability)
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            light <= RED;
+        end else begin
+            light <= current_state;
+        end
     end
+
 endmodule
