@@ -9,14 +9,17 @@ module uart_tx(
 
     always @(posedge clk) begin
         if (start) begin
-            tx_buffer <= data; // Load data
-            bit_index <= 0; // Start sending
-            tx <= 0; // Start bit
-        end else if (bit_index < 8) begin
-            tx <= tx_buffer[bit_index]; // Send data bits
-            bit_index <= bit_index + 1;
-        end else begin
-            tx <= 1; // Stop bit
+            tx_buffer <= data;       // Load data into buffer
+            bit_index <= 0;          // Reset bit index
+            tx <= 0;                 // Start bit
+        end 
+        else begin
+            if (bit_index < 8) begin
+                tx <= tx_buffer[bit_index]; // Send data bits
+                bit_index <= bit_index + 1;
+            end else begin
+                tx <= 1;             // Stop bit
+            end
         end
     end
 endmodule
