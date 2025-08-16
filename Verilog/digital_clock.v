@@ -1,6 +1,6 @@
 module digital_clock(
-  input clk,
-  input reset,
+  input wire clk,          // Clock signal
+  input wire reset,        // Synchronous reset signal
   output reg [5:0] seconds,
   output reg [5:0] minutes,
   output reg [5:0] hours
@@ -13,14 +13,15 @@ module digital_clock(
     end else begin
       if (seconds == 59) begin
         seconds <= 0;
-        if (seconds == 59) begin
-          seconds <= 0;
-          if (minutes == 59) begin
-            minutes <= 0;
-            // hours logic to be added later
+        if (minutes == 59) begin
+          minutes <= 0;
+          if (hours == 23) begin
+            hours <= 0;
           end else begin
-            minutes <= minutes + 1;
+            hours <= hours + 1;
           end
+        end else begin
+          minutes <= minutes + 1;
         end
       end else begin
         seconds <= seconds + 1;
