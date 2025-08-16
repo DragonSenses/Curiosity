@@ -10,6 +10,13 @@ module digital_clock(
       seconds <= 0;
       minutes <= 0;
       hours <= 0;
+    end else begin
+      if (seconds == 59) begin
+        seconds <= 0;
+        // minutes logic to be added later
+      end else begin
+        seconds <= seconds + 1;
+      end
     end
   end
 endmodule
