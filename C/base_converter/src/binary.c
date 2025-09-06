@@ -67,3 +67,43 @@ char *decimalToBinary(int decimal)
   reverseString(binary); // Reverse to get correct order
   return binary;
 }
+
+// Converts a binary string to its hexadecimal integer equivalent.
+char* binaryToHexadecimal(char binary[]) {
+  int length = strlen(binary);
+
+  // Pad the binary string with leading zeros to ensure it's a multiple of 4
+  int padding = (4 - (length % 4)) % 4;
+  char paddedBinary[129];
+  memset(paddedBinary, '0', padding);
+  strcpy(paddedBinary + padding, binary);
+
+  // Define a mapping of binary strings to their
+  // hexadecimal representations
+  char* binaryHexDigits[]
+  = { "0000", "0001", "0010", "0011", "0100", "0101",
+      "0110", "0111", "1000", "1001", "1010", "1011",
+      "1100", "1101", "1110", "1111" };
+  
+  // Allocate space for an 8-digit hexadecimal string
+  char hexadecimal[33] = "";
+
+  // Iterate through groups of 4 binary digits and convert to hexadecimal
+  for (int i = 0; i < length + padding; i += 4) {
+    char group[5];
+    strncpy(group, paddedBinary + i, 4);
+    group[4] = '\0';
+
+    // Find the corresponding hexadecimal digit
+    for (int j = 0; j < 16; j++) {
+      if (strcmp(group, binaryHexDigits[j]) == 0) {
+        // Append the corresponding hexadecimal digit
+        char hexDigit[2];
+        sprintf(hexDigit, "%X", j);
+        strcat(hexadecimal, hexDigit);
+        break;
+      }
+    }
+  }
+  return strdup(hexadecimal);
+}
