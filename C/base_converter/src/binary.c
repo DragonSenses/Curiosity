@@ -68,42 +68,46 @@ char *decimalToBinary(int decimal)
   return binary;
 }
 
-// Converts a binary string to its hexadecimal integer equivalent.
+/**
+ * Converts a binary string to its hexadecimal string representation.
+ *
+ * @param binary A null-terminated binary string (e.g., "110101")
+ * @return A dynamically allocated hexadecimal string (caller must free)
+ */
 char* binaryToHexadecimal(char binary[]) {
   int length = strlen(binary);
-
+  
   // Pad the binary string with leading zeros to ensure it's a multiple of 4
   int padding = (4 - (length % 4)) % 4;
-  char paddedBinary[129];
+  int paddedLength = length + padding;
+
+  // Allocate padded binary string
+  char* paddedBinary = (char*)malloc(paddedLength + 1);
+  if (!paddedBinary) return NULL;
+
+  // Fill padding with '0's
   memset(paddedBinary, '0', padding);
   strcpy(paddedBinary + padding, binary);
+  paddedBinary[paddedLength] = '\0';
 
-  // Define a mapping of binary strings to their
-  // hexadecimal representations
-  char* binaryHexDigits[]
-  = { "0000", "0001", "0010", "0011", "0100", "0101",
-      "0110", "0111", "1000", "1001", "1010", "1011",
-      "1100", "1101", "1110", "1111" };
-  
-  // Allocate space for an 8-digit hexadecimal string
-  char hexadecimal[33] = "";
-
-  // Iterate through groups of 4 binary digits and convert to hexadecimal
-  for (int i = 0; i < length + padding; i += 4) {
-    char group[5];
-    strncpy(group, paddedBinary + i, 4);
-    group[4] = '\0';
-
-    // Find the corresponding hexadecimal digit
-    for (int j = 0; j < 16; j++) {
-      if (strcmp(group, binaryHexDigits[j]) == 0) {
-        // Append the corresponding hexadecimal digit
-        char hexDigit[2];
-        sprintf(hexDigit, "%X", j);
-        strcat(hexadecimal, hexDigit);
-        break;
-      }
-    }
+  // Allocate space for hex string (1 hex digit per 4 bits)
+  int hexLength = paddedLength / 4;
+  char* hexadecimal = (char*)malloc(hexLength + 1);
+  if (!hexadecimal) {
+      free(paddedBinary);
+      return NULL;
   }
-  return strdup(hexadecimal);
+
+  // Convert each 4-bit group to a hex digit
+  for (int i = 0; i < hexLength; i++) {
+      int value = 0;
+      for (int j = 0; j < 4; j++) {
+          value = value * 2 + (paddedBinary[i * 4 + j] - '0');
+      }
+      hexadecimal[i] = "0123456789ABCDEF"[value];
+  }
+
+  hexadecimal[hexLength] = '\0';
+  free(paddedBinary);
+  return hexadecimal;
 }
