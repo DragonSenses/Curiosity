@@ -1,7 +1,10 @@
 # Set input and output paths
 $sourcePath = "."
-$outputCsvPath = "C:\logs\data.csv"
-$outputTxtPath = "C:\logs\data.txt"
+$root = $env:USERPROFILE
+$logDir = Join-Path $root "logs"
+
+$outputCsvPath = Join-Path $logDir "data.csv"
+$outputTxtPath = Join-Path $logDir "data.txt"
 
 # Get all files recursively
 $files = Get-ChildItem -LiteralPath $sourcePath -Recurse
