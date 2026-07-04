@@ -1,10 +1,12 @@
 # Set input and output paths
 $sourcePath = "."
-$root = $env:USERPROFILE
-$logDir = Join-Path $root "logs"
+$base = $env:USERPROFILE
+$currentDateOnly = Get-Date -Format "yyyy-MM-dd"
 
-$outputCsvPath = Join-Path $logDir "data.csv"
-$outputTxtPath = Join-Path $logDir "data.txt"
+$logDir = Join-Path $base "logs"
+
+$outputCsvPath = Join-Path $logDir "${currentDateOnly}_log.csv"
+$outputTxtPath = Join-Path $logDir "${currentDateOnly}_log.txt"
 
 # Get all files recursively
 $files = Get-ChildItem -LiteralPath $sourcePath -Recurse
