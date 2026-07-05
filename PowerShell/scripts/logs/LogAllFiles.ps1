@@ -5,8 +5,15 @@ $currentDateOnly = Get-Date -Format "yyyy-MM-dd"
 
 $logDir = Join-Path $base "logs"
 
-# Extract only the current folder name
+# Extract the leaf directory name
 $dirName = Split-Path (Get-Location) -Leaf
+
+# Sanitize characters that break filenames or wildcard parsing
+$dirName = $dirName -replace '[
+
+\[\]
+
+\*\?]', '_'   # replace wildcards with underscore
 
 $outputCsvPath = Join-Path $logDir "${currentDateOnly}_${dirName}_log.csv"
 $outputTxtPath = Join-Path $logDir "${currentDateOnly}_${dirName}_log.txt"
