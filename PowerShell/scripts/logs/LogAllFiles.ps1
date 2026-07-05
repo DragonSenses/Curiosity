@@ -5,8 +5,11 @@ $currentDateOnly = Get-Date -Format "yyyy-MM-dd"
 
 $logDir = Join-Path $base "logs"
 
-$outputCsvPath = Join-Path $logDir "${currentDateOnly}_log.csv"
-$outputTxtPath = Join-Path $logDir "${currentDateOnly}_log.txt"
+# Extract only the current folder name
+$dirName = Split-Path (Get-Location) -Leaf
+
+$outputCsvPath = Join-Path $logDir "${currentDateOnly}_${dirName}_log.csv"
+$outputTxtPath = Join-Path $logDir "${currentDateOnly}_${dirName}_log.txt"
 
 # Get all files recursively
 $files = Get-ChildItem -LiteralPath $sourcePath -Recurse
