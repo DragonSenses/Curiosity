@@ -18,10 +18,20 @@
 Get-ChildItem -Directory | ForEach-Object {
   $old = $_.Name
 
-  # Strip the last underscore + 6‑char hash
-  $new = $old -replace '_(?=[A-Fa-f0-9]{6}$)', ''
+  # Strip the last underscore + 6‑char hex hash
+  $base = $old -replace '_(?=[A-Fa-f0-9]{6}$)', ''
 
-  if ($new -ne $old) {
-    Rename-Item -Path $_.FullName -NewName $new
+  # If nothing changed, skip
+  if ($base -eq $old) { return }
+
+  $target = $base
+  $i = 2
+
+  # Collision loop: increment suffix until name is free
+  while (Test-Path -LiteralPath (Join-Path $_.Parent.FullName $target)) {
+    $target = "$base ($i)"
+    $i++
   }
+
+  Rename-Item -LiteralPath $_.FullName -NewName $target
 }
