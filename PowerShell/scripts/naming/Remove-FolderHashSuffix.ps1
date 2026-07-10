@@ -3,6 +3,16 @@
 # Partial MD5 hash is 6 characters and always preceded by an underscore.
 
 # See below script for example unit tests for expected inputs and outputs
+function Get-RenamedFolderName {
+    param(
+        [Parameter(Mandatory)]
+        [string]$Name
+    )
+
+    # Remove trailing _<6-hex>
+    $base = $Name -replace '_[A-Fa-f0-9]{6}$', ''
+    return $base
+}
 
 Get-ChildItem -Directory | ForEach-Object {
   $old = $_.Name
