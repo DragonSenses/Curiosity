@@ -4,6 +4,7 @@
 
 # See below script for example unit tests for expected inputs and outputs
 
+$debug = $true
 $HashSuffixPattern = '_[A-Fa-f0-9]{6}$'
 
 function Get-RenamedFolderName {
@@ -32,6 +33,10 @@ Get-ChildItem -Directory | ForEach-Object {
   while (Test-Path -LiteralPath (Join-Path $_.Parent.FullName $target)) {
     $target = "$base ($i)"
     $i++
+  }
+
+  if ($debug) {
+      Write-Output "$old renamed to $target"
   }
 
   Rename-Item -LiteralPath $_.FullName -NewName $target
