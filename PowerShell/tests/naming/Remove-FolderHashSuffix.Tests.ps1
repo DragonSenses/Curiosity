@@ -27,4 +27,12 @@ Describe 'Get-RenamedFolderName' {
     }
   }
 
+  Context 'Invalid hashes stay unchanged' {
+    It 'does not strip non-hex or wrong length' {
+      Get-RenamedFolderName 'Chapter 10_zzzzzz'  | Should -Be 'Chapter 10_zzzzzz'
+      Get-RenamedFolderName 'Chapter 11_12345'   | Should -Be 'Chapter 11_12345'
+      Get-RenamedFolderName 'Chapter 12_12345g'  | Should -Be 'Chapter 12_12345g'
+      Get-RenamedFolderName 'Chapter 13_1234567' | Should -Be 'Chapter 13_1234567'
+    }
+  }
 }
