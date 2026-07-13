@@ -43,5 +43,44 @@ Describe 'Get-RenamedFolderName' {
     }
   }
 
+  Context 'Edge cases' {
+
+    It 'handles names with no underscores at all' {
+      Get-RenamedFolderName 'Chapter 99' | Should -Be 'Chapter 99'
+    }
+
+    It 'handles names ending with underscore but no hash' {
+      Get-RenamedFolderName 'Chapter 100_' | Should -Be 'Chapter 100_'
+    }
+
+    It 'handles names with multiple trailing underscores' {
+      Get-RenamedFolderName 'Chapter 101___' | Should -Be 'Chapter 101___'
+    }
+
+    It 'handles lowercase hex hashes' {
+      Get-RenamedFolderName 'Chapter 7_ab12ef' | Should -Be 'Chapter 7'
+    }
+
+    It 'handles uppercase hex hashes' {
+      Get-RenamedFolderName 'Chapter 8_AB12EF' | Should -Be 'Chapter 8'
+    }
+
+    It 'does not strip when hex is embedded inside parentheses' {
+      Get-RenamedFolderName 'Chapter 9_(83919d)' | Should -Be 'Chapter 9_(83919d)'
+    }
+
+    It 'does not strip when hex is part of a longer suffix' {
+      Get-RenamedFolderName 'Chapter 10_83919d_extra' | Should -Be 'Chapter 10_83919d_extra'
+    }
+
+    It 'handles unicode characters' {
+      Get-RenamedFolderName 'Chap📘ter_1_83919d' | Should -Be 'Chap📘ter_1'
+    }
+
+    It 'handles spaces before the hash' {
+      Get-RenamedFolderName 'Chapter 11 _83919d' | Should -Be 'Chapter 11 '
+    }
+  }
+
 
 }
