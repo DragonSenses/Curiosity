@@ -82,5 +82,13 @@ Describe 'Get-RenamedFolderName' {
     }
   }
 
+  Context 'Trailing underscores — should NOT change' {
+    It 'keeps names ending with underscores' {
+      Get-RenamedFolderName 'Chapter 14_'   | Should -Be 'Chapter 14_'
+      Get-RenamedFolderName 'Chapter 15__'  | Should -Be 'Chapter 15__'
+      Get-RenamedFolderName 'Chapter 16_edge_' | Should -Be 'Chapter 16_edge_'
+    }
+  }
+
 
 }
