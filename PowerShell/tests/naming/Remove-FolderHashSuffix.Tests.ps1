@@ -90,5 +90,14 @@ Describe 'Get-RenamedFolderName' {
     }
   }
 
+  Context 'Multiple underscores before hash' {
+    It 'strips only the final _<hex> suffix' {
+      Get-RenamedFolderName 'Chapter 17_a_b_c_abcdef' |
+      Should -Be 'Chapter 17_a_b_c'
+
+      Get-RenamedFolderName 'Chapter 18__a__b__c__123abc' |
+      Should -Be 'Chapter 18__a__b__c_'
+    }
+  } 
 
 }
