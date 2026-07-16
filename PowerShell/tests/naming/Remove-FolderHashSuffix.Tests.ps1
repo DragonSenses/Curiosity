@@ -100,4 +100,13 @@ Describe 'Get-RenamedFolderName' {
     }
   } 
 
+
+  Context 'Special characters' {
+    It 'handles bracketed and parenthesized names' {
+      Get-RenamedFolderName 'Chapter 19_[draft]_a1b2c3' | Should -Be 'Chapter 19_[draft]'
+      Get-RenamedFolderName 'Chapter 20_(final)_f00baa' | Should -Be 'Chapter 20_(final)'
+      Get-RenamedFolderName 'Chapter 21_[]_abcdef'      | Should -Be 'Chapter 21_[]'
+    }
+  }
+
 }
