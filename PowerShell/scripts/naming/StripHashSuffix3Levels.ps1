@@ -10,18 +10,13 @@
 
 $debug = $true
 
-$HashSuffixPattern = '_[A-Fa-f0-9]{6}$'
-function Get-RenamedFolderName {
-  param(
-    [Parameter(Mandatory)]
-    [string]$Name
-  )
+$LogPath = Join-Path $env:USERPROFILE 'Downloads\log.txt'
 
-  # Remove trailing _<6-hex>
-  return ($Name -replace $HashSuffixPattern, '')
+function Write-Log {
+    param([string]$Message)
+    Write-Output $Message
+    Add-Content -LiteralPath $LogPath -Value $Message
 }
-
-$debug = $true
 
 $HashSuffixPattern = '_[A-Fa-f0-9]{6}$'
 
@@ -35,18 +30,18 @@ Get-ChildItem -Directory | ForEach-Object {
   $library = $_.FullName
 
   if ($debug) {
-    Write-Output "Processing library: $library"
+    Write-Log "Processing library: $library"
   }
 
-  # Level 2: Novels inside each Library
+  # Level 2: Novels
   Get-ChildItem -Path $library -Directory | ForEach-Object {
     $novel = $_.FullName
 
     if ($debug) {
-      Write-Output "  Processing novel: $novel"
+      Write-Log "  Processing novel: $novel"
     }
 
-    # Level 3: Chapters inside each Novel
+    # Level 3: Chapters
     Get-ChildItem -Path $novel -Directory | ForEach-Object {
       $old = $_.Name
       $base = Get-RenamedFolderName $old
@@ -62,7 +57,7 @@ Get-ChildItem -Directory | ForEach-Object {
       }
 
       if ($debug) {
-        Write-Output "    $old renamed to $target"
+        Write-Log "    $old renamed to $target"
       }
 
       Rename-Item -LiteralPath $_.FullName -NewName $target
