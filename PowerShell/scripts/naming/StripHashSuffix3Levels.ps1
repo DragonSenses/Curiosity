@@ -13,9 +13,9 @@ $debug = $true
 $LogPath = Join-Path $env:USERPROFILE 'Downloads\log.txt'
 
 function Write-Log {
-    param([string]$Message)
-    Write-Output $Message
-    Add-Content -LiteralPath $LogPath -Value $Message
+  param([string]$Message)
+  Write-Output $Message
+  Add-Content -LiteralPath $LogPath -Value $Message
 }
 
 $HashSuffixPattern = '_[A-Fa-f0-9]{6}$'
@@ -50,10 +50,16 @@ Get-ChildItem -Directory | ForEach-Object {
 
       $target = $base
       $i = 2
+      $collisionOccurred = $false
 
       while (Test-Path -LiteralPath (Join-Path $_.Parent.FullName $target)) {
+        $collisionOccurred = $true
         $target = "$base ($i)"
         $i++
+      }
+
+      if ($collisionOccurred -and $debug) {
+        Write-Log "    Duplicate detected in parent folder: $($_.Parent.FullName)"
       }
 
       if ($debug) {
