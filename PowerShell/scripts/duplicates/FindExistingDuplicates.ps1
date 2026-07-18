@@ -6,6 +6,13 @@ function Write-Log {
   Add-Content -LiteralPath $LogPath -Value $Message
 }
 
+# Clear old log
+if (Test-Path $LogPath) { Remove-Item $LogPath }
+
+Write-Log "=== Existing Duplicate Folder Report ==="
+Write-Log "Generated: $(Get-Date)"
+Write-Log ""
+
 # Regex for folders like:  Chapter 28 (2)
 $DuplicatePattern = '^(.*)\s\(\d+\)$'
 
@@ -28,5 +35,10 @@ Get-ChildItem -Directory | ForEach-Object {
       }
     }
 
+    Write-Log ""
   }
+
+  Write-Log ""
 }
+
+Write-Log "=== End of Report ==="
