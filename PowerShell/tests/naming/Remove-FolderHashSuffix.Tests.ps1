@@ -109,4 +109,11 @@ Describe 'Get-RenamedFolderName' {
     }
   }
 
+  Context 'Dots in names' {
+    It 'handles dotted chapter names' {
+      Get-RenamedFolderName 'Chapter 22.v2_abcdef'   | Should -Be 'Chapter 22.v2'
+      Get-RenamedFolderName 'Chapter 23.1.5_123abc'  | Should -Be 'Chapter 23.1.5'
+    }
+  }
+
 }
