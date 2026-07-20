@@ -116,4 +116,11 @@ Describe 'Get-RenamedFolderName' {
     }
   }
 
+  Context 'Hash not at end — should NOT change' {
+    It 'does not strip when hash is not terminal' {
+      Get-RenamedFolderName 'Chapter 26_abcdef_notes'     | Should -Be 'Chapter 26_abcdef_notes'
+      Get-RenamedFolderName 'Chapter 27_notes_abcdef_extra' | Should -Be 'Chapter 27_notes_abcdef_extra'
+    }
+  }
+
 }
